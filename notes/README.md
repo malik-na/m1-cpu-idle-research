@@ -17,6 +17,8 @@ Investigation date: 1 October 2026, Asia/Kolkata. Target: MacBookAir10,1 / J313 
 
 The unit interpretation is a concrete build-specific reverse-engineering result. A bounded search found no prior public explanation of that exact path. That is not proof Asahi or Aurora researchers have never discovered it.
 
+For the planned move to Omarchy with an Aurora kernel, use the [native Linux handoff](native-linux-handoff.md). Its first step is read-only qualification of the actual installation; the existing source-pinned experiments are not assumed compatible with an uninspected Aurora build.
+
 ## Wayfinder research decisions
 
 The [APSC/DVFS decision map](https://github.com/malik-na/m1-cpu-idle-research/issues/1) coordinates the next multi-session work. Three source-only method decisions now have reviewable notes: [how to observe the macOS last-core wait](mac-apsc-direct-observation-route.md), [how to capture native Linux DVFS-to-WFI ordering](linux-dvfs-wfi-trace-choice.md), and [how to calibrate PCPM as a native state signal](native-pcpm-signal-decision.md). These are experiment routes, not new BUSY, physical-state, or energy observations.
