@@ -1,0 +1,120 @@
+{
+  "description": "Static readACCReg mapping tables plus IORegistry pmgr provider resources. Table words are little-endian uint32 pairs RegMap ID, logical selector base. No MMIO read was performed.",
+  "tables": {
+    "E": {
+      "vmaddr": "0xfffffe0007775734",
+      "fileoff": "0x771734",
+      "raw_hex": "0b0000000000e500090000000000e2000c0000000000e7000e000000000005000f00000000001500100000000000250011000000000035000d0000000000f0000a0000000000e400",
+      "rows": [
+        {
+          "RegMap": 11,
+          "selector_base": "0xe50000"
+        },
+        {
+          "RegMap": 9,
+          "selector_base": "0xe20000"
+        },
+        {
+          "RegMap": 12,
+          "selector_base": "0xe70000"
+        },
+        {
+          "RegMap": 14,
+          "selector_base": "0x50000"
+        },
+        {
+          "RegMap": 15,
+          "selector_base": "0x150000"
+        },
+        {
+          "RegMap": 16,
+          "selector_base": "0x250000"
+        },
+        {
+          "RegMap": 17,
+          "selector_base": "0x350000"
+        },
+        {
+          "RegMap": 13,
+          "selector_base": "0xf00000"
+        },
+        {
+          "RegMap": 10,
+          "selector_base": "0xe40000"
+        }
+      ]
+    },
+    "P": {
+      "vmaddr": "0xfffffe000777577c",
+      "fileoff": "0x77177c",
+      "raw_hex": "170000000000e500150000000000e200180000000000e7001a000000000005001b00000000001500190000000000f000160000000000e4001c000000000025001d00000000003500",
+      "rows": [
+        {
+          "RegMap": 23,
+          "selector_base": "0xe50000"
+        },
+        {
+          "RegMap": 21,
+          "selector_base": "0xe20000"
+        },
+        {
+          "RegMap": 24,
+          "selector_base": "0xe70000"
+        },
+        {
+          "RegMap": 26,
+          "selector_base": "0x50000"
+        },
+        {
+          "RegMap": 27,
+          "selector_base": "0x150000"
+        },
+        {
+          "RegMap": 25,
+          "selector_base": "0xf00000"
+        },
+        {
+          "RegMap": 22,
+          "selector_base": "0xe40000"
+        },
+        {
+          "RegMap": 28,
+          "selector_base": "0x250000"
+        },
+        {
+          "RegMap": 29,
+          "selector_base": "0x350000"
+        }
+      ]
+    }
+  },
+  "provider_IORegistryEntryID": 4294968004,
+  "provider_resources": {
+    "5": [
+      {
+        "address": "0x210e20000",
+        "length": "0x2000"
+      }
+    ],
+    "14": [
+      {
+        "address": "0x211e20000",
+        "length": "0x2000"
+      }
+    ]
+  },
+  "resolved": [
+    {
+      "cluster": "E",
+      "RegMap": 9,
+      "provider_index": 5,
+      "read_address": "0x210e20020"
+    },
+    {
+      "cluster": "P",
+      "RegMap": 21,
+      "provider_index": 14,
+      "read_address": "0x211e20020"
+    }
+  ]
+}

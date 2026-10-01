@@ -1,0 +1,65 @@
+{
+  "phases": [
+    {
+      "phase": "ambient-before",
+      "start_python_monotonic_s": 0.027225583,
+      "end_python_monotonic_s": 5.032359333
+    },
+    {
+      "phase": "user-pulses",
+      "start_python_monotonic_s": 5.03241175,
+      "end_python_monotonic_s": 13.044404,
+      "exit_code": 0,
+      "probe": {
+        "qos": "user",
+        "requested_seconds": 8.0,
+        "elapsed_s": 8.0019015,
+        "start_monotonic_s": 156556.062420625,
+        "period_us": 10000,
+        "busy_us": 500,
+        "busy_observed_s": 0.401181298,
+        "bursts": 800,
+        "missed_deadlines": 0,
+        "timer_lateness_p50_us": 1908.666,
+        "timer_lateness_p95_us": 2074.666,
+        "timer_lateness_max_us": 2393.125,
+        "checksum": 12717078485800433030
+      },
+      "stderr": ""
+    },
+    {
+      "phase": "ambient-between",
+      "start_python_monotonic_s": 13.044471041,
+      "end_python_monotonic_s": 17.046864041
+    },
+    {
+      "phase": "background-pulses",
+      "start_python_monotonic_s": 17.046881083,
+      "end_python_monotonic_s": 25.075514166,
+      "exit_code": 0,
+      "probe": {
+        "qos": "background",
+        "requested_seconds": 8.0,
+        "elapsed_s": 8.023442958,
+        "start_monotonic_s": 156568.072011125,
+        "period_us": 10000,
+        "busy_us": 500,
+        "busy_observed_s": 0.068845499,
+        "bursts": 136,
+        "missed_deadlines": 666,
+        "timer_lateness_p50_us": 62166.625,
+        "timer_lateness_p95_us": 98950.166,
+        "timer_lateness_max_us": 99942.833,
+        "checksum": 13160310633134122536
+      },
+      "stderr": ""
+    },
+    {
+      "phase": "ambient-after",
+      "start_python_monotonic_s": 25.075597041,
+      "end_python_monotonic_s": 30.080754
+    }
+  ],
+  "collector_exit": 0,
+  "context": "Interactive awake Mac with background activity; exploratory response test, not isolated idle or power benchmark."
+}

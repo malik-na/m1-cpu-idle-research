@@ -1,0 +1,386 @@
+{
+  "Children": [
+    {
+      "Children": [
+        {
+          "KTraceCode": "0x2b660000",
+          "LevelArg": "Arg1",
+          "Name": "DVD Factor",
+          "Type": "Level"
+        },
+        {
+          "KTraceCode": "0x2b660000",
+          "LevelArg": "Arg2",
+          "Name": "Limiting Reason DVD Factor1",
+          "Type": "Level"
+        }
+      ],
+      "Name": "kApplePMGRTracepointPerfLimitingDVDFactor1"
+    },
+    {
+      "Children": [
+        {
+          "Children": [
+            {
+              "KTraceCode": "0x2b660004",
+              "LevelArg": "Arg1",
+              "Name": "ThermalUPO Perf Limiting Now",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b660004",
+              "LevelArg": "Arg2",
+              "Name": "Limiting Reason Overall",
+              "Type": "Level"
+            }
+          ],
+          "Name": "Perf Limiting Net Limit"
+        },
+        {
+          "Children": [
+            {
+              "KTraceCode": "0x2b660008",
+              "LevelArg": "Arg1",
+              "Name": "Requested Perf",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b660008",
+              "LevelArg": "Arg2",
+              "Name": "Requested Bucket",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b660008",
+              "LevelArg": "Arg3",
+              "Name": "Delivered Perf",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b660008",
+              "LevelArg": "Arg4",
+              "Name": "Delivered Bucket",
+              "Type": "Level"
+            }
+          ],
+          "Name": "kApplePMGRTracepointPerfLimitingBuckets"
+        },
+        {
+          "Children": [
+            {
+              "KTraceCode": "0x27b00000",
+              "LevelArg": "Arg1",
+              "Name": "thermalUPOPerfLimiting 0",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x27b00000",
+              "LevelArg": "Arg2",
+              "Name": "thermalUPOPerfLimiting 1",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x27b00000",
+              "LevelArg": "Arg3",
+              "Name": "thermalUPOPerfLimiting 2",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x27b00000",
+              "LevelArg": "Arg4",
+              "Name": "thermalUPOPerfLimiting 3",
+              "Type": "Level"
+            }
+          ],
+          "Name": "kApplePMGRTracepointPerfLimitingContributingLimitsA"
+        },
+        {
+          "Children": [
+            {
+              "KTraceCode": "0x27b00004",
+              "LevelArg": "Arg1",
+              "Name": "thermalUPOPerfLimiting 4",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x27b00004",
+              "LevelArg": "Arg2",
+              "Name": "thermalUPOPerfLimiting 5",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x27b00004",
+              "LevelArg": "Arg3",
+              "Name": "thermalUPOPerfLimiting 6",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x27b00004",
+              "LevelArg": "Arg4",
+              "Name": "thermalUPOPerfLimiting 7",
+              "Type": "Level"
+            }
+          ],
+          "Name": "kApplePMGRTracepointPerfLimitingContributingLimitsB"
+        },
+        {
+          "Children": [
+            {
+              "KTraceCode": "0x27b00008",
+              "LevelArg": "Arg1",
+              "Name": "RequestedState",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x27b00008",
+              "LevelArg": "Arg2",
+              "Name": "RequestedStateTrue",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x27b00008",
+              "LevelArg": "Arg3",
+              "Name": "DVD Limit State",
+              "Type": "Level"
+            }
+          ],
+          "Name": "kApplePMGRTracepointPerfLimitingStates"
+        },
+        {
+          "Children": [
+            {
+              "KTraceCode": "0x2b66000c",
+              "LevelArg": "Arg1",
+              "Name": "Perf Limiting Scenario",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b66000c",
+              "LevelArg": "Arg2",
+              "Name": "IOReport State IDX",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b66000c",
+              "LevelArg": "Arg3",
+              "Name": "Perf Limiting Reporting Threshold Count",
+              "Type": "Level"
+            }
+          ],
+          "Name": "kPerfLimitingReasonDVDFactor1FastLoop"
+        },
+        {
+          "Children": [
+            {
+              "KTraceCode": "0x2b660010",
+              "LevelArg": "Arg1",
+              "Name": "Perf Limiting Scenario",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b660010",
+              "LevelArg": "Arg2",
+              "Name": "IOReport State IDX",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b660010",
+              "LevelArg": "Arg3",
+              "Name": "Perf Limiting Reporting Threshold Count",
+              "Type": "Level"
+            }
+          ],
+          "Name": "kPerfLimitingReasonDVDFactor1SlowLoop"
+        },
+        {
+          "Children": [
+            {
+              "KTraceCode": "0x2b660014",
+              "LevelArg": "Arg1",
+              "Name": "Perf Limiting Scenario",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b660014",
+              "LevelArg": "Arg2",
+              "Name": "IOReport State IDX",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b660014",
+              "LevelArg": "Arg3",
+              "Name": "Perf Limiting Reporting Threshold Count",
+              "Type": "Level"
+            }
+          ],
+          "Name": "kPerfLimitingReasonDVDFactor1HIP"
+        },
+        {
+          "Children": [
+            {
+              "KTraceCode": "0x2b660018",
+              "LevelArg": "Arg1",
+              "Name": "Perf Limiting Scenario",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b660018",
+              "LevelArg": "Arg2",
+              "Name": "IOReport State IDX",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b660018",
+              "LevelArg": "Arg3",
+              "Name": "Perf Limiting Reporting Threshold Count",
+              "Type": "Level"
+            }
+          ],
+          "Name": "kPerfLimitingReasonDVDFactor1UPO"
+        },
+        {
+          "Children": [
+            {
+              "KTraceCode": "0x2b66001c",
+              "LevelArg": "Arg1",
+              "Name": "Perf Limiting Scenario",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b66001c",
+              "LevelArg": "Arg2",
+              "Name": "IOReport State IDX",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b66001c",
+              "LevelArg": "Arg3",
+              "Name": "kPerfLimitingReasonDVDFactor1Count",
+              "Type": "Level"
+            }
+          ],
+          "Name": "kPerfLimitingReasonDVDFactor1LPM"
+        },
+        {
+          "Children": [
+            {
+              "KTraceCode": "0x2b660020",
+              "LevelArg": "Arg1",
+              "Name": "Perf Limiting Scenario",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b660020",
+              "LevelArg": "Arg2",
+              "Name": "IOReport State IDX",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b660020",
+              "LevelArg": "Arg3",
+              "Name": "Perf Limiting Reporting Threshold Count",
+              "Type": "Level"
+            }
+          ],
+          "Name": "kPerfLimitingReasonCLPCDroop"
+        },
+        {
+          "Children": [
+            {
+              "KTraceCode": "0x2b660020",
+              "LevelArg": "Arg1",
+              "Name": "Perf Limiting Scenario",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b660020",
+              "LevelArg": "Arg2",
+              "Name": "IOReport State IDX",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b660020",
+              "LevelArg": "Arg3",
+              "Name": "Perf Limiting Reporting Threshold Count",
+              "Type": "Level"
+            }
+          ],
+          "Name": "kPerfLimitingReasonCLPCDroop"
+        },
+        {
+          "Children": [
+            {
+              "KTraceCode": "0x2b660024",
+              "LevelArg": "Arg1",
+              "Name": "Perf Limiting Scenario",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b660024",
+              "LevelArg": "Arg2",
+              "Name": "IOReport State IDX",
+              "Type": "Level"
+            },
+            {
+              "KTraceCode": "0x2b660024",
+              "LevelArg": "Arg3",
+              "Name": "Perf Limiting Reporting Threshold Count",
+              "Type": "Level"
+            }
+          ],
+          "Name": "kPerfLimitingReasonCLPCAveragePower"
+        }
+      ],
+      "Name": "kApplePMGRTracepointPerfLimitingNetLimit"
+    },
+    {
+      "KTraceCodeBegin": "0x2700C001",
+      "KTraceCodeEnd": "0x2700C002",
+      "Name": "EnableDevice",
+      "Type": "Interval"
+    },
+    {
+      "KTraceCodeBegin": "0x2700D001",
+      "KTraceCodeEnd": "0x2700D002",
+      "Name": "EnablePSDService",
+      "Type": "Interval"
+    },
+    {
+      "KTraceCodeBegin": "0x27004001",
+      "KTraceCodeEnd": "0x27004002",
+      "Name": "getEnergyNodeCounter",
+      "Type": "Interval"
+    },
+    {
+      "KTraceCodeBegin": "0x27001001",
+      "KTraceCodeEnd": "0x27001002",
+      "Name": "CPUIdle",
+      "Type": "Interval"
+    },
+    {
+      "KTraceCode": "0x27003000",
+      "LevelArg": "Arg1",
+      "Name": "CPM0PerfStateReq",
+      "Type": "Level"
+    },
+    {
+      "KTraceCode": "0x27003010",
+      "LevelArg": "Arg1",
+      "Name": "CPM1PerfStateReq",
+      "Type": "Level"
+    },
+    {
+      "KTraceCode": "0x27003020",
+      "LevelArg": "Arg1",
+      "Name": "CPM2PerfStateReq",
+      "Type": "Level"
+    },
+    {
+      "KTraceCode": "0x27003030",
+      "LevelArg": "Arg1",
+      "Name": "CPM3PerfStateReq",
+      "Type": "Level"
+    }
+  ],
+  "Name": "ApplePMGR"
+}

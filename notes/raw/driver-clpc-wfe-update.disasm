@@ -1,0 +1,80 @@
+66738: fffffe0009e16fb0:	ae 21 cb 9a	lsl	x14, x13, x11
+66739: fffffe0009e16fb4:	7f fd 00 f1	cmp	x11, #0x3f
+66740: fffffe0009e16fb8:	eb 03 8e 9a	csel	x11, xzr, x14, eq
+66741: fffffe0009e16fbc:	6b 01 08 ea	ands	x11, x11, x8
+66742: fffffe0009e16fc0:	6b 01 c0 da	rbit	x11, x11
+66743: fffffe0009e16fc4:	6b 11 c0 da	clz	x11, x11
+66744: fffffe0009e16fc8:	01 fe ff 54	b.ne	0xfffffe0009e16f88
+66745: fffffe0009e16fcc:	e8 3b 41 f9	ldr	x8, [sp, #0x270]
+66746: fffffe0009e16fd0:	61 1e 6f f9	ldr	x1, [x19, #0x5e38]
+66747: fffffe0009e16fd4:	03 41 50 d3	ubfx	x3, x8, #16, #1
+66748: fffffe0009e16fd8:	02 7d 18 53	lsr	w2, w8, #24
+66749: fffffe0009e16fdc:	08 8b 86 52	mov	w8, #0x3458
+66750: fffffe0009e16fe0:	60 02 08 8b	add	x0, x19, x8
+66751: fffffe0009e16fe4:	81 3e ff 97	bl	__ZN4clpc3cpu17PreferenceManager28updateStorageGroupPreferenceERNS_4tgrp20ThreadGroupContainerEhb
+66752: fffffe0009e16fe8:	60 82 47 f9	ldr	x0, [x19, #0xf00]
+66753: fffffe0009e16fec:	80 30 00 b5	cbnz	x0, 0xfffffe0009e175fc
+66754: fffffe0009e16ff0:	28 67 01 90	adrp	x8, 11492 ; 0xfffffe000cafa000
+66755: fffffe0009e16ff4:	02 45 40 f9	ldr	x2, [x8, #0x88]
+66756: fffffe0009e16ff8:	08 a0 86 52	mov	w8, #0x3500
+66757: fffffe0009e16ffc:	a0 02 08 8b	add	x0, x21, x8
+66758: fffffe0009e17000:	e1 03 14 aa	mov	x1, x20
+66759: fffffe0009e17004:	50 63 ff 97	bl	__ZN4clpc3cpu18SchedulerInterface35realTimeSchedulingUpdateFromSamplerEyy
+66760: fffffe0009e17008:	74 5e 46 f9	ldr	x20, [x19, #0xcb8]
+66761: fffffe0009e1700c:	14 08 00 b4	cbz	x20, 0xfffffe0009e1710c
+66762: fffffe0009e17010:	e8 03 03 91	add	x8, sp, #0xc0
+66763: fffffe0009e17014:	15 81 00 91	add	x21, x8, #0x20
+66764: fffffe0009e17018:	08 91 00 91	add	x8, x8, #0x24
+66765: fffffe0009e1701c:	e8 2f 00 f9	str	x8, [sp, #0x58]
+66766: fffffe0009e17020:	fb ef 40 f9	ldr	x27, [sp, #0x1d8]
+66767: fffffe0009e17024:	88 02 c0 da	rbit	x8, x20
+66768: fffffe0009e17028:	16 11 c0 da	clz	x22, x8
+66769: fffffe0009e1702c:	08 9d 8a 52	mov	w8, #0x54e8
+66770: fffffe0009e17030:	e9 37 40 f9	ldr	x9, [sp, #0x68]
+66771: fffffe0009e17034:	3c 01 08 8b	add	x28, x9, x8
+66772: fffffe0009e17038:	33 00 80 92	mov	x19, #-0x2
+66773: fffffe0009e1703c:	77 67 01 d0	adrp	x23, 11502 ; 0xfffffe000cb05000
+66774: fffffe0009e17040:	f7 22 29 91	add	x23, x23, #0xa48
+66775: fffffe0009e17044:	88 6b 76 38	ldrb	w8, [x28, x22]
+66776: fffffe0009e17048:	08 01 00 36	tbz	w8, #0x0, 0xfffffe0009e17068
+66777: fffffe0009e1704c:	e9 02 40 f9	ldr	x9, [x23]
+66778: fffffe0009e17050:	29 01 1b 8b	add	x9, x9, x27
+66779: fffffe0009e17054:	ea 03 17 aa	mov	x10, x23
+66780: fffffe0009e17058:	49 05 0a f8	str	x9, [x10], #0xa0
+66781: fffffe0009e1705c:	49 79 76 f8	ldr	x9, [x10, x22, lsl #3]
+66782: fffffe0009e17060:	29 01 1b 8b	add	x9, x9, x27
+66783: fffffe0009e17064:	49 79 36 f8	str	x9, [x10, x22, lsl #3]
+66784: fffffe0009e17068:	a9 6a 76 38	ldrb	w9, [x21, x22]
+66785: fffffe0009e1706c:	38 01 40 92	and	x24, x9, #0x1
+66786: fffffe0009e17070:	19 01 40 92	and	x25, x8, #0x1
+66787: fffffe0009e17074:	1f 03 19 6b	cmp	w24, w25
+66788: fffffe0009e17078:	c0 03 00 54	b.eq	0xfffffe0009e170f0
+66789: fffffe0009e1707c:	c9 00 00 36	tbz	w9, #0x0, 0xfffffe0009e17094
+66790: fffffe0009e17080:	e8 2f 40 f9	ldr	x8, [sp, #0x58]
+66791: fffffe0009e17084:	00 79 76 bc	ldr	s0, [x8, x22, lsl #2]
+66792: fffffe0009e17088:	f3 72 00 94	bl	0xfffffe0009e33c54 ; symbol stub for: _roundf
+66793: fffffe0009e1708c:	1a 00 39 1e	fcvtzu	w26, s0
+66794: fffffe0009e17090:	02 00 00 14	b	0xfffffe0009e17098
+66795: fffffe0009e17094:	1a 00 80 d2	mov	x26, #0x0
+66796: fffffe0009e17098:	e0 03 16 aa	mov	x0, x22
+66797: fffffe0009e1709c:	e1 03 1a aa	mov	x1, x26
+66798: fffffe0009e170a0:	02 00 80 d2	mov	x2, #0x0
+66799: fffffe0009e170a4:	d8 72 00 94	bl	0xfffffe0009e33c04 ; symbol stub for: _ml_update_cluster_wfe_recommendation
+66800: fffffe0009e170a8:	98 6b 36 38	strb	w24, [x28, x22]
+66801: fffffe0009e170ac:	68 67 01 d0	adrp	x8, 11502 ; 0xfffffe000cb05000
+66802: fffffe0009e170b0:	08 31 1d 91	add	x8, x8, #0x74c
+66803: fffffe0009e170b4:	08 01 40 b9	ldr	w8, [x8]
+66804: fffffe0009e170b8:	c8 01 00 34	cbz	w8, 0xfffffe0009e170f0
+66805: fffffe0009e170bc:	68 26 ff f0	adrp	x8, -6961 ; 0xfffffe00082e6000
+66806: fffffe0009e170c0:	08 0d 44 f9	ldr	x8, [x8, #0x818]
+66807: fffffe0009e170c4:	08 01 40 b9	ldr	w8, [x8]
+66808: fffffe0009e170c8:	1f 79 1c 72	tst	w8, #0xfffffff7
+66809: fffffe0009e170cc:	20 01 00 54	b.eq	0xfffffe0009e170f0
+66810: fffffe0009e170d0:	00 18 80 52	mov	w0, #0xc0
+66811: fffffe0009e170d4:	80 51 a6 72	movk	w0, #0x328c, lsl #16
+66812: fffffe0009e170d8:	e1 03 16 aa	mov	x1, x22
+66813: fffffe0009e170dc:	e2 03 19 aa	mov	x2, x25
+66814: fffffe0009e170e0:	e3 03 18 aa	mov	x3, x24
+66815: fffffe0009e170e4:	e4 03 1a aa	mov	x4, x26
+66816: fffffe0009e170e8:	05 00 80 d2	mov	x5, #0x0
+66817: fffffe0009e170ec:	4a 72 00 94	bl	0xfffffe0009e33a14 ; symbol stub for: _kernel_debug

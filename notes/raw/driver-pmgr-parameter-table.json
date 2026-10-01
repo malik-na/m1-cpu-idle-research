@@ -1,0 +1,338 @@
+[
+  {
+    "index": 0,
+    "file_offset": "0x1224588",
+    "raw": "6a586c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "cpu-power-gate-latency-us",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 1,
+    "file_offset": "0x12245a8",
+    "raw": "84586c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "l2c-flush-timeout",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 2,
+    "file_offset": "0x12245c8",
+    "raw": "96586c0000001000a4586c000000300000000000000000000000000000000000",
+    "names": [
+      "dvd-period-us",
+      "AppleARMPerformanceControllerDVDPeriodUS1",
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 3,
+    "file_offset": "0x12245e8",
+    "raw": "ce586c0000001000df586c000000300000000000000000000000000000000000",
+    "names": [
+      "dvd-threshold-us",
+      "AppleARMPerformanceControllerDVDThresholdUS1",
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 4,
+    "file_offset": "0x1224608",
+    "raw": "0c596c000000100017596c000000300000000000000000000000000000000000",
+    "names": [
+      "dvd-factor",
+      "AppleARMPerformanceControllerDVDFactor1",
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 5,
+    "file_offset": "0x1224628",
+    "raw": "0c596c00000010003f596c000000300000000000000000000000000000000000",
+    "names": [
+      "dvd-factor",
+      "AppleARMPerformanceControllerDVDFactor1-slowloop",
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 6,
+    "file_offset": "0x1224648",
+    "raw": "0c596c000000100070596c000000300000000000000000000000000000000000",
+    "names": [
+      "dvd-factor",
+      "AppleARMPerformanceControllerDVDFactor1-hip",
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 7,
+    "file_offset": "0x1224668",
+    "raw": "0c596c00000010009c596c000000300000000000000000000000000000000000",
+    "names": [
+      "dvd-factor",
+      "AppleARMPerformanceControllerDVDFactor1-upo",
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 8,
+    "file_offset": "0x1224688",
+    "raw": "0c596c0000001000c8596c000000300000000000000000000000000000000000",
+    "names": [
+      "dvd-factor",
+      "AppleARMPerformanceControllerDVDFactor1-lpm",
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 9,
+    "file_offset": "0x12246a8",
+    "raw": "f4596c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "cllt-freq-change-level",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 10,
+    "file_offset": "0x12246c8",
+    "raw": "0b5a6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "cllt-calibrate-level",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 11,
+    "file_offset": "0x12246e8",
+    "raw": "205a6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "cllt-cpm0-pg-level",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 12,
+    "file_offset": "0x1224708",
+    "raw": "335a6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "cllt-cpm1-pg-level",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 13,
+    "file_offset": "0x1224728",
+    "raw": "465a6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "cllt-disp0-config",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 14,
+    "file_offset": "0x1224748",
+    "raw": "585a6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "cllt-dispext-config",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 15,
+    "file_offset": "0x1224768",
+    "raw": "6c5a6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "cllt-isp-config",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 16,
+    "file_offset": "0x1224788",
+    "raw": "7c5a6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "cllt-usb-config",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 17,
+    "file_offset": "0x12247a8",
+    "raw": "8c5a6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "cllt-floor",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 18,
+    "file_offset": "0x12247c8",
+    "raw": "975a6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "clpc",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 19,
+    "file_offset": "0x12247e8",
+    "raw": "9c5a6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "pmgr-dock-fifo-agent",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 20,
+    "file_offset": "0x1224808",
+    "raw": "b15a6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "pmgr-dock-fifo-channel",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 21,
+    "file_offset": "0x1224828",
+    "raw": "c85a6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "first-acc-dvfm-map-state",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 22,
+    "file_offset": "0x1224848",
+    "raw": "e15a6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "gpu-pwc-win-size",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 23,
+    "file_offset": "0x1224868",
+    "raw": "f25a6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "panic-nub-pg-wa",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 24,
+    "file_offset": "0x1224888",
+    "raw": "025b6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "panic-debug-switch-pg-wa",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 25,
+    "file_offset": "0x12248a8",
+    "raw": "1b5b6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "int-dis-threshold",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 26,
+    "file_offset": "0x12248c8",
+    "raw": "2d5b6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "acc-dpe-tel0-mode",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  },
+  {
+    "index": 27,
+    "file_offset": "0x12248e8",
+    "raw": "3f5b6c0000004000000000000000000000000000000000000000000000000000",
+    "names": [
+      "pmp-ready-time-threshold-s",
+      null,
+      null
+    ],
+    "valid": 0,
+    "default": 0
+  }
+]

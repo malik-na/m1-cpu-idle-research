@@ -1,0 +1,612 @@
+{
+  "power": {
+    "usable_unplugged_window": true,
+    "exclusion_reasons": [],
+    "sample_count": 25,
+    "sample_span_seconds": 120.00012800400009,
+    "mean_absolute_battery_W": 3.8501886636713936,
+    "integrated_absolute_battery_Wh": 0.1283397590222548,
+    "caveat": "Whole-machine battery discharge magnitude; not CPU-only power or a measured improvement"
+  },
+  "idle_delta": {
+    "duration_seconds": 120.00791638800001,
+    "cpus": {
+      "cpu0": {
+        "state0": {
+          "name": "WFI",
+          "disable": "0",
+          "target_residency_us": "1",
+          "usage_delta": 5962,
+          "time_delta": 11478194,
+          "above_delta": 0,
+          "below_delta": 0,
+          "rejected_delta": 0,
+          "software_time_percent": 9.564530695533135,
+          "mean_idle_interval_us": 1925.2254277088225
+        },
+        "state1": {
+          "name": "CPU PD",
+          "disable": "0",
+          "target_residency_us": "10000",
+          "usage_delta": 4211,
+          "time_delta": 107678573,
+          "above_delta": 1394,
+          "below_delta": 0,
+          "rejected_delta": 0,
+          "software_time_percent": 89.72622493658021,
+          "mean_idle_interval_us": 25570.784374257895
+        }
+      },
+      "cpu1": {
+        "state0": {
+          "name": "WFI",
+          "disable": "0",
+          "target_residency_us": "1",
+          "usage_delta": 6531,
+          "time_delta": 16649050,
+          "above_delta": 0,
+          "below_delta": 0,
+          "rejected_delta": 0,
+          "software_time_percent": 13.87329311357396,
+          "mean_idle_interval_us": 2549.2344204562855
+        },
+        "state1": {
+          "name": "CPU PD",
+          "disable": "0",
+          "target_residency_us": "10000",
+          "usage_delta": 5265,
+          "time_delta": 102625144,
+          "above_delta": 1335,
+          "below_delta": 0,
+          "rejected_delta": 0,
+          "software_time_percent": 85.51531189675903,
+          "mean_idle_interval_us": 19491.95517568851
+        }
+      },
+      "cpu2": {
+        "state0": {
+          "name": "WFI",
+          "disable": "0",
+          "target_residency_us": "1",
+          "usage_delta": 5627,
+          "time_delta": 11107872,
+          "above_delta": 0,
+          "below_delta": 0,
+          "rejected_delta": 0,
+          "software_time_percent": 9.255949385944604,
+          "mean_idle_interval_us": 1974.030922338724
+        },
+        "state1": {
+          "name": "CPU PD",
+          "disable": "0",
+          "target_residency_us": "10000",
+          "usage_delta": 2479,
+          "time_delta": 108289376,
+          "above_delta": 445,
+          "below_delta": 0,
+          "rejected_delta": 0,
+          "software_time_percent": 90.23519385995124,
+          "mean_idle_interval_us": 43682.684953610325
+        }
+      },
+      "cpu3": {
+        "state0": {
+          "name": "WFI",
+          "disable": "0",
+          "target_residency_us": "1",
+          "usage_delta": 10412,
+          "time_delta": 10464177,
+          "above_delta": 0,
+          "below_delta": 0,
+          "rejected_delta": 0,
+          "software_time_percent": 8.719572270689259,
+          "mean_idle_interval_us": 1005.0112370341914
+        },
+        "state1": {
+          "name": "CPU PD",
+          "disable": "0",
+          "target_residency_us": "10000",
+          "usage_delta": 2393,
+          "time_delta": 109196779,
+          "above_delta": 421,
+          "below_delta": 0,
+          "rejected_delta": 0,
+          "software_time_percent": 90.99131314550425,
+          "mean_idle_interval_us": 45631.75052235687
+        }
+      },
+      "cpu4": {
+        "state0": {
+          "name": "WFI",
+          "disable": "0",
+          "target_residency_us": "1",
+          "usage_delta": 656,
+          "time_delta": 814072,
+          "above_delta": 0,
+          "below_delta": 0,
+          "rejected_delta": 0,
+          "software_time_percent": 0.6783485827451644,
+          "mean_idle_interval_us": 1240.9634146341464
+        },
+        "state1": {
+          "name": "CPU PD",
+          "disable": "0",
+          "target_residency_us": "10000",
+          "usage_delta": 621,
+          "time_delta": 119019286,
+          "above_delta": 103,
+          "below_delta": 0,
+          "rejected_delta": 0,
+          "software_time_percent": 99.1761956896213,
+          "mean_idle_interval_us": 191657.4653784219
+        }
+      },
+      "cpu5": {
+        "state0": {
+          "name": "WFI",
+          "disable": "0",
+          "target_residency_us": "1",
+          "usage_delta": 817,
+          "time_delta": 711257,
+          "above_delta": 0,
+          "below_delta": 0,
+          "rejected_delta": 0,
+          "software_time_percent": 0.5926750679517013,
+          "mean_idle_interval_us": 870.5716034271726
+        },
+        "state1": {
+          "name": "CPU PD",
+          "disable": "0",
+          "target_residency_us": "10000",
+          "usage_delta": 275,
+          "time_delta": 119055800,
+          "above_delta": 28,
+          "below_delta": 0,
+          "rejected_delta": 0,
+          "software_time_percent": 99.20662201573295,
+          "mean_idle_interval_us": 432930.1818181818
+        }
+      },
+      "cpu6": {
+        "state0": {
+          "name": "WFI",
+          "disable": "0",
+          "target_residency_us": "1",
+          "usage_delta": 844,
+          "time_delta": 898076,
+          "above_delta": 0,
+          "below_delta": 0,
+          "rejected_delta": 0,
+          "software_time_percent": 0.7483472982702344,
+          "mean_idle_interval_us": 1064.0710900473935
+        },
+        "state1": {
+          "name": "CPU PD",
+          "disable": "0",
+          "target_residency_us": "10000",
+          "usage_delta": 723,
+          "time_delta": 118954885,
+          "above_delta": 35,
+          "below_delta": 0,
+          "rejected_delta": 0,
+          "software_time_percent": 99.12253172982736,
+          "mean_idle_interval_us": 164529.57814661134
+        }
+      },
+      "cpu7": {
+        "state0": {
+          "name": "WFI",
+          "disable": "0",
+          "target_residency_us": "1",
+          "usage_delta": 365,
+          "time_delta": 327729,
+          "above_delta": 0,
+          "below_delta": 0,
+          "rejected_delta": 0,
+          "software_time_percent": 0.27308948431402874,
+          "mean_idle_interval_us": 897.8876712328768
+        },
+        "state1": {
+          "name": "CPU PD",
+          "disable": "0",
+          "target_residency_us": "10000",
+          "usage_delta": 196,
+          "time_delta": 119549666,
+          "above_delta": 8,
+          "below_delta": 0,
+          "rejected_delta": 0,
+          "software_time_percent": 99.61814986728173,
+          "mean_idle_interval_us": 609947.275510204
+        }
+      }
+    },
+    "meaning": "Software idle accounting; not proof of physical core/cluster residency"
+  },
+  "trace": {
+    "available": true,
+    "event_counts": {
+      "sched_switch": 5840,
+      "cpu_idle": 11328,
+      "irq_handler_entry": 6001,
+      "hrtimer_expire_entry": 4762,
+      "irq_handler_exit": 6001,
+      "softirq_entry": 3441,
+      "softirq_exit": 3441,
+      "ipi_entry": 1222,
+      "sched_wakeup": 2934,
+      "cpu_frequency": 1104,
+      "timer_expire_entry": 689,
+      "cpu_idle_miss": 301,
+      "sched_process_exit": 60,
+      "sched_process_fork": 59,
+      "sched_process_exec": 34
+    },
+    "top_irq_handlers": [
+      [
+        "irq=36 name=arch_timer",
+        4712
+      ],
+      [
+        "irq=2 name=IPI",
+        1139
+      ],
+      [
+        "irq=1 name=IPI",
+        83
+      ],
+      [
+        "irq=58 name=24a408000.mbox-recv",
+        39
+      ],
+      [
+        "irq=112 name=brcmf_pcie_intr",
+        28
+      ]
+    ],
+    "top_timer_callbacks": [
+      [
+        [
+          "hrtimer_expire_entry",
+          "tick_nohz_handler"
+        ],
+        3315
+      ],
+      [
+        [
+          "hrtimer_expire_entry",
+          "hrtimer_wakeup"
+        ],
+        1326
+      ],
+      [
+        [
+          "timer_expire_entry",
+          "delayed_work_timer_fn"
+        ],
+        265
+      ],
+      [
+        [
+          "timer_expire_entry",
+          "process_timeout"
+        ],
+        264
+      ],
+      [
+        [
+          "timer_expire_entry",
+          "mix_interrupt_randomness"
+        ],
+        97
+      ],
+      [
+        [
+          "hrtimer_expire_entry",
+          "timerfd_tmrproc"
+        ],
+        55
+      ],
+      [
+        [
+          "timer_expire_entry",
+          "poll_timer_fn"
+        ],
+        36
+      ],
+      [
+        [
+          "hrtimer_expire_entry",
+          "watchdog_timer_fn"
+        ],
+        32
+      ],
+      [
+        [
+          "hrtimer_expire_entry",
+          "dl_task_timer"
+        ],
+        20
+      ],
+      [
+        [
+          "hrtimer_expire_entry",
+          "inactive_task_timer"
+        ],
+        13
+      ],
+      [
+        [
+          "timer_expire_entry",
+          "tcp_orphan_update"
+        ],
+        11
+      ],
+      [
+        [
+          "timer_expire_entry",
+          "tcp_write_timer"
+        ],
+        5
+      ],
+      [
+        [
+          "timer_expire_entry",
+          "writeout_period"
+        ],
+        3
+      ],
+      [
+        [
+          "timer_expire_entry",
+          "idle_worker_timeout"
+        ],
+        3
+      ],
+      [
+        [
+          "timer_expire_entry",
+          "neigh_timer_handler"
+        ],
+        2
+      ]
+    ],
+    "most_frequently_woken_tasks": [
+      [
+        "voxtype-osd-gtk",
+        932
+      ],
+      [
+        "tokio-runtime-w",
+        439
+      ],
+      [
+        "rcu_preempt",
+        395
+      ],
+      [
+        "voxtype",
+        208
+      ],
+      [
+        "tokio-rt-worker",
+        105
+      ],
+      [
+        "kworker/2:3",
+        78
+      ],
+      [
+        "Hyprland",
+        56
+      ],
+      [
+        "omarchy-brightn",
+        47
+      ],
+      [
+        "pipewire-pulse",
+        42
+      ],
+      [
+        "kworker/u35:0",
+        39
+      ],
+      [
+        "notify-rs inoti",
+        38
+      ],
+      [
+        "psimon",
+        36
+      ],
+      [
+        "kworker/6:1",
+        31
+      ],
+      [
+        "kworker/0:0",
+        30
+      ],
+      [
+        "kcompactd0",
+        29
+      ]
+    ],
+    "software_idle_intervals": {
+      "cpu0/state0": {
+        "completed_intervals": 289,
+        "software_time_seconds": 0.3750550000002022,
+        "median_us": 981.0000001380104,
+        "p95_us": 6739.999999808788,
+        "under_1ms": 260,
+        "under_10ms": 289
+      },
+      "cpu0/state1": {
+        "completed_intervals": 268,
+        "software_time_seconds": 14.37860700000033,
+        "median_us": 34976.499999970656,
+        "p95_us": 178975.99999992055,
+        "under_1ms": 32,
+        "under_10ms": 66
+      },
+      "cpu1/state0": {
+        "completed_intervals": 326,
+        "software_time_seconds": 0.3848530000013852,
+        "median_us": 988.0000000066502,
+        "p95_us": 1957.0000001749577,
+        "under_1ms": 304,
+        "under_10ms": 326
+      },
+      "cpu1/state1": {
+        "completed_intervals": 208,
+        "software_time_seconds": 14.362826000000268,
+        "median_us": 48466.00000007584,
+        "p95_us": 215969.99999997026,
+        "under_1ms": 25,
+        "under_10ms": 32
+      },
+      "cpu2/state0": {
+        "completed_intervals": 1628,
+        "software_time_seconds": 4.373423999998295,
+        "median_us": 988.0000000066502,
+        "p95_us": 9206.999999832988,
+        "under_1ms": 919,
+        "under_10ms": 1628
+      },
+      "cpu2/state1": {
+        "completed_intervals": 800,
+        "software_time_seconds": 10.48359100000448,
+        "median_us": 16025.000000126965,
+        "p95_us": 16041.00000008657,
+        "under_1ms": 74,
+        "under_10ms": 127
+      },
+      "cpu3/state0": {
+        "completed_intervals": 1204,
+        "software_time_seconds": 1.2389749999988453,
+        "median_us": 986.9999998954881,
+        "p95_us": 990.0000000016007,
+        "under_1ms": 1176,
+        "under_10ms": 1204
+      },
+      "cpu3/state1": {
+        "completed_intervals": 301,
+        "software_time_seconds": 13.598288999999568,
+        "median_us": 41995.999999926426,
+        "p95_us": 95716.00000003855,
+        "under_1ms": 25,
+        "under_10ms": 55
+      },
+      "cpu4/state0": {
+        "completed_intervals": 88,
+        "software_time_seconds": 0.12293600000020888,
+        "median_us": 991.9999999965512,
+        "p95_us": 7941.999999957261,
+        "under_1ms": 81,
+        "under_10ms": 88
+      },
+      "cpu4/state1": {
+        "completed_intervals": 102,
+        "software_time_seconds": 14.866420999998807,
+        "median_us": 87970.00000004118,
+        "p95_us": 619003.0000000206,
+        "under_1ms": 2,
+        "under_10ms": 10
+      },
+      "cpu5/state0": {
+        "completed_intervals": 56,
+        "software_time_seconds": 0.05045500000028369,
+        "median_us": 990.0000000016007,
+        "p95_us": 995.9999999864522,
+        "under_1ms": 56,
+        "under_10ms": 56
+      },
+      "cpu5/state1": {
+        "completed_intervals": 26,
+        "software_time_seconds": 13.86457099999916,
+        "median_us": 107570.5000000653,
+        "p95_us": 2011022.9999997956,
+        "under_1ms": 1,
+        "under_10ms": 1
+      },
+      "cpu6/state0": {
+        "completed_intervals": 190,
+        "software_time_seconds": 0.16516299999989312,
+        "median_us": 990.0000000016007,
+        "p95_us": 997.0000000976142,
+        "under_1ms": 187,
+        "under_10ms": 190
+      },
+      "cpu6/state1": {
+        "completed_intervals": 86,
+        "software_time_seconds": 14.108901000000515,
+        "median_us": 107463.49999999438,
+        "p95_us": 455997.00000002485,
+        "under_1ms": 6,
+        "under_10ms": 8
+      },
+      "cpu7/state0": {
+        "completed_intervals": 54,
+        "software_time_seconds": 0.04765000000020336,
+        "median_us": 992.9999998803396,
+        "p95_us": 996.0000002138258,
+        "under_1ms": 53,
+        "under_10ms": 54
+      },
+      "cpu7/state1": {
+        "completed_intervals": 31,
+        "software_time_seconds": 14.043767000000344,
+        "median_us": 199951.9999999393,
+        "p95_us": 1834980.9999999707,
+        "under_1ms": 0,
+        "under_10ms": 2
+      }
+    },
+    "trace_loss": {
+      "cpu7": {
+        "overrun": 0,
+        "commit overrun": 0,
+        "dropped events": 0
+      },
+      "cpu6": {
+        "overrun": 0,
+        "commit overrun": 0,
+        "dropped events": 0
+      },
+      "cpu5": {
+        "overrun": 0,
+        "commit overrun": 0,
+        "dropped events": 0
+      },
+      "cpu4": {
+        "overrun": 0,
+        "commit overrun": 0,
+        "dropped events": 0
+      },
+      "cpu3": {
+        "overrun": 0,
+        "commit overrun": 0,
+        "dropped events": 0
+      },
+      "cpu2": {
+        "overrun": 0,
+        "commit overrun": 0,
+        "dropped events": 0
+      },
+      "cpu1": {
+        "overrun": 0,
+        "commit overrun": 0,
+        "dropped events": 0
+      },
+      "cpu0": {
+        "overrun": 0,
+        "commit overrun": 0,
+        "dropped events": 0
+      }
+    },
+    "unmatched_exits": 7,
+    "replaced_entries": 0,
+    "open_intervals_at_end": 7,
+    "caveat": "IRQ/timer counts and woken tasks identify candidates, not proven wakeup causes; software idle is not physical residency"
+  }
+}

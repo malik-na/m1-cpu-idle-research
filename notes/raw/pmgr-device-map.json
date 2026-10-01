@@ -1,0 +1,1878 @@
+[
+  {
+    "id": 1,
+    "name": "ECPU0",
+    "psreg": 3,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 2,
+    "name": "ECPU1",
+    "psreg": 3,
+    "psidx": 1,
+    "pd": 0
+  },
+  {
+    "id": 3,
+    "name": "ECPU2",
+    "psreg": 3,
+    "psidx": 2,
+    "pd": 0
+  },
+  {
+    "id": 4,
+    "name": "ECPU3",
+    "psreg": 3,
+    "psidx": 3,
+    "pd": 0
+  },
+  {
+    "id": 5,
+    "name": "PCPU0",
+    "psreg": 3,
+    "psidx": 4,
+    "pd": 0
+  },
+  {
+    "id": 6,
+    "name": "PCPU1",
+    "psreg": 3,
+    "psidx": 5,
+    "pd": 0
+  },
+  {
+    "id": 7,
+    "name": "ECPM",
+    "psreg": 3,
+    "psidx": 8,
+    "pd": 0
+  },
+  {
+    "id": 8,
+    "name": "PCPM",
+    "psreg": 3,
+    "psidx": 9,
+    "pd": 0
+  },
+  {
+    "id": 9,
+    "name": "SBR",
+    "psreg": 11,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 10,
+    "name": "AIC",
+    "psreg": 11,
+    "psidx": 1,
+    "pd": 0
+  },
+  {
+    "id": 11,
+    "name": "DWI",
+    "psreg": 11,
+    "psidx": 2,
+    "pd": 0
+  },
+  {
+    "id": 12,
+    "name": "SOC_SPMI0",
+    "psreg": 11,
+    "psidx": 3,
+    "pd": 0
+  },
+  {
+    "id": 13,
+    "name": "SOC_SPMI1",
+    "psreg": 11,
+    "psidx": 4,
+    "pd": 0
+  },
+  {
+    "id": 14,
+    "name": "SOC_SPMI2",
+    "psreg": 11,
+    "psidx": 5,
+    "pd": 0
+  },
+  {
+    "id": 15,
+    "name": "GPIO",
+    "psreg": 11,
+    "psidx": 6,
+    "pd": 0
+  },
+  {
+    "id": 16,
+    "name": "PMS_BUSIF",
+    "psreg": 11,
+    "psidx": 7,
+    "pd": 0
+  },
+  {
+    "id": 17,
+    "name": "PMS",
+    "psreg": 11,
+    "psidx": 8,
+    "pd": 0
+  },
+  {
+    "id": 18,
+    "name": "PMS_FPWM0",
+    "psreg": 11,
+    "psidx": 9,
+    "pd": 0
+  },
+  {
+    "id": 19,
+    "name": "PMS_FPWM1",
+    "psreg": 11,
+    "psidx": 10,
+    "pd": 0
+  },
+  {
+    "id": 20,
+    "name": "PMS_FPWM2",
+    "psreg": 11,
+    "psidx": 11,
+    "pd": 0
+  },
+  {
+    "id": 21,
+    "name": "PMS_FPWM3",
+    "psreg": 11,
+    "psidx": 12,
+    "pd": 0
+  },
+  {
+    "id": 22,
+    "name": "PMS_FPWM4",
+    "psreg": 11,
+    "psidx": 13,
+    "pd": 0
+  },
+  {
+    "id": 23,
+    "name": "SOC_DPE",
+    "psreg": 11,
+    "psidx": 14,
+    "pd": 0
+  },
+  {
+    "id": 24,
+    "name": "PMGR_SOC_OCLA",
+    "psreg": 11,
+    "psidx": 15,
+    "pd": 0
+  },
+  {
+    "id": 25,
+    "name": "ISPSENS0",
+    "psreg": 11,
+    "psidx": 16,
+    "pd": 0
+  },
+  {
+    "id": 26,
+    "name": "ISPSENS1",
+    "psreg": 11,
+    "psidx": 17,
+    "pd": 0
+  },
+  {
+    "id": 27,
+    "name": "ISPSENS2",
+    "psreg": 11,
+    "psidx": 18,
+    "pd": 0
+  },
+  {
+    "id": 28,
+    "name": "ISPSENS3",
+    "psreg": 11,
+    "psidx": 19,
+    "pd": 0
+  },
+  {
+    "id": 29,
+    "name": "PCIE_REF",
+    "psreg": 11,
+    "psidx": 20,
+    "pd": 0
+  },
+  {
+    "id": 30,
+    "name": "AFT0",
+    "psreg": 11,
+    "psidx": 21,
+    "pd": 0
+  },
+  {
+    "id": 31,
+    "name": "DEVC0_IVDMC",
+    "psreg": 11,
+    "psidx": 22,
+    "pd": 0
+  },
+  {
+    "id": 32,
+    "name": "IMX",
+    "psreg": 11,
+    "psidx": 23,
+    "pd": 0
+  },
+  {
+    "id": 33,
+    "name": "SIO_BUSIF",
+    "psreg": 11,
+    "psidx": 24,
+    "pd": 0
+  },
+  {
+    "id": 34,
+    "name": "SIO",
+    "psreg": 11,
+    "psidx": 25,
+    "pd": 0
+  },
+  {
+    "id": 35,
+    "name": "SIO_CPU",
+    "psreg": 11,
+    "psidx": 26,
+    "pd": 0
+  },
+  {
+    "id": 36,
+    "name": "FPWM0",
+    "psreg": 11,
+    "psidx": 27,
+    "pd": 0
+  },
+  {
+    "id": 37,
+    "name": "FPWM1",
+    "psreg": 11,
+    "psidx": 28,
+    "pd": 0
+  },
+  {
+    "id": 38,
+    "name": "FPWM2",
+    "psreg": 11,
+    "psidx": 29,
+    "pd": 0
+  },
+  {
+    "id": 39,
+    "name": "I2C0",
+    "psreg": 11,
+    "psidx": 30,
+    "pd": 0
+  },
+  {
+    "id": 40,
+    "name": "I2C1",
+    "psreg": 11,
+    "psidx": 31,
+    "pd": 0
+  },
+  {
+    "id": 41,
+    "name": "I2C2",
+    "psreg": 4,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 42,
+    "name": "I2C3",
+    "psreg": 4,
+    "psidx": 1,
+    "pd": 0
+  },
+  {
+    "id": 43,
+    "name": "I2C4",
+    "psreg": 4,
+    "psidx": 2,
+    "pd": 0
+  },
+  {
+    "id": 44,
+    "name": "SPI_P",
+    "psreg": 4,
+    "psidx": 3,
+    "pd": 0
+  },
+  {
+    "id": 45,
+    "name": "UART_P",
+    "psreg": 4,
+    "psidx": 4,
+    "pd": 0
+  },
+  {
+    "id": 46,
+    "name": "AUDIO_P",
+    "psreg": 4,
+    "psidx": 5,
+    "pd": 0
+  },
+  {
+    "id": 47,
+    "name": "SIO_ADMA",
+    "psreg": 4,
+    "psidx": 6,
+    "pd": 0
+  },
+  {
+    "id": 48,
+    "name": "AES",
+    "psreg": 4,
+    "psidx": 7,
+    "pd": 0
+  },
+  {
+    "id": 49,
+    "name": "SPI0",
+    "psreg": 4,
+    "psidx": 8,
+    "pd": 0
+  },
+  {
+    "id": 50,
+    "name": "SPI1",
+    "psreg": 4,
+    "psidx": 9,
+    "pd": 0
+  },
+  {
+    "id": 51,
+    "name": "SPI2",
+    "psreg": 4,
+    "psidx": 10,
+    "pd": 0
+  },
+  {
+    "id": 52,
+    "name": "SPI3",
+    "psreg": 4,
+    "psidx": 11,
+    "pd": 0
+  },
+  {
+    "id": 53,
+    "name": "UART_N",
+    "psreg": 4,
+    "psidx": 13,
+    "pd": 0
+  },
+  {
+    "id": 54,
+    "name": "UART0",
+    "psreg": 4,
+    "psidx": 14,
+    "pd": 0
+  },
+  {
+    "id": 55,
+    "name": "UART1",
+    "psreg": 4,
+    "psidx": 15,
+    "pd": 0
+  },
+  {
+    "id": 56,
+    "name": "UART2",
+    "psreg": 4,
+    "psidx": 16,
+    "pd": 0
+  },
+  {
+    "id": 57,
+    "name": "UART3",
+    "psreg": 4,
+    "psidx": 17,
+    "pd": 0
+  },
+  {
+    "id": 58,
+    "name": "UART4",
+    "psreg": 4,
+    "psidx": 18,
+    "pd": 0
+  },
+  {
+    "id": 59,
+    "name": "UART5",
+    "psreg": 4,
+    "psidx": 19,
+    "pd": 0
+  },
+  {
+    "id": 60,
+    "name": "UART6",
+    "psreg": 4,
+    "psidx": 20,
+    "pd": 0
+  },
+  {
+    "id": 61,
+    "name": "UART7",
+    "psreg": 4,
+    "psidx": 21,
+    "pd": 0
+  },
+  {
+    "id": 62,
+    "name": "UART8",
+    "psreg": 4,
+    "psidx": 22,
+    "pd": 0
+  },
+  {
+    "id": 63,
+    "name": "MCA0",
+    "psreg": 4,
+    "psidx": 23,
+    "pd": 0
+  },
+  {
+    "id": 64,
+    "name": "MCA1",
+    "psreg": 4,
+    "psidx": 24,
+    "pd": 0
+  },
+  {
+    "id": 65,
+    "name": "MCA2",
+    "psreg": 4,
+    "psidx": 25,
+    "pd": 0
+  },
+  {
+    "id": 66,
+    "name": "MCA3",
+    "psreg": 4,
+    "psidx": 26,
+    "pd": 0
+  },
+  {
+    "id": 67,
+    "name": "MCA4",
+    "psreg": 4,
+    "psidx": 27,
+    "pd": 0
+  },
+  {
+    "id": 68,
+    "name": "MCA5",
+    "psreg": 4,
+    "psidx": 28,
+    "pd": 0
+  },
+  {
+    "id": 69,
+    "name": "DPA0",
+    "psreg": 4,
+    "psidx": 29,
+    "pd": 0
+  },
+  {
+    "id": 70,
+    "name": "DPA1",
+    "psreg": 4,
+    "psidx": 30,
+    "pd": 0
+  },
+  {
+    "id": 71,
+    "name": "MCC",
+    "psreg": 4,
+    "psidx": 31,
+    "pd": 0
+  },
+  {
+    "id": 72,
+    "name": "DCS0",
+    "psreg": 5,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 73,
+    "name": "DCS1",
+    "psreg": 5,
+    "psidx": 2,
+    "pd": 0
+  },
+  {
+    "id": 74,
+    "name": "DCS2",
+    "psreg": 5,
+    "psidx": 1,
+    "pd": 0
+  },
+  {
+    "id": 75,
+    "name": "DCS3",
+    "psreg": 5,
+    "psidx": 3,
+    "pd": 0
+  },
+  {
+    "id": 76,
+    "name": "SMX",
+    "psreg": 5,
+    "psidx": 8,
+    "pd": 0
+  },
+  {
+    "id": 77,
+    "name": "APCIE",
+    "psreg": 5,
+    "psidx": 9,
+    "pd": 0
+  },
+  {
+    "id": 78,
+    "name": "RMX",
+    "psreg": 5,
+    "psidx": 10,
+    "pd": 0
+  },
+  {
+    "id": 79,
+    "name": "MMX",
+    "psreg": 5,
+    "psidx": 11,
+    "pd": 0
+  },
+  {
+    "id": 84,
+    "name": "DISP0_FE",
+    "psreg": 5,
+    "psidx": 12,
+    "pd": 0
+  },
+  {
+    "id": 85,
+    "name": "DISPEXT_FE",
+    "psreg": 5,
+    "psidx": 13,
+    "pd": 0
+  },
+  {
+    "id": 86,
+    "name": "DISPEXT_BE",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 87,
+    "name": "DISPEXT_CPU0",
+    "psreg": 5,
+    "psidx": 15,
+    "pd": 0
+  },
+  {
+    "id": 88,
+    "name": "DISPEXT_GP0",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 37
+  },
+  {
+    "id": 89,
+    "name": "DISPEXT_GP1",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 38
+  },
+  {
+    "id": 90,
+    "name": "DISPEXT_PPP",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 39
+  },
+  {
+    "id": 91,
+    "name": "DPEXT",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 92,
+    "name": "JPG",
+    "psreg": 5,
+    "psidx": 24,
+    "pd": 0
+  },
+  {
+    "id": 93,
+    "name": "MSR",
+    "psreg": 5,
+    "psidx": 25,
+    "pd": 0
+  },
+  {
+    "id": 94,
+    "name": "MSR_ASE_CORE",
+    "psreg": 5,
+    "psidx": 26,
+    "pd": 0
+  },
+  {
+    "id": 95,
+    "name": "PMP",
+    "psreg": 5,
+    "psidx": 27,
+    "pd": 0
+  },
+  {
+    "id": 96,
+    "name": "PMS_SRAM",
+    "psreg": 5,
+    "psidx": 28,
+    "pd": 0
+  },
+  {
+    "id": 97,
+    "name": "APCIE_GP",
+    "psreg": 5,
+    "psidx": 29,
+    "pd": 0
+  },
+  {
+    "id": 98,
+    "name": "ANS2",
+    "psreg": 5,
+    "psidx": 30,
+    "pd": 0
+  },
+  {
+    "id": 99,
+    "name": "GFX",
+    "psreg": 5,
+    "psidx": 31,
+    "pd": 0
+  },
+  {
+    "id": 100,
+    "name": "ISP_SYS",
+    "psreg": 12,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 101,
+    "name": "VENC_SYS",
+    "psreg": 12,
+    "psidx": 1,
+    "pd": 0
+  },
+  {
+    "id": 102,
+    "name": "AVD_SYS",
+    "psreg": 12,
+    "psidx": 2,
+    "pd": 0
+  },
+  {
+    "id": 103,
+    "name": "APCIE_ST",
+    "psreg": 12,
+    "psidx": 3,
+    "pd": 0
+  },
+  {
+    "id": 104,
+    "name": "ANE_SYS",
+    "psreg": 12,
+    "psidx": 14,
+    "pd": 0
+  },
+  {
+    "id": 105,
+    "name": "SEP",
+    "psreg": 6,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 106,
+    "name": "SEP_EISP",
+    "psreg": 6,
+    "psidx": 1,
+    "pd": 0
+  },
+  {
+    "id": 108,
+    "name": "ISP_CPU_CORE0",
+    "psreg": 7,
+    "psidx": 1,
+    "pd": 0
+  },
+  {
+    "id": 109,
+    "name": "ISP_CPU_CORE1",
+    "psreg": 7,
+    "psidx": 2,
+    "pd": 0
+  },
+  {
+    "id": 120,
+    "name": "VENC_DMA",
+    "psreg": 8,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 121,
+    "name": "VENC_PIPE4",
+    "psreg": 8,
+    "psidx": 1,
+    "pd": 0
+  },
+  {
+    "id": 122,
+    "name": "VENC_PIPE5",
+    "psreg": 8,
+    "psidx": 2,
+    "pd": 0
+  },
+  {
+    "id": 123,
+    "name": "VENC_ME0",
+    "psreg": 8,
+    "psidx": 3,
+    "pd": 0
+  },
+  {
+    "id": 124,
+    "name": "VENC_ME1",
+    "psreg": 8,
+    "psidx": 4,
+    "pd": 0
+  },
+  {
+    "id": 125,
+    "name": "ANE_SYS_CPU",
+    "psreg": 9,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 132,
+    "name": "DISP0_CPU0",
+    "psreg": 10,
+    "psidx": 3,
+    "pd": 0
+  },
+  {
+    "id": 133,
+    "name": "DISP0_BE",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 135,
+    "name": "DP",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 137,
+    "name": "DISP0_GP1",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 138,
+    "name": "DISP0_PPP",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 142,
+    "name": "DISP0_GP0",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 144,
+    "name": "DEBUG",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 145,
+    "name": "NUB_SPMI0",
+    "psreg": 0,
+    "psidx": 1,
+    "pd": 0
+  },
+  {
+    "id": 146,
+    "name": "NUB_AON",
+    "psreg": 0,
+    "psidx": 3,
+    "pd": 0
+  },
+  {
+    "id": 147,
+    "name": "NUB_GPIO",
+    "psreg": 0,
+    "psidx": 5,
+    "pd": 0
+  },
+  {
+    "id": 148,
+    "name": "NUB_FABRIC",
+    "psreg": 0,
+    "psidx": 10,
+    "pd": 0
+  },
+  {
+    "id": 149,
+    "name": "NUB_SRAM",
+    "psreg": 0,
+    "psidx": 11,
+    "pd": 0
+  },
+  {
+    "id": 150,
+    "name": "DEBUG_USB",
+    "psreg": 0,
+    "psidx": 12,
+    "pd": 0
+  },
+  {
+    "id": 151,
+    "name": "DEBUG_AUTH",
+    "psreg": 0,
+    "psidx": 13,
+    "pd": 0
+  },
+  {
+    "id": 152,
+    "name": "AOP_FILTER",
+    "psreg": 1,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 153,
+    "name": "AOP_GPIO",
+    "psreg": 1,
+    "psidx": 1,
+    "pd": 0
+  },
+  {
+    "id": 154,
+    "name": "AOP_BASE",
+    "psreg": 1,
+    "psidx": 2,
+    "pd": 0
+  },
+  {
+    "id": 155,
+    "name": "AOP_FR",
+    "psreg": 1,
+    "psidx": 3,
+    "pd": 0
+  },
+  {
+    "id": 156,
+    "name": "AOP_SPMI0",
+    "psreg": 1,
+    "psidx": 4,
+    "pd": 0
+  },
+  {
+    "id": 157,
+    "name": "AOP_SPMI1",
+    "psreg": 1,
+    "psidx": 5,
+    "pd": 0
+  },
+  {
+    "id": 158,
+    "name": "AOP_LEAP_AOPCLK",
+    "psreg": 1,
+    "psidx": 6,
+    "pd": 0
+  },
+  {
+    "id": 159,
+    "name": "AOP_SHIM",
+    "psreg": 1,
+    "psidx": 7,
+    "pd": 0
+  },
+  {
+    "id": 160,
+    "name": "AOP_ADMA0",
+    "psreg": 1,
+    "psidx": 8,
+    "pd": 0
+  },
+  {
+    "id": 161,
+    "name": "AOP_UART0",
+    "psreg": 1,
+    "psidx": 9,
+    "pd": 0
+  },
+  {
+    "id": 162,
+    "name": "AOP_UART1",
+    "psreg": 1,
+    "psidx": 10,
+    "pd": 0
+  },
+  {
+    "id": 163,
+    "name": "AOP_UART2",
+    "psreg": 1,
+    "psidx": 11,
+    "pd": 0
+  },
+  {
+    "id": 164,
+    "name": "AOP_SCM",
+    "psreg": 1,
+    "psidx": 12,
+    "pd": 0
+  },
+  {
+    "id": 165,
+    "name": "AOP_CPU",
+    "psreg": 1,
+    "psidx": 13,
+    "pd": 0
+  },
+  {
+    "id": 166,
+    "name": "AOP_I2CM0",
+    "psreg": 1,
+    "psidx": 14,
+    "pd": 0
+  },
+  {
+    "id": 167,
+    "name": "AOP_I2CM1",
+    "psreg": 1,
+    "psidx": 15,
+    "pd": 0
+  },
+  {
+    "id": 169,
+    "name": "AOP_MCA0",
+    "psreg": 1,
+    "psidx": 16,
+    "pd": 0
+  },
+  {
+    "id": 170,
+    "name": "AOP_MCA1",
+    "psreg": 1,
+    "psidx": 17,
+    "pd": 0
+  },
+  {
+    "id": 171,
+    "name": "AOP_MCA2",
+    "psreg": 1,
+    "psidx": 18,
+    "pd": 0
+  },
+  {
+    "id": 172,
+    "name": "AOP_MCA3",
+    "psreg": 1,
+    "psidx": 19,
+    "pd": 0
+  },
+  {
+    "id": 173,
+    "name": "AOP_MCA4",
+    "psreg": 1,
+    "psidx": 20,
+    "pd": 0
+  },
+  {
+    "id": 174,
+    "name": "AOP_MCA5",
+    "psreg": 1,
+    "psidx": 21,
+    "pd": 0
+  },
+  {
+    "id": 175,
+    "name": "AOP_SPI0",
+    "psreg": 1,
+    "psidx": 22,
+    "pd": 0
+  },
+  {
+    "id": 177,
+    "name": "AOP_LEAP",
+    "psreg": 1,
+    "psidx": 23,
+    "pd": 0
+  },
+  {
+    "id": 178,
+    "name": "AOP_AUDIO_SHIM",
+    "psreg": 1,
+    "psidx": 24,
+    "pd": 0
+  },
+  {
+    "id": 179,
+    "name": "AOP_AUDIO_ADMA0",
+    "psreg": 1,
+    "psidx": 25,
+    "pd": 0
+  },
+  {
+    "id": 180,
+    "name": "AOP_PDMC_LPD",
+    "psreg": 1,
+    "psidx": 26,
+    "pd": 0
+  },
+  {
+    "id": 181,
+    "name": "AOP_SRAM",
+    "psreg": 1,
+    "psidx": 27,
+    "pd": 0
+  },
+  {
+    "id": 182,
+    "name": "AOP_PDM0_REF",
+    "psreg": 1,
+    "psidx": 28,
+    "pd": 0
+  },
+  {
+    "id": 183,
+    "name": "AOP_PDM1_REF",
+    "psreg": 1,
+    "psidx": 29,
+    "pd": 0
+  },
+  {
+    "id": 184,
+    "name": "SMC_FABRIC",
+    "psreg": 2,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 185,
+    "name": "SMC_GPIO",
+    "psreg": 2,
+    "psidx": 1,
+    "pd": 0
+  },
+  {
+    "id": 186,
+    "name": "SMC_AON",
+    "psreg": 2,
+    "psidx": 2,
+    "pd": 0
+  },
+  {
+    "id": 187,
+    "name": "SMC_UART0",
+    "psreg": 2,
+    "psidx": 3,
+    "pd": 0
+  },
+  {
+    "id": 188,
+    "name": "SMC_UART1",
+    "psreg": 2,
+    "psidx": 4,
+    "pd": 0
+  },
+  {
+    "id": 189,
+    "name": "SMC_I2CM0",
+    "psreg": 2,
+    "psidx": 5,
+    "pd": 0
+  },
+  {
+    "id": 190,
+    "name": "SMC_I2CM1",
+    "psreg": 2,
+    "psidx": 6,
+    "pd": 0
+  },
+  {
+    "id": 191,
+    "name": "SMC_I2CM2",
+    "psreg": 2,
+    "psidx": 7,
+    "pd": 0
+  },
+  {
+    "id": 192,
+    "name": "SMC_FPWM0",
+    "psreg": 2,
+    "psidx": 10,
+    "pd": 0
+  },
+  {
+    "id": 193,
+    "name": "SMC_FPWM1",
+    "psreg": 2,
+    "psidx": 11,
+    "pd": 0
+  },
+  {
+    "id": 194,
+    "name": "SMC_CPU",
+    "psreg": 2,
+    "psidx": 12,
+    "pd": 0
+  },
+  {
+    "id": 208,
+    "name": "CPU-BUSY",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 209,
+    "name": "ECPU",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 210,
+    "name": "PCPU",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 211,
+    "name": "PCPU2",
+    "psreg": 3,
+    "psidx": 6,
+    "pd": 0
+  },
+  {
+    "id": 212,
+    "name": "PCPU3",
+    "psreg": 3,
+    "psidx": 7,
+    "pd": 0
+  },
+  {
+    "id": 213,
+    "name": "SPI4",
+    "psreg": 4,
+    "psidx": 12,
+    "pd": 0
+  },
+  {
+    "id": 214,
+    "name": "DCS4",
+    "psreg": 5,
+    "psidx": 4,
+    "pd": 0
+  },
+  {
+    "id": 215,
+    "name": "DCS5",
+    "psreg": 5,
+    "psidx": 6,
+    "pd": 0
+  },
+  {
+    "id": 216,
+    "name": "DCS6",
+    "psreg": 5,
+    "psidx": 5,
+    "pd": 0
+  },
+  {
+    "id": 217,
+    "name": "DCS7",
+    "psreg": 5,
+    "psidx": 7,
+    "pd": 0
+  },
+  {
+    "id": 218,
+    "name": "DISPEXT_DSC",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 219,
+    "name": "DISPDFR_FE",
+    "psreg": 5,
+    "psidx": 21,
+    "pd": 0
+  },
+  {
+    "id": 220,
+    "name": "DISPDFR_BE",
+    "psreg": 5,
+    "psidx": 22,
+    "pd": 0
+  },
+  {
+    "id": 221,
+    "name": "ATC0_COMMON",
+    "psreg": 12,
+    "psidx": 4,
+    "pd": 0
+  },
+  {
+    "id": 222,
+    "name": "ATC0_PCIE",
+    "psreg": 12,
+    "psidx": 5,
+    "pd": 0
+  },
+  {
+    "id": 223,
+    "name": "ATC0_CIO",
+    "psreg": 12,
+    "psidx": 6,
+    "pd": 0
+  },
+  {
+    "id": 224,
+    "name": "ATC0_CIO_PCIE",
+    "psreg": 12,
+    "psidx": 7,
+    "pd": 0
+  },
+  {
+    "id": 225,
+    "name": "ATC0_CIO_USB",
+    "psreg": 12,
+    "psidx": 8,
+    "pd": 0
+  },
+  {
+    "id": 226,
+    "name": "ATC1_COMMON",
+    "psreg": 12,
+    "psidx": 9,
+    "pd": 0
+  },
+  {
+    "id": 227,
+    "name": "ATC1_PCIE",
+    "psreg": 12,
+    "psidx": 10,
+    "pd": 0
+  },
+  {
+    "id": 228,
+    "name": "ATC1_CIO",
+    "psreg": 12,
+    "psidx": 11,
+    "pd": 0
+  },
+  {
+    "id": 229,
+    "name": "ATC1_CIO_PCIE",
+    "psreg": 12,
+    "psidx": 12,
+    "pd": 0
+  },
+  {
+    "id": 230,
+    "name": "ATC1_CIO_USB",
+    "psreg": 12,
+    "psidx": 13,
+    "pd": 0
+  },
+  {
+    "id": 231,
+    "name": "DISP0_SPMI",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 232,
+    "name": "DISP0_SPI",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 233,
+    "name": "DISP0_BRC",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 234,
+    "name": "DISP0_BLC",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 235,
+    "name": "MIPI_DSI",
+    "psreg": 5,
+    "psidx": 23,
+    "pd": 0
+  },
+  {
+    "id": 256,
+    "name": "NUB_SPMI1",
+    "psreg": 0,
+    "psidx": 2,
+    "pd": 0
+  },
+  {
+    "id": 257,
+    "name": "MSG",
+    "psreg": 0,
+    "psidx": 4,
+    "pd": 0
+  },
+  {
+    "id": 258,
+    "name": "ATC0_USB_AON",
+    "psreg": 0,
+    "psidx": 6,
+    "pd": 0
+  },
+  {
+    "id": 259,
+    "name": "ATC1_USB_AON",
+    "psreg": 0,
+    "psidx": 7,
+    "pd": 0
+  },
+  {
+    "id": 260,
+    "name": "ATC0_USB",
+    "psreg": 0,
+    "psidx": 8,
+    "pd": 0
+  },
+  {
+    "id": 261,
+    "name": "ATC1_USB",
+    "psreg": 0,
+    "psidx": 9,
+    "pd": 0
+  },
+  {
+    "id": 262,
+    "name": "SMC_I2CM3",
+    "psreg": 2,
+    "psidx": 8,
+    "pd": 0
+  },
+  {
+    "id": 263,
+    "name": "SMC_I2CM4",
+    "psreg": 2,
+    "psidx": 9,
+    "pd": 0
+  },
+  {
+    "id": 289,
+    "name": "DISP-MIE-DPB",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 290,
+    "name": "DISP-FB-ACTIVE",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 291,
+    "name": "DISP-CARVE-OUT",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 292,
+    "name": "SIO-CPU-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 293,
+    "name": "C0-USBCTL-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 294,
+    "name": "USB-AUDIO-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 295,
+    "name": "VENC-SYS-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 296,
+    "name": "VENC-FAST",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 297,
+    "name": "VENC-MEM-FAST",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 298,
+    "name": "VENC-SOC-VMAX",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 299,
+    "name": "AVD-SYS-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 300,
+    "name": "AVD-SOC-VNOM",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 301,
+    "name": "AVD-SOC-VMAX",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 302,
+    "name": "ANE-SYS-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 303,
+    "name": "JPG0-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 304,
+    "name": "JPG-SOC-VNOM",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 305,
+    "name": "JPG-SOC-VMAX",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 306,
+    "name": "MSR-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 307,
+    "name": "ISP-SYS-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 308,
+    "name": "ISP-SOC-VNOM",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 309,
+    "name": "ISP-SOC-VNAX",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 310,
+    "name": "SOC-VNOM",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 311,
+    "name": "SOC-VMAX",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 312,
+    "name": "DCS-VNOM",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 313,
+    "name": "DCS-VMAX",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 314,
+    "name": "GFX-SGX",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 315,
+    "name": "GFX-BUSY",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 316,
+    "name": "GFX-ASC",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 319,
+    "name": "DISPDFR-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 321,
+    "name": "SIO-CPU-DART",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 322,
+    "name": "ATC0-USB-DART",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 323,
+    "name": "ATC1-USB-DART",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 324,
+    "name": "VENC-SYS-DART",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 325,
+    "name": "AVD-SYS-DART",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 326,
+    "name": "ANE-SYS-DART",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 327,
+    "name": "JPG0-DART",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 328,
+    "name": "MSR-DART",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 329,
+    "name": "ISP-SYS-DART",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 330,
+    "name": "VENC-DART",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 331,
+    "name": "JPG1-DART",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 332,
+    "name": "JPG1-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 333,
+    "name": "SEP-PEARL-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 334,
+    "name": "FR_SCALING-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 335,
+    "name": "ATC0_RESET-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 336,
+    "name": "ATC1_RESET-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 337,
+    "name": "CIO0_RECONFIG-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 338,
+    "name": "CIO1_RECONFIG-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 339,
+    "name": "ATC0_RESET_C0-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 340,
+    "name": "ATC0_RESET_C1-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 341,
+    "name": "ATC1_RESET_C0-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 342,
+    "name": "ATC1_RESET_C1-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 344,
+    "name": "AUDIO-P-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 345,
+    "name": "ATC0-USB-AUD-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 346,
+    "name": "ATC1-USB-AUD-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 347,
+    "name": "ATC0_PCIE-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 348,
+    "name": "ATC1_PCIE-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 349,
+    "name": "AUSB0_AONUSB-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 350,
+    "name": "AUSB1_AONUSB-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 351,
+    "name": "AUSB0_AONPCIE-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 352,
+    "name": "AUSB1_AONPCIE-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 368,
+    "name": "DFR-MIE-DPB",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 369,
+    "name": "DFR-FB-ACTIVE",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 372,
+    "name": "DFR-CARVE-OUT",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 400,
+    "name": "DISP0_CPU0-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 401,
+    "name": "DISPEXT0_CPU0-V",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 402,
+    "name": "DP0-SOC-VNAX",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  },
+  {
+    "id": 403,
+    "name": "DP1-SOC-VNAX",
+    "psreg": 0,
+    "psidx": 0,
+    "pd": 0
+  }
+]

@@ -1,0 +1,252 @@
+__ZN9ApplePMGRC2EPK11OSMetaClass:
+fffffe0009ade64c:	5f 24 03 d5	hint	#0x22
+fffffe0009ade650:	7f 23 03 d5	pacibsp
+fffffe0009ade654:	f6 57 bd a9	stp	x22, x21, [sp, #-0x30]!
+fffffe0009ade658:	f4 4f 01 a9	stp	x20, x19, [sp, #0x10]
+fffffe0009ade65c:	fd 7b 02 a9	stp	x29, x30, [sp, #0x20]
+fffffe0009ade660:	fd 83 00 91	add	x29, sp, #0x20
+fffffe0009ade664:	f3 03 00 aa	mov	x19, x0
+fffffe0009ade668:	08 cc 41 91	add	x8, x0, #0x73, lsl #12
+fffffe0009ade66c:	14 61 22 91	add	x20, x8, #0x898
+fffffe0009ade670:	08 c8 41 91	add	x8, x0, #0x72, lsl #12
+fffffe0009ade674:	15 81 1e 91	add	x21, x8, #0x7a0
+fffffe0009ade678:	08 fc 40 91	add	x8, x0, #0x3f, lsl #12
+fffffe0009ade67c:	16 21 05 91	add	x22, x8, #0x148
+fffffe0009ade680:	55 49 01 94	bl	__ZN13ApplePMGRBaseC2EPK11OSMetaClass
+fffffe0009ade684:	50 3a ff 90	adrp	x16, -6328 ; 0xfffffe0008226000
+fffffe0009ade688:	10 22 2a 91	add	x16, x16, #0xa88
+fffffe0009ade68c:	10 42 00 91	add	x16, x16, #0x10
+fffffe0009ade690:	f1 03 00 aa	mov	x17, x0
+fffffe0009ade694:	31 b4 f9 f2	movk	x17, #0xcda1, lsl #48
+fffffe0009ade698:	30 0a c1 da	pacda	x16, x17
+fffffe0009ade69c:	10 00 00 f9	str	x16, [x0]
+fffffe0009ade6a0:	08 02 80 52	mov	w8, #0x10
+fffffe0009ade6a4:	08 90 00 b9	str	w8, [x0, #0x90]
+fffffe0009ade6a8:	48 3a ff b0	adrp	x8, -6327 ; 0xfffffe0008227000
+fffffe0009ade6ac:	08 61 2e 91	add	x8, x8, #0xb98
+fffffe0009ade6b0:	00 01 c0 3d	ldr	q0, [x8]
+fffffe0009ade6b4:	00 80 89 3c	stur	q0, [x0, #0x98]
+fffffe0009ade6b8:	08 09 40 f9	ldr	x8, [x8, #0x10]
+fffffe0009ade6bc:	08 54 00 f9	str	x8, [x0, #0xa8]
+fffffe0009ade6c0:	1f 08 01 b9	str	wzr, [x0, #0x108]
+fffffe0009ade6c4:	1f 10 01 b9	str	wzr, [x0, #0x110]
+fffffe0009ade6c8:	1f 60 04 39	strb	wzr, [x0, #0x118]
+fffffe0009ade6cc:	88 00 80 52	mov	w8, #0x4
+fffffe0009ade6d0:	08 60 01 b9	str	w8, [x0, #0x160]
+fffffe0009ade6d4:	1f b4 05 39	strb	wzr, [x0, #0x16d]
+fffffe0009ade6d8:	1f c0 00 f9	str	xzr, [x0, #0x180]
+fffffe0009ade6dc:	08 c0 9d 52	mov	w8, #0xee00
+fffffe0009ade6e0:	48 00 a0 72	movk	w8, #0x2, lsl #16
+fffffe0009ade6e4:	08 74 1b b9	str	w8, [x0, #0x1b74]
+fffffe0009ade6e8:	1f c8 1b b9	str	wzr, [x0, #0x1bc8]
+fffffe0009ade6ec:	c8 df fe f0	adrp	x8, -9221 ; 0xfffffe00076d9000
+fffffe0009ade6f0:	08 a1 13 91	add	x8, x8, #0x4e8
+fffffe0009ade6f4:	00 05 40 ad	ldp	q0, q1, [x8]
+fffffe0009ade6f8:	02 0d 41 ad	ldp	q2, q3, [x8, #0x20]
+fffffe0009ade6fc:	03 10 87 3d	str	q3, [x0, #0x1c40]
+fffffe0009ade700:	02 0c 87 3d	str	q2, [x0, #0x1c30]
+fffffe0009ade704:	01 08 87 3d	str	q1, [x0, #0x1c20]
+fffffe0009ade708:	00 04 87 3d	str	q0, [x0, #0x1c10]
+fffffe0009ade70c:	00 05 42 ad	ldp	q0, q1, [x8, #0x40]
+fffffe0009ade710:	02 0d 43 ad	ldp	q2, q3, [x8, #0x60]
+fffffe0009ade714:	03 20 87 3d	str	q3, [x0, #0x1c80]
+fffffe0009ade718:	02 1c 87 3d	str	q2, [x0, #0x1c70]
+fffffe0009ade71c:	01 18 87 3d	str	q1, [x0, #0x1c60]
+fffffe0009ade720:	00 14 87 3d	str	q0, [x0, #0x1c50]
+fffffe0009ade724:	48 3a ff b0	adrp	x8, -6327 ; 0xfffffe0008227000
+fffffe0009ade728:	08 c1 2e 91	add	x8, x8, #0xbb0
+fffffe0009ade72c:	00 05 40 ad	ldp	q0, q1, [x8]
+fffffe0009ade730:	02 0d 41 ad	ldp	q2, q3, [x8, #0x20]
+fffffe0009ade734:	03 30 87 3d	str	q3, [x0, #0x1cc0]
+fffffe0009ade738:	02 2c 87 3d	str	q2, [x0, #0x1cb0]
+fffffe0009ade73c:	01 28 87 3d	str	q1, [x0, #0x1ca0]
+fffffe0009ade740:	00 24 87 3d	str	q0, [x0, #0x1c90]
+fffffe0009ade744:	00 05 42 ad	ldp	q0, q1, [x8, #0x40]
+fffffe0009ade748:	02 0d 43 ad	ldp	q2, q3, [x8, #0x60]
+fffffe0009ade74c:	03 40 87 3d	str	q3, [x0, #0x1d00]
+fffffe0009ade750:	02 3c 87 3d	str	q2, [x0, #0x1cf0]
+fffffe0009ade754:	01 38 87 3d	str	q1, [x0, #0x1ce0]
+fffffe0009ade758:	00 34 87 3d	str	q0, [x0, #0x1cd0]
+fffffe0009ade75c:	48 3a ff b0	adrp	x8, -6327 ; 0xfffffe0008227000
+fffffe0009ade760:	08 c1 30 91	add	x8, x8, #0xc30
+fffffe0009ade764:	00 05 40 ad	ldp	q0, q1, [x8]
+fffffe0009ade768:	02 0d 41 ad	ldp	q2, q3, [x8, #0x20]
+fffffe0009ade76c:	03 50 87 3d	str	q3, [x0, #0x1d40]
+fffffe0009ade770:	02 4c 87 3d	str	q2, [x0, #0x1d30]
+fffffe0009ade774:	01 48 87 3d	str	q1, [x0, #0x1d20]
+fffffe0009ade778:	08 aa 83 52	mov	w8, #0x1d50
+fffffe0009ade77c:	00 44 87 3d	str	q0, [x0, #0x1d10]
+fffffe0009ade780:	41 3a ff b0	adrp	x1, -6327 ; 0xfffffe0008227000
+fffffe0009ade784:	21 c0 31 91	add	x1, x1, #0xc70
+fffffe0009ade788:	00 00 08 8b	add	x0, x0, x8
+fffffe0009ade78c:	02 23 81 52	mov	w2, #0x918
+fffffe0009ade790:	ef 97 01 94	bl	0xfffffe0009b4474c ; symbol stub for: _memcpy
+fffffe0009ade794:	08 cd 84 52	mov	w8, #0x2668
+fffffe0009ade798:	41 3a ff d0	adrp	x1, -6326 ; 0xfffffe0008228000
+fffffe0009ade79c:	21 20 16 91	add	x1, x1, #0x588
+fffffe0009ade7a0:	60 02 08 8b	add	x0, x19, x8
+fffffe0009ade7a4:	02 70 80 52	mov	w2, #0x380
+fffffe0009ade7a8:	e9 97 01 94	bl	0xfffffe0009b4474c ; symbol stub for: _memcpy
+fffffe0009ade7ac:	08 3d 85 52	mov	w8, #0x29e8
+fffffe0009ade7b0:	41 3a ff d0	adrp	x1, -6326 ; 0xfffffe0008228000
+fffffe0009ade7b4:	21 20 24 91	add	x1, x1, #0x908
+fffffe0009ade7b8:	60 02 08 8b	add	x0, x19, x8
+fffffe0009ade7bc:	02 6c 86 52	mov	w2, #0x3360
+fffffe0009ade7c0:	e3 97 01 94	bl	0xfffffe0009b4474c ; symbol stub for: _memcpy
+fffffe0009ade7c4:	08 a9 8b 52	mov	w8, #0x5d48
+fffffe0009ade7c8:	61 3a ff b0	adrp	x1, -6323 ; 0xfffffe000822b000
+fffffe0009ade7cc:	21 a0 31 91	add	x1, x1, #0xc68
+fffffe0009ade7d0:	60 02 08 8b	add	x0, x19, x8
+fffffe0009ade7d4:	02 6f 80 52	mov	w2, #0x378
+fffffe0009ade7d8:	dd 97 01 94	bl	0xfffffe0009b4474c ; symbol stub for: _memcpy
+fffffe0009ade7dc:	e8 1f 80 52	mov	w8, #0xff
+fffffe0009ade7e0:	c8 02 00 39	strb	w8, [x22]
+fffffe0009ade7e4:	bf 02 00 f9	str	xzr, [x21]
+fffffe0009ade7e8:	28 00 80 52	mov	w8, #0x1
+fffffe0009ade7ec:	a8 3a 00 b9	str	w8, [x21, #0x38]
+fffffe0009ade7f0:	bf 8a 01 79	strh	wzr, [x21, #0xc4]
+fffffe0009ade7f4:	00 e4 00 6f	movi.2d	v0, #0000000000000000
+fffffe0009ade7f8:	80 02 80 3d	str	q0, [x20]
+fffffe0009ade7fc:	9f 0a 00 f9	str	xzr, [x20, #0x10]
+fffffe0009ade800:	9f 1a 00 b9	str	wzr, [x20, #0x18]
+fffffe0009ade804:	88 e2 00 39	strb	w8, [x20, #0x38]
+fffffe0009ade808:	e0 03 13 aa	mov	x0, x19
+fffffe0009ade80c:	fd 7b 42 a9	ldp	x29, x30, [sp, #0x20]
+fffffe0009ade810:	f4 4f 41 a9	ldp	x20, x19, [sp, #0x10]
+fffffe0009ade814:	f6 57 c3 a8	ldp	x22, x21, [sp], #0x30
+fffffe0009ade818:	ff 0f 5f d6	retab
+
+__ZN9ApplePMGR15getFeatureValueENS_7FeatureE:
+fffffe0009adfc94:	5f 24 03 d5	hint	#0x22
+fffffe0009adfc98:	3f 84 01 71	cmp	w1, #0x61
+fffffe0009adfc9c:	aa 01 00 54	b.ge	0xfffffe0009adfcd0
+fffffe0009adfca0:	08 aa 83 52	mov	w8, #0x1d50
+fffffe0009adfca4:	08 00 08 8b	add	x8, x0, x8
+fffffe0009adfca8:	09 03 80 52	mov	w9, #0x18
+fffffe0009adfcac:	29 7c a9 9b	umull	x9, w1, w9
+fffffe0009adfcb0:	29 31 00 91	add	x9, x9, #0xc
+fffffe0009adfcb4:	3f c1 29 eb	cmp	x9, w9, sxtw
+fffffe0009adfcb8:	0a c1 29 8b	add	x10, x8, w9, sxtw
+fffffe0009adfcbc:	10 01 09 8b	add	x16, x8, x9
+fffffe0009adfcc0:	b0 75 e5 f2	movk	x16, #0x2bad, lsl #48
+fffffe0009adfcc4:	4a 01 90 9a	csel	x10, x10, x16, eq
+fffffe0009adfcc8:	40 01 40 b9	ldr	w0, [x10]
+fffffe0009adfccc:	c0 03 5f d6	ret
+fffffe0009adfcd0:	7f 23 03 d5	pacibsp
+fffffe0009adfcd4:	fd 7b bf a9	stp	x29, x30, [sp, #-0x10]!
+fffffe0009adfcd8:	fd 03 00 91	mov	x29, sp
+fffffe0009adfcdc:	b0 66 01 94	bl	__ZN9ApplePMGR15getFeatureValueENS_7FeatureE.cold.1
+
+__ZN9ApplePMGR13getDTPropertyEPKcPj:
+fffffe0009adf9b8:	5f 24 03 d5	hint	#0x22
+fffffe0009adf9bc:	7f 23 03 d5	pacibsp
+fffffe0009adf9c0:	f4 4f be a9	stp	x20, x19, [sp, #-0x20]!
+fffffe0009adf9c4:	fd 7b 01 a9	stp	x29, x30, [sp, #0x10]
+fffffe0009adf9c8:	fd 43 00 91	add	x29, sp, #0x10
+fffffe0009adf9cc:	f3 03 02 aa	mov	x19, x2
+fffffe0009adf9d0:	00 44 40 f9	ldr	x0, [x0, #0x88]
+fffffe0009adf9d4:	10 00 40 f9	ldr	x16, [x0]
+fffffe0009adf9d8:	f1 03 00 aa	mov	x17, x0
+fffffe0009adf9dc:	31 b4 f9 f2	movk	x17, #0xcda1, lsl #48
+fffffe0009adf9e0:	30 1a c1 da	autda	x16, x17
+fffffe0009adf9e4:	11 5b 80 d2	mov	x17, #0x2d8
+fffffe0009adf9e8:	10 02 11 8b	add	x16, x16, x17
+fffffe0009adf9ec:	08 02 40 f9	ldr	x8, [x16]
+fffffe0009adf9f0:	b0 f4 e6 f2	movk	x16, #0x37a5, lsl #48
+fffffe0009adf9f4:	10 09 3f d7	blraa	x8, x16
+fffffe0009adf9f8:	c8 3a ff 90	adrp	x8, -6312 ; 0xfffffe0008237000
+fffffe0009adf9fc:	08 d5 43 f9	ldr	x8, [x8, #0x7a8]
+fffffe0009adfa00:	01 01 40 f9	ldr	x1, [x8]
+fffffe0009adfa04:	5e 92 01 94	bl	0xfffffe0009b4437c ; symbol stub for: __ZN15OSMetaClassBase12safeMetaCastEPKS_PK11OSMetaClass
+fffffe0009adfa08:	f4 03 00 aa	mov	x20, x0
+fffffe0009adfa0c:	a0 01 00 b4	cbz	x0, 0xfffffe0009adfa40
+fffffe0009adfa10:	90 02 40 f9	ldr	x16, [x20]
+fffffe0009adfa14:	f1 03 14 aa	mov	x17, x20
+fffffe0009adfa18:	31 b4 f9 f2	movk	x17, #0xcda1, lsl #48
+fffffe0009adfa1c:	30 1a c1 da	autda	x16, x17
+fffffe0009adfa20:	11 33 80 d2	mov	x17, #0x198
+fffffe0009adfa24:	10 02 11 8b	add	x16, x16, x17
+fffffe0009adfa28:	08 02 40 f9	ldr	x8, [x16]
+fffffe0009adfa2c:	e0 03 14 aa	mov	x0, x20
+fffffe0009adfa30:	10 48 fa f2	movk	x16, #0xd240, lsl #48
+fffffe0009adfa34:	10 09 3f d7	blraa	x8, x16
+fffffe0009adfa38:	08 00 40 b9	ldr	w8, [x0]
+fffffe0009adfa3c:	68 02 00 b9	str	w8, [x19]
+fffffe0009adfa40:	9f 02 00 f1	cmp	x20, #0x0
+fffffe0009adfa44:	e0 07 9f 1a	cset	w0, ne
+fffffe0009adfa48:	fd 7b 41 a9	ldp	x29, x30, [sp, #0x10]
+fffffe0009adfa4c:	f4 4f c2 a8	ldp	x20, x19, [sp], #0x20
+fffffe0009adfa50:	ff 0f 5f d6	retab
+
+fffffe0009aded40:	3a b4 f9 f2	movk	x26, #0xcda1, lsl #48
+fffffe0009aded44:	70 02 40 f9	ldr	x16, [x19]
+fffffe0009aded48:	50 1b c1 da	autda	x16, x26
+fffffe0009aded4c:	11 5b 80 d2	mov	x17, #0x2d8
+fffffe0009aded50:	10 02 11 8b	add	x16, x16, x17
+fffffe0009aded54:	08 02 40 f9	ldr	x8, [x16]
+fffffe0009aded58:	61 df fe 90	adrp	x1, -9236 ; 0xfffffe00076ca000
+fffffe0009aded5c:	21 f4 12 91	add	x1, x1, #0x4bd
+fffffe0009aded60:	e0 03 13 aa	mov	x0, x19
+fffffe0009aded64:	b0 f4 e6 f2	movk	x16, #0x37a5, lsl #48
+fffffe0009aded68:	10 09 3f d7	blraa	x8, x16
+fffffe0009aded6c:	c8 3a ff b0	adrp	x8, -6311 ; 0xfffffe0008237000
+fffffe0009aded70:	08 d9 43 f9	ldr	x8, [x8, #0x7b0]
+fffffe0009aded74:	01 01 40 f9	ldr	x1, [x8]
+fffffe0009aded78:	81 95 01 94	bl	0xfffffe0009b4437c ; symbol stub for: __ZN15OSMetaClassBase12safeMetaCastEPKS_PK11OSMetaClass
+fffffe0009aded7c:	58 95 01 94	bl	0xfffffe0009b442dc ; symbol stub for: __ZN14IOReportLegend4withEP7OSArray
+fffffe0009aded80:	60 ca 0d f9	str	x0, [x19, #0x1b90]
+fffffe0009aded84:	80 5e 00 b4	cbz	x0, 0xfffffe0009adf954
+fffffe0009aded88:	15 00 80 d2	mov	x21, #0x0
+fffffe0009aded8c:	88 42 8c 52	mov	w8, #0x6214
+fffffe0009aded90:	69 ce 41 91	add	x9, x19, #0x73, lsl #12
+fffffe0009aded94:	2a 21 23 91	add	x10, x9, #0x8c8
+fffffe0009aded98:	69 ca 41 91	add	x9, x19, #0x72, lsl #12
+fffffe0009aded9c:	38 a1 1e 91	add	x24, x9, #0x7a8
+fffffe0009adeda0:	69 fe 40 91	add	x9, x19, #0x3f, lsl #12
+fffffe0009adeda4:	39 e1 04 91	add	x25, x9, #0x138
+fffffe0009adeda8:	68 02 08 8b	add	x8, x19, x8
+fffffe0009adedac:	e8 ab 03 a9	stp	x8, x10, [sp, #0x38]
+fffffe0009adedb0:	08 aa 83 52	mov	w8, #0x1d50
+fffffe0009adedb4:	74 02 08 8b	add	x20, x19, x8
+fffffe0009adedb8:	36 00 80 52	mov	w22, #0x1
+fffffe0009adedbc:	a8 06 15 8b	add	x8, x21, x21, lsl #1
+fffffe0009adedc0:	97 0e 08 8b	add	x23, x20, x8, lsl #3
+fffffe0009adedc4:	e1 02 40 f9	ldr	x1, [x23]
+fffffe0009adedc8:	e2 63 01 91	add	x2, sp, #0x58
+fffffe0009adedcc:	e0 03 13 aa	mov	x0, x19
+fffffe0009adedd0:	fa 02 00 94	bl	__ZN9ApplePMGR13getDTPropertyEPKcPj
+fffffe0009adedd4:	00 03 00 34	cbz	w0, 0xfffffe0009adee34
+fffffe0009adedd8:	f6 22 00 39	strb	w22, [x23, #0x8]
+fffffe0009adeddc:	e8 5b 40 b9	ldr	w8, [sp, #0x58]
+fffffe0009adede0:	e8 0e 00 b9	str	w8, [x23, #0xc]
+fffffe0009adede4:	70 02 40 f9	ldr	x16, [x19]
+fffffe0009adede8:	50 1b c1 da	autda	x16, x26
+fffffe0009adedec:	11 c2 81 d2	mov	x17, #0xe10
+fffffe0009adedf0:	10 02 11 8b	add	x16, x16, x17
+fffffe0009adedf4:	08 02 40 f9	ldr	x8, [x16]
+fffffe0009adedf8:	e0 03 13 aa	mov	x0, x19
+fffffe0009adedfc:	e1 03 15 aa	mov	x1, x21
+fffffe0009adee00:	10 14 fc f2	movk	x16, #0xe0a0, lsl #48
+fffffe0009adee04:	10 09 3f d7	blraa	x8, x16
+fffffe0009adee08:	e0 42 00 39	strb	w0, [x23, #0x10]
+fffffe0009adee0c:	40 01 00 34	cbz	w0, 0xfffffe0009adee34
+fffffe0009adee10:	e0 02 40 f9	ldr	x0, [x23]
+fffffe0009adee14:	bf c3 1a b8	stur	wzr, [x29, #-0x54]
+fffffe0009adee18:	a1 53 01 d1	sub	x1, x29, #0x54
+fffffe0009adee1c:	82 00 80 52	mov	w2, #0x4
+fffffe0009adee20:	e3 94 01 94	bl	0xfffffe0009b441ac ; symbol stub for: _PE_parse_boot_argn
+fffffe0009adee24:	80 00 00 34	cbz	w0, 0xfffffe0009adee34
+fffffe0009adee28:	a8 c3 5a b8	ldur	w8, [x29, #-0x54]
+fffffe0009adee2c:	e8 5b 00 b9	str	w8, [sp, #0x58]
+fffffe0009adee30:	e8 0e 00 b9	str	w8, [x23, #0xc]
+fffffe0009adee34:	b5 06 00 91	add	x21, x21, #0x1
+fffffe0009adee38:	bf 86 01 f1	cmp	x21, #0x61
+fffffe0009adee3c:	01 fc ff 54	b.ne	0xfffffe0009adedbc
+fffffe0009adee40:	e0 03 13 aa	mov	x0, x19
+fffffe0009adee44:	04 03 00 94	bl	__ZN9ApplePMGR14_printFeaturesEv
+fffffe0009adee48:	e9 1b 40 f9	ldr	x9, [sp, #0x30]
+fffffe0009adee4c:	28 21 57 39	ldrb	w8, [x9, #0x5c8]
+fffffe0009adee50:	68 00 00 36	tbz	w8, #0x0, 0xfffffe0009adee5c
+fffffe0009adee54:	68 36 61 b9	ldr	w8, [x19, #0x2134]
+fffffe0009adee58:	68 da 1b b9	str	w8, [x19, #0x1bd8]
+fffffe0009adee5c:	28 21 66 39	ldrb	w8, [x9, #0x988]

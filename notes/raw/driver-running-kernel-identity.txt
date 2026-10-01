@@ -1,0 +1,4 @@
+kern.version: Darwin Kernel Version 27.0.0: Tue Aug 11 21:05:27 PDT 2026; root:xnu-13432.1.9~1/RELEASE_ARM64_T8103
+kern.osversion: 26A428
+kern.uuid: 1F15A5DA-11D6-39EE-88D2-153E2F90F066
+kern.bootargs: -v

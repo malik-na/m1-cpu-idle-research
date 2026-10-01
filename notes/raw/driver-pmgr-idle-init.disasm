@@ -1,0 +1,94 @@
+m1-power-ApplePMGR.macho (locally extracted image):
+(__TEXT_EXEC,__text) section
+__ZN9ApplePMGR12_cpuIdleInitEP17ml_processor_info:
+fffffe0009b1a2bc:	5f 24 03 d5	hint	#0x22
+fffffe0009b1a2c0:	7f 23 03 d5	pacibsp
+fffffe0009b1a2c4:	f8 5f bc a9	stp	x24, x23, [sp, #-0x40]!
+fffffe0009b1a2c8:	f6 57 01 a9	stp	x22, x21, [sp, #0x10]
+fffffe0009b1a2cc:	f4 4f 02 a9	stp	x20, x19, [sp, #0x20]
+fffffe0009b1a2d0:	fd 7b 03 a9	stp	x29, x30, [sp, #0x30]
+fffffe0009b1a2d4:	fd c3 00 91	add	x29, sp, #0x30
+fffffe0009b1a2d8:	f3 03 01 aa	mov	x19, x1
+fffffe0009b1a2dc:	f4 03 00 aa	mov	x20, x0
+fffffe0009b1a2e0:	15 00 80 d2	mov	x21, #0x0
+fffffe0009b1a2e4:	96 00 80 52	mov	w22, #0x4
+fffffe0009b1a2e8:	f7 dd fe f0	adrp	x23, -9281 ; 0xfffffe00076d9000
+fffffe0009b1a2ec:	f7 a2 15 91	add	x23, x23, #0x568
+fffffe0009b1a2f0:	e1 7a 75 b8	ldr	w1, [x23, x21, lsl #2]
+fffffe0009b1a2f4:	e0 03 14 aa	mov	x0, x20
+fffffe0009b1a2f8:	0c 17 ff 97	bl	__ZN9ApplePMGR10validParamENS_5ParamE
+fffffe0009b1a2fc:	d6 06 00 f1	subs	x22, x22, #0x1
+fffffe0009b1a300:	e8 37 9f 1a	cset	w8, hs
+fffffe0009b1a304:	60 00 00 34	cbz	w0, 0xfffffe0009b1a310
+fffffe0009b1a308:	b5 06 00 91	add	x21, x21, #0x1
+fffffe0009b1a30c:	28 ff 07 37	tbnz	w8, #0x0, 0xfffffe0009b1a2f0
+fffffe0009b1a310:	20 01 00 34	cbz	w0, 0xfffffe0009b1a334
+fffffe0009b1a314:	88 ae 41 91	add	x8, x20, #0x6b, lsl #12
+fffffe0009b1a318:	08 a1 05 91	add	x8, x8, #0x168
+fffffe0009b1a31c:	10 00 00 90	adrp	x16, 0 ; 0xfffffe0009b1a000
+fffffe0009b1a320:	10 32 02 91	add	x16, x16, #0x8c
+fffffe0009b1a324:	11 7b 8e d2	mov	x17, #0x73d8
+fffffe0009b1a328:	30 02 c1 da	pacia	x16, x17
+fffffe0009b1a32c:	68 42 03 a9	stp	x8, x16, [x19, #0x30]
+fffffe0009b1a330:	74 22 00 f9	str	x20, [x19, #0x40]
+fffffe0009b1a334:	7f 26 00 f9	str	xzr, [x19, #0x48]
+fffffe0009b1a338:	7f 52 00 b9	str	wzr, [x19, #0x50]
+fffffe0009b1a33c:	08 d0 84 52	mov	w8, #0x2680
+fffffe0009b1a340:	88 02 08 8b	add	x8, x20, x8
+fffffe0009b1a344:	08 01 40 39	ldrb	w8, [x8]
+fffffe0009b1a348:	08 01 00 36	tbz	w8, #0x0, 0xfffffe0009b1a368
+fffffe0009b1a34c:	88 86 66 b9	ldr	w8, [x20, #0x2684]
+fffffe0009b1a350:	68 56 00 b9	str	w8, [x19, #0x54]
+fffffe0009b1a354:	fd 7b 43 a9	ldp	x29, x30, [sp, #0x30]
+fffffe0009b1a358:	f4 4f 42 a9	ldp	x20, x19, [sp, #0x20]
+fffffe0009b1a35c:	f6 57 41 a9	ldp	x22, x21, [sp, #0x10]
+fffffe0009b1a360:	f8 5f c4 a8	ldp	x24, x23, [sp], #0x40
+fffffe0009b1a364:	ff 0f 5f d6	retab
+fffffe0009b1a368:	b6 9c 00 94	bl	__ZN9ApplePMGR12_cpuIdleInitEP17ml_processor_info.cold.1
+
+m1-power-ApplePMGR.macho (locally extracted image):
+(__TEXT_EXEC,__text) section
+__ZN9ApplePMGR10validParamENS_5ParamE:
+fffffe0009adff28:	5f 24 03 d5	hint	#0x22
+fffffe0009adff2c:	3f 70 00 71	cmp	w1, #0x1c
+fffffe0009adff30:	ca 01 00 54	b.ge	0xfffffe0009adff68
+fffffe0009adff34:	08 cd 84 52	mov	w8, #0x2668
+fffffe0009adff38:	08 00 08 8b	add	x8, x0, x8
+fffffe0009adff3c:	e9 03 01 2a	mov	w9, w1
+fffffe0009adff40:	0a 03 80 52	mov	w10, #0x18
+fffffe0009adff44:	49 15 09 aa	orr	x9, x10, x9, lsl #5
+fffffe0009adff48:	3f c1 29 eb	cmp	x9, w9, sxtw
+fffffe0009adff4c:	0a c1 29 8b	add	x10, x8, w9, sxtw
+fffffe0009adff50:	10 01 09 8b	add	x16, x8, x9
+fffffe0009adff54:	b0 75 e5 f2	movk	x16, #0x2bad, lsl #48
+fffffe0009adff58:	4a 01 90 9a	csel	x10, x10, x16, eq
+fffffe0009adff5c:	48 01 40 39	ldrb	w8, [x10]
+fffffe0009adff60:	00 01 00 12	and	w0, w8, #0x1
+fffffe0009adff64:	c0 03 5f d6	ret
+fffffe0009adff68:	7f 23 03 d5	pacibsp
+fffffe0009adff6c:	fd 7b bf a9	stp	x29, x30, [sp, #-0x10]!
+fffffe0009adff70:	fd 03 00 91	mov	x29, sp
+fffffe0009adff74:	19 66 01 94	bl	__ZN9ApplePMGR10validParamENS_5ParamE.cold.1
+
+m1-power-ApplePMGR.macho (locally extracted image):
+(__TEXT_EXEC,__text) section
+__ZN9ApplePMGR13getParamValueENS_5ParamE:
+fffffe0009adff78:	5f 24 03 d5	hint	#0x22
+fffffe0009adff7c:	3f 70 00 71	cmp	w1, #0x1c
+fffffe0009adff80:	aa 01 00 54	b.ge	0xfffffe0009adffb4
+fffffe0009adff84:	08 cd 84 52	mov	w8, #0x2668
+fffffe0009adff88:	08 00 08 8b	add	x8, x0, x8
+fffffe0009adff8c:	e9 03 01 2a	mov	w9, w1
+fffffe0009adff90:	8a 03 80 52	mov	w10, #0x1c
+fffffe0009adff94:	49 15 09 aa	orr	x9, x10, x9, lsl #5
+fffffe0009adff98:	3f c1 29 eb	cmp	x9, w9, sxtw
+fffffe0009adff9c:	0a c1 29 8b	add	x10, x8, w9, sxtw
+fffffe0009adffa0:	10 01 09 8b	add	x16, x8, x9
+fffffe0009adffa4:	b0 75 e5 f2	movk	x16, #0x2bad, lsl #48
+fffffe0009adffa8:	4a 01 90 9a	csel	x10, x10, x16, eq
+fffffe0009adffac:	40 01 40 b9	ldr	w0, [x10]
+fffffe0009adffb0:	c0 03 5f d6	ret
+fffffe0009adffb4:	7f 23 03 d5	pacibsp
+fffffe0009adffb8:	fd 7b bf a9	stp	x29, x30, [sp, #-0x10]!
+fffffe0009adffbc:	fd 03 00 91	mov	x29, sp
+fffffe0009adffc0:	15 66 01 94	bl	__ZN9ApplePMGR13getParamValueENS_5ParamE.cold.1

@@ -1,0 +1,83 @@
+
+research/m1-power-2026-10-01/tools/idle-pulse:	file format mach-o arm64
+
+Disassembly of section __TEXT,__text:
+
+0000000100000840 <_idle_burst>:
+100000840: d5033fdf    	isb
+100000844: d53be042    	mrs	x2, CNTVCT_EL0
+100000848: 8b000042    	add	x2, x2, x0
+10000084c: d28b0a23    	mov	x3, #0x5851             ; =22609
+100000850: f2a992a3    	movk	x3, #0x4c95, lsl #16
+100000854: f2de85a3    	movk	x3, #0xf42d, lsl #32
+100000858: f2e280a3    	movk	x3, #0x1405, lsl #48
+10000085c: 9b030c21    	madd	x1, x1, x3, x3
+100000860: ca414421    	eor	x1, x1, x1, lsr #17
+100000864: 9b030c21    	madd	x1, x1, x3, x3
+100000868: ca414421    	eor	x1, x1, x1, lsr #17
+10000086c: 9b030c21    	madd	x1, x1, x3, x3
+100000870: ca414421    	eor	x1, x1, x1, lsr #17
+100000874: 9b030c21    	madd	x1, x1, x3, x3
+100000878: ca414421    	eor	x1, x1, x1, lsr #17
+10000087c: 9b030c21    	madd	x1, x1, x3, x3
+100000880: ca414421    	eor	x1, x1, x1, lsr #17
+100000884: 9b030c21    	madd	x1, x1, x3, x3
+100000888: ca414421    	eor	x1, x1, x1, lsr #17
+10000088c: 9b030c21    	madd	x1, x1, x3, x3
+100000890: ca414421    	eor	x1, x1, x1, lsr #17
+100000894: 9b030c21    	madd	x1, x1, x3, x3
+100000898: ca414421    	eor	x1, x1, x1, lsr #17
+10000089c: 9b030c21    	madd	x1, x1, x3, x3
+1000008a0: ca414421    	eor	x1, x1, x1, lsr #17
+1000008a4: 9b030c21    	madd	x1, x1, x3, x3
+1000008a8: ca414421    	eor	x1, x1, x1, lsr #17
+1000008ac: 9b030c21    	madd	x1, x1, x3, x3
+1000008b0: ca414421    	eor	x1, x1, x1, lsr #17
+1000008b4: 9b030c21    	madd	x1, x1, x3, x3
+1000008b8: ca414421    	eor	x1, x1, x1, lsr #17
+1000008bc: 9b030c21    	madd	x1, x1, x3, x3
+1000008c0: ca414421    	eor	x1, x1, x1, lsr #17
+1000008c4: 9b030c21    	madd	x1, x1, x3, x3
+1000008c8: ca414421    	eor	x1, x1, x1, lsr #17
+1000008cc: 9b030c21    	madd	x1, x1, x3, x3
+1000008d0: ca414421    	eor	x1, x1, x1, lsr #17
+1000008d4: 9b030c21    	madd	x1, x1, x3, x3
+1000008d8: ca414421    	eor	x1, x1, x1, lsr #17
+1000008dc: 9b030c21    	madd	x1, x1, x3, x3
+1000008e0: ca414421    	eor	x1, x1, x1, lsr #17
+1000008e4: 9b030c21    	madd	x1, x1, x3, x3
+1000008e8: ca414421    	eor	x1, x1, x1, lsr #17
+1000008ec: 9b030c21    	madd	x1, x1, x3, x3
+1000008f0: ca414421    	eor	x1, x1, x1, lsr #17
+1000008f4: 9b030c21    	madd	x1, x1, x3, x3
+1000008f8: ca414421    	eor	x1, x1, x1, lsr #17
+1000008fc: 9b030c21    	madd	x1, x1, x3, x3
+100000900: ca414421    	eor	x1, x1, x1, lsr #17
+100000904: 9b030c21    	madd	x1, x1, x3, x3
+100000908: ca414421    	eor	x1, x1, x1, lsr #17
+10000090c: 9b030c21    	madd	x1, x1, x3, x3
+100000910: ca414421    	eor	x1, x1, x1, lsr #17
+100000914: 9b030c21    	madd	x1, x1, x3, x3
+100000918: ca414421    	eor	x1, x1, x1, lsr #17
+10000091c: 9b030c21    	madd	x1, x1, x3, x3
+100000920: ca414421    	eor	x1, x1, x1, lsr #17
+100000924: 9b030c21    	madd	x1, x1, x3, x3
+100000928: ca414421    	eor	x1, x1, x1, lsr #17
+10000092c: 9b030c21    	madd	x1, x1, x3, x3
+100000930: ca414421    	eor	x1, x1, x1, lsr #17
+100000934: 9b030c21    	madd	x1, x1, x3, x3
+100000938: ca414421    	eor	x1, x1, x1, lsr #17
+10000093c: 9b030c21    	madd	x1, x1, x3, x3
+100000940: ca414421    	eor	x1, x1, x1, lsr #17
+100000944: 9b030c21    	madd	x1, x1, x3, x3
+100000948: ca414421    	eor	x1, x1, x1, lsr #17
+10000094c: 9b030c21    	madd	x1, x1, x3, x3
+100000950: ca414421    	eor	x1, x1, x1, lsr #17
+100000954: 9b030c21    	madd	x1, x1, x3, x3
+100000958: ca414421    	eor	x1, x1, x1, lsr #17
+10000095c: d5033fdf    	isb
+100000960: d53be044    	mrs	x4, CNTVCT_EL0
+100000964: eb02009f    	cmp	x4, x2
+100000968: 54fff7a3    	b.lo	0x10000085c <_idle_burst+0x1c>
+10000096c: aa0103e0    	mov	x0, x1
+100000970: d65f03c0    	ret

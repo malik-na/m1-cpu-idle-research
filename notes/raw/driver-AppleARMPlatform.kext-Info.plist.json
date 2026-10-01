@@ -1,0 +1,131 @@
+{
+  "BuildMachineOSBuild": "23A344017",
+  "CFBundleDevelopmentRegion": "English",
+  "CFBundleExecutable": "AppleARMPlatform",
+  "CFBundleGetInfoString": "Copyright \u00a9 2009 Apple Inc. All rights reserved.",
+  "CFBundleIdentifier": "com.apple.driver.AppleARMPlatform",
+  "CFBundleInfoDictionaryVersion": "6.0",
+  "CFBundleName": "AppleARMPlatform",
+  "CFBundlePackageType": "KEXT",
+  "CFBundleShortVersionString": "1.0.2",
+  "CFBundleSignature": "????",
+  "CFBundleSupportedPlatforms": [
+    "MacOSX"
+  ],
+  "CFBundleVersion": "1.0.2",
+  "DTCompiler": "com.apple.compilers.llvm.clang.1_0",
+  "DTPlatformBuild": "26A413",
+  "DTPlatformName": "macosx",
+  "DTPlatformVersion": "27.0",
+  "DTSDKBuild": "26A413",
+  "DTSDKName": "macosx27.0.internal",
+  "DTXcode": "2700",
+  "DTXcodeBuild": "27A200c",
+  "IOKitPersonalities": {
+    "AppleARMBacklight": {
+      "IOClass": "AppleARMBacklight",
+      "IONameMatch": "backlight",
+      "IOProviderClass": "IOPlatformDevice",
+      "backlight-control": true
+    },
+    "AppleARMBootPerf": {
+      "IOClass": "AppleARMBootPerf",
+      "IOMatchCategory": "AppleARMBootPerf",
+      "IOProviderClass": "IOResources",
+      "IOResourceMatch": "IOKit"
+    },
+    "AppleARMCFIFlashController": {
+      "IOClass": "AppleARMCFIFlashController",
+      "IONameMatch": "nor-flash,cfi",
+      "IOProviderClass": "AppleARMIODevice"
+    },
+    "AppleARMCPU": {
+      "IOClass": "AppleARMCPU",
+      "IONameMatch": "cpu",
+      "IOProbeScore": 100,
+      "IOProviderClass": "IOPlatformDevice"
+    },
+    "AppleARMFabricTrace": {
+      "IOClass": "AppleARMFabricTrace",
+      "IONameMatch": "gen-aft",
+      "IOProviderClass": "IOService"
+    },
+    "AppleARMI2CEEPROM": {
+      "IOClass": "AppleARMI2CEEPROM",
+      "IONameMatch": "eeprom,i2c",
+      "IOProviderClass": "AppleARMIICDevice"
+    },
+    "AppleARMLightEmUp": {
+      "IOClass": "AppleARMLightEmUp",
+      "IONameMatch": "cpu-debug-interface",
+      "IOProviderClass": "IOService"
+    },
+    "AppleARMNMI": {
+      "IOClass": "AppleARMNMI",
+      "IONameMatch": "programmer-switch",
+      "IOProviderClass": "AppleARMIODevice"
+    },
+    "AppleARMNORNVRAM1": {
+      "IOClass": "AppleARMNORNVRAM",
+      "IONameMatch": "nvram,chrp",
+      "IOProviderClass": "AppleARMNORFlashDevice"
+    },
+    "AppleARMNORNVRAM2": {
+      "IOClass": "AppleARMNORNVRAM",
+      "IONameMatch": "nvram,nor",
+      "IOProviderClass": "AppleARMNORFlashDevice"
+    },
+    "AppleARMNORPanicLog": {
+      "IOClass": "AppleARMNORPanicLog",
+      "IONameMatch": "paniclog",
+      "IOProviderClass": "AppleARMNORFlashDevice"
+    },
+    "AppleARMPE": {
+      "IOClass": "AppleARMPE",
+      "IONameMatch": "AppleARM",
+      "IOProbeScore": 1000,
+      "IOProviderClass": "IOPlatformExpertDevice"
+    },
+    "AppleARMPWMBacklight": {
+      "IOClass": "AppleARMPWMBacklight",
+      "IONameMatch": "backlight,pwm",
+      "IOProviderClass": "AppleARMPWMDevice"
+    },
+    "AppleARMSFRManifest": {
+      "IOClass": "AppleARMSFRManifest",
+      "IOMatchCategory": "AppleARMSFRManifest",
+      "IOProviderClass": "IOResources",
+      "IOResourceMatch": "IOKit"
+    },
+    "AppleARMSPIFlashController": {
+      "IOClass": "AppleARMSPIFlashController",
+      "IONameMatch": "nor-flash,spi",
+      "IOProviderClass": "AppleARMSPIDevice"
+    },
+    "AppleARMSlowAdaptiveClockingManager": {
+      "IOClass": "AppleARMSlowAdaptiveClockingManager",
+      "IONameMatch": "sacm",
+      "IOProviderClass": "IOPlatformDevice"
+    },
+    "AppleARMSoftIICController": {
+      "IOClass": "AppleARMSoftIICController",
+      "IONameMatch": "iic,soft",
+      "IOProbeScore": 100,
+      "IOProviderClass": "AppleARMIODevice"
+    }
+  },
+  "LSMinimumSystemVersion": "27.0",
+  "OSBundleCompatibleVersion": "1.0.0",
+  "OSBundleLibraries": {
+    "com.apple.iokit.IOReportFamily": "1.0",
+    "com.apple.iokit.IOSlowAdaptiveClockingFamily": "1.0",
+    "com.apple.iokit.IOStorageFamily": "1.5",
+    "com.apple.kpi.bsd": "8.0",
+    "com.apple.kpi.iokit": "8.0",
+    "com.apple.kpi.libkern": "8.0",
+    "com.apple.kpi.mach": "8.0",
+    "com.apple.kpi.private": "22.0",
+    "com.apple.kpi.unsupported": "8.0"
+  },
+  "OSBundleRequired": "Root"
+}

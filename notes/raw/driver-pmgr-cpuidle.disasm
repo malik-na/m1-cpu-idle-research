@@ -1,0 +1,753 @@
+m1-power-ApplePMGR.macho (locally extracted image):
+(__TEXT_EXEC,__text) section
+__ZN9ApplePMGR8_cpuIdleEPNS_7CPUCoreEbPy:
+fffffe0009b195f0:	5f 24 03 d5	hint	#0x22
+fffffe0009b195f4:	7f 23 03 d5	pacibsp
+fffffe0009b195f8:	ff 43 02 d1	sub	sp, sp, #0x90
+fffffe0009b195fc:	fc 6f 03 a9	stp	x28, x27, [sp, #0x30]
+fffffe0009b19600:	fa 67 04 a9	stp	x26, x25, [sp, #0x40]
+fffffe0009b19604:	f8 5f 05 a9	stp	x24, x23, [sp, #0x50]
+fffffe0009b19608:	f6 57 06 a9	stp	x22, x21, [sp, #0x60]
+fffffe0009b1960c:	f4 4f 07 a9	stp	x20, x19, [sp, #0x70]
+fffffe0009b19610:	fd 7b 08 a9	stp	x29, x30, [sp, #0x80]
+fffffe0009b19614:	fd 03 02 91	add	x29, sp, #0x80
+fffffe0009b19618:	e3 0f 00 f9	str	x3, [sp, #0x18]
+fffffe0009b1961c:	f3 03 02 aa	mov	x19, x2
+fffffe0009b19620:	f5 03 01 aa	mov	x21, x1
+fffffe0009b19624:	f4 03 00 aa	mov	x20, x0
+fffffe0009b19628:	ff 2f 00 b9	str	wzr, [sp, #0x2c]
+fffffe0009b1962c:	36 78 45 f9	ldr	x22, [x1, #0xaf0]
+fffffe0009b19630:	37 e0 4a b9	ldr	w23, [x1, #0xae0]
+fffffe0009b19634:	10 00 40 f9	ldr	x16, [x0]
+fffffe0009b19638:	f1 03 00 aa	mov	x17, x0
+fffffe0009b1963c:	31 b4 f9 f2	movk	x17, #0xcda1, lsl #48
+fffffe0009b19640:	30 1a c1 da	autda	x16, x17
+fffffe0009b19644:	11 94 81 d2	mov	x17, #0xca0
+fffffe0009b19648:	10 02 11 8b	add	x16, x16, x17
+fffffe0009b1964c:	08 02 40 f9	ldr	x8, [x16]
+fffffe0009b19650:	30 26 fa f2	movk	x16, #0xd131, lsl #48
+fffffe0009b19654:	10 09 3f d7	blraa	x8, x16
+fffffe0009b19658:	e8 38 ff d0	adrp	x8, -6370 ; 0xfffffe0008237000
+fffffe0009b1965c:	08 39 44 f9	ldr	x8, [x8, #0x870]
+fffffe0009b19660:	08 01 40 b9	ldr	w8, [x8]
+fffffe0009b19664:	1f 79 1c 72	tst	w8, #0xfffffff7
+fffffe0009b19668:	20 01 00 54	b.eq	0xfffffe0009b1968c
+fffffe0009b1966c:	e2 03 13 2a	mov	w2, w19
+fffffe0009b19670:	20 00 82 52	mov	w0, #0x1001
+fffffe0009b19674:	00 e0 a4 72	movk	w0, #0x2700, lsl #16
+fffffe0009b19678:	e1 03 17 aa	mov	x1, x23
+fffffe0009b1967c:	03 00 80 12	mov	w3, #-0x1
+fffffe0009b19680:	04 00 80 12	mov	w4, #-0x1
+fffffe0009b19684:	05 00 80 d2	mov	x5, #0x0
+fffffe0009b19688:	09 ac 00 94	bl	0xfffffe0009b446ac ; symbol stub for: _kernel_debug
+fffffe0009b1968c:	97 62 5b b9	ldr	w23, [x20, #0x1b60]
+fffffe0009b19690:	88 ba 45 39	ldrb	w8, [x20, #0x16e]
+fffffe0009b19694:	68 02 00 36	tbz	w8, #0x0, 0xfffffe0009b196e0
+fffffe0009b19698:	98 ae 41 91	add	x24, x20, #0x6b, lsl #12
+fffffe0009b1969c:	00 00 80 52	mov	w0, #0x0
+fffffe0009b196a0:	5f ac 00 94	bl	0xfffffe0009b4481c ; symbol stub for: _sched_perfcontrol_ml_set_interrupts_without_measurement
+fffffe0009b196a4:	f9 03 00 aa	mov	x25, x0
+fffffe0009b196a8:	21 ac 00 94	bl	0xfffffe0009b4472c ; symbol stub for: _mach_absolute_time
+fffffe0009b196ac:	fa 03 00 aa	mov	x26, x0
+fffffe0009b196b0:	c0 02 40 f9	ldr	x0, [x22]
+fffffe0009b196b4:	9e aa 00 94	bl	0xfffffe0009b4412c ; symbol stub for: _IOSimpleLockLock
+fffffe0009b196b8:	1d ac 00 94	bl	0xfffffe0009b4472c ; symbol stub for: _mach_absolute_time
+fffffe0009b196bc:	e9 03 00 aa	mov	x9, x0
+fffffe0009b196c0:	1a 83 19 a9	stp	x26, x0, [x24, #0x198]
+fffffe0009b196c4:	88 f6 4d f9	ldr	x8, [x20, #0x1be8]
+fffffe0009b196c8:	00 00 1a cb	sub	x0, x0, x26
+fffffe0009b196cc:	1f 00 08 eb	cmp	x0, x8
+fffffe0009b196d0:	22 43 00 54	b.hs	0xfffffe0009b19f34
+fffffe0009b196d4:	e9 07 00 f9	str	x9, [sp, #0x8]
+fffffe0009b196d8:	f9 17 00 b9	str	w25, [sp, #0x14]
+fffffe0009b196dc:	08 00 00 14	b	0xfffffe0009b196fc
+fffffe0009b196e0:	d9 02 40 f9	ldr	x25, [x22]
+fffffe0009b196e4:	00 00 80 52	mov	w0, #0x0
+fffffe0009b196e8:	35 ac 00 94	bl	0xfffffe0009b447bc ; symbol stub for: _ml_set_interrupts_enabled
+fffffe0009b196ec:	e0 17 00 b9	str	w0, [sp, #0x14]
+fffffe0009b196f0:	e0 03 19 aa	mov	x0, x25
+fffffe0009b196f4:	8e aa 00 94	bl	0xfffffe0009b4412c ; symbol stub for: _IOSimpleLockLock
+fffffe0009b196f8:	ff 07 00 f9	str	xzr, [sp, #0x8]
+fffffe0009b196fc:	f9 03 14 aa	mov	x25, x20
+fffffe0009b19700:	39 b4 f9 f2	movk	x25, #0xcda1, lsl #48
+fffffe0009b19704:	db 22 40 91	add	x27, x22, #0x8, lsl #12
+fffffe0009b19708:	09 ac 00 94	bl	0xfffffe0009b4472c ; symbol stub for: _mach_absolute_time
+fffffe0009b1970c:	fa 03 00 aa	mov	x26, x0
+fffffe0009b19710:	dc 66 40 b9	ldr	w28, [x22, #0x64]
+fffffe0009b19714:	e0 13 00 f9	str	x0, [sp, #0x20]
+fffffe0009b19718:	13 05 00 34	cbz	w19, 0xfffffe0009b197b8
+fffffe0009b1971c:	fc 40 00 34	cbz	w28, 0xfffffe0009b19f38
+fffffe0009b19720:	88 07 00 51	sub	w8, w28, #0x1
+fffffe0009b19724:	c8 66 00 b9	str	w8, [x22, #0x64]
+fffffe0009b19728:	a8 e6 4a b9	ldr	w8, [x21, #0xae4]
+fffffe0009b1972c:	29 00 80 52	mov	w9, #0x1
+fffffe0009b19730:	28 21 c8 9a	lsl	x8, x9, x8
+fffffe0009b19734:	c9 36 40 f9	ldr	x9, [x22, #0x68]
+fffffe0009b19738:	28 01 28 8a	bic	x8, x9, x8
+fffffe0009b1973c:	c8 36 00 f9	str	x8, [x22, #0x68]
+fffffe0009b19740:	ba 06 00 f9	str	x26, [x21, #0x8]
+fffffe0009b19744:	a8 62 00 91	add	x8, x21, #0x18
+fffffe0009b19748:	a9 b2 6b 39	ldrb	w9, [x21, #0xaec]
+fffffe0009b1974c:	1a 79 29 f8	str	x26, [x8, x9, lsl #3]
+fffffe0009b19750:	a8 ba 40 f9	ldr	x8, [x21, #0x170]
+fffffe0009b19754:	aa e2 05 91	add	x10, x21, #0x178
+fffffe0009b19758:	cb 2a 40 f9	ldr	x11, [x22, #0x50]
+fffffe0009b1975c:	6b 31 40 39	ldrb	w11, [x11, #0xc]
+fffffe0009b19760:	4c 79 6b f8	ldr	x12, [x10, x11, lsl #3]
+fffffe0009b19764:	48 03 08 cb	sub	x8, x26, x8
+fffffe0009b19768:	08 01 0c 8b	add	x8, x8, x12
+fffffe0009b1976c:	48 79 2b f8	str	x8, [x10, x11, lsl #3]
+fffffe0009b19770:	28 05 00 11	add	w8, w9, #0x1
+fffffe0009b19774:	08 1d 00 12	and	w8, w8, #0xff
+fffffe0009b19778:	1f 4d 00 71	cmp	w8, #0x13
+fffffe0009b1977c:	e8 87 89 1a	csinc	w8, wzr, w9, hi
+fffffe0009b19780:	a8 b2 2b 39	strb	w8, [x21, #0xaec]
+fffffe0009b19784:	08 6c 83 52	mov	w8, #0x1b60
+fffffe0009b19788:	88 02 08 8b	add	x8, x20, x8
+fffffe0009b1978c:	08 01 40 39	ldrb	w8, [x8]
+fffffe0009b19790:	68 0d 08 36	tbz	w8, #0x1, 0xfffffe0009b1993c
+fffffe0009b19794:	a8 0a 40 f9	ldr	x8, [x21, #0x10]
+fffffe0009b19798:	48 03 08 cb	sub	x8, x26, x8
+fffffe0009b1979c:	09 fd 47 d3	lsr	x9, x8, #7
+fffffe0009b197a0:	3f 29 01 f1	cmp	x9, #0x4a
+fffffe0009b197a4:	28 09 00 54	b.hi	0xfffffe0009b198c8
+fffffe0009b197a8:	29 11 91 52	mov	w9, #0x8889
+fffffe0009b197ac:	08 7d 09 1b	mul	w8, w8, w9
+fffffe0009b197b0:	08 7d 17 53	lsr	w8, w8, #23
+fffffe0009b197b4:	5a 00 00 14	b	0xfffffe0009b1991c
+fffffe0009b197b8:	88 07 00 11	add	w8, w28, #0x1
+fffffe0009b197bc:	c8 66 00 b9	str	w8, [x22, #0x64]
+fffffe0009b197c0:	a8 e6 4a b9	ldr	w8, [x21, #0xae4]
+fffffe0009b197c4:	29 00 80 52	mov	w9, #0x1
+fffffe0009b197c8:	28 21 c8 9a	lsl	x8, x9, x8
+fffffe0009b197cc:	c9 36 40 f9	ldr	x9, [x22, #0x68]
+fffffe0009b197d0:	08 01 09 aa	orr	x8, x8, x9
+fffffe0009b197d4:	c8 36 00 f9	str	x8, [x22, #0x68]
+fffffe0009b197d8:	3c 1e 00 35	cbnz	w28, 0xfffffe0009b19b9c
+fffffe0009b197dc:	90 02 40 f9	ldr	x16, [x20]
+fffffe0009b197e0:	30 1b c1 da	autda	x16, x25
+fffffe0009b197e4:	11 56 81 d2	mov	x17, #0xab0
+fffffe0009b197e8:	10 02 11 8b	add	x16, x16, x17
+fffffe0009b197ec:	08 02 40 f9	ldr	x8, [x16]
+fffffe0009b197f0:	e0 03 14 aa	mov	x0, x20
+fffffe0009b197f4:	10 de f1 f2	movk	x16, #0x8ef0, lsl #48
+fffffe0009b197f8:	10 09 3f d7	blraa	x8, x16
+fffffe0009b197fc:	40 01 00 34	cbz	w0, 0xfffffe0009b19824
+fffffe0009b19800:	c8 2a 40 f9	ldr	x8, [x22, #0x50]
+fffffe0009b19804:	08 31 40 39	ldrb	w8, [x8, #0xc]
+fffffe0009b19808:	08 05 00 11	add	w8, w8, #0x1
+fffffe0009b1980c:	e8 2f 00 b9	str	w8, [sp, #0x2c]
+fffffe0009b19810:	c2 5a 40 b9	ldr	w2, [x22, #0x58]
+fffffe0009b19814:	e3 b3 00 91	add	x3, sp, #0x2c
+fffffe0009b19818:	e0 03 14 aa	mov	x0, x20
+fffffe0009b1981c:	01 00 80 52	mov	w1, #0x0
+fffffe0009b19820:	22 d1 ff 97	bl	__ZN9ApplePMGR16_ringPMPDoorbellENS_11PMPDoorBellEjPj
+fffffe0009b19824:	c8 0a 40 f9	ldr	x8, [x22, #0x10]
+fffffe0009b19828:	48 03 08 cb	sub	x8, x26, x8
+fffffe0009b1982c:	c0 0a c0 3d	ldr	q0, [x22, #0x20]
+fffffe0009b19830:	29 00 80 52	mov	w9, #0x1
+fffffe0009b19834:	21 0d 08 4e	dup.2d	v1, x9
+fffffe0009b19838:	01 1d 08 4e	mov.d	v1[0], x8
+fffffe0009b1983c:	00 84 e1 4e	add.2d	v0, v0, v1
+fffffe0009b19840:	c0 0a 80 3d	str	q0, [x22, #0x20]
+fffffe0009b19844:	7a e3 04 f9	str	x26, [x27, #0x9c0]
+fffffe0009b19848:	09 59 91 52	mov	w9, #0x8ac8
+fffffe0009b1984c:	c9 02 09 8b	add	x9, x22, x9
+fffffe0009b19850:	ca 2a 40 f9	ldr	x10, [x22, #0x50]
+fffffe0009b19854:	4a 31 40 39	ldrb	w10, [x10, #0xc]
+fffffe0009b19858:	2b 79 6a f8	ldr	x11, [x9, x10, lsl #3]
+fffffe0009b1985c:	6b 05 00 91	add	x11, x11, #0x1
+fffffe0009b19860:	2b 79 2a f8	str	x11, [x9, x10, lsl #3]
+fffffe0009b19864:	da 3e 00 f9	str	x26, [x22, #0x78]
+fffffe0009b19868:	09 10 88 52	mov	w9, #0x4080
+fffffe0009b1986c:	c9 02 09 8b	add	x9, x22, x9
+fffffe0009b19870:	ca 72 40 b9	ldr	w10, [x22, #0x70]
+fffffe0009b19874:	4a f1 7d d3	lsl	x10, x10, #3
+fffffe0009b19878:	5f c1 2a eb	cmp	x10, w10, sxtw
+fffffe0009b1987c:	2b c1 2a 8b	add	x11, x9, w10, sxtw
+fffffe0009b19880:	30 01 0a 8b	add	x16, x9, x10
+fffffe0009b19884:	b0 75 e5 f2	movk	x16, #0x2bad, lsl #48
+fffffe0009b19888:	6b 01 90 9a	csel	x11, x11, x16, eq
+fffffe0009b1988c:	69 01 40 f9	ldr	x9, [x11]
+fffffe0009b19890:	29 05 00 91	add	x9, x9, #0x1
+fffffe0009b19894:	69 01 00 f9	str	x9, [x11]
+fffffe0009b19898:	da 0e 00 f9	str	x26, [x22, #0x18]
+fffffe0009b1989c:	09 6c 83 52	mov	w9, #0x1b60
+fffffe0009b198a0:	89 02 09 8b	add	x9, x20, x9
+fffffe0009b198a4:	29 01 40 39	ldrb	w9, [x9]
+fffffe0009b198a8:	09 15 08 36	tbz	w9, #0x1, 0xfffffe0009b19b48
+fffffe0009b198ac:	09 fd 47 d3	lsr	x9, x8, #7
+fffffe0009b198b0:	3f 29 01 f1	cmp	x9, #0x4a
+fffffe0009b198b4:	08 0d 00 54	b.hi	0xfffffe0009b19a54
+fffffe0009b198b8:	29 11 91 52	mov	w9, #0x8889
+fffffe0009b198bc:	08 7d 09 1b	mul	w8, w8, w9
+fffffe0009b198c0:	08 7d 17 53	lsr	w8, w8, #23
+fffffe0009b198c4:	98 00 00 14	b	0xfffffe0009b19b24
+fffffe0009b198c8:	09 38 87 52	mov	w9, #0x39c0
+fffffe0009b198cc:	c9 00 a0 72	movk	w9, #0x6, lsl #16
+fffffe0009b198d0:	1f 01 09 eb	cmp	x8, x9
+fffffe0009b198d4:	e2 00 00 54	b.hs	0xfffffe0009b198f0
+fffffe0009b198d8:	29 3e 83 52	mov	w9, #0x19f1
+fffffe0009b198dc:	c9 ae a0 72	movk	w9, #0x576, lsl #16
+fffffe0009b198e0:	08 7d 09 9b	mul	x8, x8, x9
+fffffe0009b198e4:	08 fd 68 d3	lsr	x8, x8, #40
+fffffe0009b198e8:	08 a1 00 11	add	w8, w8, #0x28
+fffffe0009b198ec:	0c 00 00 14	b	0xfffffe0009b1991c
+fffffe0009b198f0:	a9 34 85 d2	mov	x9, #0x29a5
+fffffe0009b198f4:	a9 e2 ac f2	movk	x9, #0x6715, lsl #16
+fffffe0009b198f8:	e9 c3 c7 f2	movk	x9, #0x3e1f, lsl #32
+fffffe0009b198fc:	69 d8 f5 f2	movk	x9, #0xaec3, lsl #48
+fffffe0009b19900:	08 7d c9 9b	umulh	x8, x8, x9
+fffffe0009b19904:	08 7d 0e 53	lsr	w8, w8, #14
+fffffe0009b19908:	49 04 80 52	mov	w9, #0x22
+fffffe0009b1990c:	4a 09 80 52	mov	w10, #0x4a
+fffffe0009b19910:	08 29 09 1b	madd	w8, w8, w9, w10
+fffffe0009b19914:	48 01 38 37	tbnz	w8, #0x7, 0xfffffe0009b1993c
+fffffe0009b19918:	08 1d 00 13	sxtb	w8, w8
+fffffe0009b1991c:	a9 02 1f 91	add	x9, x21, #0x7c0
+fffffe0009b19920:	08 1d 00 12	and	w8, w8, #0xff
+fffffe0009b19924:	1f 65 01 71	cmp	w8, #0x59
+fffffe0009b19928:	2a 0b 80 52	mov	w10, #0x59
+fffffe0009b1992c:	08 31 8a 1a	csel	w8, w8, w10, lo
+fffffe0009b19930:	2a 59 68 f8	ldr	x10, [x9, w8, uxtw #3]
+fffffe0009b19934:	4a 05 00 91	add	x10, x10, #0x1
+fffffe0009b19938:	2a 59 28 f8	str	x10, [x9, w8, uxtw #3]
+fffffe0009b1993c:	d7 00 10 36	tbz	w23, #0x2, 0xfffffe0009b19954
+fffffe0009b19940:	a1 0a 40 39	ldrb	w1, [x21, #0x2]
+fffffe0009b19944:	a2 06 40 b9	ldr	w2, [x21, #0x4]
+fffffe0009b19948:	e0 03 14 aa	mov	x0, x20
+fffffe0009b1994c:	03 00 80 52	mov	w3, #0x0
+fffffe0009b19950:	09 b7 ff 97	bl	__ZN9ApplePMGR22_clearPSLevelIndicatorEhjh
+fffffe0009b19954:	9f 07 00 71	cmp	w28, #0x1
+fffffe0009b19958:	c1 1b 00 54	b.ne	0xfffffe0009b19cd0
+fffffe0009b1995c:	90 02 40 f9	ldr	x16, [x20]
+fffffe0009b19960:	30 1b c1 da	autda	x16, x25
+fffffe0009b19964:	11 56 81 d2	mov	x17, #0xab0
+fffffe0009b19968:	10 02 11 8b	add	x16, x16, x17
+fffffe0009b1996c:	08 02 40 f9	ldr	x8, [x16]
+fffffe0009b19970:	e0 03 14 aa	mov	x0, x20
+fffffe0009b19974:	10 de f1 f2	movk	x16, #0x8ef0, lsl #48
+fffffe0009b19978:	10 09 3f d7	blraa	x8, x16
+fffffe0009b1997c:	e0 00 00 34	cbz	w0, 0xfffffe0009b19998
+fffffe0009b19980:	ff 2f 00 b9	str	wzr, [sp, #0x2c]
+fffffe0009b19984:	c2 5a 40 b9	ldr	w2, [x22, #0x58]
+fffffe0009b19988:	e3 b3 00 91	add	x3, sp, #0x2c
+fffffe0009b1998c:	e0 03 14 aa	mov	x0, x20
+fffffe0009b19990:	01 00 80 52	mov	w1, #0x0
+fffffe0009b19994:	c5 d0 ff 97	bl	__ZN9ApplePMGR16_ringPMPDoorbellENS_11PMPDoorBellEjPj
+fffffe0009b19998:	ec 13 40 f9	ldr	x12, [sp, #0x20]
+fffffe0009b1999c:	cc 0a 00 f9	str	x12, [x22, #0x10]
+fffffe0009b199a0:	68 e3 44 f9	ldr	x8, [x27, #0x9c0]
+fffffe0009b199a4:	09 39 91 52	mov	w9, #0x89c8
+fffffe0009b199a8:	c9 02 09 8b	add	x9, x22, x9
+fffffe0009b199ac:	ca 2a 40 f9	ldr	x10, [x22, #0x50]
+fffffe0009b199b0:	4a 31 40 39	ldrb	w10, [x10, #0xc]
+fffffe0009b199b4:	2b 79 6a f8	ldr	x11, [x9, x10, lsl #3]
+fffffe0009b199b8:	88 01 08 cb	sub	x8, x12, x8
+fffffe0009b199bc:	08 01 0b 8b	add	x8, x8, x11
+fffffe0009b199c0:	28 79 2a f8	str	x8, [x9, x10, lsl #3]
+fffffe0009b199c4:	c8 3e 40 f9	ldr	x8, [x22, #0x78]
+fffffe0009b199c8:	c9 02 02 91	add	x9, x22, #0x80
+fffffe0009b199cc:	ca 72 40 b9	ldr	w10, [x22, #0x70]
+fffffe0009b199d0:	4a f1 7d d3	lsl	x10, x10, #3
+fffffe0009b199d4:	5f c1 2a eb	cmp	x10, w10, sxtw
+fffffe0009b199d8:	2b c1 2a 8b	add	x11, x9, w10, sxtw
+fffffe0009b199dc:	30 01 0a 8b	add	x16, x9, x10
+fffffe0009b199e0:	b0 75 e5 f2	movk	x16, #0x2bad, lsl #48
+fffffe0009b199e4:	6b 01 90 9a	csel	x11, x11, x16, eq
+fffffe0009b199e8:	69 01 40 f9	ldr	x9, [x11]
+fffffe0009b199ec:	88 01 08 cb	sub	x8, x12, x8
+fffffe0009b199f0:	08 01 09 8b	add	x8, x8, x9
+fffffe0009b199f4:	68 01 00 f9	str	x8, [x11]
+fffffe0009b199f8:	08 6c 83 52	mov	w8, #0x1b60
+fffffe0009b199fc:	88 02 08 8b	add	x8, x20, x8
+fffffe0009b19a00:	08 01 40 39	ldrb	w8, [x8]
+fffffe0009b19a04:	48 06 08 36	tbz	w8, #0x1, 0xfffffe0009b19acc
+fffffe0009b19a08:	c8 0e 40 f9	ldr	x8, [x22, #0x18]
+fffffe0009b19a0c:	88 01 08 cb	sub	x8, x12, x8
+fffffe0009b19a10:	09 fd 47 d3	lsr	x9, x8, #7
+fffffe0009b19a14:	3f 29 01 f1	cmp	x9, #0x4a
+fffffe0009b19a18:	a8 00 00 54	b.hi	0xfffffe0009b19a2c
+fffffe0009b19a1c:	29 11 91 52	mov	w9, #0x8889
+fffffe0009b19a20:	08 7d 09 1b	mul	w8, w8, w9
+fffffe0009b19a24:	08 7d 17 53	lsr	w8, w8, #23
+fffffe0009b19a28:	20 00 00 14	b	0xfffffe0009b19aa8
+fffffe0009b19a2c:	09 38 87 52	mov	w9, #0x39c0
+fffffe0009b19a30:	c9 00 a0 72	movk	w9, #0x6, lsl #16
+fffffe0009b19a34:	1f 01 09 eb	cmp	x8, x9
+fffffe0009b19a38:	22 02 00 54	b.hs	0xfffffe0009b19a7c
+fffffe0009b19a3c:	29 3e 83 52	mov	w9, #0x19f1
+fffffe0009b19a40:	c9 ae a0 72	movk	w9, #0x576, lsl #16
+fffffe0009b19a44:	08 7d 09 9b	mul	x8, x8, x9
+fffffe0009b19a48:	08 fd 68 d3	lsr	x8, x8, #40
+fffffe0009b19a4c:	08 a1 00 11	add	w8, w8, #0x28
+fffffe0009b19a50:	16 00 00 14	b	0xfffffe0009b19aa8
+fffffe0009b19a54:	09 38 87 52	mov	w9, #0x39c0
+fffffe0009b19a58:	c9 00 a0 72	movk	w9, #0x6, lsl #16
+fffffe0009b19a5c:	1f 01 09 eb	cmp	x8, x9
+fffffe0009b19a60:	c2 04 00 54	b.hs	0xfffffe0009b19af8
+fffffe0009b19a64:	29 3e 83 52	mov	w9, #0x19f1
+fffffe0009b19a68:	c9 ae a0 72	movk	w9, #0x576, lsl #16
+fffffe0009b19a6c:	08 7d 09 9b	mul	x8, x8, x9
+fffffe0009b19a70:	08 fd 68 d3	lsr	x8, x8, #40
+fffffe0009b19a74:	08 a1 00 11	add	w8, w8, #0x28
+fffffe0009b19a78:	2b 00 00 14	b	0xfffffe0009b19b24
+fffffe0009b19a7c:	a9 34 85 d2	mov	x9, #0x29a5
+fffffe0009b19a80:	a9 e2 ac f2	movk	x9, #0x6715, lsl #16
+fffffe0009b19a84:	e9 c3 c7 f2	movk	x9, #0x3e1f, lsl #32
+fffffe0009b19a88:	69 d8 f5 f2	movk	x9, #0xaec3, lsl #48
+fffffe0009b19a8c:	08 7d c9 9b	umulh	x8, x8, x9
+fffffe0009b19a90:	08 7d 0e 53	lsr	w8, w8, #14
+fffffe0009b19a94:	49 04 80 52	mov	w9, #0x22
+fffffe0009b19a98:	4a 09 80 52	mov	w10, #0x4a
+fffffe0009b19a9c:	08 29 09 1b	madd	w8, w8, w9, w10
+fffffe0009b19aa0:	68 01 38 37	tbnz	w8, #0x7, 0xfffffe0009b19acc
+fffffe0009b19aa4:	08 1d 00 13	sxtb	w8, w8
+fffffe0009b19aa8:	09 d1 90 52	mov	w9, #0x8688
+fffffe0009b19aac:	c9 02 09 8b	add	x9, x22, x9
+fffffe0009b19ab0:	08 1d 00 12	and	w8, w8, #0xff
+fffffe0009b19ab4:	1f 65 01 71	cmp	w8, #0x59
+fffffe0009b19ab8:	2a 0b 80 52	mov	w10, #0x59
+fffffe0009b19abc:	08 31 8a 1a	csel	w8, w8, w10, lo
+fffffe0009b19ac0:	2a 59 68 f8	ldr	x10, [x9, w8, uxtw #3]
+fffffe0009b19ac4:	4a 05 00 91	add	x10, x10, #0x1
+fffffe0009b19ac8:	2a 59 28 f8	str	x10, [x9, w8, uxtw #3]
+fffffe0009b19acc:	fa 03 19 aa	mov	x26, x25
+fffffe0009b19ad0:	3c 00 80 52	mov	w28, #0x1
+fffffe0009b19ad4:	97 14 10 36	tbz	w23, #0x2, 0xfffffe0009b19d64
+fffffe0009b19ad8:	c8 c2 40 39	ldrb	w8, [x22, #0x30]
+fffffe0009b19adc:	48 14 00 36	tbz	w8, #0x0, 0xfffffe0009b19d64
+fffffe0009b19ae0:	c1 d2 40 39	ldrb	w1, [x22, #0x34]
+fffffe0009b19ae4:	c2 3a 40 b9	ldr	w2, [x22, #0x38]
+fffffe0009b19ae8:	e0 03 14 aa	mov	x0, x20
+fffffe0009b19aec:	03 00 80 52	mov	w3, #0x0
+fffffe0009b19af0:	a1 b6 ff 97	bl	__ZN9ApplePMGR22_clearPSLevelIndicatorEhjh
+fffffe0009b19af4:	9c 00 00 14	b	0xfffffe0009b19d64
+fffffe0009b19af8:	a9 34 85 d2	mov	x9, #0x29a5
+fffffe0009b19afc:	a9 e2 ac f2	movk	x9, #0x6715, lsl #16
+fffffe0009b19b00:	e9 c3 c7 f2	movk	x9, #0x3e1f, lsl #32
+fffffe0009b19b04:	69 d8 f5 f2	movk	x9, #0xaec3, lsl #48
+fffffe0009b19b08:	08 7d c9 9b	umulh	x8, x8, x9
+fffffe0009b19b0c:	08 7d 0e 53	lsr	w8, w8, #14
+fffffe0009b19b10:	49 04 80 52	mov	w9, #0x22
+fffffe0009b19b14:	4a 09 80 52	mov	w10, #0x4a
+fffffe0009b19b18:	08 29 09 1b	madd	w8, w8, w9, w10
+fffffe0009b19b1c:	68 01 38 37	tbnz	w8, #0x7, 0xfffffe0009b19b48
+fffffe0009b19b20:	08 1d 00 13	sxtb	w8, w8
+fffffe0009b19b24:	09 6d 90 52	mov	w9, #0x8368
+fffffe0009b19b28:	c9 02 09 8b	add	x9, x22, x9
+fffffe0009b19b2c:	08 1d 00 12	and	w8, w8, #0xff
+fffffe0009b19b30:	1f 65 01 71	cmp	w8, #0x59
+fffffe0009b19b34:	2a 0b 80 52	mov	w10, #0x59
+fffffe0009b19b38:	08 31 8a 1a	csel	w8, w8, w10, lo
+fffffe0009b19b3c:	2a 59 68 f8	ldr	x10, [x9, w8, uxtw #3]
+fffffe0009b19b40:	4a 05 00 91	add	x10, x10, #0x1
+fffffe0009b19b44:	2a 59 28 f8	str	x10, [x9, w8, uxtw #3]
+fffffe0009b19b48:	b7 01 10 36	tbz	w23, #0x2, 0xfffffe0009b19b7c
+fffffe0009b19b4c:	c8 c2 40 39	ldrb	w8, [x22, #0x30]
+fffffe0009b19b50:	68 01 00 36	tbz	w8, #0x0, 0xfffffe0009b19b7c
+fffffe0009b19b54:	c1 d2 40 39	ldrb	w1, [x22, #0x34]
+fffffe0009b19b58:	c2 3a 40 b9	ldr	w2, [x22, #0x38]
+fffffe0009b19b5c:	c3 66 40 79	ldrh	w3, [x22, #0x32]
+fffffe0009b19b60:	e0 03 14 aa	mov	x0, x20
+fffffe0009b19b64:	04 00 80 52	mov	w4, #0x0
+fffffe0009b19b68:	7e b5 ff 97	bl	__ZN9ApplePMGR20_getPSLevelIndicatorEhjth
+fffffe0009b19b6c:	80 00 00 34	cbz	w0, 0xfffffe0009b19b7c
+fffffe0009b19b70:	c8 22 40 f9	ldr	x8, [x22, #0x40]
+fffffe0009b19b74:	08 05 00 91	add	x8, x8, #0x1
+fffffe0009b19b78:	c8 22 00 f9	str	x8, [x22, #0x40]
+fffffe0009b19b7c:	90 02 40 f9	ldr	x16, [x20]
+fffffe0009b19b80:	30 1b c1 da	autda	x16, x25
+fffffe0009b19b84:	11 f0 81 d2	mov	x17, #0xf80
+fffffe0009b19b88:	10 02 11 8b	add	x16, x16, x17
+fffffe0009b19b8c:	08 02 40 f9	ldr	x8, [x16]
+fffffe0009b19b90:	e0 03 14 aa	mov	x0, x20
+fffffe0009b19b94:	50 20 f5 f2	movk	x16, #0xa902, lsl #48
+fffffe0009b19b98:	10 09 3f d7	blraa	x8, x16
+fffffe0009b19b9c:	a8 06 40 f9	ldr	x8, [x21, #0x8]
+fffffe0009b19ba0:	48 03 08 cb	sub	x8, x26, x8
+fffffe0009b19ba4:	a9 62 05 91	add	x9, x21, #0x158
+fffffe0009b19ba8:	20 01 c0 3d	ldr	q0, [x9]
+fffffe0009b19bac:	2a 00 80 52	mov	w10, #0x1
+fffffe0009b19bb0:	41 0d 08 4e	dup.2d	v1, x10
+fffffe0009b19bb4:	01 1d 08 4e	mov.d	v1[0], x8
+fffffe0009b19bb8:	00 84 e1 4e	add.2d	v0, v0, v1
+fffffe0009b19bbc:	20 01 80 3d	str	q0, [x9]
+fffffe0009b19bc0:	ba ba 00 f9	str	x26, [x21, #0x170]
+fffffe0009b19bc4:	a9 e2 09 91	add	x9, x21, #0x278
+fffffe0009b19bc8:	ca 2a 40 f9	ldr	x10, [x22, #0x50]
+fffffe0009b19bcc:	4a 31 40 39	ldrb	w10, [x10, #0xc]
+fffffe0009b19bd0:	2b 79 6a f8	ldr	x11, [x9, x10, lsl #3]
+fffffe0009b19bd4:	6b 05 00 91	add	x11, x11, #0x1
+fffffe0009b19bd8:	2b 79 2a f8	str	x11, [x9, x10, lsl #3]
+fffffe0009b19bdc:	ba 0a 00 f9	str	x26, [x21, #0x10]
+fffffe0009b19be0:	a9 e2 02 91	add	x9, x21, #0xb8
+fffffe0009b19be4:	aa b6 6b 39	ldrb	w10, [x21, #0xaed]
+fffffe0009b19be8:	3a 79 2a f8	str	x26, [x9, x10, lsl #3]
+fffffe0009b19bec:	49 05 00 11	add	w9, w10, #0x1
+fffffe0009b19bf0:	29 1d 00 12	and	w9, w9, #0xff
+fffffe0009b19bf4:	3f 4d 00 71	cmp	w9, #0x13
+fffffe0009b19bf8:	e9 87 8a 1a	csinc	w9, wzr, w10, hi
+fffffe0009b19bfc:	a9 b6 2b 39	strb	w9, [x21, #0xaed]
+fffffe0009b19c00:	09 6c 83 52	mov	w9, #0x1b60
+fffffe0009b19c04:	89 02 09 8b	add	x9, x20, x9
+fffffe0009b19c08:	29 01 40 39	ldrb	w9, [x9]
+fffffe0009b19c0c:	a9 04 08 36	tbz	w9, #0x1, 0xfffffe0009b19ca0
+fffffe0009b19c10:	09 fd 47 d3	lsr	x9, x8, #7
+fffffe0009b19c14:	3f 29 01 f1	cmp	x9, #0x4a
+fffffe0009b19c18:	a8 00 00 54	b.hi	0xfffffe0009b19c2c
+fffffe0009b19c1c:	29 11 91 52	mov	w9, #0x8889
+fffffe0009b19c20:	08 7d 09 1b	mul	w8, w8, w9
+fffffe0009b19c24:	08 7d 17 53	lsr	w8, w8, #23
+fffffe0009b19c28:	16 00 00 14	b	0xfffffe0009b19c80
+fffffe0009b19c2c:	09 38 87 52	mov	w9, #0x39c0
+fffffe0009b19c30:	c9 00 a0 72	movk	w9, #0x6, lsl #16
+fffffe0009b19c34:	1f 01 09 eb	cmp	x8, x9
+fffffe0009b19c38:	e2 00 00 54	b.hs	0xfffffe0009b19c54
+fffffe0009b19c3c:	29 3e 83 52	mov	w9, #0x19f1
+fffffe0009b19c40:	c9 ae a0 72	movk	w9, #0x576, lsl #16
+fffffe0009b19c44:	08 7d 09 9b	mul	x8, x8, x9
+fffffe0009b19c48:	08 fd 68 d3	lsr	x8, x8, #40
+fffffe0009b19c4c:	08 a1 00 11	add	w8, w8, #0x28
+fffffe0009b19c50:	0c 00 00 14	b	0xfffffe0009b19c80
+fffffe0009b19c54:	a9 34 85 d2	mov	x9, #0x29a5
+fffffe0009b19c58:	a9 e2 ac f2	movk	x9, #0x6715, lsl #16
+fffffe0009b19c5c:	e9 c3 c7 f2	movk	x9, #0x3e1f, lsl #32
+fffffe0009b19c60:	69 d8 f5 f2	movk	x9, #0xaec3, lsl #48
+fffffe0009b19c64:	08 7d c9 9b	umulh	x8, x8, x9
+fffffe0009b19c68:	08 7d 0e 53	lsr	w8, w8, #14
+fffffe0009b19c6c:	49 04 80 52	mov	w9, #0x22
+fffffe0009b19c70:	4a 09 80 52	mov	w10, #0x4a
+fffffe0009b19c74:	08 29 09 1b	madd	w8, w8, w9, w10
+fffffe0009b19c78:	48 01 38 37	tbnz	w8, #0x7, 0xfffffe0009b19ca0
+fffffe0009b19c7c:	08 1d 00 13	sxtb	w8, w8
+fffffe0009b19c80:	a9 82 12 91	add	x9, x21, #0x4a0
+fffffe0009b19c84:	08 1d 00 12	and	w8, w8, #0xff
+fffffe0009b19c88:	1f 65 01 71	cmp	w8, #0x59
+fffffe0009b19c8c:	2a 0b 80 52	mov	w10, #0x59
+fffffe0009b19c90:	08 31 8a 1a	csel	w8, w8, w10, lo
+fffffe0009b19c94:	2a 59 68 f8	ldr	x10, [x9, w8, uxtw #3]
+fffffe0009b19c98:	4a 05 00 91	add	x10, x10, #0x1
+fffffe0009b19c9c:	2a 59 28 f8	str	x10, [x9, w8, uxtw #3]
+fffffe0009b19ca0:	77 01 10 36	tbz	w23, #0x2, 0xfffffe0009b19ccc
+fffffe0009b19ca4:	a1 0a 40 39	ldrb	w1, [x21, #0x2]
+fffffe0009b19ca8:	a2 06 40 b9	ldr	w2, [x21, #0x4]
+fffffe0009b19cac:	a3 02 40 79	ldrh	w3, [x21]
+fffffe0009b19cb0:	e0 03 14 aa	mov	x0, x20
+fffffe0009b19cb4:	04 00 80 52	mov	w4, #0x0
+fffffe0009b19cb8:	2a b5 ff 97	bl	__ZN9ApplePMGR20_getPSLevelIndicatorEhjth
+fffffe0009b19cbc:	80 00 00 34	cbz	w0, 0xfffffe0009b19ccc
+fffffe0009b19cc0:	a8 b6 40 f9	ldr	x8, [x21, #0x168]
+fffffe0009b19cc4:	08 05 00 91	add	x8, x8, #0x1
+fffffe0009b19cc8:	a8 b6 00 f9	str	x8, [x21, #0x168]
+fffffe0009b19ccc:	bc 04 00 34	cbz	w28, 0xfffffe0009b19d60
+fffffe0009b19cd0:	fa 03 19 aa	mov	x26, x25
+fffffe0009b19cd4:	1c 00 80 52	mov	w28, #0x0
+fffffe0009b19cd8:	c8 02 02 91	add	x8, x22, #0x80
+fffffe0009b19cdc:	c9 2a 40 f9	ldr	x9, [x22, #0x50]
+fffffe0009b19ce0:	2a 09 40 b9	ldr	w10, [x9, #0x8]
+fffffe0009b19ce4:	cb 66 40 b9	ldr	w11, [x22, #0x64]
+fffffe0009b19ce8:	6b 05 00 51	sub	w11, w11, #0x1
+fffffe0009b19cec:	29 31 40 39	ldrb	w9, [x9, #0xc]
+fffffe0009b19cf0:	69 25 0a 1b	madd	w9, w11, w10, w9
+fffffe0009b19cf4:	ca 3e 40 f9	ldr	x10, [x22, #0x78]
+fffffe0009b19cf8:	cb 72 40 b9	ldr	w11, [x22, #0x70]
+fffffe0009b19cfc:	6b f1 7d d3	lsl	x11, x11, #3
+fffffe0009b19d00:	7f c1 2b eb	cmp	x11, w11, sxtw
+fffffe0009b19d04:	0c c1 2b 8b	add	x12, x8, w11, sxtw
+fffffe0009b19d08:	10 01 0b 8b	add	x16, x8, x11
+fffffe0009b19d0c:	b0 75 e5 f2	movk	x16, #0x2bad, lsl #48
+fffffe0009b19d10:	8c 01 90 9a	csel	x12, x12, x16, eq
+fffffe0009b19d14:	88 01 40 f9	ldr	x8, [x12]
+fffffe0009b19d18:	eb 13 40 f9	ldr	x11, [sp, #0x20]
+fffffe0009b19d1c:	6a 01 0a cb	sub	x10, x11, x10
+fffffe0009b19d20:	48 01 08 8b	add	x8, x10, x8
+fffffe0009b19d24:	88 01 00 f9	str	x8, [x12]
+fffffe0009b19d28:	cb 3e 00 f9	str	x11, [x22, #0x78]
+fffffe0009b19d2c:	08 10 88 52	mov	w8, #0x4080
+fffffe0009b19d30:	c8 02 08 8b	add	x8, x22, x8
+fffffe0009b19d34:	2a 7d 7d d3	ubfiz	x10, x9, #3, #32
+fffffe0009b19d38:	5f c1 2a eb	cmp	x10, w10, sxtw
+fffffe0009b19d3c:	0b c1 2a 8b	add	x11, x8, w10, sxtw
+fffffe0009b19d40:	10 01 0a 8b	add	x16, x8, x10
+fffffe0009b19d44:	b0 75 e5 f2	movk	x16, #0x2bad, lsl #48
+fffffe0009b19d48:	6b 01 90 9a	csel	x11, x11, x16, eq
+fffffe0009b19d4c:	68 01 40 f9	ldr	x8, [x11]
+fffffe0009b19d50:	08 05 00 91	add	x8, x8, #0x1
+fffffe0009b19d54:	68 01 00 f9	str	x8, [x11]
+fffffe0009b19d58:	c9 72 00 b9	str	w9, [x22, #0x70]
+fffffe0009b19d5c:	02 00 00 14	b	0xfffffe0009b19d64
+fffffe0009b19d60:	fa 03 19 aa	mov	x26, x25
+fffffe0009b19d64:	17 00 80 d2	mov	x23, #0x0
+fffffe0009b19d68:	98 00 80 52	mov	w24, #0x4
+fffffe0009b19d6c:	19 de fe 90	adrp	x25, -9280 ; 0xfffffe00076d9000
+fffffe0009b19d70:	39 a3 15 91	add	x25, x25, #0x568
+fffffe0009b19d74:	21 7b 77 b8	ldr	w1, [x25, x23, lsl #2]
+fffffe0009b19d78:	e0 03 14 aa	mov	x0, x20
+fffffe0009b19d7c:	6b 18 ff 97	bl	__ZN9ApplePMGR10validParamENS_5ParamE
+fffffe0009b19d80:	18 07 00 f1	subs	x24, x24, #0x1
+fffffe0009b19d84:	e8 37 9f 1a	cset	w8, hs
+fffffe0009b19d88:	60 00 00 34	cbz	w0, 0xfffffe0009b19d94
+fffffe0009b19d8c:	f7 06 00 91	add	x23, x23, #0x1
+fffffe0009b19d90:	28 ff 07 37	tbnz	w8, #0x0, 0xfffffe0009b19d74
+fffffe0009b19d94:	f7 0f 40 f9	ldr	x23, [sp, #0x18]
+fffffe0009b19d98:	ff 02 00 f1	cmp	x23, #0x0
+fffffe0009b19d9c:	08 00 00 52	eor	w8, w0, #0x1
+fffffe0009b19da0:	08 15 9f 1a	csinc	w8, w8, wzr, ne
+fffffe0009b19da4:	28 02 00 37	tbnz	w8, #0x0, 0xfffffe0009b19de8
+fffffe0009b19da8:	68 63 4a 39	ldrb	w8, [x27, #0x298]
+fffffe0009b19dac:	c8 01 00 36	tbz	w8, #0x0, 0xfffffe0009b19de4
+fffffe0009b19db0:	e1 03 16 aa	mov	x1, x22
+fffffe0009b19db4:	e2 13 40 f9	ldr	x2, [sp, #0x20]
+fffffe0009b19db8:	87 00 00 94	bl	__ZN9ApplePMGR17_adjustDVDCreditsEPNS_10CPUComplexEy
+fffffe0009b19dbc:	e0 02 00 f9	str	x0, [x23]
+fffffe0009b19dc0:	e0 03 14 aa	mov	x0, x20
+fffffe0009b19dc4:	e1 03 16 aa	mov	x1, x22
+fffffe0009b19dc8:	e2 1f 80 52	mov	w2, #0xff
+fffffe0009b19dcc:	03 00 80 52	mov	w3, #0x0
+fffffe0009b19dd0:	e4 1f 80 52	mov	w4, #0xff
+fffffe0009b19dd4:	6c fa ff 97	bl	__ZN9ApplePMGR26_updateCPUComplexPerfStateEPNS_10CPUComplexEhbh
+fffffe0009b19dd8:	c8 2a 40 f9	ldr	x8, [x22, #0x50]
+fffffe0009b19ddc:	00 31 00 39	strb	w0, [x8, #0xc]
+fffffe0009b19de0:	02 00 00 14	b	0xfffffe0009b19de8
+fffffe0009b19de4:	ff 02 00 f9	str	xzr, [x23]
+fffffe0009b19de8:	90 02 40 f9	ldr	x16, [x20]
+fffffe0009b19dec:	f1 03 1a aa	mov	x17, x26
+fffffe0009b19df0:	30 1a c1 da	autda	x16, x17
+fffffe0009b19df4:	f1 03 10 aa	mov	x17, x16
+fffffe0009b19df8:	f1 47 c1 da	xpacd	x17
+fffffe0009b19dfc:	1f 02 11 eb	cmp	x16, x17
+fffffe0009b19e00:	40 00 00 54	b.eq	0xfffffe0009b19e08
+fffffe0009b19e04:	40 8e 38 d4	brk	#0xc472
+fffffe0009b19e08:	33 01 00 34	cbz	w19, 0xfffffe0009b19e2c
+fffffe0009b19e0c:	08 22 3e 91	add	x8, x16, #0xf88
+fffffe0009b19e10:	09 c6 47 f9	ldr	x9, [x16, #0xf88]
+fffffe0009b19e14:	e0 03 14 aa	mov	x0, x20
+fffffe0009b19e18:	f1 03 08 aa	mov	x17, x8
+fffffe0009b19e1c:	51 1b eb f2	movk	x17, #0x58da, lsl #48
+fffffe0009b19e20:	31 09 3f d7	blraa	x9, x17
+fffffe0009b19e24:	3c 01 00 35	cbnz	w28, 0xfffffe0009b19e48
+fffffe0009b19e28:	10 00 00 14	b	0xfffffe0009b19e68
+fffffe0009b19e2c:	08 42 3e 91	add	x8, x16, #0xf90
+fffffe0009b19e30:	09 ca 47 f9	ldr	x9, [x16, #0xf90]
+fffffe0009b19e34:	e0 03 14 aa	mov	x0, x20
+fffffe0009b19e38:	f1 03 08 aa	mov	x17, x8
+fffffe0009b19e3c:	31 e2 f6 f2	movk	x17, #0xb711, lsl #48
+fffffe0009b19e40:	31 09 3f d7	blraa	x9, x17
+fffffe0009b19e44:	3c 01 00 34	cbz	w28, 0xfffffe0009b19e68
+fffffe0009b19e48:	90 02 40 f9	ldr	x16, [x20]
+fffffe0009b19e4c:	50 1b c1 da	autda	x16, x26
+fffffe0009b19e50:	11 ef 81 d2	mov	x17, #0xf78
+fffffe0009b19e54:	10 02 11 8b	add	x16, x16, x17
+fffffe0009b19e58:	08 02 40 f9	ldr	x8, [x16]
+fffffe0009b19e5c:	e0 03 14 aa	mov	x0, x20
+fffffe0009b19e60:	90 1a ff f2	movk	x16, #0xf8d4, lsl #48
+fffffe0009b19e64:	10 09 3f d7	blraa	x8, x16
+fffffe0009b19e68:	88 ba 45 39	ldrb	w8, [x20, #0x16e]
+fffffe0009b19e6c:	e8 01 00 36	tbz	w8, #0x0, 0xfffffe0009b19ea8
+fffffe0009b19e70:	2f aa 00 94	bl	0xfffffe0009b4472c ; symbol stub for: _mach_absolute_time
+fffffe0009b19e74:	88 ae 41 91	add	x8, x20, #0x6b, lsl #12
+fffffe0009b19e78:	01 a1 06 91	add	x1, x8, #0x1a8
+fffffe0009b19e7c:	20 00 00 f9	str	x0, [x1]
+fffffe0009b19e80:	88 f6 4d f9	ldr	x8, [x20, #0x1be8]
+fffffe0009b19e84:	e2 07 40 f9	ldr	x2, [sp, #0x8]
+fffffe0009b19e88:	00 00 02 cb	sub	x0, x0, x2
+fffffe0009b19e8c:	1f 00 08 eb	cmp	x0, x8
+fffffe0009b19e90:	62 05 00 54	b.hs	0xfffffe0009b19f3c
+fffffe0009b19e94:	c0 02 40 f9	ldr	x0, [x22]
+fffffe0009b19e98:	a9 a8 00 94	bl	0xfffffe0009b4413c ; symbol stub for: _IOSimpleLockUnlock
+fffffe0009b19e9c:	e0 17 40 b9	ldr	w0, [sp, #0x14]
+fffffe0009b19ea0:	5f aa 00 94	bl	0xfffffe0009b4481c ; symbol stub for: _sched_perfcontrol_ml_set_interrupts_without_measurement
+fffffe0009b19ea4:	05 00 00 14	b	0xfffffe0009b19eb8
+fffffe0009b19ea8:	c0 02 40 f9	ldr	x0, [x22]
+fffffe0009b19eac:	a4 a8 00 94	bl	0xfffffe0009b4413c ; symbol stub for: _IOSimpleLockUnlock
+fffffe0009b19eb0:	e0 17 40 b9	ldr	w0, [sp, #0x14]
+fffffe0009b19eb4:	42 aa 00 94	bl	0xfffffe0009b447bc ; symbol stub for: _ml_set_interrupts_enabled
+fffffe0009b19eb8:	b5 e2 4a b9	ldr	w21, [x21, #0xae0]
+fffffe0009b19ebc:	90 02 40 f9	ldr	x16, [x20]
+fffffe0009b19ec0:	50 1b c1 da	autda	x16, x26
+fffffe0009b19ec4:	11 94 81 d2	mov	x17, #0xca0
+fffffe0009b19ec8:	10 02 11 8b	add	x16, x16, x17
+fffffe0009b19ecc:	08 02 40 f9	ldr	x8, [x16]
+fffffe0009b19ed0:	e0 03 14 aa	mov	x0, x20
+fffffe0009b19ed4:	30 26 fa f2	movk	x16, #0xd131, lsl #48
+fffffe0009b19ed8:	10 09 3f d7	blraa	x8, x16
+fffffe0009b19edc:	e8 38 ff d0	adrp	x8, -6370 ; 0xfffffe0008237000
+fffffe0009b19ee0:	08 39 44 f9	ldr	x8, [x8, #0x870]
+fffffe0009b19ee4:	08 01 40 b9	ldr	w8, [x8]
+fffffe0009b19ee8:	1f 79 1c 72	tst	w8, #0xfffffff7
+fffffe0009b19eec:	40 01 00 54	b.eq	0xfffffe0009b19f14
+fffffe0009b19ef0:	e2 03 13 2a	mov	w2, w19
+fffffe0009b19ef4:	28 00 82 52	mov	w8, #0x1001
+fffffe0009b19ef8:	08 e0 a4 72	movk	w8, #0x2700, lsl #16
+fffffe0009b19efc:	00 05 00 11	add	w0, w8, #0x1
+fffffe0009b19f00:	e1 03 15 aa	mov	x1, x21
+fffffe0009b19f04:	03 00 80 12	mov	w3, #-0x1
+fffffe0009b19f08:	04 00 80 12	mov	w4, #-0x1
+fffffe0009b19f0c:	05 00 80 d2	mov	x5, #0x0
+fffffe0009b19f10:	e7 a9 00 94	bl	0xfffffe0009b446ac ; symbol stub for: _kernel_debug
+fffffe0009b19f14:	fd 7b 48 a9	ldp	x29, x30, [sp, #0x80]
+fffffe0009b19f18:	f4 4f 47 a9	ldp	x20, x19, [sp, #0x70]
+fffffe0009b19f1c:	f6 57 46 a9	ldp	x22, x21, [sp, #0x60]
+fffffe0009b19f20:	f8 5f 45 a9	ldp	x24, x23, [sp, #0x50]
+fffffe0009b19f24:	fa 67 44 a9	ldp	x26, x25, [sp, #0x40]
+fffffe0009b19f28:	fc 6f 43 a9	ldp	x28, x27, [sp, #0x30]
+fffffe0009b19f2c:	ff 43 02 91	add	sp, sp, #0x90
+fffffe0009b19f30:	ff 0f 5f d6	retab
+fffffe0009b19f34:	7a 9d 00 94	bl	__ZN9ApplePMGR8_cpuIdleEPNS_7CPUCoreEbPy.cold.1
+fffffe0009b19f38:	96 9d 00 94	bl	__ZN9ApplePMGR8_cpuIdleEPNS_7CPUCoreEbPy.cold.3
+fffffe0009b19f3c:	86 9d 00 94	bl	__ZN9ApplePMGR8_cpuIdleEPNS_7CPUCoreEbPy.cold.2
+
+m1-power-ApplePMGR.macho (locally extracted image):
+(__TEXT_EXEC,__text) section
+__ZN9ApplePMGR12enterCPUIdleEPy:
+fffffe0009b1a3a0:	5f 24 03 d5	hint	#0x22
+fffffe0009b1a3a4:	7f 23 03 d5	pacibsp
+fffffe0009b1a3a8:	ff 03 01 d1	sub	sp, sp, #0x40
+fffffe0009b1a3ac:	f6 57 01 a9	stp	x22, x21, [sp, #0x10]
+fffffe0009b1a3b0:	f4 4f 02 a9	stp	x20, x19, [sp, #0x20]
+fffffe0009b1a3b4:	fd 7b 03 a9	stp	x29, x30, [sp, #0x30]
+fffffe0009b1a3b8:	fd c3 00 91	add	x29, sp, #0x30
+fffffe0009b1a3bc:	f5 03 01 aa	mov	x21, x1
+fffffe0009b1a3c0:	f4 03 00 aa	mov	x20, x0
+fffffe0009b1a3c4:	08 6c 83 52	mov	w8, #0x1b60
+fffffe0009b1a3c8:	08 00 08 8b	add	x8, x0, x8
+fffffe0009b1a3cc:	08 01 40 39	ldrb	w8, [x8]
+fffffe0009b1a3d0:	68 00 00 37	tbnz	w8, #0x0, 0xfffffe0009b1a3dc
+fffffe0009b1a3d4:	13 00 80 d2	mov	x19, #0x0
+fffffe0009b1a3d8:	03 00 00 14	b	0xfffffe0009b1a3e4
+fffffe0009b1a3dc:	d4 a8 00 94	bl	0xfffffe0009b4472c ; symbol stub for: _mach_absolute_time
+fffffe0009b1a3e0:	f3 03 00 aa	mov	x19, x0
+fffffe0009b1a3e4:	ff 07 00 f9	str	xzr, [sp, #0x8]
+fffffe0009b1a3e8:	90 02 40 f9	ldr	x16, [x20]
+fffffe0009b1a3ec:	f1 03 14 aa	mov	x17, x20
+fffffe0009b1a3f0:	31 b4 f9 f2	movk	x17, #0xcda1, lsl #48
+fffffe0009b1a3f4:	30 1a c1 da	autda	x16, x17
+fffffe0009b1a3f8:	11 39 81 d2	mov	x17, #0x9c8
+fffffe0009b1a3fc:	10 02 11 8b	add	x16, x16, x17
+fffffe0009b1a400:	08 02 40 f9	ldr	x8, [x16]
+fffffe0009b1a404:	e1 33 00 91	add	x1, sp, #0xc
+fffffe0009b1a408:	e2 23 00 91	add	x2, sp, #0x8
+fffffe0009b1a40c:	e0 03 14 aa	mov	x0, x20
+fffffe0009b1a410:	d0 b3 ec f2	movk	x16, #0x659e, lsl #48
+fffffe0009b1a414:	10 09 3f d7	blraa	x8, x16
+fffffe0009b1a418:	88 fe 40 91	add	x8, x20, #0x3f, lsl #12
+fffffe0009b1a41c:	16 41 05 91	add	x22, x8, #0x150
+fffffe0009b1a420:	c8 02 40 f9	ldr	x8, [x22]
+fffffe0009b1a424:	e9 2b 41 29	ldp	w9, w10, [sp, #0x8]
+fffffe0009b1a428:	0b c1 91 52	mov	w11, #0x8e08
+fffffe0009b1a42c:	4a f1 7d d3	lsl	x10, x10, #3
+fffffe0009b1a430:	29 29 ab 9b	umaddl	x9, w9, w11, x10
+fffffe0009b1a434:	0a 13 90 52	mov	w10, #0x8098
+fffffe0009b1a438:	29 01 0a 8b	add	x9, x9, x10
+fffffe0009b1a43c:	3f c1 29 eb	cmp	x9, w9, sxtw
+fffffe0009b1a440:	0a c1 29 8b	add	x10, x8, w9, sxtw
+fffffe0009b1a444:	10 01 09 8b	add	x16, x8, x9
+fffffe0009b1a448:	b0 75 e5 f2	movk	x16, #0x2bad, lsl #48
+fffffe0009b1a44c:	4a 01 90 9a	csel	x10, x10, x16, eq
+fffffe0009b1a450:	41 01 40 f9	ldr	x1, [x10]
+fffffe0009b1a454:	e0 03 14 aa	mov	x0, x20
+fffffe0009b1a458:	22 00 80 52	mov	w2, #0x1
+fffffe0009b1a45c:	e3 03 15 aa	mov	x3, x21
+fffffe0009b1a460:	64 fc ff 97	bl	__ZN9ApplePMGR8_cpuIdleEPNS_7CPUCoreEbPy
+fffffe0009b1a464:	08 6c 83 52	mov	w8, #0x1b60
+fffffe0009b1a468:	88 02 08 8b	add	x8, x20, x8
+fffffe0009b1a46c:	08 01 40 39	ldrb	w8, [x8]
+fffffe0009b1a470:	08 02 00 36	tbz	w8, #0x0, 0xfffffe0009b1a4b0
+fffffe0009b1a474:	c8 02 40 f9	ldr	x8, [x22]
+fffffe0009b1a478:	e9 0b 40 b9	ldr	w9, [sp, #0x8]
+fffffe0009b1a47c:	0a c1 91 52	mov	w10, #0x8e08
+fffffe0009b1a480:	0b 68 90 52	mov	w11, #0x8340
+fffffe0009b1a484:	29 2d aa 9b	umaddl	x9, w9, w10, x11
+fffffe0009b1a488:	3f c1 29 eb	cmp	x9, w9, sxtw
+fffffe0009b1a48c:	0a c1 29 8b	add	x10, x8, w9, sxtw
+fffffe0009b1a490:	10 01 09 8b	add	x16, x8, x9
+fffffe0009b1a494:	b0 75 e5 f2	movk	x16, #0x2bad, lsl #48
+fffffe0009b1a498:	4a 01 90 9a	csel	x10, x10, x16, eq
+fffffe0009b1a49c:	54 01 40 f9	ldr	x20, [x10]
+fffffe0009b1a4a0:	a3 a8 00 94	bl	0xfffffe0009b4472c ; symbol stub for: _mach_absolute_time
+fffffe0009b1a4a4:	01 00 13 cb	sub	x1, x0, x19
+fffffe0009b1a4a8:	e0 03 14 aa	mov	x0, x20
+fffffe0009b1a4ac:	f4 a7 00 94	bl	0xfffffe0009b4447c ; symbol stub for: __ZN19IOHistogramReporter10tallyValueEx
+fffffe0009b1a4b0:	fd 7b 43 a9	ldp	x29, x30, [sp, #0x30]
+fffffe0009b1a4b4:	f4 4f 42 a9	ldp	x20, x19, [sp, #0x20]
+fffffe0009b1a4b8:	f6 57 41 a9	ldp	x22, x21, [sp, #0x10]
+fffffe0009b1a4bc:	ff 03 01 91	add	sp, sp, #0x40
+fffffe0009b1a4c0:	ff 0f 5f d6	retab
+
+m1-power-ApplePMGR.macho (locally extracted image):
+(__TEXT_EXEC,__text) section
+__ZN9ApplePMGR11exitCPUIdleEPy:
+fffffe0009b1a4c4:	5f 24 03 d5	hint	#0x22
+fffffe0009b1a4c8:	7f 23 03 d5	pacibsp
+fffffe0009b1a4cc:	ff 03 01 d1	sub	sp, sp, #0x40
+fffffe0009b1a4d0:	f6 57 01 a9	stp	x22, x21, [sp, #0x10]
+fffffe0009b1a4d4:	f4 4f 02 a9	stp	x20, x19, [sp, #0x20]
+fffffe0009b1a4d8:	fd 7b 03 a9	stp	x29, x30, [sp, #0x30]
+fffffe0009b1a4dc:	fd c3 00 91	add	x29, sp, #0x30
+fffffe0009b1a4e0:	f5 03 01 aa	mov	x21, x1
+fffffe0009b1a4e4:	f4 03 00 aa	mov	x20, x0
+fffffe0009b1a4e8:	08 6c 83 52	mov	w8, #0x1b60
+fffffe0009b1a4ec:	08 00 08 8b	add	x8, x0, x8
+fffffe0009b1a4f0:	08 01 40 39	ldrb	w8, [x8]
+fffffe0009b1a4f4:	68 00 00 37	tbnz	w8, #0x0, 0xfffffe0009b1a500
+fffffe0009b1a4f8:	13 00 80 d2	mov	x19, #0x0
+fffffe0009b1a4fc:	03 00 00 14	b	0xfffffe0009b1a508
+fffffe0009b1a500:	8b a8 00 94	bl	0xfffffe0009b4472c ; symbol stub for: _mach_absolute_time
+fffffe0009b1a504:	f3 03 00 aa	mov	x19, x0
+fffffe0009b1a508:	ff 07 00 f9	str	xzr, [sp, #0x8]
+fffffe0009b1a50c:	90 02 40 f9	ldr	x16, [x20]
+fffffe0009b1a510:	f1 03 14 aa	mov	x17, x20
+fffffe0009b1a514:	31 b4 f9 f2	movk	x17, #0xcda1, lsl #48
+fffffe0009b1a518:	30 1a c1 da	autda	x16, x17
+fffffe0009b1a51c:	11 39 81 d2	mov	x17, #0x9c8
+fffffe0009b1a520:	10 02 11 8b	add	x16, x16, x17
+fffffe0009b1a524:	08 02 40 f9	ldr	x8, [x16]
+fffffe0009b1a528:	e1 33 00 91	add	x1, sp, #0xc
+fffffe0009b1a52c:	e2 23 00 91	add	x2, sp, #0x8
+fffffe0009b1a530:	e0 03 14 aa	mov	x0, x20
+fffffe0009b1a534:	d0 b3 ec f2	movk	x16, #0x659e, lsl #48
+fffffe0009b1a538:	10 09 3f d7	blraa	x8, x16
+fffffe0009b1a53c:	88 fe 40 91	add	x8, x20, #0x3f, lsl #12
+fffffe0009b1a540:	16 41 05 91	add	x22, x8, #0x150
+fffffe0009b1a544:	c8 02 40 f9	ldr	x8, [x22]
+fffffe0009b1a548:	e9 2b 41 29	ldp	w9, w10, [sp, #0x8]
+fffffe0009b1a54c:	0b c1 91 52	mov	w11, #0x8e08
+fffffe0009b1a550:	4a f1 7d d3	lsl	x10, x10, #3
+fffffe0009b1a554:	29 29 ab 9b	umaddl	x9, w9, w11, x10
+fffffe0009b1a558:	0a 13 90 52	mov	w10, #0x8098
+fffffe0009b1a55c:	29 01 0a 8b	add	x9, x9, x10
+fffffe0009b1a560:	3f c1 29 eb	cmp	x9, w9, sxtw
+fffffe0009b1a564:	0a c1 29 8b	add	x10, x8, w9, sxtw
+fffffe0009b1a568:	10 01 09 8b	add	x16, x8, x9
+fffffe0009b1a56c:	b0 75 e5 f2	movk	x16, #0x2bad, lsl #48
+fffffe0009b1a570:	4a 01 90 9a	csel	x10, x10, x16, eq
+fffffe0009b1a574:	41 01 40 f9	ldr	x1, [x10]
+fffffe0009b1a578:	e0 03 14 aa	mov	x0, x20
+fffffe0009b1a57c:	02 00 80 52	mov	w2, #0x0
+fffffe0009b1a580:	e3 03 15 aa	mov	x3, x21
+fffffe0009b1a584:	1b fc ff 97	bl	__ZN9ApplePMGR8_cpuIdleEPNS_7CPUCoreEbPy
+fffffe0009b1a588:	08 6c 83 52	mov	w8, #0x1b60
+fffffe0009b1a58c:	88 02 08 8b	add	x8, x20, x8
+fffffe0009b1a590:	08 01 40 39	ldrb	w8, [x8]
+fffffe0009b1a594:	08 02 00 36	tbz	w8, #0x0, 0xfffffe0009b1a5d4
+fffffe0009b1a598:	c8 02 40 f9	ldr	x8, [x22]
+fffffe0009b1a59c:	e9 0b 40 b9	ldr	w9, [sp, #0x8]
+fffffe0009b1a5a0:	0a c1 91 52	mov	w10, #0x8e08
+fffffe0009b1a5a4:	0b 69 90 52	mov	w11, #0x8348
+fffffe0009b1a5a8:	29 2d aa 9b	umaddl	x9, w9, w10, x11
+fffffe0009b1a5ac:	3f c1 29 eb	cmp	x9, w9, sxtw
+fffffe0009b1a5b0:	0a c1 29 8b	add	x10, x8, w9, sxtw
+fffffe0009b1a5b4:	10 01 09 8b	add	x16, x8, x9
+fffffe0009b1a5b8:	b0 75 e5 f2	movk	x16, #0x2bad, lsl #48
+fffffe0009b1a5bc:	4a 01 90 9a	csel	x10, x10, x16, eq
+fffffe0009b1a5c0:	54 01 40 f9	ldr	x20, [x10]
+fffffe0009b1a5c4:	5a a8 00 94	bl	0xfffffe0009b4472c ; symbol stub for: _mach_absolute_time
+fffffe0009b1a5c8:	01 00 13 cb	sub	x1, x0, x19
+fffffe0009b1a5cc:	e0 03 14 aa	mov	x0, x20
+fffffe0009b1a5d0:	ab a7 00 94	bl	0xfffffe0009b4447c ; symbol stub for: __ZN19IOHistogramReporter10tallyValueEx
+fffffe0009b1a5d4:	fd 7b 43 a9	ldp	x29, x30, [sp, #0x30]
+fffffe0009b1a5d8:	f4 4f 42 a9	ldp	x20, x19, [sp, #0x20]
+fffffe0009b1a5dc:	f6 57 41 a9	ldp	x22, x21, [sp, #0x10]
+fffffe0009b1a5e0:	ff 03 01 91	add	sp, sp, #0x40
+fffffe0009b1a5e4:	ff 0f 5f d6	retab

@@ -1,0 +1,124 @@
+{
+  "source": "historical native-Linux capture (private path omitted)",
+  "error": null,
+  "restored_governor": "menu",
+  "windows": [
+    {
+      "governor": "menu",
+      "power": {
+        "usable_unplugged_window": true,
+        "exclusion_reasons": [],
+        "sample_count": 13,
+        "sample_span_seconds": 60.00009109299981,
+        "mean_absolute_battery_W": 3.865728045914219,
+        "integrated_absolute_battery_Wh": 0.06442889858211591,
+        "caveat": "Whole-machine battery discharge magnitude; not CPU-only power or a measured improvement"
+      },
+      "cpu_busy_percent": {
+        "cpu": 0.30612882400716385,
+        "cpu0": 0.5830418124271197,
+        "cpu1": 0.3498250874562719,
+        "cpu2": 0.5841121495327103,
+        "cpu3": 0.39980009995002497,
+        "cpu4": 0.19990004997501248,
+        "cpu5": 0.14990006662225183,
+        "cpu6": 0.13322231473771856,
+        "cpu7": 0.0
+      },
+      "mean_E_WFI_percent": 9.431562790991114,
+      "mean_P_WFI_percent": 0.6203235526318771,
+      "PD_rejected": 0,
+      "PD_entries": 8853,
+      "PD_above": 2132
+    },
+    {
+      "governor": "teo",
+      "power": {
+        "usable_unplugged_window": true,
+        "exclusion_reasons": [],
+        "sample_count": 13,
+        "sample_span_seconds": 60.00012375999995,
+        "mean_absolute_battery_W": 3.8619681767458656,
+        "integrated_absolute_battery_Wh": 0.06436626904498147,
+        "caveat": "Whole-machine battery discharge magnitude; not CPU-only power or a measured improvement"
+      },
+      "cpu_busy_percent": {
+        "cpu": 0.2853037339386493,
+        "cpu0": 0.56647784071976,
+        "cpu1": 0.4335501083875271,
+        "cpu2": 0.36672778796466077,
+        "cpu3": 0.41652782405864713,
+        "cpu4": 0.1498751040799334,
+        "cpu5": 0.033300033300033303,
+        "cpu6": 0.2664890073284477,
+        "cpu7": 0.04995836802664446
+      },
+      "mean_E_WFI_percent": 7.61299598889064,
+      "mean_P_WFI_percent": 0.529694450879461,
+      "PD_rejected": 0,
+      "PD_entries": 8831,
+      "PD_above": 1937
+    },
+    {
+      "governor": "teo",
+      "power": {
+        "usable_unplugged_window": true,
+        "exclusion_reasons": [],
+        "sample_count": 13,
+        "sample_span_seconds": 60.00012008700014,
+        "mean_absolute_battery_W": 3.8676596210321432,
+        "integrated_absolute_battery_Wh": 0.06446112269932501,
+        "caveat": "Whole-machine battery discharge magnitude; not CPU-only power or a measured improvement"
+      },
+      "cpu_busy_percent": {
+        "cpu": 0.26864366188383765,
+        "cpu0": 0.5996002664890073,
+        "cpu1": 0.5672339005672339,
+        "cpu2": 0.19993335554815062,
+        "cpu3": 0.3831417624521073,
+        "cpu4": 0.08329168748958854,
+        "cpu5": 0.033300033300033303,
+        "cpu6": 0.2997002997002997,
+        "cpu7": 0.033311125916055964
+      },
+      "mean_E_WFI_percent": 7.0651290031666285,
+      "mean_P_WFI_percent": 0.45248655076558186,
+      "PD_rejected": 0,
+      "PD_entries": 7808,
+      "PD_above": 1464
+    },
+    {
+      "governor": "menu",
+      "power": {
+        "usable_unplugged_window": true,
+        "exclusion_reasons": [],
+        "sample_count": 13,
+        "sample_span_seconds": 60.00011747999997,
+        "mean_absolute_battery_W": 3.860252990482637,
+        "integrated_absolute_battery_Wh": 0.06433767581429983,
+        "caveat": "Whole-machine battery discharge magnitude; not CPU-only power or a measured improvement"
+      },
+      "cpu_busy_percent": {
+        "cpu": 0.2832035317146308,
+        "cpu0": 0.6998833527745376,
+        "cpu1": 0.41687510421877605,
+        "cpu2": 0.29985007496251875,
+        "cpu3": 0.3832055981339553,
+        "cpu4": 0.1665001665001665,
+        "cpu5": 0.06661115736885928,
+        "cpu6": 0.21652231845436376,
+        "cpu7": 0.033311125916055964
+      },
+      "mean_E_WFI_percent": 7.471427510462752,
+      "mean_P_WFI_percent": 0.5001046329488119,
+      "PD_rejected": 0,
+      "PD_entries": 8587,
+      "PD_above": 1634
+    }
+  ],
+  "limitations": [
+    "Short exploratory ABBA, not a runtime proof",
+    "Uncontrolled background workload; no physical residency counter",
+    "Battery telemetry lag and measurement noise unknown"
+  ]
+}

@@ -1,0 +1,53 @@
+
+m1-power-kernel.macho (locally extracted image):	file format mach-o arm64
+
+Disassembly of section __TEXT_EXEC,__text:
+
+fffffe000bafc1e0 <_Switch_context>:
+fffffe000bafd630: a9bf7bfd     	stp	x29, x30, [sp, #-0x10]!
+fffffe000bafd634: 910003fd     	mov	x29, sp
+fffffe000bafd638: b50000e0     	cbnz	x0, 0xfffffe000bafd654 <_Switch_context+0x1474>
+fffffe000bafd63c: d53df509     	mrs	x9, S3_5_C15_C5_0
+fffffe000bafd640: 9268ed29     	and	x9, x9, #0xffffffffff0fffff
+fffffe000bafd644: d2a0140a     	mov	x10, #0xa00000  ; =10485760
+fffffe000bafd648: aa0a0129     	orr	x9, x9, x10
+fffffe000bafd64c: d51df509     	msr	S3_5_C15_C5_0, x9
+fffffe000bafd650: d5033fdf     	isb
+fffffe000bafd654: b40001a0     	cbz	x0, 0xfffffe000bafd688 <_Switch_context+0x14a8>
+fffffe000bafd658: d53df601     	mrs	x1, S3_5_C15_C6_0
+fffffe000bafd65c: b25e0021     	orr	x1, x1, #0x400000000
+fffffe000bafd660: 926ff421     	and	x1, x1, #0xfffffffffffe7fff
+fffffe000bafd664: b2700021     	orr	x1, x1, #0x10000
+fffffe000bafd668: 9271f421     	and	x1, x1, #0xffffffffffff9fff
+fffffe000bafd66c: b2730421     	orr	x1, x1, #0x6000
+fffffe000bafd670: 926df421     	and	x1, x1, #0xfffffffffff9ffff
+fffffe000bafd674: b26f0421     	orr	x1, x1, #0x60000
+fffffe000bafd678: 9265f421     	and	x1, x1, #0xfffffffff9ffffff
+fffffe000bafd67c: b2670421     	orr	x1, x1, #0x6000000
+fffffe000bafd680: b2600021     	orr	x1, x1, #0x100000000
+fffffe000bafd684: d51df601     	msr	S3_5_C15_C6_0, x1
+fffffe000bafd688: d53df509     	mrs	x9, S3_5_C15_C5_0
+fffffe000bafd68c: b2680529     	orr	x9, x9, #0x3000000
+fffffe000bafd690: b2400129     	orr	x9, x9, #0x1
+fffffe000bafd694: d51df509     	msr	S3_5_C15_C5_0, x9
+fffffe000bafd698: d5033f9f     	dsb	sy
+fffffe000bafd69c: d5033fdf     	isb
+fffffe000bafd6a0: d503207f     	wfi
+fffffe000bafd6a4: 17fffffd     	b	0xfffffe000bafd698 <_Switch_context+0x14b8>
+fffffe000bafd6a8: d503237f     	pacibsp
+fffffe000bafd6ac: a9bf7bfd     	stp	x29, x30, [sp, #-0x10]!
+fffffe000bafd6b0: 910003fd     	mov	x29, sp
+fffffe000bafd6b4: d53df500     	mrs	x0, S3_5_C15_C5_0
+fffffe000bafd6b8: b2670000     	orr	x0, x0, #0x2000000
+fffffe000bafd6bc: d51df500     	msr	S3_5_C15_C5_0, x0
+fffffe000bafd6c0: 910003bf     	mov	sp, x29
+fffffe000bafd6c4: a8c17bfd     	ldp	x29, x30, [sp], #0x10
+fffffe000bafd6c8: d65f0fff     	retab
+fffffe000bafd6cc: d503207f     	wfi
+fffffe000bafd6d0: b400005e     	cbz	x30, 0xfffffe000bafd6d8 <_Switch_context+0x14f8>
+fffffe000bafd6d4: d65f03c0     	ret
+fffffe000bafd6d8: d2800020     	mov	x0, #0x1        ; =1
+fffffe000bafd6dc: 9407c53a     	bl	0xfffffe000bceebc4 <_clock_timebase_info+0x29c>
+fffffe000bafd6e0: d2800000     	mov	x0, #0x0        ; =0
+fffffe000bafd6e4: 940778f4     	bl	0xfffffe000bcdbab4 <_copyout+0x674>
+fffffe000bafd6e8: 14000000     	b	0xfffffe000bafd6e8 <_Switch_context+0x1508>

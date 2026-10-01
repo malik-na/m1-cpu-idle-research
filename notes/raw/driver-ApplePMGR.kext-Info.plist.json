@@ -1,0 +1,62 @@
+{
+  "BuildMachineOSBuild": "23A344017",
+  "CFBundleDevelopmentRegion": "English",
+  "CFBundleExecutable": "ApplePMGR",
+  "CFBundleGetInfoString": "Copyright \u00a9 2014 Apple Inc. All rights reserved.",
+  "CFBundleIdentifier": "com.apple.driver.ApplePMGR",
+  "CFBundleInfoDictionaryVersion": "6.0",
+  "CFBundleName": "ApplePMGR",
+  "CFBundlePackageType": "KEXT",
+  "CFBundleShortVersionString": "1.0",
+  "CFBundleSignature": "????",
+  "CFBundleSupportedPlatforms": [
+    "MacOSX"
+  ],
+  "CFBundleVersion": "1",
+  "DTCompiler": "com.apple.compilers.llvm.clang.1_0",
+  "DTPlatformBuild": "26A413",
+  "DTPlatformName": "macosx",
+  "DTPlatformVersion": "27.0",
+  "DTSDKBuild": "26A413",
+  "DTSDKName": "macosx27.0.internal",
+  "DTXcode": "2700",
+  "DTXcodeBuild": "27A200c",
+  "IOKitPersonalities": {
+    "AppleBringUpPMGR": {
+      "CFBundleIdentifier": "com.apple.driver.ApplePMGR",
+      "IOClass": "AppleBringUpPMGR",
+      "IONameMatch": "pmgr1,bring-up",
+      "IOPlatformActiveAction": 90000,
+      "IOPlatformHaltRestartAction": 90000,
+      "IOPlatformQuiesceAction": 90000,
+      "IOPlatformSleepAction": 600,
+      "IOPlatformWakeAction": 600,
+      "IOProviderClass": "AppleARMIODevice"
+    },
+    "ApplePMGRv2": {
+      "CFBundleIdentifier": "com.apple.driver.ApplePMGR",
+      "IOClass": "ApplePMGRv2",
+      "IONameMatch": "pmgr2,arch",
+      "IOPlatformActiveAction": 90000,
+      "IOPlatformHaltRestartAction": 90000,
+      "IOPlatformQuiesceAction": 90000,
+      "IOPlatformSleepAction": 600,
+      "IOPlatformWakeAction": 600,
+      "IOProviderClass": "AppleARMIODevice"
+    }
+  },
+  "LSMinimumSystemVersion": "27.0",
+  "NSHumanReadableCopyright": "Copyright \u00a9 2014 Apple. All rights reserved.",
+  "OSBundleCompatibleVersion": "1.0",
+  "OSBundleLibraries": {
+    "com.apple.driver.AppleARMPlatform": "1.0.0",
+    "com.apple.iokit.IOReportFamily": "1.0",
+    "com.apple.kpi.bsd": "8.0",
+    "com.apple.kpi.iokit": "8.0",
+    "com.apple.kpi.libkern": "8.0",
+    "com.apple.kpi.mach": "8.0",
+    "com.apple.kpi.private": "8.0",
+    "com.apple.kpi.unsupported": "8.0"
+  },
+  "OSBundleRequired": "Root"
+}

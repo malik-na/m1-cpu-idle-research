@@ -1,0 +1,41 @@
+fffffe0009b19de0:	02 00 00 14	b	0xfffffe0009b19de8
+fffffe0009b19de4:	ff 02 00 f9	str	xzr, [x23]
+fffffe0009b19de8:	90 02 40 f9	ldr	x16, [x20]
+fffffe0009b19dec:	f1 03 1a aa	mov	x17, x26
+fffffe0009b19df0:	30 1a c1 da	autda	x16, x17
+fffffe0009b19df4:	f1 03 10 aa	mov	x17, x16
+fffffe0009b19df8:	f1 47 c1 da	xpacd	x17
+fffffe0009b19dfc:	1f 02 11 eb	cmp	x16, x17
+fffffe0009b19e00:	40 00 00 54	b.eq	0xfffffe0009b19e08
+fffffe0009b19e04:	40 8e 38 d4	brk	#0xc472
+fffffe0009b19e08:	33 01 00 34	cbz	w19, 0xfffffe0009b19e2c
+fffffe0009b19e0c:	08 22 3e 91	add	x8, x16, #0xf88
+fffffe0009b19e10:	09 c6 47 f9	ldr	x9, [x16, #0xf88]
+fffffe0009b19e14:	e0 03 14 aa	mov	x0, x20
+fffffe0009b19e18:	f1 03 08 aa	mov	x17, x8
+fffffe0009b19e1c:	51 1b eb f2	movk	x17, #0x58da, lsl #48
+fffffe0009b19e20:	31 09 3f d7	blraa	x9, x17
+fffffe0009b19e24:	3c 01 00 35	cbnz	w28, 0xfffffe0009b19e48
+fffffe0009b19e28:	10 00 00 14	b	0xfffffe0009b19e68
+fffffe0009b19e2c:	08 42 3e 91	add	x8, x16, #0xf90
+fffffe0009b19e30:	09 ca 47 f9	ldr	x9, [x16, #0xf90]
+fffffe0009b19e34:	e0 03 14 aa	mov	x0, x20
+fffffe0009b19e38:	f1 03 08 aa	mov	x17, x8
+fffffe0009b19e3c:	31 e2 f6 f2	movk	x17, #0xb711, lsl #48
+fffffe0009b19e40:	31 09 3f d7	blraa	x9, x17
+fffffe0009b19e44:	3c 01 00 34	cbz	w28, 0xfffffe0009b19e68
+fffffe0009b19e48:	90 02 40 f9	ldr	x16, [x20]
+fffffe0009b19e4c:	50 1b c1 da	autda	x16, x26
+fffffe0009b19e50:	11 ef 81 d2	mov	x17, #0xf78
+fffffe0009b19e54:	10 02 11 8b	add	x16, x16, x17
+fffffe0009b19e58:	08 02 40 f9	ldr	x8, [x16]
+fffffe0009b19e5c:	e0 03 14 aa	mov	x0, x20
+fffffe0009b19e60:	90 1a ff f2	movk	x16, #0xf8d4, lsl #48
+fffffe0009b19e64:	10 09 3f d7	blraa	x8, x16
+fffffe0009b19e68:	88 ba 45 39	ldrb	w8, [x20, #0x16e]
+fffffe0009b19e6c:	e8 01 00 36	tbz	w8, #0x0, 0xfffffe0009b19ea8
+fffffe0009b19e70:	2f aa 00 94	bl	0xfffffe0009b4472c ; symbol stub for: _mach_absolute_time
+fffffe0009b19e74:	88 ae 41 91	add	x8, x20, #0x6b, lsl #12
+fffffe0009b19e78:	01 a1 06 91	add	x1, x8, #0x1a8
+fffffe0009b19e7c:	20 00 00 f9	str	x0, [x1]
+fffffe0009b19e80:	88 f6 4d f9	ldr	x8, [x20, #0x1be8]

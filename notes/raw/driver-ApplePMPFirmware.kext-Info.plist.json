@@ -1,0 +1,63 @@
+{
+  "BuildMachineOSBuild": "23A344017",
+  "CFBundleDevelopmentRegion": "English",
+  "CFBundleExecutable": "ApplePMPFirmware",
+  "CFBundleIdentifier": "com.apple.driver.ApplePMPFirmware",
+  "CFBundleInfoDictionaryVersion": "6.0",
+  "CFBundleName": "ApplePMPFirmware",
+  "CFBundlePackageType": "KEXT",
+  "CFBundleShortVersionString": "1.0",
+  "CFBundleSignature": "????",
+  "CFBundleSupportedPlatforms": [
+    "MacOSX"
+  ],
+  "CFBundleVersion": "1",
+  "DTCompiler": "com.apple.compilers.llvm.clang.1_0",
+  "DTPlatformBuild": "26A425",
+  "DTPlatformName": "macosx",
+  "DTPlatformVersion": "27.0",
+  "DTSDKBuild": "26A425",
+  "DTSDKName": "macosx27.0.internal",
+  "DTXcode": "2700",
+  "DTXcodeBuild": "27A200c",
+  "IOKitPersonalities": {
+    "ApplePMP0Firmware": {
+      "CFBundleIdentifier": "com.apple.driver.ApplePMPFirmware",
+      "IOClass": "ApplePMPFirmware",
+      "IOMatchCategory": "RTBuddyFirmwareService",
+      "IOPropertyMatch": {
+        "role": "PMP0"
+      },
+      "IOProviderClass": "RTBuddy"
+    },
+    "ApplePMP1Firmware": {
+      "CFBundleIdentifier": "com.apple.driver.ApplePMPFirmware",
+      "IOClass": "ApplePMPFirmware",
+      "IOMatchCategory": "RTBuddyFirmwareService",
+      "IOPropertyMatch": {
+        "role": "PMP1"
+      },
+      "IOProviderClass": "RTBuddy"
+    },
+    "ApplePMPFirmware": {
+      "CFBundleIdentifier": "com.apple.driver.ApplePMPFirmware",
+      "IOClass": "ApplePMPFirmware",
+      "IOMatchCategory": "RTBuddyFirmwareService",
+      "IOPropertyMatch": {
+        "role": "PMP"
+      },
+      "IOProviderClass": "RTBuddy"
+    }
+  },
+  "LSMinimumSystemVersion": "27.0",
+  "NSHumanReadableCopyright": "Copyright \u00a9 2015 Apple Inc. All rights reserved.",
+  "OSBundleLibraries": {
+    "com.apple.driver.AppleA7IOP": "1.0",
+    "com.apple.driver.AppleARMPlatform": "1.0.0",
+    "com.apple.driver.IOSlaveProcessor": "1.0.0",
+    "com.apple.driver.RTBuddy": "1.0.0",
+    "com.apple.kpi.iokit": "8.0",
+    "com.apple.kpi.libkern": "8.0",
+    "com.apple.kpi.private": "24.3.0"
+  }
+}

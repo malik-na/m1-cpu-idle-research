@@ -1,0 +1,8 @@
+{
+  "input": "installed T8103 macOS kernelcache (local path withheld)",
+  "input_sha256": "e5e3b35cca34477d287a447bd1aa7a84f02f8543287b8db2eef722710e95a349",
+  "compressed_size": 32728017,
+  "decompressed_size": 122945536,
+  "output": "decompressed kernelcache (local path withheld)",
+  "output_sha256": "d196456a0809aca37bbf5918eb633cf8ada9000c48f4c0082ca8f61c86b2866b"
+}

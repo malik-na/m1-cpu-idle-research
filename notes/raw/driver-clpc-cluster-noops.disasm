@@ -1,0 +1,41 @@
+m1-power-AppleT8103CLPCv3.macho (locally extracted image):
+(__TEXT_EXEC,__text) section
+__ZN4clpc4CLPC25requestClusterPowerStatesEyyyb:
+fffffe0009dfe2c0:	5f 24 03 d5	hint	#0x22
+fffffe0009dfe2c4:	c0 03 5f d6	ret
+
+m1-power-AppleT8103CLPCv3.macho (locally extracted image):
+(__TEXT_EXEC,__text) section
+__ZN4clpc4CLPC25requestClusterPowerStatesEy:
+fffffe0009dfe2c8:	5f 24 03 d5	hint	#0x22
+fffffe0009dfe2cc:	c0 03 5f d6	ret
+
+m1-power-AppleT8103CLPCv3.macho (locally extracted image):
+(__TEXT_EXEC,__text) section
+__ZN4clpc4CLPC32requestClusterPowerStatesForPerfEyy:
+fffffe0009dfe2d0:	5f 24 03 d5	hint	#0x22
+fffffe0009dfe2d4:	c0 03 5f d6	ret
+
+m1-power-AppleT8103CLPCv3.macho (locally extracted image):
+(__TEXT_EXEC,__text) section
+__ZN4clpc4CLPC34requestClusterPowerStatesForLimitsEyy:
+fffffe0009dfe2d8:	5f 24 03 d5	hint	#0x22
+fffffe0009dfe2dc:	c0 03 5f d6	ret
+
+m1-power-AppleT8103CLPCv3.macho (locally extracted image):
+(__TEXT_EXEC,__text) section
+__ZN4clpc4CLPC29setCPUDynamicClusterPowerDownEb:
+fffffe0009e0e530:	5f 24 03 d5	hint	#0x22
+fffffe0009e0e534:	c0 03 5f d6	ret
+
+m1-power-AppleT8103CLPCv3.macho (locally extracted image):
+(__TEXT_EXEC,__text) section
+__ZN4clpc4CLPC14disableClusterEj:
+fffffe0009dfe2e8:	5f 24 03 d5	hint	#0x22
+fffffe0009dfe2ec:	c0 03 5f d6	ret
+
+m1-power-AppleT8103CLPCv3.macho (locally extracted image):
+(__TEXT_EXEC,__text) section
+__ZN4clpc4CLPC13enableClusterEj:
+fffffe0009dfe2f0:	5f 24 03 d5	hint	#0x22
+fffffe0009dfe2f4:	c0 03 5f d6	ret

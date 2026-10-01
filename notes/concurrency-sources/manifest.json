@@ -1,0 +1,240 @@
+[
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "drivers/cpufreq/apple-soc-cpufreq.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/cpufreq/apple-soc-cpufreq.c",
+    "sha256": "e4efe79b653dc07c18a2bacc607fe69f8144ead11bf10cd4ef9407396ca808d2",
+    "bytes": 10263
+  },
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "drivers/cpuidle/cpuidle-apple.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/cpuidle/cpuidle-apple.c",
+    "sha256": "117650f48d17e2db2f8246ce2cc73995b4881587572756b75d330df95da87ded",
+    "bytes": 3949
+  },
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "kernel/sched/cpufreq_schedutil.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/kernel/sched/cpufreq_schedutil.c",
+    "sha256": "1a71c22944eed217380e0bd8cb8e3387f3ed918d931a15a43b37a406796750f2",
+    "bytes": 26537
+  },
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "drivers/cpufreq/cpufreq.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/cpufreq/cpufreq.c",
+    "sha256": "8b6eb5539bded1463c232ecd0de47db5eaf07d25381ff569c2ee6b0c7f5acb61",
+    "bytes": 82178
+  },
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "include/linux/cpufreq.h",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/include/linux/cpufreq.h",
+    "sha256": "40bf9e1324d4b6023f823e0fea06bfbb3c22bc1a32e08653418fde9bf9260f7d",
+    "bytes": 37503
+  },
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "include/linux/sched/cpufreq.h",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/include/linux/sched/cpufreq.h",
+    "sha256": "4bcfad3bb863714c8b7cddc56fd8adcfb45b7d5660f52dd150ba87de4b831bc5",
+    "bytes": 983
+  },
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "kernel/sched/idle.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/kernel/sched/idle.c",
+    "sha256": "c0a82d99af83e19b6f66dda3260a9b3d01314e4e9ef53a6ddafc61b6c1053b73",
+    "bytes": 15304
+  },
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "drivers/cpuidle/cpuidle.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/cpuidle/cpuidle.c",
+    "sha256": "040e43a1bb1439384f9871766630cef2296050d8335080725cffdb00afedeaf6",
+    "bytes": 20409
+  },
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "kernel/cpu_pm.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/kernel/cpu_pm.c",
+    "sha256": "58539bcd4a9257ab717cb5cd5962a4e2e997b18fff9030e0f7595860074c30be",
+    "bytes": 6122
+  },
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "Documentation/driver-api/io_ordering.rst",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/Documentation/driver-api/io_ordering.rst",
+    "sha256": "99dc98ab635bb099bd1a52801baa5b7ccbcf52c8a15c8636268523100470bfd6",
+    "bytes": 2059
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "drivers/cpufreq/apple-soc-cpufreq.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/drivers/cpufreq/apple-soc-cpufreq.c",
+    "sha256": "e4efe79b653dc07c18a2bacc607fe69f8144ead11bf10cd4ef9407396ca808d2",
+    "bytes": 10263
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "drivers/cpuidle/cpuidle-apple.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/drivers/cpuidle/cpuidle-apple.c",
+    "sha256": "117650f48d17e2db2f8246ce2cc73995b4881587572756b75d330df95da87ded",
+    "bytes": 3949
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "kernel/sched/cpufreq_schedutil.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/kernel/sched/cpufreq_schedutil.c",
+    "sha256": "1a71c22944eed217380e0bd8cb8e3387f3ed918d931a15a43b37a406796750f2",
+    "bytes": 26537
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "drivers/cpufreq/cpufreq.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/drivers/cpufreq/cpufreq.c",
+    "sha256": "8b6eb5539bded1463c232ecd0de47db5eaf07d25381ff569c2ee6b0c7f5acb61",
+    "bytes": 82178
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "include/linux/cpufreq.h",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/include/linux/cpufreq.h",
+    "sha256": "40bf9e1324d4b6023f823e0fea06bfbb3c22bc1a32e08653418fde9bf9260f7d",
+    "bytes": 37503
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "include/linux/sched/cpufreq.h",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/include/linux/sched/cpufreq.h",
+    "sha256": "4bcfad3bb863714c8b7cddc56fd8adcfb45b7d5660f52dd150ba87de4b831bc5",
+    "bytes": 983
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "kernel/sched/idle.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/kernel/sched/idle.c",
+    "sha256": "c0a82d99af83e19b6f66dda3260a9b3d01314e4e9ef53a6ddafc61b6c1053b73",
+    "bytes": 15304
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "drivers/cpuidle/cpuidle.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/drivers/cpuidle/cpuidle.c",
+    "sha256": "040e43a1bb1439384f9871766630cef2296050d8335080725cffdb00afedeaf6",
+    "bytes": 20409
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "kernel/cpu_pm.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/kernel/cpu_pm.c",
+    "sha256": "58539bcd4a9257ab717cb5cd5962a4e2e997b18fff9030e0f7595860074c30be",
+    "bytes": 6122
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "Documentation/driver-api/io_ordering.rst",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/Documentation/driver-api/io_ordering.rst",
+    "sha256": "99dc98ab635bb099bd1a52801baa5b7ccbcf52c8a15c8636268523100470bfd6",
+    "bytes": 2059
+  },
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "kernel/sched/cpufreq.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/kernel/sched/cpufreq.c",
+    "sha256": "33f44d35a63fbfb4d0061202fcdf05448f209d1b82d0a2b61c27625efe94d58e",
+    "bytes": 2699
+  },
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "kernel/sched/sched.h",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/kernel/sched/sched.h",
+    "sha256": "b5c93485b52587e0efecbf323f713957717eb5ab6f50ac6d487e7045d79b7c63",
+    "bytes": 115427
+  },
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "kernel/sched/fair.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/kernel/sched/fair.c",
+    "sha256": "43629933dde4cf8cfef226f6f28803466ed3fd32c4e03071e854558ebd4850c2",
+    "bytes": 395006
+  },
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "arch/arm64/include/asm/io.h",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/arch/arm64/include/asm/io.h",
+    "sha256": "39a3cc5a5456c6596feeac55135f03b2f0b567414f3b4c02921dc7ac33d7ae7b",
+    "bytes": 9738
+  },
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "arch/arm64/include/asm/barrier.h",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/arch/arm64/include/asm/barrier.h",
+    "sha256": "8a999b400d262bb182a2881f105041309ded27fa6dd3971af662f690fbc24135",
+    "bytes": 6126
+  },
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "include/linux/iopoll.h",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/include/linux/iopoll.h",
+    "sha256": "9edf274f8555e266233ba151942af51e83ad175d885478556075258044dd3a0b",
+    "bytes": 10396
+  },
+  {
+    "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+    "path": "Documentation/driver-api/device-io.rst",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/Documentation/driver-api/device-io.rst",
+    "sha256": "852aa412631b7f2e1e6c16c992c5c31569f8c20ea7dd8d465d5faa992571d50a",
+    "bytes": 23871
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "kernel/sched/cpufreq.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/kernel/sched/cpufreq.c",
+    "sha256": "33f44d35a63fbfb4d0061202fcdf05448f209d1b82d0a2b61c27625efe94d58e",
+    "bytes": 2699
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "kernel/sched/sched.h",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/kernel/sched/sched.h",
+    "sha256": "b5c93485b52587e0efecbf323f713957717eb5ab6f50ac6d487e7045d79b7c63",
+    "bytes": 115427
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "kernel/sched/fair.c",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/kernel/sched/fair.c",
+    "sha256": "43629933dde4cf8cfef226f6f28803466ed3fd32c4e03071e854558ebd4850c2",
+    "bytes": 395006
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "arch/arm64/include/asm/io.h",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/arch/arm64/include/asm/io.h",
+    "sha256": "39a3cc5a5456c6596feeac55135f03b2f0b567414f3b4c02921dc7ac33d7ae7b",
+    "bytes": 9738
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "arch/arm64/include/asm/barrier.h",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/arch/arm64/include/asm/barrier.h",
+    "sha256": "8a999b400d262bb182a2881f105041309ded27fa6dd3971af662f690fbc24135",
+    "bytes": 6126
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "include/linux/iopoll.h",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/include/linux/iopoll.h",
+    "sha256": "9edf274f8555e266233ba151942af51e83ad175d885478556075258044dd3a0b",
+    "bytes": 10396
+  },
+  {
+    "commit": "94fb23346d522edf53722357c426a3e58030beea",
+    "path": "Documentation/driver-api/device-io.rst",
+    "url": "https://raw.githubusercontent.com/AsahiLinux/linux/94fb23346d522edf53722357c426a3e58030beea/Documentation/driver-api/device-io.rst",
+    "sha256": "852aa412631b7f2e1e6c16c992c5c31569f8c20ea7dd8d465d5faa992571d50a",
+    "bytes": 23871
+  }
+]

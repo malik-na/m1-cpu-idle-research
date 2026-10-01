@@ -1,0 +1,91 @@
+fffffe0008bdeef0:	70 02 40 f9	ldr	x16, [x19]
+fffffe0008bdeef4:	f0 1a c1 da	autda	x16, x23
+fffffe0008bdeef8:	11 1a 81 d2	mov	x17, #0x8d0
+fffffe0008bdeefc:	10 02 11 8b	add	x16, x16, x17
+fffffe0008bdef00:	08 02 40 f9	ldr	x8, [x16]
+fffffe0008bdef04:	e0 03 13 aa	mov	x0, x19
+fffffe0008bdef08:	50 3d f4 f2	movk	x16, #0xa1ea, lsl #48
+fffffe0008bdef0c:	10 09 3f d7	blraa	x8, x16
+fffffe0008bdef10:	f1 03 15 aa	mov	x17, x21
+fffffe0008bdef14:	08 02 80 52	mov	w8, #0x10
+fffffe0008bdef18:	01 61 00 2a	orr	w1, w8, w0, lsl #24
+fffffe0008bdef1c:	b0 02 40 f9	ldr	x16, [x21]
+fffffe0008bdef20:	31 b4 f9 f2	movk	x17, #0xcda1, lsl #48
+fffffe0008bdef24:	30 1a c1 da	autda	x16, x17
+fffffe0008bdef28:	f1 03 10 aa	mov	x17, x16
+fffffe0008bdef2c:	f1 47 c1 da	xpacd	x17
+fffffe0008bdef30:	1f 02 11 eb	cmp	x16, x17
+fffffe0008bdef34:	40 00 00 54	b.eq	0xfffffe0008bdef3c
+fffffe0008bdef38:	40 8e 38 d4	brk	#0xc472
+fffffe0008bdef3c:	08 02 05 91	add	x8, x16, #0x140
+fffffe0008bdef40:	09 a2 40 f9	ldr	x9, [x16, #0x140]
+fffffe0008bdef44:	e2 83 00 91	add	x2, sp, #0x20
+fffffe0008bdef48:	e0 03 15 aa	mov	x0, x21
+fffffe0008bdef4c:	03 00 80 d2	mov	x3, #0x0
+fffffe0008bdef50:	f1 03 08 aa	mov	x17, x8
+fffffe0008bdef54:	f1 a8 ee f2	movk	x17, #0x7547, lsl #48
+fffffe0008bdef58:	31 09 3f d7	blraa	x9, x17
+fffffe0008bdef5c:	10 00 00 b0	adrp	x16, 1 ; 0xfffffe0008bdf000
+fffffe0008bdef60:	10 12 3a 91	add	x16, x16, #0xe84
+fffffe0008bdef64:	31 46 98 d2	mov	x17, #0xc231
+fffffe0008bdef68:	30 02 c1 da	pacia	x16, x17
+fffffe0008bdef6c:	f0 27 00 f9	str	x16, [sp, #0x48]
+fffffe0008bdef70:	10 00 00 b0	adrp	x16, 1 ; 0xfffffe0008bdf000
+fffffe0008bdef74:	10 c2 3c 91	add	x16, x16, #0xf30
+fffffe0008bdef78:	11 7b 8e d2	mov	x17, #0x73d8
+fffffe0008bdef7c:	30 02 c1 da	pacia	x16, x17
+fffffe0008bdef80:	f0 cf 05 a9	stp	x16, x19, [sp, #0x58]
+fffffe0008bdef84:	e1 2c ff d0	adrp	x1, -6754 ; 0xfffffe000717c000
+fffffe0008bdef88:	21 f0 0a 91	add	x1, x1, #0x2bc
+fffffe0008bdef8c:	e0 03 14 aa	mov	x0, x20
+fffffe0008bdef90:	7c 09 00 94	bl	__ZN16AppleARMFunction12withProviderEP15IORegistryEntryPKc
+fffffe0008bdef94:	60 62 00 f9	str	x0, [x19, #0xc0]
+fffffe0008bdef98:	a0 00 00 b4	cbz	x0, 0xfffffe0008bdefac
+fffffe0008bdef9c:	10 00 00 b0	adrp	x16, 1 ; 0xfffffe0008bdf000
+fffffe0008bdefa0:	10 52 3f 91	add	x16, x16, #0xfd4
+fffffe0008bdefa4:	f0 23 c1 da	paciza	x16
+fffffe0008bdefa8:	f0 1f 00 f9	str	x16, [sp, #0x38]
+fffffe0008bdefac:	e1 2c ff d0	adrp	x1, -6754 ; 0xfffffe000717c000
+fffffe0008bdefb0:	21 50 0b 91	add	x1, x1, #0x2d4
+fffffe0008bdefb4:	e0 03 14 aa	mov	x0, x20
+fffffe0008bdefb8:	72 09 00 94	bl	__ZN16AppleARMFunction12withProviderEP15IORegistryEntryPKc
+fffffe0008bdefbc:	60 66 00 f9	str	x0, [x19, #0xc8]
+fffffe0008bdefc0:	60 00 00 b5	cbnz	x0, 0xfffffe0008bdefcc
+fffffe0008bdefc4:	68 a6 43 39	ldrb	w8, [x19, #0xe9]
+fffffe0008bdefc8:	a8 04 00 37	tbnz	w8, #0x0, 0xfffffe0008bdf05c
+fffffe0008bdefcc:	e1 2c ff d0	adrp	x1, -6754 ; 0xfffffe000717c000
+fffffe0008bdefd0:	21 a8 0b 91	add	x1, x1, #0x2ea
+fffffe0008bdefd4:	e0 03 14 aa	mov	x0, x20
+fffffe0008bdefd8:	6a 09 00 94	bl	__ZN16AppleARMFunction12withProviderEP15IORegistryEntryPKc
+fffffe0008bdefdc:	60 6a 00 f9	str	x0, [x19, #0xd0]
+fffffe0008bdefe0:	68 aa 43 39	ldrb	w8, [x19, #0xea]
+fffffe0008bdefe4:	88 00 00 37	tbnz	w8, #0x0, 0xfffffe0008bdeff4
+fffffe0008bdefe8:	60 00 00 b5	cbnz	x0, 0xfffffe0008bdeff4
+fffffe0008bdefec:	68 a6 43 39	ldrb	w8, [x19, #0xe9]
+fffffe0008bdeff0:	68 03 00 37	tbnz	w8, #0x0, 0xfffffe0008bdf05c
+fffffe0008bdeff4:	e1 2c ff d0	adrp	x1, -6754 ; 0xfffffe000717c000
+fffffe0008bdeff8:	21 18 0c 91	add	x1, x1, #0x306
+fffffe0008bdeffc:	e0 03 14 aa	mov	x0, x20
+fffffe0008bdf000:	60 09 00 94	bl	__ZN16AppleARMFunction12withProviderEP15IORegistryEntryPKc
+fffffe0008bdf004:	60 6e 00 f9	str	x0, [x19, #0xd8]
+fffffe0008bdf008:	68 aa 43 39	ldrb	w8, [x19, #0xea]
+fffffe0008bdf00c:	48 00 00 37	tbnz	w8, #0x0, 0xfffffe0008bdf014
+fffffe0008bdf010:	80 02 00 b4	cbz	x0, 0xfffffe0008bdf060
+fffffe0008bdf014:	e1 2c ff b0	adrp	x1, -6755 ; 0xfffffe000717c000
+fffffe0008bdf018:	21 6c 0c 91	add	x1, x1, #0x31b
+fffffe0008bdf01c:	e0 03 14 aa	mov	x0, x20
+fffffe0008bdf020:	58 09 00 94	bl	__ZN16AppleARMFunction12withProviderEP15IORegistryEntryPKc
+fffffe0008bdf024:	60 72 00 f9	str	x0, [x19, #0xe0]
+fffffe0008bdf028:	c0 00 00 b4	cbz	x0, 0xfffffe0008bdf040
+fffffe0008bdf02c:	10 00 00 b0	adrp	x16, 1 ; 0xfffffe0008be0000
+fffffe0008bdf030:	10 62 00 91	add	x16, x16, #0x18
+fffffe0008bdf034:	f1 a0 9a d2	mov	x17, #0xd507
+fffffe0008bdf038:	30 02 c1 da	pacia	x16, x17
+fffffe0008bdf03c:	f0 3f 00 f9	str	x16, [sp, #0x78]
+fffffe0008bdf040:	e0 83 00 91	add	x0, sp, #0x20
+fffffe0008bdf044:	61 82 02 91	add	x1, x19, #0xa0
+fffffe0008bdf048:	62 a2 02 91	add	x2, x19, #0xa8
+fffffe0008bdf04c:	e3 63 00 91	add	x3, sp, #0x18
+fffffe0008bdf050:	56 57 01 94	bl	0xfffffe0008c34da8 ; symbol stub for: _ml_processor_register
+fffffe0008bdf054:	1f 14 00 71	cmp	w0, #0x5
+fffffe0008bdf058:	41 01 00 54	b.ne	0xfffffe0008bdf080

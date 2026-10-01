@@ -1,0 +1,32 @@
+{
+  "CFBundleDevelopmentRegion": "English",
+  "CFBundleExecutable": "${EXECUTABLE_NAME}",
+  "CFBundleIconFile": "",
+  "CFBundleIdentifier": "$(PRODUCT_BUNDLE_IDENTIFIER)",
+  "CFBundleInfoDictionaryVersion": "6.0",
+  "CFBundleName": "${PRODUCT_NAME}",
+  "CFBundlePackageType": "KEXT",
+  "CFBundleShortVersionString": "1.0",
+  "CFBundleSignature": "????",
+  "CFBundleVersion": "1",
+  "IOKitPersonalities": {
+    "AppleSleepPowerPolicy": {
+      "IOClass": "AppleSleepPowerPolicy",
+      "IONameMatch": "sleep-pwr-policy",
+      "IOProviderClass": "AppleSMCInterface"
+    }
+  },
+  "NSHumanReadableCopyright": "Copyright \u00a9 2022 Apple Inc. All rights reserved.",
+  "OSBundleLibraries": {
+    "com.apple.driver.AppleARMPlatform": "1.0.0",
+    "com.apple.driver.AppleSMC": "3.1.9",
+    "com.apple.iokit.IOReportFamily": "1.0",
+    "com.apple.iokit.IOUSBHostFamily": "1.2",
+    "com.apple.kpi.bsd": "8.0",
+    "com.apple.kpi.iokit": "8.0",
+    "com.apple.kpi.libkern": "8.0",
+    "com.apple.kpi.mach": "8.0",
+    "com.apple.kpi.private": "8.0",
+    "com.apple.kpi.unsupported": "8.0"
+  }
+}

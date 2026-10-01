@@ -1,0 +1,65 @@
+{
+  "BuildMachineOSBuild": "23A344017",
+  "CFBundleDevelopmentRegion": "English",
+  "CFBundleExecutable": "ApplePMP",
+  "CFBundleIdentifier": "com.apple.driver.ApplePMP",
+  "CFBundleInfoDictionaryVersion": "6.0",
+  "CFBundleName": "ApplePMP",
+  "CFBundlePackageType": "KEXT",
+  "CFBundleShortVersionString": "1.0",
+  "CFBundleSignature": "????",
+  "CFBundleSupportedPlatforms": [
+    "MacOSX"
+  ],
+  "CFBundleVersion": "1",
+  "DTCompiler": "com.apple.compilers.llvm.clang.1_0",
+  "DTPlatformBuild": "26A425",
+  "DTPlatformName": "macosx",
+  "DTPlatformVersion": "27.0",
+  "DTSDKBuild": "26A425",
+  "DTSDKName": "macosx27.0.internal",
+  "DTXcode": "2700",
+  "DTXcodeBuild": "27A200c",
+  "IOKitPersonalities": {
+    "ApplePMP": {
+      "CFBundleIdentifier": "com.apple.driver.ApplePMP",
+      "IOClass": "ApplePMP",
+      "IONameMatch": "PMPEndpoint1",
+      "IOPlatformSleepAction": 610,
+      "IOPlatformWakeAction": 610,
+      "IOProviderClass": "RTBuddyEndpointService"
+    },
+    "ApplePMPThermal": {
+      "CFBundleIdentifier": "com.apple.driver.ApplePMP",
+      "IOClass": "ApplePMPThermal",
+      "IONameMatch": "PMPEndpoint2",
+      "IOProviderClass": "RTBuddyEndpointService"
+    },
+    "ApplePMPv2": {
+      "CFBundleIdentifier": "com.apple.driver.ApplePMP",
+      "IOClass": "ApplePMPv2",
+      "IONameMatch": [
+        "PMPEndpoint1",
+        "PMP0Endpoint1",
+        "PMP1Endpoint1"
+      ],
+      "IOPlatformSleepAction": 610,
+      "IOPlatformWakeAction": 610,
+      "IOProviderClass": "RTBuddyEndpointService"
+    }
+  },
+  "LSMinimumSystemVersion": "27.0",
+  "NSHumanReadableCopyright": "Copyright \u00a9 2015 Apple Inc. All rights reserved.",
+  "OSBundleLibraries": {
+    "com.apple.driver.AppleA7IOP": "1.0",
+    "com.apple.driver.AppleARMPlatform": "1.0.0",
+    "com.apple.driver.IOSlaveProcessor": "1.0.0",
+    "com.apple.driver.RTBuddy": "1.0.0",
+    "com.apple.iokit.IOHIDFamily": "1.4",
+    "com.apple.kpi.bsd": "8.0",
+    "com.apple.kpi.iokit": "8.0",
+    "com.apple.kpi.libkern": "8.0",
+    "com.apple.kpi.mach": "8.0",
+    "com.apple.kpi.private": "8.0"
+  }
+}
