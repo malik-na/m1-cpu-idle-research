@@ -2,6 +2,8 @@
 
 This page is the shortest handoff for a new research agent. The objective is a **validated, Linux-relevant explanation** of any remaining macOS/base-M1 CPU-idle difference. Prefer a small observation that can refute a hypothesis over an early power-policy patch.
 
+The coordinated APSC/DVFS investigation lives in the [Wayfinder decision map](https://github.com/malik-na/m1-cpu-idle-research/issues/1). For that effort, take one open, unblocked, unassigned child ticket and claim it before work. The [issue-tracker guide](../docs/agents/issue-tracker.md) explains the GitHub sub-issue and blocking conventions. The map is the decision index; this page remains the evidence handoff.
+
 ## Read path
 
 1. Read repository [AGENTS.md](../AGENTS.md) and [Evidence Standard](Evidence-Standard.md). Completion: identify the evidence tier required by your intended claim.

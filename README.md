@@ -13,6 +13,7 @@ Another build-specific finding: `cpu-power-gate-latency-us = 50000` reaches XNU'
 | If you want to… | Read |
 |---|---|
 | Orient a new investigator or coding agent | [Agent Orientation](wiki/Agent-Orientation.md), then [AGENTS.md](AGENTS.md) |
+| Coordinate the multi-session APSC/DVFS decision | [Decide whether base-M1 Linux CPU idle needs an APSC/DVFS wait](https://github.com/malik-na/m1-cpu-idle-research/issues/1) and [issue-tracker guide](docs/agents/issue-tracker.md) |
 | Understand exactly what is known | [Evidence Standard](wiki/Evidence-Standard.md) and [Findings Index](wiki/Findings-Index.md) |
 | Follow the macOS binary and assembly evidence | [macOS Control Path](wiki/MacOS-Control-Path.md) |
 | Reproduce instruction-level command/marker order | [PMGR ordering audit](notes/mac-pmgr-command-order.md) |
