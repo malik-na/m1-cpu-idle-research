@@ -18,6 +18,8 @@ import re
 import statistics
 import sys
 
+from final_entrant import screen as screen_final_entrants
+
 
 HEADER = [
     "kind", "seq", "cpu", "cluster", "policy_cpu", "policy_mask",
@@ -372,7 +374,8 @@ def idle_pairs(events: list[dict], status: dict) -> dict:
     }
 
 
-def analyze_text(events_csv: str, status_text: str, *, evidence_origin: str = "unverified_input") -> dict:
+def analyze_text(events_csv: str, status_text: str, *, evidence_origin: str = "unverified_input",
+                 pairwise_clock_error_ticks: int | None = None) -> dict:
     if evidence_origin not in {"unverified_input", "synthetic_fixture"}:
         raise AnalysisError("evidence_origin must be unverified_input or synthetic_fixture")
     status = parse_status(status_text)
@@ -452,6 +455,13 @@ def analyze_text(events_csv: str, status_text: str, *, evidence_origin: str = "u
     idle_entries = [event for event in events if event["kind"] == "idle_enter"]
     valid_idle_samples = [event for event in idle_entries if event["flags"] == 1 and event["ret"] == 0]
     pairs = idle_pairs(events, status)
+    try:
+        final_entrants = screen_final_entrants(
+            events, status, integrity_reasons=integrity_reasons,
+            pairwise_clock_error_ticks=pairwise_clock_error_ticks,
+        )
+    except ValueError as exc:
+        raise AnalysisError(str(exc)) from exc
     windows = {}
     for name, selected in (
         ("in_window", [event for event in events if event["t1"] <= status["stop_tick"]]),
@@ -471,7 +481,7 @@ def analyze_text(events_csv: str, status_text: str, *, evidence_origin: str = "u
         }
     incomplete_intervals = pairs["missing_enter"] + pairs["missing_exit"] + pairs["boundary_pair_excluded"]
     return {
-        "analysis_abi": 1,
+        "analysis_abi": 2,
         "evidence_origin": evidence_origin,
         "capture": {
             "target": "T8103 observer ABI v1",
@@ -526,13 +536,17 @@ def analyze_text(events_csv: str, status_text: str, *, evidence_origin: str = "u
         },
         "accessor_spans": accessor_spans(events, status),
         "idle_intervals": pairs,
+        "conditional_final_entrants": final_entrants,
         "claim_boundary": {
-            "candidate_software_final_entrant": "not_computed_in_v1",
+            "candidate_software_final_entrant": final_entrants["status"],
             "actual_wfi_overlap": "not_observed",
             "physical_idle_state": "not_observed",
             "dvfs_device_completion": "not_observed",
-            "complete_software_interval_screen_eligible": not integrity_reasons and not incomplete_intervals,
-            "complete_software_interval_screen_note": "requires a clean capture and no incomplete or boundary idle pairs; opportunity coverage, cross-CPU counter qualification and candidate final-entrant reconstruction remain required; never establishes actual WFI overlap",
+            "complete_software_interval_screen_eligible": (
+                not integrity_reasons and not incomplete_intervals
+                and final_entrants["idle_grammar"]["consistent"]
+            ),
+            "complete_software_interval_screen_note": "whole-stream completeness precondition only: requires a clean capture and no incomplete, boundary or contradictory idle pairs; conditional candidates may still exist among complete interior pairs; opportunity coverage and cross-CPU clock qualification remain required; never establishes actual WFI overlap",
         },
     }
 
@@ -542,12 +556,20 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("events_csv", type=Path)
     parser.add_argument("status", type=Path)
     parser.add_argument("--synthetic-fixture", action="store_true", help="label test input as synthetic")
+    parser.add_argument(
+        "--pairwise-clock-error-ticks",
+        help="assumed maximum pairwise counter-comparison error over the entire capture, as uint64 ticks; enables a conditional software screen, not clock qualification",
+    )
     args = parser.parse_args(argv)
     try:
         result = analyze_text(
             args.events_csv.read_text(),
             args.status.read_text(),
             evidence_origin="synthetic_fixture" if args.synthetic_fixture else "unverified_input",
+            pairwise_clock_error_ticks=(
+                unsigned(args.pairwise_clock_error_ticks, "pairwise-clock-error-ticks")
+                if args.pairwise_clock_error_ticks is not None else None
+            ),
         )
     except (AnalysisError, OSError) as exc:
         print(json.dumps({"analysis_error": str(exc)}), file=sys.stderr)

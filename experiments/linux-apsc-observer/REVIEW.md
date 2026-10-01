@@ -29,13 +29,16 @@ concurrent DVFS sequence inversions, and labels synthetic tests explicitly.
 Accessor spans have defined units and exclude unmeasured publication work.
 
 There is no unresolved defect from those reviews, but the capture ticket is
-**not complete**. Candidate software final-entrant reconstruction remains
-unimplemented. A future run still needs a qualified native boot and actual
+**not complete**. The subsequent [conditional candidate screen](README.md)
+implements software final-entrant reconstruction under an explicitly supplied
+pairwise clock-error assumption. A future run still needs a qualified native boot and actual
 kernel configuration, final link and boot checks, cross-CPU counter
 qualification, adequate opportunities with loss and observer controls,
 and the resulting reconstructible data. A C sample before idle entry does
 not locate the WFI instruction or prove physical power state. The separate
-PCPM calibration and Linux-policy decision gates remain open.
+PCPM calibration and Linux-policy decision gates remain open. The
+[clock-qualification protocol](CLOCK-QUALIFICATION.md) is a design for that
+future session; no helper or clock result is claimed.
 
 The [Mac FBT result](../../notes/mac-apsc-direct-observation-route.md) closes
 only the availability question for the tested native SIP configuration.

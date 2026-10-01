@@ -111,9 +111,13 @@ loss and incomplete intervals, and separates active-window, stop-straddling,
 and drain records. It reports minimum, median, nearest-rank p95, and maximum
 accessor spans in ticks and approximate nanoseconds, grouped by operation.
 These spans exclude some record construction/publication work; a failed
-DVFS poll contributes a timestamp marker, not its poll duration. It does not
-yet reconstruct candidate software final entrants or qualify cross-CPU
-clock ordering. All [decoder tests](test_analyze.py) use synthetic inputs.
+DVFS poll contributes a timestamp marker, not its poll duration. Its analysis
+JSON is ABI 2; the kernel CSV/status remains ABI 1. The separate
+[candidate screen](final_entrant.py) can reconstruct **conditional software
+final entrants** when an explicit pairwise clock-error assumption is supplied.
+It does not qualify that assumption or identify the actual last active core.
+All [decoder tests](test_analyze.py) and [candidate tests](test_final_entrant.py)
+use synthetic inputs.
 
 ```sh
 python3 analyze.py /path/to/private/events.csv /path/to/private/status.txt
@@ -123,3 +127,50 @@ python3 -m unittest discover -s . -p 'test_*.py'
 Run these from this directory. Retain the original files and the separate
 boot/run packet; the default `unverified_input` label deliberately avoids
 authenticating a capture from its syntax alone.
+
+For a conditional screen, supply `--pairwise-clock-error-ticks E`, replacing
+`E` with an unsigned decimal integer. There is deliberately no default zero:
+without this option, candidate reconstruction reports
+`unavailable_without_clock_bound`. The bound is the maximum **pairwise**
+timestamp-comparison error over the whole capture, including drift, read
+uncertainty and the unrecorded capture-control CPU. It is not a per-core bound
+to double. Even explicit zero is an assumption. The proposed
+[clock-qualification protocol](CLOCK-QUALIFICATION.md) describes a future
+kernel-side causal exchange and the limits of finite measurements; its helper
+is not yet implemented or run.
+
+For bound `E`, each candidate and peer must have a complete interval strictly
+inside `start_tick + E < entry.t0` and `exit.t1 + E < stop_tick`. Every other
+CPU in the candidate's recorded cluster mask must supply a complete witness
+with `peer.entry.t1 + E < candidate.entry.t0` and
+`candidate.entry.t1 + E < peer.exit.t0`. Ties and uncertainty-bound ties fail.
+The output retains witness CPUs, tokens, sequence identifiers, raw timestamps
+and margins. It does not correct raw timestamps or relax the decoder's
+capture-bound checks; inconsistent input is rejected before this screen.
+
+Any capture integrity failure or contradictory per-CPU idle sequence suppresses
+the screen. A final unmatched entry and capture-boundary intervals are excluded,
+but do not erase earlier valid interior candidates. A nested entry, orphan
+exit, mismatched return or CPU-PM failure inside an open interval is a
+contradiction. These rules describe this one-shot recorder, whose token-zero
+pre-capture entries cannot produce recorded exits. Whole-stream completeness
+is reported separately from the existence of individual interior candidates.
+
+Successful recorded DVFS writes are compared by **target** cluster, preserving
+the executing writer CPU. A write is definitely before when
+`write.t1 + E < sample.t0`, definitely after when
+`sample.t1 + E < write.t0`, and otherwise ambiguous; comparisons on the same
+CPU use zero cross-CPU error. Counts include every committed successful write,
+including drain records. The nearest definitely-before write is selected by
+recorded `t1`; it need not be the actual latest across CPUs and is never
+identified as the cause of BUSY. At most 32 ambiguous-write identifiers per
+candidate are shown, with exact total/omitted counts and truncation indicated.
+Raw CSV is authoritative. Failed polls are retained in the decoder summary
+but have no write to correlate.
+
+Records-only or failed-read candidates have `busy_bit31: null`, never false.
+Peer intervals can include work before and after WFI. Thus even a BUSY-positive
+candidate does not prove WFI overlap, device completion, rail state or energy
+benefit. Zero candidates or zero BUSY candidates cannot support a negative
+hardware conclusion; opportunity coverage, excluded intervals, clock assumptions
+and observer effects remain separate evidence requirements.

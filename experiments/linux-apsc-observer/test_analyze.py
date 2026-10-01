@@ -88,12 +88,72 @@ def good_rows():
     )
 
 
+def candidate_rows():
+    # CPU 3 enters after its three peers; all four complete before stop.
+    rows = [record("dvfs", 0, 4, 0, policy_cpu=0, policy_mask="0x0f", fast_switch=1,
+                   t0=5, t1=6, pre_cmd="0x0", cmd="0x2000000")]
+    for cpu in range(4):
+        entry = 30 if cpu == 3 else 10 + cpu * 3
+        rows.extend((
+            record("idle_enter", 0, cpu, 0, token=1, t0=entry, t1=entry + 1,
+                   cmd="0x80000000" if cpu == 3 else "0x0", flags=1),
+            record("idle_exit", 1, cpu, 0, token=1, t0=60 + cpu, t1=60 + cpu),
+        ))
+    return rows
+
+
 class DecoderTests(unittest.TestCase):
-    def decode(self, rows, *, counters, mode="mmio", **status_options):
+    def decode(self, rows, *, counters, mode="mmio", pairwise_clock_error_ticks=None, **status_options):
         return analyze.analyze_text(
             event_csv(*rows), status(mode=mode, overrides=counters, **status_options),
             evidence_origin="synthetic_fixture",
+            pairwise_clock_error_ticks=pairwise_clock_error_ticks,
         )
+
+    def test_candidate_screen_requires_explicit_bound_and_retains_peer_evidence(self):
+        counters = {**{f"idle{cpu}": (2, 2, 0, 0) for cpu in range(4)}, "dvfs0": (1, 1, 0, 0)}
+        default = self.decode(candidate_rows(), counters=counters)
+        self.assertEqual(default["analysis_abi"], 2)
+        self.assertEqual(default["conditional_final_entrants"]["status"], "unavailable_without_clock_bound")
+        self.assertEqual(default["conditional_final_entrants"]["candidates"], [])
+        result = self.decode(candidate_rows(), counters=counters, pairwise_clock_error_ticks=2)
+        screen = result["conditional_final_entrants"]
+        self.assertEqual(screen["status"], "conditional_software_screen")
+        self.assertEqual(screen["counts"]["candidates"], 1)
+        candidate = screen["candidates"][0]
+        self.assertEqual(candidate["cpu"], 3)
+        self.assertTrue(candidate["busy_bit31"])
+        self.assertEqual([peer["cpu"] for peer in candidate["peer_interval_witnesses"]], [0, 1, 2])
+        write = candidate["target_cluster_dvfs"]["nearest_by_recorded_t1_definitely_before"]
+        self.assertEqual((write["cpu"], write["cluster"], write["clock_error_applied_ticks"]), (4, 0, 2))
+        self.assertEqual(result["evidence_origin"], "synthetic_fixture")
+        self.assertFalse(screen["claim_boundary"]["hardware_clock_qualified"])
+        self.assertFalse(screen["claim_boundary"]["negative_conclusion_supported"])
+        self.assertEqual(result["claim_boundary"]["physical_idle_state"], "not_observed")
+
+    def test_candidate_inference_stops_on_loss_but_retains_raw_counts(self):
+        counters = {**{f"idle{cpu}": (2, 2, 0, 0) for cpu in range(4)}, "dvfs0": (2, 1, 1, 0)}
+        result = self.decode(candidate_rows(), counters=counters, pairwise_clock_error_ticks=0)
+        self.assertEqual(result["conditional_final_entrants"]["status"], "suppressed_integrity_failure")
+        self.assertEqual(result["conditional_final_entrants"]["candidates"], [])
+        self.assertEqual(result["observed_records"]["idle_busy_bit31_valid_samples"], 1)
+
+    def test_contradictory_incomplete_idle_grammar_suppresses_candidate_screen(self):
+        rows = (
+            record("idle_enter", 0, 0, 0, token=1, t0=10, t1=11, cmd="0x0", flags=1),
+            record("idle_enter", 1, 0, 0, token=2, t0=20, t1=21, cmd="0x0", flags=1),
+            record("idle_exit", 2, 0, 0, token=2, t0=40, t1=40),
+        )
+        result = self.decode(rows, counters={"idle0": (3, 3, 0, 0)}, pairwise_clock_error_ticks=0)
+        self.assertTrue(result["integrity"]["clean"])
+        self.assertEqual(result["conditional_final_entrants"]["status"], "suppressed_contradictory_idle_stream")
+        self.assertEqual(result["observed_records"]["total"], 3)
+        self.assertFalse(result["claim_boundary"]["complete_software_interval_screen_eligible"])
+
+    def test_candidate_api_rejects_invalid_clock_bounds(self):
+        for bound in (True, -1, 1 << 64, 0.0, "0"):
+            with self.subTest(bound=bound), self.assertRaisesRegex(analyze.AnalysisError, "pairwise_clock_error_ticks"):
+                analyze.analyze_text(event_csv(), status(), pairwise_clock_error_ticks=bound)
 
     def test_valid_synthetic_capture_preserves_zero_and_reports_only_sampled_busy(self):
         result = self.decode(good_rows(), counters={"dvfs0": (1, 1, 0, 0), "idle0": (2, 2, 0, 0)})
@@ -445,7 +505,7 @@ class DecoderTests(unittest.TestCase):
         self.assertTrue(result["integrity"]["clean"])
         self.assertEqual(result["idle_intervals"]["complete_pairs"], 3)
         self.assertTrue(result["claim_boundary"]["complete_software_interval_screen_eligible"])
-        self.assertEqual(result["claim_boundary"]["candidate_software_final_entrant"], "not_computed_in_v1")
+        self.assertEqual(result["claim_boundary"]["candidate_software_final_entrant"], "unavailable_without_clock_bound")
 
     def test_partial_online_mask_cannot_be_a_clean_v1_capture(self):
         actual = status().replace("start_online_mask=0xff", "start_online_mask=0x01")
@@ -504,6 +564,31 @@ class DecoderTests(unittest.TestCase):
         output = json.loads(result.stdout)
         self.assertEqual(output["evidence_origin"], "synthetic_fixture")
         self.assertEqual(output["claim_boundary"]["physical_idle_state"], "not_observed")
+
+    def test_cli_clock_option_is_strict_and_keeps_input_unverified(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary)
+            events_path, status_path = folder / "events.csv", folder / "status"
+            events_path.write_text(event_csv(*candidate_rows()))
+            status_path.write_text(status(overrides={
+                **{f"idle{cpu}": (2, 2, 0, 0) for cpu in range(4)}, "dvfs0": (1, 1, 0, 0),
+            }))
+            for bound in ("2", "-1", str(1 << 64), "true", "2.0", "02"):
+                result = subprocess.run(
+                    [sys.executable, str(MODULE), str(events_path), str(status_path),
+                     f"--pairwise-clock-error-ticks={bound}"], capture_output=True, text=True, check=False,
+                )
+                with self.subTest(bound=bound):
+                    if bound == "2":
+                        self.assertEqual(result.returncode, 0, result.stderr)
+                        output = json.loads(result.stdout)
+                        self.assertEqual(output["evidence_origin"], "unverified_input")
+                        self.assertEqual(output["conditional_final_entrants"]["counts"]["candidates"], 1)
+                        self.assertFalse(output["conditional_final_entrants"]["claim_boundary"]["hardware_clock_qualified"])
+                    else:
+                        self.assertEqual(result.returncode, 2, result.stderr)
+                        self.assertIn("pairwise-clock-error-ticks", json.loads(result.stderr)["analysis_error"])
+                        self.assertEqual(result.stdout, "")
 
 
 if __name__ == "__main__":
