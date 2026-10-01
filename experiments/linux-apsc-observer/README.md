@@ -136,8 +136,9 @@ timestamp-comparison error over the whole capture, including drift, read
 uncertainty and the unrecorded capture-control CPU. It is not a per-core bound
 to double. Even explicit zero is an assumption. The proposed
 [clock-qualification protocol](CLOCK-QUALIFICATION.md) describes a future
-kernel-side causal exchange and the limits of finite measurements; its helper
-is not yet implemented or run.
+kernel-side causal exchange and the limits of finite measurements. The separate
+[helper and decoder](../linux-counter-qualification/README.md) implement its
+star-exchange route as an experimental source patch; no native run is claimed.
 
 For bound `E`, each candidate and peer must have a complete interval strictly
 inside `start_tick + E < entry.t0` and `exit.t1 + E < stop_tick`. Every other

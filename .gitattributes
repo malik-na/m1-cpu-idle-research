@@ -1,3 +1,4 @@
 # Unified-diff context prefixes include intentional spaces before source tabs.
 # Validate whitespace in the applied kernel sources, not the diff container.
 experiments/linux-apsc-observer/*.patch -whitespace
+experiments/linux-counter-qualification/*.patch -whitespace

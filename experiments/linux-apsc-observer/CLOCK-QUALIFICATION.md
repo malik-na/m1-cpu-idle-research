@@ -1,7 +1,8 @@
 # Qualifying cross-CPU physical-counter comparisons
 
-This is a **proposed native test**, not a measurement or an implemented kernel
-helper. No clock qualification has run on this Mac. The [observer](README.md)
+This is a **native-test protocol**, with an experimental
+[kernel helper and offline decoder](../linux-counter-qualification/README.md).
+No clock qualification has run on this Mac. The [observer](README.md)
 uses physical-counter readings on different CPUs, so a candidate software
 final-entrant analysis must state its cross-CPU clock assumption. A user-supplied
 `pairwise-clock-error-ticks` value is an assumption, not proof that the clocks
@@ -153,7 +154,7 @@ provenance, and any separately justified drift margin.
 
 ## Cover all eight CPUs, then bracket the capture
 
-The smallest pass is a star: choose one online reference CPU from the booted
+The default protocol pass is a star: choose one online reference CPU from the booted
 topology and perform 256 exchanges with each of the other seven CPUs, in a
 predeclared interleaved order. Pin a normal-priority kernel worker to the
 reference and retain the outer per-round pin described above. The control task
@@ -161,6 +162,11 @@ holds `cpus_read_lock()` from preparation through worker completion, acquired
 before any preemption-disabled section. Require exactly the observer's eight
 online CPUs, derive E/P membership from the same booted topology, and record it;
 do not assume a logical CPU number identifies a particular cluster.
+
+The experimental helper allows 1–256 rounds per target for bounded acquisition
+checks. A shorter run must retain its actual count and cannot be reported as
+the default 256-round protocol. It implements the star route only; the optional
+directed all-pairs route below remains a design, not an implemented mode.
 
 Store at most 1792 records per star phase, plus bounded metadata/error records.
 Run a phase before the capture, let the stated warm-up/settling criterion be

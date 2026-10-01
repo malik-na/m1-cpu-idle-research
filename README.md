@@ -22,6 +22,7 @@ Another build-specific finding: `cpu-power-gate-latency-us = 50000` reaches XNU'
 | Investigate the running Mac without rebooting | [Non-Reboot Investigation](wiki/Non-Reboot-Investigation.md) |
 | Check the privileged native tracing gate | [macOS direct-observation route and SIP result](notes/mac-apsc-direct-observation-route.md) |
 | Prepare the Linux observation experiment | [Observer patch and analyzer](experiments/linux-apsc-observer/README.md), then [future native-run checklist](experiments/linux-apsc-observer/NATIVE-RUN.md) |
+| Check whether cross-CPU timestamps support an ordering | [Counter qualification helper and decoder](experiments/linux-counter-qualification/README.md), with [raw ABI](experiments/linux-counter-qualification/ABI.md) |
 | Reproduce and interpret the five-second root trace | [Live Mac Tracing](wiki/Live-Mac-Tracing.md) |
 | Follow the Mac-only performance-request timing lead | [Trace correlation audit](notes/mac-ktrace-perf-request-correlation.md) |
 | Interpret the earlier Linux measurements | [Prior Native Linux Results](wiki/Prior-Native-Linux-Results.md) |
