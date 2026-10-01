@@ -26,6 +26,8 @@ The analyzer reconstructs an apparent per-core idle state from completed enter a
 
 The duration is time spent **inside the PMGR callback brackets**, not time in WFI or physical idle. The observed split is consistent with additional last-core work and justifies a narrower probe. The local binary already shows multiple possible last-core operations, so duration alone cannot identify the APSC wait. An absence of `0x328c00c0` in five seconds only says that event was not recorded in this capture and filter configuration.
 
+A [Mac-only retrospective analysis](../notes/mac-ktrace-perf-request-correlation.md) also stratifies these callbacks by nearby `CPM1PerfStateReq` and `CPM3PerfStateReq` software markers. It finds a pronounced E-cluster timing association with the former in this one capture. The result narrows where to look, but a request marker does not report command BUSY, the internal wait branch, or hardware residency.
+
 ## Bounded recipe on this macOS build
 
 The successful command was:

@@ -4,6 +4,8 @@ A public research notebook on how macOS 27 controls CPU idle on a base M1 (T8103
 
 The most concrete current lead is a **static control-path difference**: the inspected macOS `AppleT8103PMGR` last-active-core idle path conditionally waits for the cluster DVFS/APSC command's BUSY bit to clear; the pinned Linux CPU-idle path has no explicit matching wait. The local configuration predicts that macOS enables the wait. We have **not** measured how often it runs, whether Linux ever overlaps an outstanding command with deep WFI, or whether any difference affects physical power state or energy. See [macOS control path](wiki/MacOS-Control-Path.md) and [experiment backlog](wiki/Experiment-Backlog.md).
 
+A Mac-only reanalysis of the saved five-second trace found a **timing lead**: apparent last E-core idle-entry callbacks soon after one PMGR performance-request marker were longer than callbacks without a recent marker. That marker is not a command-register read or proof that the APSC wait ran. The [reproducible correlation note](notes/mac-ktrace-perf-request-correlation.md) gives the counts, controls, and limits.
+
 Another build-specific finding: `cpu-power-gate-latency-us = 50000` reaches XNU's **nanosecond** software latency input unchanged, yielding **50 microseconds** in the checked running build. This is not a measured hardware exit latency and should not be copied into Linux cpuidle metadata. The chain is recorded in [macOS control path](wiki/MacOS-Control-Path.md).
 
 ## Start here
@@ -16,6 +18,7 @@ Another build-specific finding: `cpu-power-gate-latency-us = 50000` reaches XNU'
 | Check what Asahi, Omacom, and Aurora already implement | [Linux fork baseline](wiki/Linux-and-Aurora-Baseline.md) and [Omacom source audit](notes/omacom-linux-source-audit.md) |
 | Investigate the running Mac without rebooting | [Non-Reboot Investigation](wiki/Non-Reboot-Investigation.md) |
 | Reproduce and interpret the five-second root trace | [Live Mac Tracing](wiki/Live-Mac-Tracing.md) |
+| Follow the Mac-only performance-request timing lead | [Trace correlation audit](notes/mac-ktrace-perf-request-correlation.md) |
 | Interpret the earlier Linux measurements | [Prior Native Linux Results](wiki/Prior-Native-Linux-Results.md) |
 | Run a discriminating next experiment | [Experiment Backlog](wiki/Experiment-Backlog.md) |
 

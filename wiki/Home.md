@@ -13,6 +13,7 @@ This wiki tracks one question: **which CPU-idle decisions made by macOS on base 
 | Asahi, Omacom, and Aurora source comparison | [Linux fork baseline](Linux-and-Aurora-Baseline.md) and [Omacom source audit](../notes/omacom-linux-source-audit.md) |
 | Host macOS investigation without reboot | [Non-Reboot Investigation](Non-Reboot-Investigation.md) |
 | Five-second privileged ktrace capture | [Live Mac Tracing](Live-Mac-Tracing.md) |
+| Mac-only timing analysis of saved performance-request markers | [Trace correlation audit](../notes/mac-ktrace-perf-request-correlation.md) |
 | Earlier native Linux measurements | [Prior Native Linux Results](Prior-Native-Linux-Results.md) |
 | Falsifiable next experiments | [Experiment Backlog](Experiment-Backlog.md) |
 
@@ -25,6 +26,7 @@ The detailed [research report](../notes/README.md) and [supporting notes](../not
 | Does Linux already request deep WFI on M1? | Yes, in the pinned Asahi/Omacom/Aurora `apple_idle` driver. | Pinned public source; historical native software counts |
 | Does the checked macOS PMGR path have a last-core DVFS/APSC wait? | Yes; local disassembly identifies the path and register reads. | Matching local binary |
 | Is that wait enabled on this Mac? | Static configuration predicts yes; live branch frequency still needs tracing. | Local binary plus captured properties |
+| Do nearby performance requests coincide with longer last-E-core callbacks? | In one retrospective five-second trace, yes for one request marker; cause remains unknown. | Live software markers and callback timing |
 | Does Linux reach the same physical core/cluster-off residency as macOS? | Unknown. | No independent native state/residency qualification |
 | Is adding a BUSY wait to Linux correct or energy-saving? | Unknown. | No native overlap/consequence experiment |
 | Can a normal macOS app use Hypervisor.framework to inspect its running host at EL2? | The documented API creates isolated guests and maps guest memory from the app; host PMGR access does not follow from it. | Inference from Apple API design |

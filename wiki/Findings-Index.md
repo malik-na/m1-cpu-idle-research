@@ -12,6 +12,7 @@ All findings below refer to the investigated base-M1 Mac and pinned public revis
 | A 32.481-second unprivileged macOS IOReport/assembly workload capture differentiated software CPU/cluster IDLE behavior across pulse phases. | [Measurement note](../notes/telemetry-notes.md), [phase summary](../notes/raw/ioreport/paired-c-assembly-summary.json) | Unequal delivered work and one IDLE bin prevent a power-policy or idle-depth conclusion. |
 | Historical native Linux reporting shows all eight CPUs entering `CPU PD` software state. | [Prior Native Linux Results](Prior-Native-Linux-Results.md) | Historical capture; not refreshed this session and not physical rail-off proof. |
 | A five-second macOS `ktrace` run produced 47,068 complete PMGR CPUIdle callback pairs, with longer apparent last-active-core enter callbacks. | [Live Mac Tracing](Live-Mac-Tracing.md), [sanitized aggregate](../notes/raw/ktrace/idle-5s-summary.json) | Bracket duration is software work, not evidence that the APSC wait ran or that hardware powered down. |
+| In that trace, 166 apparent last E-core entry callbacks began within 50 µs after a `CPM1PerfStateReq` marker and had 14.251 µs median bracket duration, versus 3.458 µs for 2,822 callbacks at least 1 ms after a marker or with no preceding marker. | [Reproducible trace correlation](../notes/mac-ktrace-perf-request-correlation.md) | Exploratory temporal association; no branch, DVFS BUSY, physical state, or causal energy observation. |
 
 ## Still open
 
