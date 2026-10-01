@@ -1,0 +1,361 @@
+{
+  "schema": "iconidentify-aurora-source-comparison-v1",
+  "observed_utc": "2026-10-01T19:22:10Z",
+  "file_count": 20,
+  "asahi_commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+  "release_commit": "90a95335a49aec3a0045a76da140452ad6585eb3",
+  "installer_header_attributed_kernel_commit": "e11a8bc74cb8f9a690b9a6debe15962438dcc3c7",
+  "files": {
+    "asahi": {
+      "drivers/cpuidle/cpuidle-apple.c": {
+        "blob": "3d2b804df8a2de18b8d8f031857b00d7198dab4c",
+        "sha256": "117650f48d17e2db2f8246ce2cc73995b4881587572756b75d330df95da87ded",
+        "bytes": 3949,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/cpuidle/cpuidle-apple.c"
+      },
+      "drivers/cpufreq/apple-soc-cpufreq.c": {
+        "blob": "60935032919d2b5b7a74c4e9677676de67fc531e",
+        "sha256": "e4efe79b653dc07c18a2bacc607fe69f8144ead11bf10cd4ef9407396ca808d2",
+        "bytes": 10263,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/cpufreq/apple-soc-cpufreq.c"
+      },
+      "arch/arm64/include/asm/arch_timer.h": {
+        "blob": "f5794d50f51dc371177cfb838b0c024cef31e4cf",
+        "sha256": "232e920f6efa29b2e00b35aefbaeed0c2c024fc8612dadddf2d8f2cf58026fcc",
+        "bytes": 4959,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/arch/arm64/include/asm/arch_timer.h"
+      },
+      "arch/arm64/include/asm/barrier.h": {
+        "blob": "9495c4441a46ba7172cd368c4276740fb1368dfc",
+        "sha256": "8a999b400d262bb182a2881f105041309ded27fa6dd3971af662f690fbc24135",
+        "bytes": 6126,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/arch/arm64/include/asm/barrier.h"
+      },
+      "drivers/mfd/syscon.c": {
+        "blob": "21a7fcdd27379e640b408ef232289ff7f515bcae",
+        "sha256": "2d93e488b42bd7ed6ee2f6d0ec3fabbe201f8f98caae2d226564b64870164aec",
+        "bytes": 8957,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/mfd/syscon.c"
+      },
+      "include/linux/mfd/syscon.h": {
+        "blob": "aad9c6b5046368992277e21a6770a0934b686240",
+        "sha256": "e09615d6d9ed796255e80e4c91ca2d95e48237225258ec2435358ae4767a2ece",
+        "bytes": 2044,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/include/linux/mfd/syscon.h"
+      },
+      "arch/arm64/boot/dts/apple/t8103.dtsi": {
+        "blob": "58c59075f2d2b7e09b62d8c43cfeccc3e8a592e7",
+        "sha256": "9a191329f1fff3ccf32704fd9566a737b02271bd6636e47c97365ea2c1fa4d49",
+        "bytes": 47186,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/arch/arm64/boot/dts/apple/t8103.dtsi"
+      },
+      "arch/arm64/boot/dts/apple/t8103-pmgr.dtsi": {
+        "blob": "5d3846d44e35786ef8a1444aa512f6d79196c610",
+        "sha256": "959b3e7992e234075cee29916705962db4ce6f25756a51a463e619fe3b702e07",
+        "bytes": 32801,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/arch/arm64/boot/dts/apple/t8103-pmgr.dtsi"
+      },
+      "drivers/pmdomain/apple/pmgr-pwrstate.c": {
+        "blob": "a92db8cf88bb907b911230388bb7366b8e6586be",
+        "sha256": "a09148952eb78c516f6484889a013b86b757552cf6ce5dde54c96f794d8acfdf",
+        "bytes": 10880,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/pmdomain/apple/pmgr-pwrstate.c"
+      },
+      "kernel/sched/cpufreq_schedutil.c": {
+        "blob": "dff4ee04694c2b90301ed0fa158a509a3423cee1",
+        "sha256": "1a71c22944eed217380e0bd8cb8e3387f3ed918d931a15a43b37a406796750f2",
+        "bytes": 26537,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/kernel/sched/cpufreq_schedutil.c"
+      },
+      "drivers/cpufreq/cpufreq.c": {
+        "blob": "2debe39fc477beb0c101bf99690bc0e5a153b825",
+        "sha256": "8b6eb5539bded1463c232ecd0de47db5eaf07d25381ff569c2ee6b0c7f5acb61",
+        "bytes": 82178,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/cpufreq/cpufreq.c"
+      },
+      "include/linux/cpufreq.h": {
+        "blob": "2ab691828e4831c310e7695f78571f6d4fe306a3",
+        "sha256": "40bf9e1324d4b6023f823e0fea06bfbb3c22bc1a32e08653418fde9bf9260f7d",
+        "bytes": 37503,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/include/linux/cpufreq.h"
+      },
+      "kernel/sched/idle.c": {
+        "blob": "a83be0c834ddb5ec8a236c525d8a5edd84b3175a",
+        "sha256": "c0a82d99af83e19b6f66dda3260a9b3d01314e4e9ef53a6ddafc61b6c1053b73",
+        "bytes": 15304,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/kernel/sched/idle.c"
+      },
+      "drivers/cpuidle/cpuidle.c": {
+        "blob": "2d2f40a2cb813c68bf355906f7aa3dc69984a8d0",
+        "sha256": "040e43a1bb1439384f9871766630cef2296050d8335080725cffdb00afedeaf6",
+        "bytes": 20409,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/cpuidle/cpuidle.c"
+      },
+      "kernel/cpu_pm.c": {
+        "blob": "7481fbb947d32e99deabeac309945d46f9c5354d",
+        "sha256": "58539bcd4a9257ab717cb5cd5962a4e2e997b18fff9030e0f7595860074c30be",
+        "bytes": 6122,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/kernel/cpu_pm.c"
+      },
+      "drivers/clocksource/arm_arch_timer.c": {
+        "blob": "90aeff44a2764c1534d8ad3ebd11ff8f2d8f87c0",
+        "sha256": "0613e2f5d21a736e98fb993db17e8db5c8e050b813c59035fb5bd4a696dd7ead",
+        "bytes": 34373,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/clocksource/arm_arch_timer.c"
+      },
+      "drivers/soc/apple/Kconfig": {
+        "blob": "41bd8fbc87aab35b2e54a1b1e3a65cb1d6b0588c",
+        "sha256": "606a9771e2dbe6bacf294b0f2e4a45e97e0454a3da5cb923a44c8ee5cb48c776",
+        "bytes": 3596,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/soc/apple/Kconfig"
+      },
+      "drivers/soc/apple/Makefile": {
+        "blob": "1baa6de9449589d934b5f26b34ce2a9ac9986b6c",
+        "sha256": "434a77b80994fdcfdf48499c61fc6161fa4b66f4a62cc652e58eadda4421e346",
+        "bytes": 683,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/soc/apple/Makefile"
+      },
+      "drivers/cpuidle/Kconfig.arm": {
+        "blob": "c6870f0845763218cde67de827620ba2bd76f9c8",
+        "sha256": "97c55491a6fe0e0ae0de9c65f8154ca113656bcbd8519a2de4703c81d61e61dc",
+        "bytes": 4658,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/cpuidle/Kconfig.arm"
+      },
+      "drivers/cpuidle/Makefile": {
+        "blob": "f9e7a71d52c13f1953af954410f2474ad7f05782",
+        "sha256": "022a8b3b3201009f923f38b7b2f48cfec7be85dc476cbe0281a2bd47e703c29c",
+        "bytes": 1933,
+        "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/cpuidle/Makefile"
+      }
+    },
+    "release": {
+      "drivers/cpuidle/cpuidle-apple.c": {
+        "blob": "67c7846111cf32dcac84627ec7671a67a981d10f",
+        "sha256": "798148b905eda4496f0b6a5df716f4b019aa152694a85d188d1acbf54e4cef93",
+        "bytes": 4152,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/drivers/cpuidle/cpuidle-apple.c"
+      },
+      "drivers/cpufreq/apple-soc-cpufreq.c": {
+        "blob": "f2a1e91371be4921b7abab002b645c7da0143a20",
+        "sha256": "58f9544ee8d3a86b4b37864bff4d9f635da749b5f85b0f30737a13ac5ce00806",
+        "bytes": 13262,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/drivers/cpufreq/apple-soc-cpufreq.c"
+      },
+      "arch/arm64/include/asm/arch_timer.h": {
+        "blob": "f5794d50f51dc371177cfb838b0c024cef31e4cf",
+        "sha256": "232e920f6efa29b2e00b35aefbaeed0c2c024fc8612dadddf2d8f2cf58026fcc",
+        "bytes": 4959,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/arch/arm64/include/asm/arch_timer.h"
+      },
+      "arch/arm64/include/asm/barrier.h": {
+        "blob": "9495c4441a46ba7172cd368c4276740fb1368dfc",
+        "sha256": "8a999b400d262bb182a2881f105041309ded27fa6dd3971af662f690fbc24135",
+        "bytes": 6126,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/arch/arm64/include/asm/barrier.h"
+      },
+      "drivers/mfd/syscon.c": {
+        "blob": "21a7fcdd27379e640b408ef232289ff7f515bcae",
+        "sha256": "2d93e488b42bd7ed6ee2f6d0ec3fabbe201f8f98caae2d226564b64870164aec",
+        "bytes": 8957,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/drivers/mfd/syscon.c"
+      },
+      "include/linux/mfd/syscon.h": {
+        "blob": "aad9c6b5046368992277e21a6770a0934b686240",
+        "sha256": "e09615d6d9ed796255e80e4c91ca2d95e48237225258ec2435358ae4767a2ece",
+        "bytes": 2044,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/include/linux/mfd/syscon.h"
+      },
+      "arch/arm64/boot/dts/apple/t8103.dtsi": {
+        "blob": "ea2eedcb5d6b5b483bcb7b404db39215e1680af3",
+        "sha256": "2f178470561cc2723a52d2357833ea9b7ad224ee804a53a098fa41bade0fd4a3",
+        "bytes": 60000,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/arch/arm64/boot/dts/apple/t8103.dtsi"
+      },
+      "arch/arm64/boot/dts/apple/t8103-pmgr.dtsi": {
+        "blob": "4a399bc8f0276b8e5632e92d39ffa0cb6c7a2423",
+        "sha256": "cabd4f4422e99bb8a4c206afeeee748b126595cb2d4def0464fb6f706b4dbe6c",
+        "bytes": 32839,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/arch/arm64/boot/dts/apple/t8103-pmgr.dtsi"
+      },
+      "drivers/pmdomain/apple/pmgr-pwrstate.c": {
+        "blob": "42511ed7ef89c56485eb08abc0b720a6afab27b0",
+        "sha256": "056d49268a2c8409c29976964bb1bb03612641eab6c7b13cd6f0da12925b66b5",
+        "bytes": 11091,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/drivers/pmdomain/apple/pmgr-pwrstate.c"
+      },
+      "kernel/sched/cpufreq_schedutil.c": {
+        "blob": "dff4ee04694c2b90301ed0fa158a509a3423cee1",
+        "sha256": "1a71c22944eed217380e0bd8cb8e3387f3ed918d931a15a43b37a406796750f2",
+        "bytes": 26537,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/kernel/sched/cpufreq_schedutil.c"
+      },
+      "drivers/cpufreq/cpufreq.c": {
+        "blob": "2debe39fc477beb0c101bf99690bc0e5a153b825",
+        "sha256": "8b6eb5539bded1463c232ecd0de47db5eaf07d25381ff569c2ee6b0c7f5acb61",
+        "bytes": 82178,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/drivers/cpufreq/cpufreq.c"
+      },
+      "include/linux/cpufreq.h": {
+        "blob": "2ab691828e4831c310e7695f78571f6d4fe306a3",
+        "sha256": "40bf9e1324d4b6023f823e0fea06bfbb3c22bc1a32e08653418fde9bf9260f7d",
+        "bytes": 37503,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/include/linux/cpufreq.h"
+      },
+      "kernel/sched/idle.c": {
+        "blob": "a83be0c834ddb5ec8a236c525d8a5edd84b3175a",
+        "sha256": "c0a82d99af83e19b6f66dda3260a9b3d01314e4e9ef53a6ddafc61b6c1053b73",
+        "bytes": 15304,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/kernel/sched/idle.c"
+      },
+      "drivers/cpuidle/cpuidle.c": {
+        "blob": "2d2f40a2cb813c68bf355906f7aa3dc69984a8d0",
+        "sha256": "040e43a1bb1439384f9871766630cef2296050d8335080725cffdb00afedeaf6",
+        "bytes": 20409,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/drivers/cpuidle/cpuidle.c"
+      },
+      "kernel/cpu_pm.c": {
+        "blob": "7481fbb947d32e99deabeac309945d46f9c5354d",
+        "sha256": "58539bcd4a9257ab717cb5cd5962a4e2e997b18fff9030e0f7595860074c30be",
+        "bytes": 6122,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/kernel/cpu_pm.c"
+      },
+      "drivers/clocksource/arm_arch_timer.c": {
+        "blob": "90aeff44a2764c1534d8ad3ebd11ff8f2d8f87c0",
+        "sha256": "0613e2f5d21a736e98fb993db17e8db5c8e050b813c59035fb5bd4a696dd7ead",
+        "bytes": 34373,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/drivers/clocksource/arm_arch_timer.c"
+      },
+      "drivers/soc/apple/Kconfig": {
+        "blob": "0aee0fb30a5388ae2c8b3b43db235e87138774a2",
+        "sha256": "678ecfee168608082adf8b26811ffe8adc37ef1560e63aac99d56c08703b8a92",
+        "bytes": 4748,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/drivers/soc/apple/Kconfig"
+      },
+      "drivers/soc/apple/Makefile": {
+        "blob": "064e65d0270b935340f1a4fab22365ca85e32f58",
+        "sha256": "822e10cd7baf1decb42fe0bcf1ee5540b930aa86761e34eaf0357fdd4def59e3",
+        "bytes": 894,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/drivers/soc/apple/Makefile"
+      },
+      "drivers/cpuidle/Kconfig.arm": {
+        "blob": "c6870f0845763218cde67de827620ba2bd76f9c8",
+        "sha256": "97c55491a6fe0e0ae0de9c65f8154ca113656bcbd8519a2de4703c81d61e61dc",
+        "bytes": 4658,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/drivers/cpuidle/Kconfig.arm"
+      },
+      "drivers/cpuidle/Makefile": {
+        "blob": "f9e7a71d52c13f1953af954410f2474ad7f05782",
+        "sha256": "022a8b3b3201009f923f38b7b2f48cfec7be85dc476cbe0281a2bd47e703c29c",
+        "bytes": 1933,
+        "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/drivers/cpuidle/Makefile"
+      }
+    }
+  },
+  "header_attributed_source_files": {
+    "drivers/cpuidle/cpuidle-apple.c": {
+      "blob": "67c7846111cf32dcac84627ec7671a67a981d10f",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/drivers/cpuidle/cpuidle-apple.c"
+    },
+    "drivers/cpufreq/apple-soc-cpufreq.c": {
+      "blob": "f2a1e91371be4921b7abab002b645c7da0143a20",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/drivers/cpufreq/apple-soc-cpufreq.c"
+    },
+    "arch/arm64/include/asm/arch_timer.h": {
+      "blob": "f5794d50f51dc371177cfb838b0c024cef31e4cf",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/arch/arm64/include/asm/arch_timer.h"
+    },
+    "arch/arm64/include/asm/barrier.h": {
+      "blob": "9495c4441a46ba7172cd368c4276740fb1368dfc",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/arch/arm64/include/asm/barrier.h"
+    },
+    "drivers/mfd/syscon.c": {
+      "blob": "21a7fcdd27379e640b408ef232289ff7f515bcae",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/drivers/mfd/syscon.c"
+    },
+    "include/linux/mfd/syscon.h": {
+      "blob": "aad9c6b5046368992277e21a6770a0934b686240",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/include/linux/mfd/syscon.h"
+    },
+    "arch/arm64/boot/dts/apple/t8103.dtsi": {
+      "blob": "ea2eedcb5d6b5b483bcb7b404db39215e1680af3",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/arch/arm64/boot/dts/apple/t8103.dtsi"
+    },
+    "arch/arm64/boot/dts/apple/t8103-pmgr.dtsi": {
+      "blob": "4a399bc8f0276b8e5632e92d39ffa0cb6c7a2423",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/arch/arm64/boot/dts/apple/t8103-pmgr.dtsi"
+    },
+    "drivers/pmdomain/apple/pmgr-pwrstate.c": {
+      "blob": "42511ed7ef89c56485eb08abc0b720a6afab27b0",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/drivers/pmdomain/apple/pmgr-pwrstate.c"
+    },
+    "kernel/sched/cpufreq_schedutil.c": {
+      "blob": "dff4ee04694c2b90301ed0fa158a509a3423cee1",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/kernel/sched/cpufreq_schedutil.c"
+    },
+    "drivers/cpufreq/cpufreq.c": {
+      "blob": "2debe39fc477beb0c101bf99690bc0e5a153b825",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/drivers/cpufreq/cpufreq.c"
+    },
+    "include/linux/cpufreq.h": {
+      "blob": "2ab691828e4831c310e7695f78571f6d4fe306a3",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/include/linux/cpufreq.h"
+    },
+    "kernel/sched/idle.c": {
+      "blob": "a83be0c834ddb5ec8a236c525d8a5edd84b3175a",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/kernel/sched/idle.c"
+    },
+    "drivers/cpuidle/cpuidle.c": {
+      "blob": "2d2f40a2cb813c68bf355906f7aa3dc69984a8d0",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/drivers/cpuidle/cpuidle.c"
+    },
+    "kernel/cpu_pm.c": {
+      "blob": "7481fbb947d32e99deabeac309945d46f9c5354d",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/kernel/cpu_pm.c"
+    },
+    "drivers/clocksource/arm_arch_timer.c": {
+      "blob": "90aeff44a2764c1534d8ad3ebd11ff8f2d8f87c0",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/drivers/clocksource/arm_arch_timer.c"
+    },
+    "drivers/soc/apple/Kconfig": {
+      "blob": "0aee0fb30a5388ae2c8b3b43db235e87138774a2",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/drivers/soc/apple/Kconfig"
+    },
+    "drivers/soc/apple/Makefile": {
+      "blob": "064e65d0270b935340f1a4fab22365ca85e32f58",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/drivers/soc/apple/Makefile"
+    },
+    "drivers/cpuidle/Kconfig.arm": {
+      "blob": "c6870f0845763218cde67de827620ba2bd76f9c8",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/drivers/cpuidle/Kconfig.arm"
+    },
+    "drivers/cpuidle/Makefile": {
+      "blob": "f9e7a71d52c13f1953af954410f2474ad7f05782",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/e11a8bc74cb8f9a690b9a6debe15962438dcc3c7/drivers/cpuidle/Makefile"
+    }
+  },
+  "all_inspected_release_and_attributed_source_blobs_equal": true,
+  "standalone_patch_checks": [
+    {
+      "patch": "experiments/linux-apsc-observer/0001-t8103-apsc-observer.patch",
+      "patch_sha256": "205c28ba1830cd794c6c59efff0b3aaeb6102335f48a7f98515a05704fbf378a",
+      "exit_status": 1,
+      "stdout": "",
+      "stderr": "error: patch failed: drivers/cpufreq/apple-soc-cpufreq.c:174\nerror: drivers/cpufreq/apple-soc-cpufreq.c: patch does not apply\n"
+    },
+    {
+      "patch": "experiments/linux-counter-qualification/0001-t8103-counter-qualification.patch",
+      "patch_sha256": "4d56b79a6de142726602085466f7ba8835d1d6f5737f02ffc3fd776f01b77b7b",
+      "exit_status": 1,
+      "stdout": "",
+      "stderr": "error: patch failed: drivers/soc/apple/Makefile:25\nerror: drivers/soc/apple/Makefile: patch does not apply\n"
+    },
+    {
+      "patch": "experiments/linux-pcpm-sampler/0001-t8103-pcpm-sampler.patch",
+      "patch_sha256": "5a737c38f0f9856147ac03959f5ebc7ed202c49ad54aa9e09db971d8d839a4ee",
+      "exit_status": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "check_scope": "git apply --check in an otherwise empty directory populated with these 20 exact release-source files; no patch was applied, compiled, installed or booted"
+}

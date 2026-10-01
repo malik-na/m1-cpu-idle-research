@@ -17,7 +17,7 @@ Investigation date: 1 October 2026, Asia/Kolkata. Target: MacBookAir10,1 / J313 
 
 The unit interpretation is a concrete build-specific reverse-engineering result. A bounded search found no prior public explanation of that exact path. That is not proof Asahi or Aurora researchers have never discovered it.
 
-For the planned move to Omarchy with an Aurora kernel, use the [native Linux handoff](native-linux-handoff.md). Its first step is read-only qualification of the actual installation; the existing source-pinned experiments are not assumed compatible with an uninspected Aurora build.
+For the planned move to Omarchy with the [iconidentify Aurora release](iconidentify-aurora-kernel-target.md), use the [native Linux handoff](native-linux-handoff.md). Its first step is read-only qualification of the actual installation; the existing source-pinned experiments are not assumed compatible with an uninspected Aurora build.
 
 ## Wayfinder research decisions
 

@@ -36,6 +36,10 @@ The boot firmware also configures M1 APSC and snooze behavior. The pinned Aurora
 
 Asahi m1n1 has a **non-returning** deeper sleep/stop-start path that can disable WFI retention and arrange CPU restart through PMGR. Linux's ordinary cpuidle callback needs a reliable return/restart contract: state save and restoration, reset vector, timer and interrupt recovery, last-core coordination, concurrent wakeup handling, and firmware ownership. The existence of low-level stop/start primitives does not make the full runtime idle state ready. [m1n1 sleep code](https://github.com/AsahiLinux/m1n1/blob/3e354a2467f4f724f254362626cae0633918e0c1/src/utils.c#L249), [SMP source](https://github.com/AsahiLinux/m1n1/blob/3e354a2467f4f724f254362626cae0633918e0c1/src/smp.c).
 
+## Operator-selected distribution fork
+
+On 2 October 2026 the operator selected the latest-release installer from `iconidentify/aurora-linux`. This is a separate repository from Aurora Silicon and was not one of the six revisions in the original comparison. Its default `asahi` branch matches the old experiment base, while its installer selects a newer `custom/sep` release. The [dedicated audit](../notes/iconidentify-aurora-kernel-target.md) records exact commits, downloaded package/configuration evidence and two research patches that require adaptation. None of these source or archive checks identifies an actually booted kernel.
+
 ## Aurora-specific boundaries
 
 Aurora has substantial independent platform work, but its checked M1 CPU-idle driver is the same file. An [Aurora J700/T8140 experiment](https://github.com/aurora-silicon/linux/pull/54) reports a freeze with CPU PD enabled for that newer chip; it must not be generalized to T8103. Aurora's [PMP report driver](https://github.com/aurora-silicon/linux/blob/1d2904fd3301c63620f07c81ae79f2486a81a9a6/drivers/pmdomain/apple/pmp-report.c) matches later chip families, not base T8103, in the checked revision. Project source/history supports these narrow statements; it does not establish what anyone has discovered privately.

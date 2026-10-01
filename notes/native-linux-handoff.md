@@ -2,6 +2,8 @@
 
 Prepared 2 October 2026 for the base-M1 MacBook Air (J313 / T8103). The operator has chosen to install Omarchy with an Aurora Linux kernel. That is a planned target: the current session has not verified an installed or booted Linux system. The first research session should establish the unmodified native baseline and exact source identity before preparing an instrumented kernel.
 
+The selected distribution is now specifically [iconidentify/aurora-linux](https://github.com/iconidentify/aurora-linux), using its `releases/latest/download/install-aurora-sep.sh` entry point. The [release/source audit](iconidentify-aurora-kernel-target.md) records the observed installer, package hashes, embedded config and required patch adaptations. The default repository branch is not the custom release selected by that installer; resolve the actual downloaded release again when installing.
+
 ## Read-only first-boot inventory
 
 Run these only after the operator has completed installation and booted Linux. Retain the output privately, including missing-file or permission errors. No command below changes kernel configuration, CPU policy, or hardware registers.
@@ -54,6 +56,8 @@ done
 `unavailable` means the path was absent or unreadable; it does not establish which cause applies. Keep that distinction unresolved until checked. `systemd-detect-virt` is one check, not independent proof of native boot; record the actual boot route. A missing `/proc/config.gz` means obtain the configuration tied to the booted package/image. Missing experimental options or interfaces are expected on a stock kernel: this repository's instruments are not claimed to be included in Aurora. Sysfs state names and accumulated idle times establish software configuration/accounting, not physical power gating.
 
 ## Qualify the actual Aurora build
+
+Also retain the installed versions of `linux-aurora`, `linux-aurora-headers`, `m1n1-aurora`, `aurora-touchid`, `libfprint`, `fprintd` and any `avd-fw` package, plus enabled SEP/Touch ID services and installer package pins. The selected installer changes these components and boot device trees as well as the kernel; preserve that configuration as the baseline.
 
 Use the module `pkgbase` and package-file ownership to identify the running kernel's package; record `pacman -Qi <verified-package-name>`, its exact version, package archive hash, packaging-repository commit, source commit, applied patches, build configuration and toolchain. Identify and hash the **actually booted** image and DT; a release suffix, package name, or arbitrary `/boot` file does not prove source identity. Record m1n1, U-Boot and firmware provenance from verified boot artifacts/logs, along with boot arguments privately. If any source-to-image link is unresolved, label it unknown. The fuller evidence contract is in [NATIVE-RUN.md](../experiments/linux-apsc-observer/NATIVE-RUN.md).
 
