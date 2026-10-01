@@ -20,6 +20,8 @@ Another build-specific finding: `cpu-power-gate-latency-us = 50000` reaches XNU'
 | Run the bounded user-mode register probe | [EL0 probe](notes/el0-capability-probe.md) |
 | Check what Asahi, Omacom, and Aurora already implement | [Linux fork baseline](wiki/Linux-and-Aurora-Baseline.md) and [Omacom source audit](notes/omacom-linux-source-audit.md) |
 | Investigate the running Mac without rebooting | [Non-Reboot Investigation](wiki/Non-Reboot-Investigation.md) |
+| Check the privileged native tracing gate | [macOS direct-observation route and SIP result](notes/mac-apsc-direct-observation-route.md) |
+| Prepare the Linux observation experiment | [Observer patch and analyzer](experiments/linux-apsc-observer/README.md), then [future native-run checklist](experiments/linux-apsc-observer/NATIVE-RUN.md) |
 | Reproduce and interpret the five-second root trace | [Live Mac Tracing](wiki/Live-Mac-Tracing.md) |
 | Follow the Mac-only performance-request timing lead | [Trace correlation audit](notes/mac-ktrace-perf-request-correlation.md) |
 | Interpret the earlier Linux measurements | [Prior Native Linux Results](wiki/Prior-Native-Linux-Results.md) |
@@ -34,7 +36,8 @@ The longer primary investigation and supporting records live in [`notes/`](notes
 - The inspected Asahi, Omacom, and Aurora base-M1 `cpuidle-apple.c` files are byte-identical at the pinned revisions. Omacom's default `asahi` branch is the exact Asahi commit already checked, so it is not independent evidence of a different M1 idle implementation. Linux already has a returning deep-WFI state; reimplementing that state is not a new result. [Pinned comparison](wiki/Linux-and-Aurora-Baseline.md).
 - macOS IOReport shows CPU and cluster IDLE time and transitions on the running Mac, but exposes one undifferentiated CPU IDLE bin. It cannot identify retention, power collapse, or rail-off duration. [Measurement interpretation](wiki/Findings-Index.md).
 - Historical native Linux captures show all eight CPUs entering the software `CPU PD` state, yet do not independently prove physical core/cluster power-off. [Prior results](wiki/Prior-Native-Linux-Results.md).
-- No Linux idle change, boot configuration change, reboot, privileged hardware-register access, or physical power claim is part of this repository's completed result.
+- A privileged DTrace FBT inventory on native macOS 27.0 / 26A428 returned only a header and a SIP restriction diagnostic, despite exit status zero. It enabled no probes and supplied no APSC branch or BUSY value. [Exact inventory](notes/raw/mac-fbt-inventory-26A428.json).
+- The Linux observer patch is preparation for a later native run. No Linux idle-policy fix, boot configuration change, reboot, privileged hardware-register access, or physical power claim is part of this repository's completed result.
 
 If you point an agent here, use this handoff: **“Read `AGENTS.md` and `wiki/Agent-Orientation.md`, choose one open hypothesis from `wiki/Experiment-Backlog.md`, verify pinned source and target identity, and report a falsifiable result with evidence tier and limitations. Preserve existing observations.”**
 

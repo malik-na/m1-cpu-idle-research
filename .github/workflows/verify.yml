@@ -13,3 +13,4 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 tools/verify_repository.py
+      - run: python3 -m unittest discover -s experiments/linux-apsc-observer -p 'test_*.py'

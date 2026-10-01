@@ -1,0 +1,28 @@
+{
+  "schema": "m1-fbt-inventory-v1",
+  "started_utc": "2026-10-01T17:03:24.065793+00:00",
+  "command": [
+    "/usr/bin/sudo",
+    "-n",
+    "/usr/sbin/dtrace",
+    "-l",
+    "-P",
+    "fbt"
+  ],
+  "exit_status": 0,
+  "timed_out": false,
+  "stdout_lines": 1,
+  "probes_enabled": false,
+  "target": {
+    "model": "MacBookAir10,1",
+    "soc": "T8103",
+    "macos": "27.0",
+    "build": "26A428",
+    "sip": "enabled"
+  },
+  "stdout": "   ID   PROVIDER            MODULE                          FUNCTION NAME\n",
+  "stderr": "dtrace: system integrity protection is on, some features will not be available\ndtrace: failed to match fbt:::: System Integrity Protection is on\n",
+  "observed_probe_rows": 0,
+  "interpretation": "FBT inventory blocked by SIP; exit status zero is not successful probe availability. No branch or BUSY observation.",
+  "collector_version_note": "Initial helper run; later helper explicitly marks a header-only listing unusable and returns failure while preserving the original DTrace exit status."
+}
