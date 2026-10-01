@@ -44,3 +44,37 @@ The [Mac FBT result](../../notes/mac-apsc-direct-observation-route.md) closes
 only the availability question for the tested native SIP configuration.
 It supplies no executed APSC branch or BUSY read, and does not exhaust the
 later qualified-guest route. That hardware-observation ticket stays open too.
+
+## Conditional analyzer review
+
+Two separate reviewers checked `779116ed4f0a4dfdafa11dcbc878ac31f80efe66`
+through `ab064dc646ea855e6a45cc4d6e69467c7d80f66b` on 2026-10-01.
+This increment changes offline analysis and future-run documentation; the
+kernel patch and its build receipt are unchanged.
+
+**Standards:** no actionable findings. The review checked preserved raw
+witnesses, strict clock/error boundaries, failed and incomplete observations,
+explicit synthetic/unverified-input labels, bounded ambiguous identifiers,
+publication privacy, and the separation of software inference from hardware
+claims. No code-smell change was recommended.
+
+**Specification:** no actionable findings. The review checked the selected
+method's offline final-entrant requirement, complete peer witnesses, topology,
+same-CPU versus remote-writer ordering, target-cluster correlation, missing
+sample handling, and CLI/API defaults. The native ticket's boot identity,
+instrument-overhead measurements, and positive/negative hardware windows
+remain required. No native ticket was completed by this increment.
+
+The full suite passed **64 synthetic tests** on Python 3.9, including separate
+brute-force reference checks of interval reconstruction and write ordering.
+The specification reviewer independently reran the same suite successfully.
+Python compilation, documentation links, publication manifest, and reproduction
+of the saved public macOS trace summary also passed. These checks validate
+software and packet consistency, not clock behavior or CPU power state.
+
+The clock protocol received a separate pinned-kernel-source review of timer
+access, counter-read ordering, SMP completion and caller pinning, plus its
+interval mathematics. The final specification reviewer checked the formulas
+and evidence boundaries but could not independently fetch the pinned source
+links; that review does not claim a second line-level source verification.
+The qualification helper remains unimplemented and unrun.
