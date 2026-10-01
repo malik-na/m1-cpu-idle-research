@@ -1,0 +1,57 @@
+name: Publish research website
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install the pinned Markdown renderer
+        run: python3 -m pip install -r site/requirements.txt
+      - name: Verify the research packet
+        run: python3 tools/verify_repository.py
+      - name: Test the website generator
+        run: python3 -m unittest discover -s site -p 'test_*.py'
+      - name: Build the research website
+        env:
+          SITE_REVISION: ${{ github.sha }}
+        run: >-
+          python3 site/build.py
+          --output "$RUNNER_TEMP/research-site"
+          --base-path /m1-cpu-idle-research
+          --revision "$SITE_REVISION"
+      - name: Upload website artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/research-site
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

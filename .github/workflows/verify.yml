@@ -15,3 +15,5 @@ jobs:
       - run: python3 tools/verify_repository.py
       - run: python3 -m unittest discover -s experiments/linux-apsc-observer -p 'test_*.py'
       - run: python3 -m unittest discover -s experiments/linux-counter-qualification -p 'test_*.py'
+      - run: python3 -m unittest discover -s experiments/linux-pcpm-sampler -p 'test_*.py'
+      - run: python3 experiments/linux-pcpm-sampler/check_control_parser.py

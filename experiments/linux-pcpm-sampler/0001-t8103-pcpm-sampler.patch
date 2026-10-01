@@ -1,0 +1,550 @@
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index 21a7fcd..b3026cd 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -29,6 +29,9 @@ struct syscon {
+ 	struct regmap *regmap;
+ 	struct reset_control *reset;
+ 	struct list_head list;
++#ifdef CONFIG_APPLE_PCPM_SAMPLER
++	bool pcpm_clockless_mmio;
++#endif
+ };
+ 
+ static const struct regmap_config syscon_regmap_config = {
+@@ -48,6 +51,9 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
+ 	struct resource res;
+ 	struct reset_control *reset;
+ 	resource_size_t res_size;
++#ifdef CONFIG_APPLE_PCPM_SAMPLER
++	bool clock_attached = false;
++#endif
+ 
+ 	WARN_ON(!mutex_is_locked(&syscon_list_lock));
+ 
+@@ -133,6 +139,9 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
+ 			ret = regmap_mmio_attach_clk(regmap, clk);
+ 			if (ret)
+ 				goto err_attach_clk;
++#ifdef CONFIG_APPLE_PCPM_SAMPLER
++			clock_attached = true;
++#endif
+ 		}
+ 
+ 		reset = of_reset_control_get_optional_exclusive(np, NULL);
+@@ -148,6 +157,9 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
+ 
+ 	syscon->regmap = regmap;
+ 	syscon->np = np;
++#ifdef CONFIG_APPLE_PCPM_SAMPLER
++	syscon->pcpm_clockless_mmio = !clock_attached;
++#endif
+ 
+ 	list_add_tail(&syscon->list, &syscon_list);
+ 
+@@ -360,3 +372,27 @@ struct regmap *syscon_regmap_lookup_by_phandle_optional(struct device_node *np,
+ 	return regmap;
+ }
+ EXPORT_SYMBOL_GPL(syscon_regmap_lookup_by_phandle_optional);
++
++#ifdef CONFIG_APPLE_PCPM_SAMPLER
++/*
++ * Experiment-only lookup. Never register/map, attach clocks, or touch resets.
++ * External registrations remain ineligible (their kzalloc field stays false).
++ * Generic syscon maps in this pinned tree have boot lifetime; no unregister.
++ */
++struct regmap *syscon_node_to_existing_clockless_regmap(struct device_node *np)
++{
++	struct syscon *entry;
++	struct regmap *map = ERR_PTR(-EPROBE_DEFER);
++
++	mutex_lock(&syscon_list_lock);
++	list_for_each_entry(entry, &syscon_list, list) {
++		if (entry->np != np)
++			continue;
++		map = entry->pcpm_clockless_mmio ? entry->regmap :
++			ERR_PTR(-EOPNOTSUPP);
++		break;
++	}
++	mutex_unlock(&syscon_list_lock);
++	return map;
++}
++#endif
+diff --git a/include/linux/mfd/syscon.h b/include/linux/mfd/syscon.h
+index aad9c6b..7596bd0 100644
+--- a/include/linux/mfd/syscon.h
++++ b/include/linux/mfd/syscon.h
+@@ -16,6 +16,10 @@
+ 
+ struct device_node;
+ 
++#ifdef CONFIG_APPLE_PCPM_SAMPLER
++struct regmap *syscon_node_to_existing_clockless_regmap(struct device_node *np);
++#endif
++
+ #ifdef CONFIG_MFD_SYSCON
+ struct regmap *device_node_to_regmap(struct device_node *np);
+ struct regmap *syscon_node_to_regmap(struct device_node *np);
+diff --git a/drivers/soc/apple/Kconfig b/drivers/soc/apple/Kconfig
+index 41bd8fb..8d991ff 100644
+--- a/drivers/soc/apple/Kconfig
++++ b/drivers/soc/apple/Kconfig
+@@ -25,6 +25,16 @@ config APPLE_MAILBOX
+ 
+ 	  Say Y here if you have an Apple SoC.
+ 
++config APPLE_PCPM_SAMPLER
++	bool "T8103 read-only PCPM experiment"
++	depends on ARCH_APPLE && SMP && DEBUG_FS && APPLE_PMGR_PWRSTATE
++	default n
++	help
++	  One-shot sparse PCPM status sampling on an E core for research.
++	  Reuses only an existing clockless generic PMGR syscon regmap.
++	  Sampling wakes a core and can perturb power. No power controls
++	  are changed. Leave disabled outside an explicitly planned test.
++
+ config APPLE_PMGR_MISC
+ 	bool "Apple SoC PMGR miscellaneous support"
+ 	depends on PM
+diff --git a/drivers/soc/apple/Makefile b/drivers/soc/apple/Makefile
+index 1baa6de..7ecc238 100644
+--- a/drivers/soc/apple/Makefile
++++ b/drivers/soc/apple/Makefile
+@@ -6,6 +6,8 @@ apple-dockchannel-y = dockchannel.o
+ obj-$(CONFIG_APPLE_MAILBOX) += apple-mailbox.o
+ apple-mailbox-y = mailbox.o
+ 
++obj-$(CONFIG_APPLE_PCPM_SAMPLER)	+= apple-pcpm-sampler.o
++
+ obj-$(CONFIG_APPLE_PMGR_MISC)	+= apple-pmgr-misc.o
+ 
+ obj-$(CONFIG_APPLE_RTKIT) += apple-rtkit.o
+diff --git a/drivers/soc/apple/apple-pcpm-sampler.c b/drivers/soc/apple/apple-pcpm-sampler.c
+new file mode 100644
+index 0000000..7a97d50
+--- /dev/null
++++ b/drivers/soc/apple/apple-pcpm-sampler.c
+@@ -0,0 +1,423 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Sparse read-only T8103 PCPM experiment. No CPU power-control changes. */
++#include <linux/capability.h>
++#include <linux/completion.h>
++#include <linux/cpu.h>
++#include <linux/debugfs.h>
++#include <linux/hrtimer.h>
++#include <linux/init.h>
++#include <linux/kthread.h>
++#include <linux/ktime.h>
++#include <linux/mfd/syscon.h>
++#include <linux/mutex.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_address.h>
++#include <linux/overflow.h>
++#include <linux/regmap.h>
++#include <linux/sched.h>
++#include <linux/sched/task.h>
++#include <linux/seq_file.h>
++#include <linux/uaccess.h>
++#include <asm/cpu.h>
++#include <asm/cputype.h>
++#include <asm/smp_plat.h>
++
++#define PCPM_MAX_SAMPLES 1000
++#define PCPM_OFFSET 0x48
++#define PCPM_PMGR_BASE 0x23b700000ULL
++#define PCPM_PMGR_SIZE 0x14000
++
++struct pcpm_sample {
++	u32 slot, skipped_before;
++	u64 scheduled_ns, before_ns, after_ns;
++	u32 cpu_before, cpu_after;
++	bool read_attempted, raw_valid;
++	u32 raw;
++	int read_errno;
++};
++
++static DEFINE_MUTEX(pcpm_lock);
++static DECLARE_COMPLETION(pcpm_done);
++static struct pcpm_sample samples[PCPM_MAX_SAMPLES];
++static struct regmap *pcpm_map;
++static const char *capture_state = "unused";
++static const char *capture_mode = "none";
++static int capture_error, worker_cpu = -1;
++static u32 requested, period_ms, phase_ms, attempted, missed_slots;
++static u32 unattempted_after_error, trailing_missed, read_errors, cpu_errors;
++static u32 e_mask, p_mask, start_online_mask, end_online_mask;
++static u64 midr[8], mpidr[8], start_ns, end_ns, budget_end_ns;
++static u64 pmgr_phys, pmgr_size;
++static bool regmap_existing, regmap_internal_clockless;
++static int regmap_stride, regmap_val_bytes;
++static char cpu_kind[8];
++
++static u32 online_mask(void)
++{
++	u32 mask = 0;
++	unsigned int cpu;
++
++	for_each_online_cpu(cpu)
++		if (cpu < 8)
++			mask |= BIT(cpu);
++	return mask;
++}
++
++/* Cached boot identity only: no remote call or P-core IPI. */
++static int qualify_topology(void)
++{
++	unsigned int cpu, e_seen = 0, p_seen = 0;
++	struct device_node *np;
++	u64 model, aff0, aff1;
++	bool is_e, is_p;
++
++	if (!of_machine_is_compatible("apple,t8103") ||
++	    num_possible_cpus() != 8 || num_online_cpus() != 8)
++		return -ENODEV;
++	for_each_possible_cpu(cpu) {
++		if (cpu >= 8 || !cpu_online(cpu))
++			return -ENODEV;
++		midr[cpu] = per_cpu(cpu_data, cpu).reg_midr;
++		mpidr[cpu] = cpu_logical_map(cpu);
++		model = midr[cpu] & MIDR_CPU_MODEL_MASK;
++		aff0 = MPIDR_AFFINITY_LEVEL(mpidr[cpu], 0);
++		aff1 = MPIDR_AFFINITY_LEVEL(mpidr[cpu], 1);
++		np = of_get_cpu_node(cpu, NULL);
++		if (!np)
++			return -ENODEV;
++		is_e = of_device_is_compatible(np, "apple,icestorm") &&
++			model == MIDR_APPLE_M1_ICESTORM && aff1 == 0;
++		is_p = of_device_is_compatible(np, "apple,firestorm") &&
++			model == MIDR_APPLE_M1_FIRESTORM && aff1 == 1;
++		of_node_put(np);
++		if (aff0 >= 4 || (!is_e && !is_p) ||
++		    MPIDR_AFFINITY_LEVEL(mpidr[cpu], 2) != (is_p ? 1 : 0) ||
++		    MPIDR_AFFINITY_LEVEL(mpidr[cpu], 3))
++			return -ENODEV;
++		if (is_e) {
++			if (e_seen & BIT(aff0))
++				return -ENODEV;
++			e_seen |= BIT(aff0);
++			e_mask |= BIT(cpu);
++			cpu_kind[cpu] = 'E';
++			if (worker_cpu < 0)
++				worker_cpu = cpu;
++		} else {
++			if (p_seen & BIT(aff0))
++				return -ENODEV;
++			p_seen |= BIT(aff0);
++			p_mask |= BIT(cpu);
++			cpu_kind[cpu] = 'P';
++		}
++	}
++	return e_seen == 0xf && p_seen == 0xf ? 0 : -ENODEV;
++}
++
++static int qualify_regmap(void)
++{
++	struct device_node *np, *extra;
++	struct resource res;
++	u32 width;
++	int ret = -ENODEV;
++
++	np = of_find_compatible_node(NULL, NULL, "apple,t8103-pmgr");
++	if (!np)
++		return ret;
++	/* Reject ambiguous multiple banks without releasing our retained node. */
++	extra = of_find_compatible_node(of_node_get(np), NULL, "apple,t8103-pmgr");
++	if (extra) {
++		of_node_put(extra);
++		goto out;
++	}
++	if (!of_device_is_available(np) ||
++	    !of_device_is_compatible(np, "syscon") ||
++	    !of_device_is_compatible(np, "simple-mfd") ||
++	    of_address_to_resource(np, 0, &res))
++		goto out;
++	pmgr_phys = res.start;
++	pmgr_size = resource_size(&res);
++	if (pmgr_phys != PCPM_PMGR_BASE || pmgr_size != PCPM_PMGR_SIZE ||
++	    of_find_property(np, "clocks", NULL) ||
++	    of_find_property(np, "resets", NULL) ||
++	    of_find_property(np, "hwlocks", NULL) ||
++	    of_find_property(np, "big-endian", NULL) ||
++	    of_find_property(np, "native-endian", NULL))
++		goto out;
++	if (of_find_property(np, "reg-io-width", NULL) &&
++	    (of_property_count_u32_elems(np, "reg-io-width") != 1 ||
++	     of_property_read_u32(np, "reg-io-width", &width) || width != 4))
++		goto out;
++	pcpm_map = syscon_node_to_existing_clockless_regmap(np);
++	if (IS_ERR(pcpm_map)) {
++		ret = PTR_ERR(pcpm_map);
++		pcpm_map = NULL;
++		goto out;
++	}
++	regmap_existing = true;
++	regmap_internal_clockless = true;
++	regmap_stride = regmap_get_reg_stride(pcpm_map);
++	regmap_val_bytes = regmap_get_val_bytes(pcpm_map);
++	if (regmap_stride != 4 || regmap_val_bytes != 4)
++		goto out;
++	ret = 0;
++out:
++	of_node_put(np);
++	return ret;
++}
++
++/* Pinned normal-priority task; no allocation/export/IPIs in this loop. */
++static int pcpm_worker(void *unused)
++{
++	u64 period = (u64)period_ms * NSEC_PER_MSEC;
++	u64 phase = (u64)phase_ms * NSEC_PER_MSEC;
++	u64 first, due, now, min_next = 0;
++	u32 slot = 0, skipped = 0;
++	struct pcpm_sample *s;
++	ktime_t expires;
++
++	sched_set_normal(current, 0);
++	start_ns = ktime_get_ns();
++	/* Explicit arithmetic guard also handles a pathological uptime. */
++	if (check_add_overflow(start_ns, phase + period, &first) ||
++	    check_add_overflow(start_ns, phase + requested * period,
++			       &budget_end_ns) || budget_end_ns > S64_MAX) {
++		capture_error = -EOVERFLOW;
++		goto done;
++	}
++	while (slot < requested) {
++		due = first + (u64)slot * period;
++		now = ktime_get_ns();
++		/* Skip overdue slots and prohibit close-spaced catch-up reads. */
++		if (now >= due + period || due < min_next) {
++			slot++;
++			skipped++;
++			continue;
++		}
++		if (now < due) {
++			expires = ns_to_ktime(due);
++			set_current_state(TASK_UNINTERRUPTIBLE);
++			schedule_hrtimeout_range(&expires, 0, HRTIMER_MODE_ABS_PINNED);
++			continue;
++		}
++		s = &samples[attempted];
++		s->slot = slot;
++		s->skipped_before = skipped;
++		s->scheduled_ns = due;
++		missed_slots += skipped;
++		skipped = 0;
++		s->cpu_before = raw_smp_processor_id();
++		s->before_ns = ktime_get_ns();
++		if (s->cpu_before == worker_cpu && !strcmp(capture_mode, "mmio")) {
++			s->read_attempted = true;
++			s->read_errno = regmap_read(pcpm_map, PCPM_OFFSET, &s->raw);
++			s->raw_valid = !s->read_errno;
++		}
++		s->after_ns = ktime_get_ns();
++		s->cpu_after = raw_smp_processor_id();
++		attempted++;
++		slot++;
++		if (s->read_errno) {
++			read_errors++;
++			capture_error = s->read_errno;
++		}
++		if (s->cpu_before != worker_cpu || s->cpu_after != worker_cpu) {
++			cpu_errors++;
++			capture_error = -EXDEV;
++		}
++		if (capture_error)
++			break;
++		if (check_add_overflow(s->after_ns, period / 2, &min_next)) {
++			capture_error = -EOVERFLOW;
++			break;
++		}
++	}
++	trailing_missed = skipped;
++	missed_slots += skipped;
++done:
++	unattempted_after_error = requested - attempted - missed_slots;
++	end_ns = ktime_get_ns();
++	complete(&pcpm_done);
++	return 0;
++}
++
++static int parse_request(char *buf, bool *mmio, u32 *count, u32 *period, u32 *phase)
++{
++	char *tokens[4], *p = buf;
++	size_t length = strlen(buf);
++	u64 budget;
++	unsigned int i;
++
++	if (length && buf[length - 1] == '\n')
++		buf[length - 1] = '\0';
++	for (i = 0; i < ARRAY_SIZE(tokens); i++) {
++		tokens[i] = strsep(&p, " \t");
++		if (!tokens[i] || !*tokens[i])
++			return -EINVAL;
++	}
++	if (p || (strcmp(tokens[0], "mmio") && strcmp(tokens[0], "records")))
++		return -EINVAL;
++	for (i = 1; i < ARRAY_SIZE(tokens); i++) {
++		char *digit;
++
++		for (digit = tokens[i]; *digit; digit++)
++			if (*digit < '0' || *digit > '9')
++				return -EINVAL;
++	}
++	if (kstrtou32(tokens[1], 10, count) || kstrtou32(tokens[2], 10, period) ||
++	    kstrtou32(tokens[3], 10, phase) || !*count || *count > PCPM_MAX_SAMPLES ||
++	    *period < 10 || *period > 1000 || *phase >= *period)
++		return -EINVAL;
++	if (check_mul_overflow((u64)*count, (u64)*period, &budget) ||
++	    check_add_overflow(budget, (u64)*phase, &budget) || budget > 10000)
++		return -EINVAL;
++	*mmio = !strcmp(tokens[0], "mmio");
++	return 0;
++}
++
++static ssize_t control_write(struct file *file, const char __user *ubuf,
++			     size_t len, loff_t *ppos)
++{
++	struct task_struct *task;
++	char buf[80];
++	u32 count, period, phase;
++	bool mmio;
++	int ret;
++
++	if (!capable(CAP_SYS_ADMIN))
++		return -EPERM;
++	if (!len || len >= sizeof(buf) || *ppos)
++		return -EINVAL;
++	if (copy_from_user(buf, ubuf, len))
++		return -EFAULT;
++	if (memchr(buf, '\0', len))
++		return -EINVAL;
++	buf[len] = '\0';
++	ret = parse_request(buf, &mmio, &count, &period, &phase);
++	if (ret)
++		return ret;
++	mutex_lock(&pcpm_lock);
++	if (strcmp(capture_state, "unused")) {
++		ret = -EALREADY;
++		goto unlock;
++	}
++	requested = count;
++	period_ms = period;
++	phase_ms = phase;
++	capture_mode = mmio ? "mmio" : "records";
++	capture_state = "failed";
++	unattempted_after_error = requested;
++	cpus_read_lock();
++	start_online_mask = online_mask();
++	ret = qualify_topology();
++	if (ret)
++		goto finish;
++	/* Check ownership in both modes, but records mode never reads the map. */
++	ret = qualify_regmap();
++	if (ret)
++		goto finish;
++	task = kthread_create(pcpm_worker, NULL, "pcpm-sampler");
++	if (IS_ERR(task)) {
++		ret = PTR_ERR(task);
++		goto finish;
++	}
++	kthread_bind(task, worker_cpu);
++	get_task_struct(task);
++	wake_up_process(task);
++	wait_for_completion(&pcpm_done);
++	/* The one-shot worker has completed; join before deferred export. */
++	kthread_stop(task);
++	put_task_struct(task);
++	ret = capture_error;
++finish:
++	end_online_mask = online_mask();
++	cpus_read_unlock();
++	capture_error = ret;
++	capture_state = ret ? "failed" : "complete";
++	if (!ret)
++		ret = len;
++unlock:
++	mutex_unlock(&pcpm_lock);
++	return ret;
++}
++
++static const struct file_operations control_fops = {
++	.write = control_write,
++	.open = nonseekable_open,
++};
++
++static int status_show(struct seq_file *m, void *unused)
++{
++	unsigned int cpu;
++
++	mutex_lock(&pcpm_lock);
++	seq_printf(m, "abi=1\nstate=%s\nmode=%s\nerror=%d\n",
++		   capture_state, capture_mode, capture_error);
++#define OUT_U32(name) seq_printf(m, #name "=%u\n", name)
++#define OUT_U64(name) seq_printf(m, #name "=%llu\n", name)
++#define OUT_HEX(name) seq_printf(m, #name "=0x%llx\n", (u64)(name))
++	OUT_U32(requested); OUT_U32(period_ms); OUT_U32(phase_ms);
++	OUT_U64(start_ns); OUT_U64(end_ns); OUT_U64(budget_end_ns);
++	seq_printf(m, "worker_cpu=%d\n", worker_cpu);
++	OUT_HEX(start_online_mask); OUT_HEX(end_online_mask);
++	OUT_HEX(e_mask); OUT_HEX(p_mask);
++	OUT_HEX(pmgr_phys); OUT_HEX(pmgr_size);
++	seq_printf(m, "register_offset=%u\nregmap_existing=%u\n"
++		   "regmap_internal_clockless=%u\nregmap_stride=%d\nregmap_val_bytes=%d\n",
++		   PCPM_OFFSET, regmap_existing, regmap_internal_clockless,
++		   regmap_stride, regmap_val_bytes);
++	OUT_U32(attempted); OUT_U32(missed_slots); OUT_U32(unattempted_after_error);
++	OUT_U32(trailing_missed); OUT_U32(read_errors); OUT_U32(cpu_errors);
++#undef OUT_U32
++#undef OUT_U64
++#undef OUT_HEX
++	for (cpu = 0; cpu < 8; cpu++)
++		seq_printf(m, "cpu%u.midr=0x%llx\ncpu%u.mpidr=0x%llx\ncpu%u.kind=%s\n",
++			   cpu, midr[cpu], cpu, mpidr[cpu], cpu,
++			   cpu_kind[cpu] == 'E' ? "E" : cpu_kind[cpu] == 'P' ? "P" : "unknown");
++	mutex_unlock(&pcpm_lock);
++	return 0;
++}
++DEFINE_SHOW_ATTRIBUTE(status);
++
++static int samples_show(struct seq_file *m, void *unused)
++{
++	unsigned int i;
++
++	mutex_lock(&pcpm_lock);
++	seq_puts(m, "seq,slot,scheduled_ns,skipped_before,t_before_ns,t_after_ns,"
++		 "cpu_before,cpu_after,read_attempted,raw_valid,raw,read_errno\n");
++	for (i = 0; i < attempted; i++) {
++		const struct pcpm_sample *s = &samples[i];
++
++		seq_printf(m, "%u,%u,%llu,%u,%llu,%llu,%u,%u,%u,%u,", i,
++			   s->slot, s->scheduled_ns, s->skipped_before,
++			   s->before_ns, s->after_ns, s->cpu_before, s->cpu_after,
++			   s->read_attempted, s->raw_valid);
++		if (s->raw_valid)
++			seq_printf(m, "0x%08x", s->raw);
++		seq_printf(m, ",%d\n", s->read_errno);
++	}
++	mutex_unlock(&pcpm_lock);
++	return 0;
++}
++DEFINE_SHOW_ATTRIBUTE(samples);
++
++static int __init pcpm_init(void)
++{
++	struct dentry *dir;
++
++	if (!of_machine_is_compatible("apple,t8103"))
++		return -ENODEV;
++	dir = debugfs_create_dir("t8103_pcpm_sampler", NULL);
++	if (IS_ERR(dir))
++		return PTR_ERR(dir);
++	if (IS_ERR_OR_NULL(debugfs_create_file("control", 0200, dir, NULL, &control_fops)) ||
++	    IS_ERR_OR_NULL(debugfs_create_file("status", 0400, dir, NULL, &status_fops)) ||
++	    IS_ERR_OR_NULL(debugfs_create_file("samples", 0400, dir, NULL, &samples_fops))) {
++		debugfs_remove_recursive(dir);
++		return -ENOMEM;
++	}
++	return 0;
++}
++late_initcall(pcpm_init);
