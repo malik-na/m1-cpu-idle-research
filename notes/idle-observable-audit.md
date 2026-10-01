@@ -62,9 +62,10 @@ Conceptual capture, assuming a previously verified existing regmap:
 
 ```c
 sample.t_before = ktime_get_mono_fast_ns();
+sample.raw = 0; /* invalid unless the read succeeds */
 sample.ret = regmap_read(pmgr_map, 0x48, &sample.raw);
 sample.t_after = ktime_get_mono_fast_ns();
-/* Record raw and error. Decode later: actual = (raw >> 4) & 0xf. */
+/* Record raw and error. Decode ACTUAL only when ret == 0. */
 ```
 
 This excludes power-state writes, sticky-flag clearing, governor changes, hotplug, forced idle, retention-bit changes, PMU programming, and clock/power reference acquisition. If reading requires powering PCPM up, the proposed observation is unsuitable.
