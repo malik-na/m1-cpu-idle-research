@@ -1,6 +1,6 @@
-# Linux and Aurora Silicon Baseline
+# Asahi, Omacom, and Aurora Silicon Baseline
 
-This page exists to prevent rediscovering implemented power control. The comparison was pinned on 2026-10-01; branch heads can move. The complete source audit, including exact hashes and Aurora pull requests, is in [`notes/aurora-cpu-idle.md`](../notes/aurora-cpu-idle.md) and [`notes/asahi-known-gaps.md`](../notes/asahi-known-gaps.md).
+This page exists to prevent rediscovering implemented power control. The comparison was pinned on 2026-10-01; branch heads can move. The detailed source audits, including exact hashes and Aurora pull requests, are in [`notes/asahi-known-gaps.md`](../notes/asahi-known-gaps.md), [`notes/omacom-linux-source-audit.md`](../notes/omacom-linux-source-audit.md), and [`notes/aurora-cpu-idle.md`](../notes/aurora-cpu-idle.md).
 
 ## Checked revisions
 
@@ -8,12 +8,20 @@ This page exists to prevent rediscovering implemented power control. The compari
 |---|---|
 | [Asahi Linux `asahi`](https://github.com/AsahiLinux/linux/tree/77cb8f24c2381a8abb7272d7bbdec548d6426a8a) | `77cb8f24c2381a8abb7272d7bbdec548d6426a8a` |
 | [Asahi Linux `asahi-wip`](https://github.com/AsahiLinux/linux/tree/94fb23346d522edf53722357c426a3e58030beea) | `94fb23346d522edf53722357c426a3e58030beea` |
+| [Omacom Linux `asahi`](https://github.com/omacom/linux/tree/77cb8f24c2381a8abb7272d7bbdec548d6426a8a) | `77cb8f24c2381a8abb7272d7bbdec548d6426a8a` |
+| [Omacom Linux `aurora-wip`](https://github.com/omacom/linux/tree/4ec597a7427da2cf03c899406b7997c875d4a9fb) | `4ec597a7427da2cf03c899406b7997c875d4a9fb` |
 | [Aurora Linux `aurora-stable`](https://github.com/aurora-silicon/linux/tree/076290b7c9a25aebf65d6a60561a4df38d4dad2c) | `076290b7c9a25aebf65d6a60561a4df38d4dad2c` |
 | [Aurora Linux `aurora-wip`](https://github.com/aurora-silicon/linux/tree/1d2904fd3301c63620f07c81ae79f2486a81a9a6) | `1d2904fd3301c63620f07c81ae79f2486a81a9a6` |
 | [Asahi m1n1 `main`](https://github.com/AsahiLinux/m1n1/tree/3e354a2467f4f724f254362626cae0633918e0c1) | `3e354a2467f4f724f254362626cae0633918e0c1` |
 | [Aurora m1n1 `aurora-wip`](https://github.com/aurora-silicon/m1n1/tree/ae94c931bbbaef6ce97e6caf1fcef453edb3e3e6) | `ae94c931bbbaef6ce97e6caf1fcef453edb3e3e6` |
 
-At all four checked Linux revisions, `drivers/cpuidle/cpuidle-apple.c` has the same Git blob ID (`3d2b804df8a2de18b8d8f031857b00d7198dab4c`). This is an **exact file comparison**, not a statement that all Asahi and Aurora code is identical. [Asahi file](https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/cpuidle/cpuidle-apple.c), [Aurora file](https://github.com/aurora-silicon/linux/blob/1d2904fd3301c63620f07c81ae79f2486a81a9a6/drivers/cpuidle/cpuidle-apple.c).
+At all six checked Linux revisions, `drivers/cpuidle/cpuidle-apple.c` has the same Git blob ID (`3d2b804df8a2de18b8d8f031857b00d7198dab4c`). This is an **exact file comparison**, not a statement that all three kernel trees are identical. Omacom `asahi` is the exact same commit as Asahi `asahi`; Omacom `aurora-wip` is a separate branch from Aurora Silicon `aurora-wip`. [Asahi file](https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/cpuidle/cpuidle-apple.c), [Omacom file](https://github.com/omacom/linux/blob/4ec597a7427da2cf03c899406b7997c875d4a9fb/drivers/cpuidle/cpuidle-apple.c), [Aurora file](https://github.com/aurora-silicon/linux/blob/1d2904fd3301c63620f07c81ae79f2486a81a9a6/drivers/cpuidle/cpuidle-apple.c).
+
+## What Omacom adds to the comparison
+
+At the pinned Omacom `asahi` and `aurora-wip` revisions, the Apple cpufreq driver, T8103 device tree, generic PMGR driver, and T8103 PMGR include also have identical Git blobs to the Asahi `asahi` revision. The Omacom `aurora-wip` name must not be read as evidence of Aurora Silicon's later changes. Omacom's M1 cpufreq path [polls the command BUSY bit before a new request, writes that request, then returns](https://github.com/omacom/linux/blob/4ec597a7427da2cf03c899406b7997c875d4a9fb/drivers/cpufreq/apple-soc-cpufreq.c#L171-L201); it does not add an explicit last-core idle wait. [Exact hashes and branch inventory](../notes/omacom-linux-source-audit.md).
+
+Aurora Silicon's later `aurora-wip` cpufreq file has [optional post-write verification](https://github.com/aurora-silicon/linux/blob/1d2904fd3301c63620f07c81ae79f2486a81a9a6/drivers/cpufreq/apple-soc-cpufreq.c#L243-L258), but its [T8103 data](https://github.com/aurora-silicon/linux/blob/1d2904fd3301c63620f07c81ae79f2486a81a9a6/drivers/cpufreq/apple-soc-cpufreq.c#L95-L103) leaves that option unset; the [T8140 data](https://github.com/aurora-silicon/linux/blob/1d2904fd3301c63620f07c81ae79f2486a81a9a6/drivers/cpufreq/apple-soc-cpufreq.c#L113-L125) enables it. Aurora's changed T8103 device-tree/PMGR include files add USB4-related nodes and two always-on ATC PCIe domains, rather than a CPU idle transition. Those domains may matter when comparing **whole-machine** idle energy. This source comparison does not identify the code or configuration of any currently booted Linux kernel. [Omacom/Aurora file audit](../notes/omacom-linux-source-audit.md).
 
 ## What is already implemented
 

@@ -1,6 +1,6 @@
 # M1 CPU Idle Research
 
-A public research notebook on how macOS 27 controls CPU idle on a base M1 (T8103), how the inspected Asahi Linux and Aurora Silicon implementations compare, and what must be measured before changing Linux. The reference machine is a MacBook Air (J313 / MacBookAir10,1). This repository is an evidence handoff, not a finished power-saving patch.
+A public research notebook on how macOS 27 controls CPU idle on a base M1 (T8103), how the inspected Asahi Linux, Omacom, and Aurora Silicon implementations compare, and what must be measured before changing Linux. The reference machine is a MacBook Air (J313 / MacBookAir10,1). This repository is an evidence handoff, not a finished power-saving patch.
 
 The most concrete current lead is a **static control-path difference**: the inspected macOS `AppleT8103PMGR` last-active-core idle path conditionally waits for the cluster DVFS/APSC command's BUSY bit to clear; the pinned Linux CPU-idle path has no explicit matching wait. The local configuration predicts that macOS enables the wait. We have **not** measured how often it runs, whether Linux ever overlaps an outstanding command with deep WFI, or whether any difference affects physical power state or energy. See [macOS control path](wiki/MacOS-Control-Path.md) and [experiment backlog](wiki/Experiment-Backlog.md).
 
@@ -13,7 +13,7 @@ Another build-specific finding: `cpu-power-gate-latency-us = 50000` reaches XNU'
 | Orient a new investigator or coding agent | [Agent Orientation](wiki/Agent-Orientation.md), then [AGENTS.md](AGENTS.md) |
 | Understand exactly what is known | [Evidence Standard](wiki/Evidence-Standard.md) and [Findings Index](wiki/Findings-Index.md) |
 | Follow the macOS binary and assembly evidence | [macOS Control Path](wiki/MacOS-Control-Path.md) |
-| Check what Asahi and Aurora already implement | [Linux and Aurora Baseline](wiki/Linux-and-Aurora-Baseline.md) |
+| Check what Asahi, Omacom, and Aurora already implement | [Linux fork baseline](wiki/Linux-and-Aurora-Baseline.md) and [Omacom source audit](notes/omacom-linux-source-audit.md) |
 | Investigate the running Mac without rebooting | [Non-Reboot Investigation](wiki/Non-Reboot-Investigation.md) |
 | Reproduce and interpret the five-second root trace | [Live Mac Tracing](wiki/Live-Mac-Tracing.md) |
 | Interpret the earlier Linux measurements | [Prior Native Linux Results](wiki/Prior-Native-Linux-Results.md) |
@@ -25,7 +25,7 @@ The longer primary investigation and supporting records live in [`notes/`](notes
 
 ## Current evidence boundary
 
-- The inspected Asahi and Aurora base-M1 `cpuidle-apple.c` files are byte-identical at the pinned revisions. Linux already has a returning deep-WFI state; reimplementing that state is not a new result. [Pinned comparison](wiki/Linux-and-Aurora-Baseline.md).
+- The inspected Asahi, Omacom, and Aurora base-M1 `cpuidle-apple.c` files are byte-identical at the pinned revisions. Omacom's default `asahi` branch is the exact Asahi commit already checked, so it is not independent evidence of a different M1 idle implementation. Linux already has a returning deep-WFI state; reimplementing that state is not a new result. [Pinned comparison](wiki/Linux-and-Aurora-Baseline.md).
 - macOS IOReport shows CPU and cluster IDLE time and transitions on the running Mac, but exposes one undifferentiated CPU IDLE bin. It cannot identify retention, power collapse, or rail-off duration. [Measurement interpretation](wiki/Findings-Index.md).
 - Historical native Linux captures show all eight CPUs entering the software `CPU PD` state, yet do not independently prove physical core/cluster power-off. [Prior results](wiki/Prior-Native-Linux-Results.md).
 - No Linux idle change, boot configuration change, reboot, privileged hardware-register access, or physical power claim is part of this repository's completed result.

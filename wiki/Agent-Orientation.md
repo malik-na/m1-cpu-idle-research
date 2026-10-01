@@ -5,14 +5,14 @@ This page is the shortest handoff for a new research agent. The objective is a *
 ## Read path
 
 1. Read repository [AGENTS.md](../AGENTS.md) and [Evidence Standard](Evidence-Standard.md). Completion: identify the evidence tier required by your intended claim.
-2. Read [Findings Index](Findings-Index.md), [macOS Control Path](MacOS-Control-Path.md), and [Linux and Aurora Baseline](Linux-and-Aurora-Baseline.md). Completion: name one checked behavior already implemented by Linux and one actual unanswered question.
+2. Read [Findings Index](Findings-Index.md), [macOS Control Path](MacOS-Control-Path.md), [Linux fork baseline](Linux-and-Aurora-Baseline.md), and the [Omacom source audit](../notes/omacom-linux-source-audit.md). Completion: name one checked behavior already implemented by Linux and one actual unanswered question.
 3. Select one item from [Experiment Backlog](Experiment-Backlog.md). Completion: write the expected observation, a result that would weaken the hypothesis, target/source identity, and instrumentation effect.
 4. Follow the relevant detailed note under [`notes/`](../notes/README.md) and its raw/source evidence. Completion: point to the exact record or pinned upstream line supporting every technical premise.
 5. Run a bounded observation, preserve raw values and failures, and update the finding only to the level the evidence supports. Completion: a reader can reconstruct the conclusion and its limits.
 
 ## The two leading leads
 
-**Last-core APSC/DVFS ordering.** The matching macOS kernelcache disassembly connects `ApplePMGR::_cpuIdle`'s last-active-core branch to `cpuComplexIdleEnter` and `_waitAPSCPending`, which polls the DVFS command BUSY bit. The local `cpu-tvm` configuration predicts that the wait is enabled. Linux's inspected cpufreq path waits before issuing a *new* command, whereas its idle driver has no corresponding explicit post-request wait. This is a static difference with a concrete runtime test, not yet a Linux defect. Begin at [macOS Control Path](MacOS-Control-Path.md) and [`notes/linux-dvfs-idle-concurrency.md`](../notes/linux-dvfs-idle-concurrency.md).
+**Last-core APSC/DVFS ordering.** The matching macOS kernelcache disassembly connects `ApplePMGR::_cpuIdle`'s last-active-core branch to `cpuComplexIdleEnter` and `_waitAPSCPending`, which polls the DVFS command BUSY bit. The local `cpu-tvm` configuration predicts that the wait is enabled. Linux's inspected cpufreq path waits before issuing a *new* command, whereas its idle driver has no corresponding explicit post-request wait. The checked Omacom fork does not add one for M1. This is a static difference with a concrete runtime test, not yet a Linux defect. Begin at [macOS Control Path](MacOS-Control-Path.md), [Omacom source audit](../notes/omacom-linux-source-audit.md), and [`notes/linux-dvfs-idle-concurrency.md`](../notes/linux-dvfs-idle-concurrency.md).
 
 **Physical state observability.** macOS IOReport and Linux `state1/time` record software-reported idle, not independently calibrated rail-off time. An audited PCPM PMGR state register is a candidate read-only native observable, but its exact power-domain meaning and observer effect must be validated. Begin at [`notes/idle-observable-audit.md`](../notes/idle-observable-audit.md).
 

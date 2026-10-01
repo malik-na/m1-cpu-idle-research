@@ -1,6 +1,6 @@
 # M1 CPU idle: local macOS evidence and a Linux implementation path
 
-Investigation date: 1 October 2026, Asia/Kolkata. Target: MacBookAir10,1 / J313 / T8103, 8 GB, macOS 27.0 build 26A428. This report records local observation, actual AArch64 driver disassembly, and pinned comparisons with Asahi and Aurora Silicon. It does not claim a completed new Linux power-saving implementation.
+Investigation date: 1 October 2026, Asia/Kolkata. Target: MacBookAir10,1 / J313 / T8103, 8 GB, macOS 27.0 build 26A428. This report records local observation, actual AArch64 driver disassembly, and pinned comparisons with Asahi, Omacom, and Aurora Silicon. It does not claim a completed new Linux power-saving implementation. The [Omacom source audit](omacom-linux-source-audit.md) checks the additional fork without double-counting an identical upstream commit.
 
 ## What we established
 

@@ -10,7 +10,7 @@ This wiki tracks one question: **which CPU-idle decisions made by macOS on base 
 | Claim levels and reproducibility | [Evidence Standard](Evidence-Standard.md) |
 | Supported conclusions and unresolved claims | [Findings Index](Findings-Index.md) |
 | ApplePMGR, CLPC, WFI, APSC, and exact local assembly | [macOS Control Path](MacOS-Control-Path.md) |
-| Asahi and Aurora source comparison | [Linux and Aurora Baseline](Linux-and-Aurora-Baseline.md) |
+| Asahi, Omacom, and Aurora source comparison | [Linux fork baseline](Linux-and-Aurora-Baseline.md) and [Omacom source audit](../notes/omacom-linux-source-audit.md) |
 | Host macOS investigation without reboot | [Non-Reboot Investigation](Non-Reboot-Investigation.md) |
 | Five-second privileged ktrace capture | [Live Mac Tracing](Live-Mac-Tracing.md) |
 | Earlier native Linux measurements | [Prior Native Linux Results](Prior-Native-Linux-Results.md) |
@@ -22,7 +22,7 @@ The detailed [research report](../notes/README.md) and [supporting notes](../not
 
 | Question | Current answer | Evidence tier |
 |---|---|---|
-| Does Linux already request deep WFI on M1? | Yes, in the pinned Asahi/Aurora `apple_idle` driver. | Pinned public source; historical native software counts |
+| Does Linux already request deep WFI on M1? | Yes, in the pinned Asahi/Omacom/Aurora `apple_idle` driver. | Pinned public source; historical native software counts |
 | Does the checked macOS PMGR path have a last-core DVFS/APSC wait? | Yes; local disassembly identifies the path and register reads. | Matching local binary |
 | Is that wait enabled on this Mac? | Static configuration predicts yes; live branch frequency still needs tracing. | Local binary plus captured properties |
 | Does Linux reach the same physical core/cluster-off residency as macOS? | Unknown. | No independent native state/residency qualification |

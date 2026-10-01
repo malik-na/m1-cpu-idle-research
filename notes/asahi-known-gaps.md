@@ -13,6 +13,7 @@ The local binary investigation now establishes a concrete unit mismatch worth pr
 | Source | Revision / status checked live |
 |---|---|
 | AsahiLinux/linux `asahi` | `77cb8f24c2381a8abb7272d7bbdec548d6426a8a` (head commit dated 2026-08-20) |
+| omacom/linux `asahi` | `77cb8f24c2381a8abb7272d7bbdec548d6426a8a` (the exact same Git commit; [fork audit](omacom-linux-source-audit.md)) |
 | AsahiLinux/m1n1 `main` | `3e354a2467f4f724f254362626cae0633918e0c1` |
 | m1n1 PR #618, PSCI via EFI | Open draft; head `d30913b713a4c0e86935f8a9919ec099d495929b` |
 | m1n1 PR #670, PMP v1 | Open, non-draft; head `3ea0198a77d9164f374450e58c8268e397be5b7e`; no comments or review comments returned by API |
