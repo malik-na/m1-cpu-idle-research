@@ -41,6 +41,18 @@ records were emitted on CPUs 0–3; an emitting CPU need not be the target of a
 request. The numeric arguments remain in the sanitized stream, but their
 meaning beyond the signpost's first level argument is not established here.
 
+An [exact-build AArch64 follow-up](mac-pmgr-command-order.md) places the marker
+**after** `setPerfState` returns in the CPU-complex caller. That method can
+submit the APSC/DVFS command and can optionally wait afterward, depending on
+a caller boolean that the trace does not encode. Three other functions call
+the same marker helper, and a saved event does not identify its caller. The
+event therefore does not timestamp an identified CPU-command write or
+completion. A separate [scope audit](tools/marker-scope.py)
+found zero CPM1 or CPM3 markers within a CPUIdle callback on the marker's
+emitting CPU in this capture; 62 CPM1 and 45 CPM3 markers occurred while a
+callback on some *other* CPU was in progress. This narrows one potential
+same-callback explanation without removing workload or cross-core confounding.
+
 For idle timing, `0x27001001` and `0x27001002` bracket one
 `ApplePMGR::_cpuIdle` **callback**; `args[1] == 1` means entry preparation. It
 does not bracket the interval spent in WFI. Reuse the state classifier in

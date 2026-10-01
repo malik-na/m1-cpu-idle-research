@@ -10,6 +10,8 @@ This wiki tracks one question: **which CPU-idle decisions made by macOS on base 
 | Claim levels and reproducibility | [Evidence Standard](Evidence-Standard.md) |
 | Supported conclusions and unresolved claims | [Findings Index](Findings-Index.md) |
 | ApplePMGR, CLPC, WFI, APSC, and exact local assembly | [macOS Control Path](MacOS-Control-Path.md) |
+| AArch64 PMGR command and performance-marker ordering | [Instruction-order audit](../notes/mac-pmgr-command-order.md) |
+| Safe user-mode `MRS` probe and access boundary | [EL0 capability probe](../notes/el0-capability-probe.md) |
 | Asahi, Omacom, and Aurora source comparison | [Linux fork baseline](Linux-and-Aurora-Baseline.md) and [Omacom source audit](../notes/omacom-linux-source-audit.md) |
 | Host macOS investigation without reboot | [Non-Reboot Investigation](Non-Reboot-Investigation.md) |
 | Five-second privileged ktrace capture | [Live Mac Tracing](Live-Mac-Tracing.md) |

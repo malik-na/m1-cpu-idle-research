@@ -4,7 +4,7 @@ A public research notebook on how macOS 27 controls CPU idle on a base M1 (T8103
 
 The most concrete current lead is a **static control-path difference**: the inspected macOS `AppleT8103PMGR` last-active-core idle path conditionally waits for the cluster DVFS/APSC command's BUSY bit to clear; the pinned Linux CPU-idle path has no explicit matching wait. The local configuration predicts that macOS enables the wait. We have **not** measured how often it runs, whether Linux ever overlaps an outstanding command with deep WFI, or whether any difference affects physical power state or energy. See [macOS control path](wiki/MacOS-Control-Path.md) and [experiment backlog](wiki/Experiment-Backlog.md).
 
-A Mac-only reanalysis of the saved five-second trace found a **timing lead**: apparent last E-core idle-entry callbacks soon after one PMGR performance-request marker were longer than callbacks without a recent marker. That marker is not a command-register read or proof that the APSC wait ran. The [reproducible correlation note](notes/mac-ktrace-perf-request-correlation.md) gives the counts, controls, and limits.
+A Mac-only reanalysis of the saved five-second trace found a **timing lead**: apparent last E-core idle-entry callbacks soon after one PMGR performance-request marker were longer than callbacks without a recent marker. The [AArch64 instruction-order audit](notes/mac-pmgr-command-order.md) shows that the CPU-complex emitter records its marker after `setPerfState` returns, while three other functions share the marker helper. A saved marker identifies neither its call site nor the command-write time or BUSY state. The [reproducible correlation note](notes/mac-ktrace-perf-request-correlation.md) gives the counts, controls, and limits. A [safe EL0 assembly probe](notes/el0-capability-probe.md) identified counter and CPU-tag registers usable without a reboot, and directly confirmed that user mode cannot read the power-control register here.
 
 Another build-specific finding: `cpu-power-gate-latency-us = 50000` reaches XNU's **nanosecond** software latency input unchanged, yielding **50 microseconds** in the checked running build. This is not a measured hardware exit latency and should not be copied into Linux cpuidle metadata. The chain is recorded in [macOS control path](wiki/MacOS-Control-Path.md).
 
@@ -15,6 +15,8 @@ Another build-specific finding: `cpu-power-gate-latency-us = 50000` reaches XNU'
 | Orient a new investigator or coding agent | [Agent Orientation](wiki/Agent-Orientation.md), then [AGENTS.md](AGENTS.md) |
 | Understand exactly what is known | [Evidence Standard](wiki/Evidence-Standard.md) and [Findings Index](wiki/Findings-Index.md) |
 | Follow the macOS binary and assembly evidence | [macOS Control Path](wiki/MacOS-Control-Path.md) |
+| Reproduce instruction-level command/marker order | [PMGR ordering audit](notes/mac-pmgr-command-order.md) |
+| Run the bounded user-mode register probe | [EL0 probe](notes/el0-capability-probe.md) |
 | Check what Asahi, Omacom, and Aurora already implement | [Linux fork baseline](wiki/Linux-and-Aurora-Baseline.md) and [Omacom source audit](notes/omacom-linux-source-audit.md) |
 | Investigate the running Mac without rebooting | [Non-Reboot Investigation](wiki/Non-Reboot-Investigation.md) |
 | Reproduce and interpret the five-second root trace | [Live Mac Tracing](wiki/Live-Mac-Tracing.md) |
