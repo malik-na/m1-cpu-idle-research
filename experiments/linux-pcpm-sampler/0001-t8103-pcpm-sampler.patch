@@ -121,10 +121,10 @@ index 1baa6de..7ecc238 100644
  obj-$(CONFIG_APPLE_RTKIT) += apple-rtkit.o
 diff --git a/drivers/soc/apple/apple-pcpm-sampler.c b/drivers/soc/apple/apple-pcpm-sampler.c
 new file mode 100644
-index 0000000..7a97d50
+index 0000000..bc11b59
 --- /dev/null
 +++ b/drivers/soc/apple/apple-pcpm-sampler.c
-@@ -0,0 +1,423 @@
+@@ -0,0 +1,541 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/* Sparse read-only T8103 PCPM experiment. No CPU power-control changes. */
 +#include <linux/capability.h>
@@ -146,18 +146,29 @@ index 0000000..7a97d50
 +#include <linux/sched/task.h>
 +#include <linux/seq_file.h>
 +#include <linux/uaccess.h>
++#include <asm/arch_timer.h>
 +#include <asm/cpu.h>
++#include <asm/cpufeature.h>
 +#include <asm/cputype.h>
 +#include <asm/smp_plat.h>
++#include <asm/sysreg.h>
 +
 +#define PCPM_MAX_SAMPLES 1000
 +#define PCPM_OFFSET 0x48
 +#define PCPM_PMGR_BASE 0x23b700000ULL
 +#define PCPM_PMGR_SIZE 0x14000
++#define PCPM_COUNTER_BEFORE BIT(0)
++#define PCPM_COUNTER_AFTER BIT(1)
++#define PCPM_COUNTER_REVERSE BIT(2)
++#define PCPM_COUNTER_PREVIOUS_REVERSE BIT(3)
++#define PCPM_TIME_REVERSE BIT(4)
++#define PCPM_TIME_PREVIOUS_REVERSE BIT(5)
 +
 +struct pcpm_sample {
 +	u32 slot, skipped_before;
 +	u64 scheduled_ns, before_ns, after_ns;
++	u64 counter_before, counter_after;
++	u32 counter_flags;
 +	u32 cpu_before, cpu_after;
 +	bool read_attempted, raw_valid;
 +	u32 raw;
@@ -179,6 +190,51 @@ index 0000000..7a97d50
 +static bool regmap_existing, regmap_internal_clockless;
 +static int regmap_stride, regmap_val_bytes;
 +static char cpu_kind[8];
++static bool counter_metadata_valid;
++static int counter_metadata_cpu = -1, counter_metadata_error;
++static u32 counter_cntfrq, counter_errors, time_errors;
++static u64 counter_cntkctl, counter_mmfr0;
++static bool counter_workaround_present, counter_phys_read_workaround;
++
++/* Same ordered physical counter accessor as the separate qualification helper. */
++static notrace u64 pcpm_tick(void)
++{
++	u64 value;
++
++	mb();
++	value = arch_timer_read_cntpct_el0();
++	arch_counter_enforce_ordering(value);
++	mb();
++	return value;
++}
++
++/* Called only by the bound worker, before any stamp or PMGR read. No IPI. */
++static int qualify_counter(void)
++{
++#if IS_ENABLED(CONFIG_ARM_ARCH_TIMER_OOL_WORKAROUND)
++	const struct arch_timer_erratum_workaround *wa;
++#endif
++
++	counter_metadata_cpu = raw_smp_processor_id();
++	if (counter_metadata_cpu != worker_cpu) {
++		counter_metadata_error = -EXDEV;
++		return counter_metadata_error;
++	}
++	counter_cntfrq = arch_timer_get_cntfrq();
++	counter_cntkctl = read_sysreg(cntkctl_el1);
++	counter_mmfr0 = read_sysreg(id_aa64mmfr0_el1);
++#if IS_ENABLED(CONFIG_ARM_ARCH_TIMER_OOL_WORKAROUND)
++	wa = __this_cpu_read(timer_unstable_counter_workaround);
++	counter_workaround_present = !!wa;
++	counter_phys_read_workaround = wa && wa->read_cntpct_el0;
++#endif
++	counter_metadata_valid = true;
++	if (!counter_cntfrq)
++		counter_metadata_error = -ERANGE;
++	else if (counter_phys_read_workaround)
++		counter_metadata_error = -EOPNOTSUPP;
++	return counter_metadata_error;
++}
 +
 +static u32 online_mask(void)
 +{
@@ -304,6 +360,9 @@ index 0000000..7a97d50
 +	ktime_t expires;
 +
 +	sched_set_normal(current, 0);
++	capture_error = qualify_counter();
++	if (capture_error)
++		goto out;
 +	start_ns = ktime_get_ns();
 +	/* Explicit arithmetic guard also handles a pathological uptime. */
 +	if (check_add_overflow(start_ns, phase + period, &first) ||
@@ -334,16 +393,44 @@ index 0000000..7a97d50
 +		missed_slots += skipped;
 +		skipped = 0;
 +		s->cpu_before = raw_smp_processor_id();
++		if (s->cpu_before == worker_cpu) {
++			s->counter_before = pcpm_tick();
++			s->counter_flags |= PCPM_COUNTER_BEFORE;
++			if (attempted &&
++			    s->counter_before < samples[attempted - 1].counter_after)
++				s->counter_flags |= PCPM_COUNTER_PREVIOUS_REVERSE;
++		}
 +		s->before_ns = ktime_get_ns();
-+		if (s->cpu_before == worker_cpu && !strcmp(capture_mode, "mmio")) {
++		if (attempted && s->before_ns < samples[attempted - 1].after_ns)
++			s->counter_flags |= PCPM_TIME_PREVIOUS_REVERSE;
++		if (s->cpu_before == worker_cpu && !strcmp(capture_mode, "mmio") &&
++		    !(s->counter_flags & (PCPM_COUNTER_PREVIOUS_REVERSE |
++					 PCPM_TIME_PREVIOUS_REVERSE))) {
 +			s->read_attempted = true;
 +			s->read_errno = regmap_read(pcpm_map, PCPM_OFFSET, &s->raw);
 +			s->raw_valid = !s->read_errno;
 +		}
 +		s->after_ns = ktime_get_ns();
++		if (s->counter_flags & PCPM_COUNTER_BEFORE) {
++			s->counter_after = pcpm_tick();
++			s->counter_flags |= PCPM_COUNTER_AFTER;
++			if (s->counter_after < s->counter_before)
++				s->counter_flags |= PCPM_COUNTER_REVERSE;
++		}
 +		s->cpu_after = raw_smp_processor_id();
++		if (s->after_ns < s->before_ns)
++			s->counter_flags |= PCPM_TIME_REVERSE;
 +		attempted++;
 +		slot++;
++		if (s->counter_flags & (PCPM_COUNTER_REVERSE |
++					PCPM_COUNTER_PREVIOUS_REVERSE)) {
++			counter_errors++;
++			capture_error = -ERANGE;
++		}
++		if (s->counter_flags & (PCPM_TIME_REVERSE | PCPM_TIME_PREVIOUS_REVERSE)) {
++			time_errors++;
++			capture_error = -ERANGE;
++		}
 +		if (s->read_errno) {
 +			read_errors++;
 +			capture_error = s->read_errno;
@@ -364,6 +451,7 @@ index 0000000..7a97d50
 +done:
 +	unattempted_after_error = requested - attempted - missed_slots;
 +	end_ns = ktime_get_ns();
++out:
 +	complete(&pcpm_done);
 +	return 0;
 +}
@@ -478,7 +566,7 @@ index 0000000..7a97d50
 +	unsigned int cpu;
 +
 +	mutex_lock(&pcpm_lock);
-+	seq_printf(m, "abi=1\nstate=%s\nmode=%s\nerror=%d\n",
++	seq_printf(m, "abi=2\nstate=%s\nmode=%s\nerror=%d\n",
 +		   capture_state, capture_mode, capture_error);
 +#define OUT_U32(name) seq_printf(m, #name "=%u\n", name)
 +#define OUT_U64(name) seq_printf(m, #name "=%llu\n", name)
@@ -495,6 +583,29 @@ index 0000000..7a97d50
 +		   regmap_stride, regmap_val_bytes);
 +	OUT_U32(attempted); OUT_U32(missed_slots); OUT_U32(unattempted_after_error);
 +	OUT_U32(trailing_missed); OUT_U32(read_errors); OUT_U32(cpu_errors);
++	OUT_U32(counter_errors); OUT_U32(time_errors);
++	seq_printf(m, "config_ool_workaround=%d\necv_alternative=%d\n"
++		   "counter_metadata_valid=%u\ncounter_metadata_cpu=%d\n"
++		   "counter_metadata_error=%d\n",
++		   IS_ENABLED(CONFIG_ARM_ARCH_TIMER_OOL_WORKAROUND),
++		   cpus_have_final_cap(ARM64_HAS_ECV), counter_metadata_valid,
++		   counter_metadata_cpu, counter_metadata_error);
++	seq_puts(m, "counter_cntfrq=");
++	if (counter_metadata_valid)
++		seq_printf(m, "%u", counter_cntfrq);
++	seq_puts(m, "\ncounter_cntkctl=");
++	if (counter_metadata_valid)
++		seq_printf(m, "0x%llx", counter_cntkctl);
++	seq_puts(m, "\ncounter_mmfr0=");
++	if (counter_metadata_valid)
++		seq_printf(m, "0x%llx", counter_mmfr0);
++	seq_puts(m, "\ncounter_workaround_present=");
++	if (counter_metadata_valid)
++		seq_printf(m, "%u", counter_workaround_present);
++	seq_puts(m, "\ncounter_phys_read_workaround=");
++	if (counter_metadata_valid)
++		seq_printf(m, "%u", counter_phys_read_workaround);
++	seq_putc(m, '\n');
 +#undef OUT_U32
 +#undef OUT_U64
 +#undef OUT_HEX
@@ -513,14 +624,21 @@ index 0000000..7a97d50
 +
 +	mutex_lock(&pcpm_lock);
 +	seq_puts(m, "seq,slot,scheduled_ns,skipped_before,t_before_ns,t_after_ns,"
-+		 "cpu_before,cpu_after,read_attempted,raw_valid,raw,read_errno\n");
++		 "counter_before,counter_after,counter_flags,cpu_before,cpu_after,"
++		 "read_attempted,raw_valid,raw,read_errno\n");
 +	for (i = 0; i < attempted; i++) {
 +		const struct pcpm_sample *s = &samples[i];
 +
-+		seq_printf(m, "%u,%u,%llu,%u,%llu,%llu,%u,%u,%u,%u,", i,
++		seq_printf(m, "%u,%u,%llu,%u,%llu,%llu,", i,
 +			   s->slot, s->scheduled_ns, s->skipped_before,
-+			   s->before_ns, s->after_ns, s->cpu_before, s->cpu_after,
-+			   s->read_attempted, s->raw_valid);
++			   s->before_ns, s->after_ns);
++		if (s->counter_flags & PCPM_COUNTER_BEFORE)
++			seq_printf(m, "%llu", s->counter_before);
++		seq_putc(m, ',');
++		if (s->counter_flags & PCPM_COUNTER_AFTER)
++			seq_printf(m, "%llu", s->counter_after);
++		seq_printf(m, ",%u,%u,%u,%u,%u,", s->counter_flags,
++			   s->cpu_before, s->cpu_after, s->read_attempted, s->raw_valid);
 +		if (s->raw_valid)
 +			seq_printf(m, "0x%08x", s->raw);
 +		seq_printf(m, ",%d\n", s->read_errno);

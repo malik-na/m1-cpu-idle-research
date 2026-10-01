@@ -1,10 +1,15 @@
-# PCPM sampler build validation
+# PCPM sampler ABI 2 build validation
 
 The exact [patch](0001-t8103-pcpm-sampler.patch), SHA-256
-`713c7590d5c88e0c03ce9c2a48a24ae8f3b423618cd6986c537dbc5437f4978c`,
+`5a737c38f0f9856147ac03959f5ebc7ed202c49ad54aa9e09db971d8d839a4ee`,
 passed standalone and combined application checks and ARM64 object builds on
 2 October 2026. No code was installed, booted, or executed on the M1. These are
 source/compile/instruction-review results, not a native PCPM measurement.
+
+This receipt covers the new [ABI 2](ABI.md) counter-bracket implementation.
+The prior ABI 1 patch and its validation remain preserved at
+[commit cb0b41e62ad500225c1a06bfc827b2fd8e24b1ec](https://github.com/malik-na/m1-cpu-idle-research/blob/cb0b41e62ad500225c1a06bfc827b2fd8e24b1ec/experiments/linux-pcpm-sampler/BUILD-VALIDATION.md).
+New source and output directories were used; those prior artifacts were retained.
 
 ## Pinned inputs
 
@@ -26,8 +31,7 @@ the counter patch hash is
 
 The x86-64 Linux cross-build host used Clang/LLVM 22.1.8, GNU Make 4.4.1,
 `ARCH=arm64 LLVM=1`, and the isolated LLD/bc tools described in the
-[observer receipt](../linux-apsc-observer/BUILD-VALIDATION.md). All eight tool
-fingerprints were rechecked against the previously verified toolchain record.
+[observer receipt](../linux-apsc-observer/BUILD-VALIDATION.md). Clang and Make version strings were rechecked for this build.
 There was no system package installation or privileged build.
 
 All configurations start with the pinned arm64 defconfig. The standalone enabled
@@ -44,7 +48,9 @@ include `APPLE_PMGR_PWRSTATE=y`, `MFD_SYSCON=y`, `SMP=y`, and `DEBUG_FS=y`.
 
 These are generic compile configurations with `NR_CPUS=512`, 4 KiB pages,
 `PREEMPT=y`, `PREEMPT_RCU=y`, `LTO_NONE=y`, and no FTRACE/KASAN/UBSAN/KCOV.
-They are not qualified target boot configurations. Changed instrumentation,
+They enable `ARM_ARCH_TIMER_OOL_WORKAROUND=y` and
+`ARM64_ERRATUM_858921=y`, so the worker preflight rejection path for an installed
+physical-read workaround is compiled. They are not qualified target boot configurations. Changed instrumentation,
 compiler, LTO, DT, or owner implementation requires renewed review.
 
 ## Compilation and instruction evidence
@@ -57,15 +63,15 @@ sampler and counter helper. Disabled contains neither, and has no sampler object
 The new existing-map accessor symbol exists only with the sampler enabled.
 All completed compile logs contain no compiler `warning:` or `error:` lines.
 
-Independent source readback identified and corrected an initial draft's overly
-restrictive MPIDR Aff2 guard: pinned P-core DT IDs `0x10100`..`0x10103` have Aff2=1.
-The initial draft would have rejected the target before reading. The corrected
-exact patch above was reapplied and rebuilt in all three variants, and the decoder
-fixture explicitly rejects the old incorrect affinity assumption.
+The ABI 1 qualification, scheduling, read-only mapping, and request parser remain
+in the ABI 2 source. In particular, pinned P-core DT IDs `0x10100`..`0x10103` retain
+the corrected Aff2=1 requirement. The additional counter metadata gate precedes
+the schedule and all raw stamps/MMIO. No remote metadata call or register write
+was introduced.
 
 | Final standalone patched source | SHA-256 |
 | --- | --- |
-| `drivers/soc/apple/apple-pcpm-sampler.c` | `244a9032298811dc4d66f56f89015167abf21bce771db6f689748060bcf6590c` |
+| `drivers/soc/apple/apple-pcpm-sampler.c` | `f4916f7f8f6d26c971b62dc052db89ff21ca66afad99d20357a074dc91fb9a97` |
 | `drivers/mfd/syscon.c` | `a903e342814c1c8d7bb941e9799c0d4c57e028f1791d05b3381ea5ecb1842df5` |
 | `include/linux/mfd/syscon.h` | `cd230f9f269b9ad84e29611ad9e5d5fc51c7ce12931257fc237515b7e63c9552` |
 | `drivers/soc/apple/Kconfig` | `5621438f4ae36ee44c8c800222d700a99de821b1cc07300aefd490893332d785` |
@@ -73,11 +79,11 @@ fixture explicitly rejects the old incorrect affinity assumption.
 
 | Variant / object | SHA-256 |
 | --- | --- |
-| Enabled sampler | `c5240851f043bb4d09c7b28bf76d811f7ee9072c78f47c3036147ff708867bb8` |
-| Combined sampler | `a7e8b856dbb773180cb882ed4b50cdebd885df69aa3b015f6f317b821b5430dd` |
-| Enabled syscon | `dc711093af48b22737f6452e01dedee20a67a210454cbc4a6bd5a05599accd0a` |
-| Disabled syscon | `443dd8aa8af1918ed518eafd7c6661922025a594f3023d0ad73c4c6078e089df` |
-| Combined syscon | `d5f33e2692e80403d126700423393401c02e8119900161f9f2214c888ba4c879` |
+| Enabled sampler | `a495613df8d69681dbed4bac489701501e6f0a34f80b472acabc47c3e11548be` |
+| Combined sampler | `aaacc17b8882e1bf9096a8ecab99c11a036c5578a394e0f4007c29be47ab56a2` |
+| Enabled syscon | `aa973ed2dd3580556b924127a2ab92aee0bc93ddcddf1578deb6064d215e66f7` |
+| Disabled syscon | `7f378e4811e6c8ede69c8ebf16184a7c647d42710e384186aacf0acb6feeb6ca` |
+| Combined syscon | `093cc336e0c34c1aaf80d312e0be772a9c423e9e74bde5fbe9ddcb460385a093` |
 
 Objects are AArch64 relocatable ELF. Whole-object hashes include directory-dependent
 DWARF and are artifact identifiers, not a promise of reproducible bytes elsewhere.
@@ -86,10 +92,10 @@ associated relocation records:
 
 | Section | Bytes | SHA-256 |
 | --- | ---: | --- |
-| `.text` | 5292 | `6be4288b8a584798419a99a2d305c4a5cf97d46d728e773c101d1cdf31e6620e` |
-| `.rela.text` | 10632 | `023142f5f86518c8a35b36fc42504722cafc6f70ea9e9d46fbaef62f3c9866a5` |
+| `.text` | 6364 | `a699cc92d177bfb5230e88081c88c601f59b3752541c491d8246ce8f019a7bc7` |
+| `.rela.text` | 13560 | `e757c702fe1639717f940bf3b5853e3bf8113dee687d8f57e3e6835e59de4a91` |
 | `.init.text` | 304 | `2d1246749173a7d4cd7878a13d3bc7d83afce26dc95a07b2bb43fd5d53564acd` |
-| `.rela.init.text` | 552 | `7c91f86d038d399409d101d4567c02f9b73298c1cf1f9835e8f9b9616ddb7b54` |
+| `.rela.init.text` | 552 | `4d09f5a3245899c6716bc83d7f1e69357b1378c84b3bc002ac06d95321aaad36` |
 
 The original 100-byte `apple_cpu_deep_wfi` routine is identical in pristine,
 standalone enabled, disabled, and combined objects, SHA-256
@@ -97,15 +103,34 @@ standalone enabled, disabled, and combined objects, SHA-256
 The PCPM patch does not change the idle or cpufreq source. The combined observer
 instrumentation remains governed by its own review boundary.
 
-In the sampler's final `.text`, `pcpm_worker` starts at `0xac4`. Its selected sample
-bracket calls `ktime_get` at `0xc50`, conditionally calls `regmap_read` at `0xc9c`
-with the literal register offset `0x48` loaded at `0xc8c`, then calls `ktime_get`
-at `0xcb0`. There is one read call site and no retry on read failure. The sleep
-call is `schedule_hrtimeout_range` at `0xbec`. The object contains no MSR, WFI, or
-WFE instruction; source/relocation review finds no new mapping, register-write,
-clock-enable, PM-reference, remote SMP-call, or idle/governor operation.
-This describes the sampler itself: ordinary kernel scheduling and regmap services
-have observer effects and are not claimed inert.
+In the sampler's final `.text`, `pcpm_worker` starts at `0xac4`. Metadata reads
+are `CNTFRQ_EL0` at `0xb34`, `CNTKCTL_EL1` at `0xb44`, and `ID_AA64MMFR0_EL1`
+at `0xb50`, followed by the worker-local workaround inspection and gate. The
+selected row has these instruction/relocation locations:
+
+| Operation | Object location |
+| --- | --- |
+| Before counter stamp | `0xd54` DSB SY; `0xd58` ISB; `0xd5c` MRS CNTPCT; `0xd60`..`0xd68` counter-derived EOR/ADD/dependent-load; `0xd6c` DSB SY |
+| Nanosecond before | `0xdb4` call relocation to `ktime_get` |
+| Optional PCPM read | Literal offset `0x48` at `0xe34`; sole `regmap_read` call at `0xe44` |
+| Nanosecond after | `0xe58` call relocation to `ktime_get` |
+| After counter stamp | `0xe68` DSB SY; `0xe6c` ISB; `0xe70` MRS CNTPCT; `0xe74`..`0xe7c` counter-derived dependency; `0xe80` DSB SY |
+| Monotonic sleep | `0xce0` call relocation to `schedule_hrtimeout_range` |
+
+The compiler retained both ECV replacement sequences: NOP/MRS CNTPCTSS at
+`0x18c8`/`0x18cc` and `0x18d0`/`0x18d4`. Runtime alternatives select the effective
+counter reader; exported `ecv_alternative` records the final kernel decision.
+These object offsets describe this build, not runtime kernel virtual addresses.
+
+The read is conditional on matching initial worker CPU and absence of an
+already detected previous-row counter/nanosecond reversal. Both timestamp
+brackets are retained on success and read failure. Records mode has the same
+counter and nanosecond bracket overhead without the optional map read. Source
+and instruction inspection find one read call site, no retry on read failure,
+and no MSR, WFI, or WFE instruction. There is no new mapping, register-write,
+clock-enable, PM-reference, remote SMP-call, or idle/governor operation in the
+sampler. Ordinary scheduling, barriers, counters, and regmap services still have
+observer effects; none is claimed inert.
 
 ## Host parser boundary check
 
@@ -152,5 +177,5 @@ object in addition to the targets above.
 
 Kbuild also generated normal preparation artifacts and VDSOs. No final `vmlinux`
 link, module `modpost`, native boot, debugfs capture, calibrated PCPM state,
-clock-domain alignment, or energy result is claimed. Build success cannot close
+validated cross-CPU clock relation, or energy result is claimed. Build success cannot close
 the [native calibration ticket](https://github.com/malik-na/m1-cpu-idle-research/issues/6).

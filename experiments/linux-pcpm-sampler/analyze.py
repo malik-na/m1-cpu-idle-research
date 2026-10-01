@@ -21,6 +21,7 @@ HEADER = (
     "seq,slot,scheduled_ns,skipped_before,t_before_ns,t_after_ns,cpu_before,"
     "cpu_after,read_attempted,raw_valid,raw,read_errno"
 ).split(",")
+HEADER_V2 = HEADER[:6] + ["counter_before", "counter_after", "counter_flags"] + HEADER[6:]
 FIELDS = {
     "abi", "state", "mode", "error", "requested", "period_ms", "phase_ms",
     "start_ns", "end_ns", "budget_end_ns", "worker_cpu", "start_online_mask",
@@ -29,11 +30,23 @@ FIELDS = {
     "regmap_stride", "regmap_val_bytes", "attempted", "missed_slots",
     "unattempted_after_error", "trailing_missed", "read_errors", "cpu_errors",
 } | {f"cpu{cpu}.{field}" for cpu in range(8) for field in ("midr", "mpidr", "kind")}
+COUNTER_VALUES = {
+    "counter_cntfrq", "counter_cntkctl", "counter_mmfr0",
+    "counter_workaround_present", "counter_phys_read_workaround",
+}
+COUNTER_FIELDS = COUNTER_VALUES | {
+    "config_ool_workaround", "ecv_alternative", "counter_metadata_valid",
+    "counter_metadata_cpu", "counter_metadata_error", "counter_errors", "time_errors",
+}
+FIELDS_BY_ABI = {1: FIELDS, 2: FIELDS | COUNTER_FIELDS}
+HEADERS_BY_ABI = {1: HEADER, 2: HEADER_V2}
 HEX_FIELDS = {
     "start_online_mask", "end_online_mask", "e_mask", "p_mask", "pmgr_phys",
     "pmgr_size",
 }
-FLAGS = {"regmap_existing", "regmap_internal_clockless", "read_attempted", "raw_valid"}
+FLAGS = {"regmap_existing", "regmap_internal_clockless", "read_attempted", "raw_valid",
+         "config_ool_workaround", "ecv_alternative", "counter_metadata_valid",
+         "counter_workaround_present", "counter_phys_read_workaround"}
 UINT64_MAX = (1 << 64) - 1
 NS_PER_MS = 1000000
 DECIMAL = re.compile(r"(?:0|[1-9][0-9]*)\Z")
@@ -79,9 +92,13 @@ def parse_status(source):
         if not key or key in raw:
             raise AnalysisError(f"status line {line_no}: missing or duplicate key")
         raw[key] = value
-    if raw.keys() != FIELDS:
-        raise AnalysisError(f"status keys: missing={sorted(FIELDS - raw.keys())}, "
-                            f"unknown={sorted(raw.keys() - FIELDS)}")
+    if "abi" not in raw:
+        raise AnalysisError("status: missing abi")
+    abi = choice(number(raw["abi"], "abi", bits=32), {1, 2}, "abi")
+    fields = FIELDS_BY_ABI[abi]
+    if raw.keys() != fields:
+        raise AnalysisError(f"status keys: missing={sorted(fields - raw.keys())}, "
+                            f"unknown={sorted(raw.keys() - fields)}")
     status = {}
     for key, value in raw.items():
         if key == "state":
@@ -90,25 +107,27 @@ def parse_status(source):
             status[key] = choice(value, {"none", "records", "mmio"}, key)
         elif key.endswith(".kind"):
             status[key] = choice(value, {"E", "P", "unknown"}, key)
-        elif key in HEX_FIELDS or key.endswith((".midr", ".mpidr")):
+        elif key in HEX_FIELDS or key.endswith((".midr", ".mpidr")) or key in {"counter_cntkctl", "counter_mmfr0"}:
             status[key] = number(value, key, hexadecimal=True,
-                                 bits=32 if key.endswith("_mask") else 64)
-        elif key in {"error", "worker_cpu", "regmap_stride", "regmap_val_bytes"}:
+                                 bits=32 if key.endswith("_mask") else 64,
+                                 optional=key in COUNTER_VALUES)
+        elif key in {"error", "worker_cpu", "regmap_stride", "regmap_val_bytes",
+                     "counter_metadata_cpu", "counter_metadata_error"}:
             status[key] = number(value, key, bits=32, signed=True)
         else:
-            status[key] = number(value, key, bits=64 if key.endswith("_ns") else 32)
-        if key in FLAGS:
+            status[key] = number(value, key, bits=64 if key.endswith("_ns") else 32,
+                                 optional=key in COUNTER_VALUES)
+        if key in FLAGS and status[key] is not None:
             choice(status[key], {0, 1}, key)
-    choice(status["abi"], {1}, "abi")
     return status
 
 
-def parse_events(source):
+def parse_events(source, abi=1):
     reader = csv.DictReader(io.StringIO(source), strict=True)
     rows = []
     try:
-        if reader.fieldnames != HEADER:
-            raise AnalysisError("CSV header differs from ABI 1")
+        if reader.fieldnames != HEADERS_BY_ABI[abi]:
+            raise AnalysisError(f"CSV header differs from ABI {abi}")
         for line_no, cells in enumerate(reader, 2):
             if None in cells or any(value is None for value in cells.values()):
                 raise AnalysisError(f"CSV row {line_no}: wrong number of cells")
@@ -116,11 +135,14 @@ def parse_events(source):
             for key, value in cells.items():
                 label = f"row {line_no} {key}"
                 row[key] = number(value, label,
-                                  bits=64 if key.endswith("_ns") else 32,
+                                  bits=64 if key.endswith("_ns") or key in {"counter_before", "counter_after"} else 32,
                                   signed=key == "read_errno",
-                                  hexadecimal=key == "raw", optional=key == "raw")
+                                  hexadecimal=key == "raw",
+                                  optional=key in {"raw", "counter_before", "counter_after"})
                 if key in FLAGS:
                     choice(row[key], {0, 1}, label)
+                if key == "counter_flags" and row[key] & ~0x3f:
+                    raise AnalysisError(f"{label}: unsupported flag bits")
             rows.append(row)
             if len(rows) > 1000:
                 raise AnalysisError("CSV exceeds ABI capacity of 1000 rows")
@@ -129,14 +151,85 @@ def parse_events(source):
     return rows
 
 
-def statistics(values):
+def statistics(values, unit="ns"):
     """Exact integer/rational descriptions, without float or wraparound."""
     if not values:
-        return {"count": 0, "minimum_ns": None, "maximum_ns": None,
-                "sum_ns": 0, "mean_ns": None}
-    return {"count": len(values), "minimum_ns": min(values), "maximum_ns": max(values),
-            "sum_ns": sum(values),
-            "mean_ns": {"numerator": sum(values), "denominator": len(values)}}
+        return {"count": 0, f"minimum_{unit}": None, f"maximum_{unit}": None,
+                f"sum_{unit}": 0, f"mean_{unit}": None}
+    return {"count": len(values), f"minimum_{unit}": min(values), f"maximum_{unit}": max(values),
+            f"sum_{unit}": sum(values),
+            f"mean_{unit}": {"numerator": sum(values), "denominator": len(values)}}
+
+
+def counter_metadata(status, rows):
+    """Check the recorded reader gate, without authenticating the hardware."""
+    if status["abi"] == 1:
+        return {"available": False, "reader_qualified_by_recorded_metadata": False,
+                "errors": [], "status": "unavailable_in_abi1"}
+    errors = []
+    valid = status["counter_metadata_valid"]
+    cpu, error = status["counter_metadata_cpu"], status["counter_metadata_error"]
+    if any((status[key] is not None) != bool(valid) for key in COUNTER_VALUES):
+        errors.append("counter_metadata_presence_disagrees_with_valid_flag")
+    if error > 0:
+        errors.append("positive_counter_metadata_error")
+    if valid:
+        if cpu != status["worker_cpu"] or cpu not in range(8):
+            errors.append("counter_metadata_cpu_mismatch")
+        if status["counter_phys_read_workaround"] == 1 and status["counter_workaround_present"] != 1:
+            errors.append("counter_physical_workaround_without_pointer")
+        if not status["config_ool_workaround"] and status["counter_workaround_present"] == 1:
+            errors.append("counter_workaround_present_with_support_disabled")
+        expected_error = (-34 if status["counter_cntfrq"] == 0 else
+                          -95 if status["counter_phys_read_workaround"] == 1 else 0)
+        if error != expected_error:
+            errors.append("counter_metadata_reader_gate_error_mismatch")
+    elif cpu == -1:
+        if error:
+            errors.append("unattempted_counter_metadata_has_error")
+    elif cpu not in range(8) or cpu == status["worker_cpu"] or error != -18:
+        errors.append("absent_counter_metadata_not_explained_by_cpu_failure")
+    if error:
+        if status["state"] != "failed" or status["error"] != error:
+            errors.append("counter_metadata_failure_terminal_state_mismatch")
+        if rows or any(status[key] for key in ("start_ns", "end_ns", "budget_end_ns")):
+            errors.append("counter_metadata_failure_has_schedule_or_rows")
+    qualified = bool(valid and not error and not errors and
+                     status["counter_cntfrq"] and status["counter_phys_read_workaround"] == 0)
+    if (rows or status["state"] == "complete") and not qualified:
+        errors.append("scheduled_capture_has_no_qualified_counter_reader")
+    return {"available": True, "reader_qualified_by_recorded_metadata": qualified,
+            "errors": errors,
+            "status": "recorded_reader_gate_passed" if qualified else
+                      "recorded_reader_gate_rejected" if error else "metadata_unavailable_or_inconsistent"}
+
+
+def summarize_counter(row, status, prior):
+    if status["abi"] == 1:
+        return {"counter_errors": [], "counter_bracket_duration_ticks": None,
+                "eligible_counter_bracket": False}
+    errors = []
+    before, after, flags = (row[key] for key in ("counter_before", "counter_after", "counter_flags"))
+    if bool(flags & 1) != (before is not None) or bool(flags & 2) != (after is not None):
+        errors.append("counter_presence_disagrees_with_valid_flags")
+    if flags & 3 != (3 if row["cpu_before"] == status["worker_cpu"] else 0):
+        errors.append("counter_valid_flags_disagree_with_cpu_gate")
+    reversal = 0
+    if before is not None and after is not None and after < before:
+        reversal |= 4
+        errors.append("counter_reversal_within_row")
+    if prior and before is not None and prior["counter_after"] is not None and before < prior["counter_after"]:
+        reversal |= 8
+        errors.append("counter_reversal_from_previous_row")
+    if row["t_after_ns"] < row["t_before_ns"]:
+        reversal |= 16
+    if prior and row["t_before_ns"] < prior["t_after_ns"]:
+        reversal |= 32
+    if flags & 0x3c != reversal:
+        errors.append("counter_or_time_reversal_flags_disagree_with_timestamps")
+    return {"counter_errors": errors,
+            "counter_bracket_duration_ticks": None if before is None or after is None else after - before,
+            "eligible_counter_bracket": not errors and flags == 3}
 
 
 def topology_errors(status):
@@ -219,7 +312,10 @@ def summarize_row(row, status, prior, index):
     if row["read_attempted"] and (status["mode"] != "mmio" or
                                   row["cpu_before"] != status["worker_cpu"]):
         errors.append("read_attempted_outside_mmio_worker_contract")
-    if status["mode"] == "mmio" and row["cpu_before"] == status["worker_cpu"] and not row["read_attempted"]:
+    pre_read_reversal = status["abi"] == 2 and bool(row["counter_flags"] & 0x28)
+    if row["read_attempted"] and pre_read_reversal:
+        errors.append("read_attempted_after_preread_counter_or_time_reversal")
+    if status["mode"] == "mmio" and row["cpu_before"] == status["worker_cpu"] and not pre_read_reversal and not row["read_attempted"]:
         errors.append("mmio_read_missing_on_worker")
     if row["read_attempted"] and row["raw_valid"] != int(row["read_errno"] == 0):
         errors.append("read_status_disagrees_with_valid_flag")
@@ -231,7 +327,9 @@ def summarize_row(row, status, prior, index):
         "sticky_bit8": (row["raw"] >> 8) & 1,
         "sticky_bit9": (row["raw"] >> 9) & 1,
     }
-    return {"raw": row, "errors": errors, "raw_fields": fields,
+    counter = summarize_counter(row, status, prior)
+    counter["eligible_counter_bracket"] &= not errors
+    return {"raw": row, "errors": errors, "raw_fields": fields, **counter,
             "eligible_successful_read": not errors and bool(row["read_attempted"] and row["raw_valid"]),
             "bracket_duration_ns": after - before,
             "schedule_lateness_ns": before - row["scheduled_ns"]}
@@ -240,7 +338,7 @@ def summarize_row(row, status, prior, index):
 def analyze_text(events_text, status_text, *, evidence_origin="unverified_input"):
     choice(evidence_origin, {"unverified_input", "synthetic_fixture"}, "evidence_origin")
     status = parse_status(status_text)
-    raw_rows = parse_events(events_text)
+    raw_rows = parse_events(events_text, status["abi"])
     errors = []
     requested, period, phase = (status[key] for key in ("requested", "period_ms", "phase_ms"))
     if status["register_offset"] != 72:
@@ -254,6 +352,11 @@ def analyze_text(events_text, status_text, *, evidence_origin="unverified_input"
                 errors.append(f"unused_capture_nondefault_{key}")
         if status["worker_cpu"] != -1 or status["register_offset"] != 72:
             errors.append("unused_capture_worker_or_offset_mismatch")
+        if status["abi"] == 2:
+            for key in COUNTER_FIELDS - {"config_ool_workaround", "ecv_alternative"}:
+                expected = None if key in COUNTER_VALUES else -1 if key == "counter_metadata_cpu" else 0
+                if status[key] != expected:
+                    errors.append(f"unused_capture_nondefault_{key}")
     else:
         if status["mode"] not in {"records", "mmio"}:
             errors.append("consumed_capture_has_no_mode")
@@ -285,6 +388,10 @@ def analyze_text(events_text, status_text, *, evidence_origin="unverified_input"
         errors.append("capture_clock_reversal_or_wrap")
     rows = [summarize_row(row, status, raw_rows[index - 1] if index else None, index)
             for index, row in enumerate(raw_rows)]
+    metadata = counter_metadata(status, raw_rows)
+    errors += metadata["errors"]
+    for row in rows:
+        row["eligible_counter_bracket"] &= metadata["reader_qualified_by_recorded_metadata"]
     observed_read_errors = sum(row["read_attempted"] and row["read_errno"] != 0 for row in raw_rows)
     observed_cpu_errors = sum(row["cpu_before"] != status["worker_cpu"] or row["cpu_after"] != status["worker_cpu"] for row in raw_rows)
     if status["read_errors"] != observed_read_errors or status["cpu_errors"] != observed_cpu_errors:
@@ -293,8 +400,17 @@ def analyze_text(events_text, status_text, *, evidence_origin="unverified_input"
         errors.append("cpu_error_terminal_errno_mismatch")
     elif observed_read_errors and not observed_cpu_errors and status["error"] != raw_rows[-1]["read_errno"]:
         errors.append("read_error_terminal_errno_mismatch")
+    observed_counter_errors = observed_time_errors = 0
+    if status["abi"] == 2:
+        observed_counter_errors = sum(bool(row["counter_flags"] & 0x0c) for row in raw_rows)
+        observed_time_errors = sum(bool(row["counter_flags"] & 0x30) for row in raw_rows)
+        if status["counter_errors"] != observed_counter_errors or status["time_errors"] != observed_time_errors:
+            errors.append("counter_or_time_error_count_mismatch")
+        if (observed_counter_errors or observed_time_errors) and not (observed_cpu_errors or observed_read_errors) and status["error"] != -34:
+            errors.append("counter_or_time_terminal_errno_mismatch")
     for index, row in enumerate(raw_rows):
-        if row["read_errno"] or row["cpu_before"] != status["worker_cpu"] or row["cpu_after"] != status["worker_cpu"]:
+        counter_failure = status["abi"] == 2 and bool(row["counter_flags"] & 0x3c)
+        if row["read_errno"] or row["cpu_before"] != status["worker_cpu"] or row["cpu_after"] != status["worker_cpu"] or counter_failure:
             if index != len(raw_rows) - 1:
                 errors.append("capture_continued_after_acquisition_error")
             if status["state"] != "failed":
@@ -305,6 +421,8 @@ def analyze_text(events_text, status_text, *, evidence_origin="unverified_input"
             errors.append("tail_slot_accounting_mismatch")
     if any(row["errors"] for row in rows):
         errors.append("invalid_sample_present")
+    if any(row["counter_errors"] for row in rows):
+        errors.append("invalid_counter_sample_present")
     # Counts describe observed words only. Missing slots are never denominator
     # corrections and unequal sampling gaps are never converted to occupancy.
     eligible = [row for row in rows if row["eligible_successful_read"]]
@@ -313,7 +431,7 @@ def analyze_text(events_text, status_text, *, evidence_origin="unverified_input"
     pairs = Counter((row["raw_fields"]["actual_code"], row["raw_fields"]["target_code"]) for row in eligible)
     timing_rows = [row for row in rows if not row["errors"]]
     return {
-        "schema": "pcpm-sampler-analysis-v1", "evidence_origin": evidence_origin,
+        "schema": "pcpm-sampler-analysis-v2", "input_abi": status["abi"], "evidence_origin": evidence_origin,
         "inputs_sha256": {"events.csv": hashlib.sha256(events_text.encode("utf-8")).hexdigest(),
                           "status.txt": hashlib.sha256(status_text.encode("utf-8")).hexdigest()},
         "raw_status": status, "samples": rows,
@@ -335,6 +453,18 @@ def analyze_text(events_text, status_text, *, evidence_origin="unverified_input"
             "schedule_lateness_ns": statistics([row["schedule_lateness_ns"] for row in timing_rows]),
             "summary_scope": "descriptive_counts_of_row_valid_samples_only; capture_integrity_and_missing_slots_remain_separate",
             "counts_status": "row_valid_counts_from_inconsistent_capture" if errors else "row_valid_counts_without_physical_calibration",
+        },
+        "counter_domain": {
+            **metadata,
+            "recorded_counter_error_rows": status.get("counter_errors"),
+            "recorded_time_error_rows": status.get("time_errors"),
+            "eligible_brackets": sum(row["eligible_counter_bracket"] for row in rows),
+            "bracket_ticks": statistics([row["counter_bracket_duration_ticks"] for row in rows
+                                          if row["eligible_counter_bracket"]], "ticks"),
+            "summary_scope": "locally_valid_row_brackets_only_not_capture_or_cross_cpu_clock_qualification",
+            "ns_conversion": "not_performed_no_epoch_or_rate_equality_assumed",
+            "cross_cpu_error_bound": "not_established_or_supplied",
+            "apsc_correlation": "not_performed_requires_common_boot_reader_and_clock_qualification",
         },
         "claim_boundary": {
             "native_provenance": "not_authenticated",
