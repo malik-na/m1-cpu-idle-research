@@ -2,7 +2,8 @@
 
 [`compare_wfi_blocks.py`](compare_wfi_blocks.py) implements the cross-boot
 comparison declared in the [first-attempt protocol](WFI-PLAN.md). This is
-analysis preparation. **No native ABI 2 packet has been supplied to or
+analysis preparation. The [single-packet D pilot](WFI-D-RESULT.md) has been
+published, but **no complete native ABI 2 block has been supplied to or
 accepted by this verifier at this checkpoint.** Its
 [tests](test_compare_wfi_blocks.py) use synthetic private packets only.
 
@@ -64,8 +65,12 @@ not establish conditions throughout the window; USB, network and background
 activity remain incompletely observed. The 240-tick cross-CPU bound is not
 calibrated through the capture. Neither a positive nor a qualified zero says
 what the command bit was at the later WFI instruction, whether a peer was
-physically asleep, or what happened to a rail or energy use. This comparison
-does not classify a sample as a final-core software candidate; that requires
-a separate complete same-cluster peer-interval screen under an explicitly
-qualified clock model. The 20-pair exposure count is for command timing at
-the E site, not final-core exposure.
+physically asleep, or what happened to a rail or energy use. The verifier
+also reports a separate conditional software candidate-final-entrant screen:
+the E sample and all four same-cluster software idle intervals must be
+complete and model-interior, with the three peers enclosing the candidate's
+entry and sample under assumed `E=240`. It counts candidate-qualified E
+primary pairs per cluster against their own 20-pair gate. These labels remain
+conditional on the unmeasured clock bound and do not prove peer physical
+sleep or a physical final core. The generic 20-pair command-timing gate does
+not substitute for candidate-specific exposure.

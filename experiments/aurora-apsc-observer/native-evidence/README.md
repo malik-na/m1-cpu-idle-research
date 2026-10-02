@@ -1,5 +1,14 @@
 # Public A/B/C native event packet
 
+The separate [ABI 2 D clock-only pilot](../WFI-D-RESULT.md) is in [`D/`](D/status.txt).
+It uses the first-attempt WFI seam without a command-register read, so it is
+not a BUSY observation or a substitute for the earlier capacity-kernel
+A/B/C controls. Its [receipt](../wfi-clock-pilot-receipt.json) records the
+private-to-public hashes, same-boot qualification, replay and limits. The
+numeric streams in D are byte-exact after deterministic gzip, while its
+environment and activity files are validated projections. See the
+[ABI 2 publication contract](../WFI-PUBLICATION.md) for the exact boundary.
+
 This directory is the reviewed numerical subset of three private,
 acquisition-time hashed packets from separate boots of the same capacity
 kernel. `A` is observer-unarmed, `B` records events without command reads,

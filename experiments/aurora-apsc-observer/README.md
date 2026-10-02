@@ -132,11 +132,13 @@ the predeclared, unproven 240-tick cross-CPU clock-error assumption. It
 does not establish BUSY at WFI, a physical power state, energy or a defect.
 The [WFI-seam extension plan](WFI-PLAN.md) and
 [source delta](0004-aurora-apsc-wfi-first-attempt.patch) predeclare a
-closer, first-attempt probe and stricter paired-opportunity rules. That
-variant has no native result yet.
+closer, first-attempt probe and stricter paired-opportunity rules. Its first
+[native D clock pilot](WFI-D-RESULT.md) passed with 660 matched, loss-free
+first-attempt probes; D does not read the command register or answer BUSY.
 The [ABI 2 build receipt](wfi-build-receipt.json) records a separate
 `-wfi` release, matching staged modules, a checked initramfs and the
 linked first-attempt instructions. The [deployment receipt](wfi-deployment-receipt.json)
 records installation and readback of its separate module package and EFI
 entry, with the stock default, capacity entry and earlier research entry
-preserved. The new image has not been booted or measured.
+preserved. The later D pilot and its [public packet](native-evidence/D/status.txt)
+provide runtime evidence separately from these installation records.

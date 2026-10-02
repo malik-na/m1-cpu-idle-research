@@ -12,8 +12,10 @@ negative opportunities.
 The separately built ABI 2 release has now been installed as
 `Aurora-APSC-research-wfi-seam`; the [deployment receipt](wfi-deployment-receipt.json)
 records the checked module package and EFI readback. This changes the
-deployment status only. The image is **unbooted**, no ABI 2 observer sample
-exists, and the acquisition rules below remain predeclared.
+deployment status only. At this plan's original checkpoint the image was
+unbooted; the subsequent [D clock pilot](WFI-D-RESULT.md) is a separate
+runtime result. The acquisition rules below were declared before that boot
+and remain unchanged.
 
 ## Site and scope
 
@@ -26,8 +28,8 @@ records, and the original WFI instruction/retry and command writes remain
 unchanged. A BUSY sample proves BUSY only at this **first-attempt pre-DSB
 probe**. It cannot prove BUSY at the later WFI instruction, a completed
 command, an asleep peer, or a physical rail transition. The retry path is
-unsampled. The new post-MSR read position is untested hardware behavior until
-a native boot and controlled pilot succeed.
+unsampled. The new post-MSR read position remains untested with a
+command-register read; the D clock pilot tested the same seam without one.
 
 The [ABI 2 packet publication contract](WFI-PUBLICATION.md) was prepared
 before the first capture. It specifies private provenance checks and a

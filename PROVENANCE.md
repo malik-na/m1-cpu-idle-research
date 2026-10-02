@@ -69,6 +69,13 @@ matching module package and checked boot bundle. The later
 records installed package and EFI hashes, integrity checks, preserved
 fallback entries and remaining EFI space. The source patch and protocol are
 published; package/archive contents, raw boot configuration, installation
-logs and host paths remain private. The new kernel was unbooted at this
-checkpoint, so these records establish no runtime command sample or power
-outcome.
+logs and host paths remain private. The new kernel was unbooted at that
+checkpoint. The later [native ABI 2 D pilot](experiments/aurora-apsc-observer/WFI-D-RESULT.md)
+has a separate [public receipt](experiments/aurora-apsc-observer/wfi-clock-pilot-receipt.json)
+and [numerical packet](experiments/aurora-apsc-observer/native-evidence/D/status.txt).
+Its 660 matched clock-only first-attempt probes demonstrate a usable native
+capture path with no command-register read. The private hashed packet retains
+the boot ID, FDT, full logs and command arguments; the public packet retains
+only reviewed numerical streams, statuses, filtered chronology and endpoint
+projections. The D result does not establish APSC BUSY, a physical power
+state, energy, wake latency or a guaranteed cross-CPU clock bound.

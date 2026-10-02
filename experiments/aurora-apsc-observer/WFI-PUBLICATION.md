@@ -4,8 +4,9 @@ Prepared before the first ABI 2 acquisition. The [first-attempt protocol](WFI-PL
 and installed [build](wfi-build-receipt.json) and
 [deployment](wfi-deployment-receipt.json) receipts remain the experiment's
 predeclared context. This document and its synthetic tests are **publication
-preparation, not native evidence**. No ABI 2 packet has been published at this
-checkpoint.
+preparation, not native evidence**. At this document's original checkpoint no
+ABI 2 packet had been published. The later [D pilot result](WFI-D-RESULT.md)
+and [receipt](wfi-clock-pilot-receipt.json) are separate evidence.
 
 [`publish_wfi_evidence.py`](publish_wfi_evidence.py) accepts one private,
 acquisition-time hashed packet at a time, together with private mode-0600
