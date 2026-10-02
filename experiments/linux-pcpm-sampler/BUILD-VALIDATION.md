@@ -15,7 +15,9 @@ object hashes and instruction locations below apply only to the former patch;
 the new receipt identifies the corrected compiled bytes. The separate new
 image and module package were later installed under guarded preflight; the
 [deployment receipt](aurora-wfi-pcpm-deployment-receipt.json) records that
-state. The new image has not booted, and no PCPM capture has run on the M1.
+state. The new image subsequently booted with Wi-Fi and brightness working,
+but the [first records preflight](pcpm-records-preflight-incident-receipt.json)
+stopped before acquisition. No PCPM capture has run on the M1.
 
 This receipt covers the new [ABI 2](ABI.md) counter-bracket implementation.
 The prior ABI 1 patch and its validation remain preserved at
@@ -217,8 +219,9 @@ and decoder tests passed 14, 31 and 49 cases respectively.
 
 The full build establishes local source/configuration-to-binary linkage for
 this candidate. The later guarded deployment establishes installation, but
-neither record establishes a successful native boot, PMGR map qualification
-or register access, observer effects, calibrated PCPM state, a cross-CPU
+the subsequent live release/Build-ID/config and device checks establish a
+booted candidate. They do not establish PMGR map qualification or register
+access, observer effects, calibrated PCPM state, a cross-CPU
 clock bound, physical rail state or energy benefit.
 Those gates remain open in the
 [native calibration ticket](https://github.com/malik-na/m1-cpu-idle-research/issues/6).
