@@ -31,6 +31,14 @@ timestamps and event records but performs no command-register read, so its
 zero WFI and command-value samples are structural. `B-abi2` is separate
 from the earlier capacity-kernel `B` below.
 
+The fifth fresh-boot [A unarmed baseline](../WFI-A-BASELINE-RESULT.md) is
+in [`A-abi2/`](A-abi2/status.txt), with its
+[publication receipt](../wfi-a-baseline-receipt.json). Its event streams
+contain headers only by design; the 39 fully interior pulses per worker
+define the common index set used in the later
+[five-packet result](../WFI-ABI2-BLOCK-RESULT.md). `A-abi2` is separate
+from the earlier capacity-kernel `A` below.
+
 This directory is the reviewed numerical subset of three private,
 acquisition-time hashed packets from separate boots of the same capacity
 kernel. `A` is observer-unarmed, `B` records events without command reads,

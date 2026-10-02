@@ -11,7 +11,11 @@ and [receipt](wfi-clock-pilot-receipt.json), followed by the
 [C control](WFI-C-CONTROL-RESULT.md) with its
 [receipt](wfi-c-control-receipt.json), and the
 [B control](WFI-B-CONTROL-RESULT.md) with its
-[receipt](wfi-b-control-receipt.json), are separate evidence.
+[receipt](wfi-b-control-receipt.json), and the
+[A baseline](WFI-A-BASELINE-RESULT.md) with its
+[receipt](wfi-a-baseline-receipt.json), are separate evidence. The
+[five-packet comparison](WFI-ABI2-BLOCK-RESULT.md) is a later cross-boot
+analysis, not a substitute for any individual packet.
 
 [`publish_wfi_evidence.py`](publish_wfi_evidence.py) accepts one private,
 acquisition-time hashed packet at a time, together with private mode-0600

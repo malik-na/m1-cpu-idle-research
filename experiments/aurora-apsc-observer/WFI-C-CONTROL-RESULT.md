@@ -81,7 +81,8 @@ PY
 
 Pre/post counter phases each completed 1,792 exchanges under the declared
 conditional model; they do not guarantee a capture-wide cross-CPU clock
-bound. AC, brightness and policy endpoints matched, thermal zone 0 was
+bound. AC, brightness and policy settings matched at endpoints (not
+instantaneous current frequencies); thermal zone 0 was
 34.1°C at both endpoints, and the private kernel logs were byte-identical
 before and after acquisition. Network traffic occurred across the broad
 endpoint interval; endpoint equality does not establish the armed window's
@@ -91,5 +92,7 @@ private. The [build receipt](wfi-build-receipt.json) lacks a build-time WFI
 patch or full source-tree digest; the reviewed patch's publication hash alone
 is not a cryptographic source-to-image proof. The predeclared
 [D/E/C/B/A block](WFI-PLAN.md) now has a separate
-[fresh-boot B control](WFI-B-CONTROL-RESULT.md); A and cross-boot
-comparability review remain before issue #5's full result can be closed.
+[fresh-boot B control](WFI-B-CONTROL-RESULT.md),
+[A baseline](WFI-A-BASELINE-RESULT.md) and
+[five-packet result](WFI-ABI2-BLOCK-RESULT.md), with cross-boot limits
+reviewed there.

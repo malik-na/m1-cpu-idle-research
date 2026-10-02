@@ -4,9 +4,10 @@
 comparison declared in the [first-attempt protocol](WFI-PLAN.md). This is
 analysis preparation. The individual [D](WFI-D-RESULT.md),
 [E](WFI-E-RESULT.md), [C](WFI-C-CONTROL-RESULT.md) and
-[B](WFI-B-CONTROL-RESULT.md) packets have been published, but **no complete
-native ABI 2 block has been supplied to or accepted by this verifier at this
-checkpoint**; A remains pending. Its [tests](test_compare_wfi_blocks.py)
+[B](WFI-B-CONTROL-RESULT.md) and [A](WFI-A-BASELINE-RESULT.md) packets have
+been published. The later [native five-packet result](WFI-ABI2-BLOCK-RESULT.md)
+and [sanitized verifier output](wfi-abi2-first-block-comparison.json) are
+separate runtime evidence. The verifier's [tests](test_compare_wfi_blocks.py)
 use synthetic private packets only.
 
 The private input JSON has schema `1` and a `blocks` array with one or two

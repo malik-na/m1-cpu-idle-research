@@ -64,11 +64,14 @@ PY
 
 Thermal zone 0 was 33.9°C at both endpoints; the battery was charging at
 88%. The Wi-Fi link was up and passed traffic across the broad endpoint
-interval, while no USB device was listed. Policy and power endpoints
-matched, and the private pre/post kernel logs were byte-identical. These
+interval, while no USB device was listed. Online CPUs, cpuidle and cpufreq
+policy settings, AC and brightness matched at endpoints; reported current
+frequencies were not held constant. The private pre/post kernel logs were
+byte-identical. These
 endpoints do not prove activity or thermal equivalence during the armed
 window or across D/E/C/B. The [build receipt](wfi-build-receipt.json) lacks
 a build-time WFI patch or full source-tree digest, so a publication-time
-patch hash alone is not a cryptographic source-to-image proof. The fresh-boot
-A baseline and five-packet comparison remain before issue #5's full result
-can be closed.
+patch hash alone is not a cryptographic source-to-image proof. The later
+[A baseline](WFI-A-BASELINE-RESULT.md) and
+[five-packet result](WFI-ABI2-BLOCK-RESULT.md) complete this predeclared
+capture block.

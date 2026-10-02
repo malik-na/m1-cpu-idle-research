@@ -81,7 +81,8 @@ candidate-primary exposure is zero in both clusters. Those gates limit a
 zero-detection claim, not the four positive raw observations. Pre/post
 counter phases each completed 1,792 exchanges with no recorded errors under
 the declared conditional model, but they do not guarantee a capture-wide
-cross-CPU clock bound. AC/brightness/policy endpoints matched, thermal zone
+cross-CPU clock bound. AC/brightness and policy settings matched at
+endpoints, not instantaneous current frequencies; thermal zone
 0 was 35.8→35.7°C, and the pre/post kernel logs were byte-identical in the
 private packet. Network traffic occurred over the broad endpoint interval;
 background activity during the armed window is not isolated. D's probe
@@ -96,6 +97,8 @@ or complete source tree, so the patch's publication hash alone is not a
 cryptographic source-to-binary proof. Full boot arguments, raw FDT, logs,
 boot ID and acquisition-time manifest remain private. The predeclared
 [D/E/C/B/A block](WFI-PLAN.md) now has a separate
-[fresh-boot C control](WFI-C-CONTROL-RESULT.md) and
-[B records-only control](WFI-B-CONTROL-RESULT.md); A and cross-boot
-comparability review remain before issue #5's full result is closed.
+[fresh-boot C control](WFI-C-CONTROL-RESULT.md),
+[B records-only control](WFI-B-CONTROL-RESULT.md) and
+[A baseline](WFI-A-BASELINE-RESULT.md). The
+[five-packet result](WFI-ABI2-BLOCK-RESULT.md) reviews their cross-boot
+comparability and applies the declared decision gates.

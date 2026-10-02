@@ -25,9 +25,10 @@ The later [E result](WFI-E-RESULT.md) is a separate command-state observation.
 The [C control](WFI-C-CONTROL-RESULT.md) is a later, separate fresh-boot
 capture; the first automatic C reboot selected stock and acquired nothing,
 as recorded in the [boot-selection incident](WFI-C-BOOT-SELECTION-INCIDENT.md).
-The later [B records-only control](WFI-B-CONTROL-RESULT.md) is a distinct
-fresh-boot acquisition. The A baseline and comparison gates below remain
-pending.
+The later [B records-only control](WFI-B-CONTROL-RESULT.md) and
+[A unarmed baseline](WFI-A-BASELINE-RESULT.md) are distinct fresh-boot
+acquisitions. The subsequent [five-packet result](WFI-ABI2-BLOCK-RESULT.md)
+applies the comparison gates below without changing them.
 
 ## Site and scope
 

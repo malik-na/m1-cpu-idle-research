@@ -144,8 +144,12 @@ cluster 0, but no cluster-1 primary pair. An automatic one-shot reboot had
 first selected stock; its [selection incident](WFI-C-BOOT-SELECTION-INCIDENT.md)
 has no C acquisition. The next [B records-only control](WFI-B-CONTROL-RESULT.md)
 on another fresh WFI boot retained 1,066 event rows with zero stream loss;
-it does not read the command register. The A baseline and cross-boot
-comparison remain open.
+it does not read the command register. The fifth fresh boot's
+[A unarmed baseline](WFI-A-BASELINE-RESULT.md) retained zero observer rows
+and 39 fully interior pulses per worker. The
+[accepted five-packet result](WFI-ABI2-BLOCK-RESULT.md) reports four E
+pre-DSB BUSY reads, one conditional software final-entrant candidate, and
+the limits of the cross-boot comparison.
 The [ABI 2 build receipt](wfi-build-receipt.json) records a separate
 `-wfi` release, matching staged modules, a checked initramfs and the
 linked first-attempt instructions. The [deployment receipt](wfi-deployment-receipt.json)

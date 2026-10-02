@@ -108,5 +108,15 @@ has a separate [numerical packet](experiments/aurora-apsc-observer/native-eviden
 and [publication receipt](experiments/aurora-apsc-observer/wfi-b-control-receipt.json).
 It replays 1,066 event rows without stream loss or command reads. Its
 C-hook timestamp brackets can be compared observationally with C; the
-packets do not isolate total observer cost. The A baseline and cross-boot
-comparison remain open; no energy or wake result is claimed.
+packets do not isolate total observer cost. The
+[A unarmed baseline](experiments/aurora-apsc-observer/WFI-A-BASELINE-RESULT.md)
+has a [numerical packet](experiments/aurora-apsc-observer/native-evidence/A-abi2/status.txt)
+and [receipt](experiments/aurora-apsc-observer/wfi-a-baseline-receipt.json)
+showing zero observer rows and 39 fully interior worker pulses per CPU. The
+[accepted D/E/C/B/A comparison](experiments/aurora-apsc-observer/WFI-ABI2-BLOCK-RESULT.md)
+and [sanitized verifier output](experiments/aurora-apsc-observer/wfi-abi2-first-block-comparison.json)
+replay all five distinct private packets. Four E first-attempt pre-DSB BUSY
+reads include one conditional software final-entrant candidate under an
+unmeasured cross-CPU clock assumption; no WFI-instruction state, physically
+asleep peer, rail power, energy, wake or Linux policy improvement follows.
+The thermal/background match and sensitive negative gates are unmet.
