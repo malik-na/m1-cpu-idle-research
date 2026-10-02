@@ -170,4 +170,7 @@ removed the older WFI menu entry and UKI, retained its hash-verified image
 off EFI, and independently rechecked the stock default and PCPM UKI. The
 prospective [ABI 3 ticket protocol](WFI-ABI3-TICKET-PROTOCOL.md) and
 [fixed run plan](WFI-ABI3-RUN-PLAN.md) address software final-entrant
-ordering at the pre-DSB read; they do not bridge that read to WFI.
+ordering at the pre-DSB read; they do not bridge that read to WFI. The
+[provisional ABI 3 source/object packet](abi3-prototype/README.md) preserves
+the reviewed patch, exact source-tree delta, object instruction proof and
+offline validator while its full image build remains a separate gate.

@@ -137,3 +137,11 @@ image hash and off-EFI retention, and EFI usage falling from 73.74% to
 55.62%. The original WFI source, build/deployment receipts and native
 findings remain in this branch. This maintenance does not add hardware-idle
 evidence.
+
+The [ABI 3 provisional source/object packet](experiments/aurora-apsc-observer/abi3-prototype/README.md)
+is a frozen two-file delta against the prior PCPM source tree, with a
+tree-inventory receipt, object instruction proof and synthetic offline
+validator tests. It was published while the separate full `Image modules
+dtbs` build was still running. It supplies no linked-image, deployment or
+native capture claim; the [prospective run plan](experiments/aurora-apsc-observer/WFI-ABI3-RUN-PLAN.md)
+fixes those later gates.
