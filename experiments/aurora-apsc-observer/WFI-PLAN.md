@@ -29,6 +29,11 @@ command, an asleep peer, or a physical rail transition. The retry path is
 unsampled. The new post-MSR read position is untested hardware behavior until
 a native boot and controlled pilot succeed.
 
+The [ABI 2 packet publication contract](WFI-PUBLICATION.md) was prepared
+before the first capture. It specifies private provenance checks and a
+reviewed numerical/environment export for each fresh-boot packet; it is not
+itself a native result.
+
 ## Staging and acquisition
 
 Build from the exact installed Aurora source/config/toolchain with the
@@ -66,6 +71,15 @@ exchanges and raw timing. The proposed pairwise cross-CPU error bound of
 240 ticks is an **assumption**: endpoint exchanges do not rule out a transient
 in-run clock offset. Do not publish an unqualified final-core attribution
 from this timing alone.
+
+**Pre-capture power-baseline amendment, 2 October 2026:** the battery reached
+39% while discharging after WFI image installation and before any ABI 2 boot
+or acquisition. All new ABI 2 A/B/C/D/E matched boots therefore use the
+charger connected (`macsmc-ac/online=1`) and panel brightness 155. Check
+those values on the same boot before arming and at both capture endpoints.
+If a boot differs, do not capture or compare it under this block until it is
+separately qualified. The earlier battery-powered ABI 1 A/B/C packets remain
+historical evidence, not substitutes for these same-image controls.
 
 ## Decision rules
 
