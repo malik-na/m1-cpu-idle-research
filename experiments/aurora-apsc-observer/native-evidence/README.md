@@ -16,6 +16,14 @@ and filtered environment files follow the same ABI 2 export contract as D.
 The four BUSY-bit values are observations at the pre-DSB probe only; read the
 result's paired-opportunity and clock-model limits before interpreting them.
 
+The distinct ABI 2 [C-hook control](../WFI-C-CONTROL-RESULT.md) is in
+[`C-abi2/`](C-abi2/status.txt), with its
+[publication receipt](../wfi-c-control-receipt.json). It samples the earlier
+C `idle_enter` hook, not the first-attempt assembly probe. It found ten
+primary comparable-lag BUSY pairs in cluster 0 and no cluster-1 primary
+opportunity. The conditional 240-tick clock model and different-boot limit
+apply. `C-abi2` is separate from the earlier capacity-kernel `C` below.
+
 This directory is the reviewed numerical subset of three private,
 acquisition-time hashed packets from separate boots of the same capacity
 kernel. `A` is observer-unarmed, `B` records events without command reads,

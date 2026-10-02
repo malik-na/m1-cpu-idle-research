@@ -138,7 +138,11 @@ first-attempt probes; D does not read the command register or answer BUSY.
 The next fresh boot's [E command-state result](WFI-E-RESULT.md) recorded four
 first-attempt pre-DSB BUSY reads, three in the declared 600-tick primary
 SET-to-probe stratum. One 607-tick exploratory row passes only the assumed
-clock-model software final-entrant screen. C/B/A controls remain pending.
+clock-model software final-entrant screen. A later [C-hook control](WFI-C-CONTROL-RESULT.md)
+on a distinct WFI boot found ten primary comparable-lag BUSY pairs in
+cluster 0, but no cluster-1 primary pair. An automatic one-shot reboot had
+first selected stock; its [selection incident](WFI-C-BOOT-SELECTION-INCIDENT.md)
+has no C acquisition. B/A controls and the cross-boot comparison remain open.
 The [ABI 2 build receipt](wfi-build-receipt.json) records a separate
 `-wfi` release, matching staged modules, a checked initramfs and the
 linked first-attempt instructions. The [deployment receipt](wfi-deployment-receipt.json)

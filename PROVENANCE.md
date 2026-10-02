@@ -94,5 +94,14 @@ and [reviewed receipt](experiments/aurora-apsc-observer/wfi-mmio-receipt.json)
 retain replayable event/counter/workload values, status and hash links while
 withholding boot identifiers, full FDT, boot arguments and logs. One BUSY
 row passes a conditional software peer-interval screen under assumed E=240,
-but no physical sleep or WFI-instruction state follows. C/B/A controls and
-cross-boot comparability remain open; no energy or wake result is claimed.
+but no physical sleep or WFI-instruction state follows. The later
+[C-hook control](experiments/aurora-apsc-observer/WFI-C-CONTROL-RESULT.md)
+has a separate [numerical packet](experiments/aurora-apsc-observer/native-evidence/C-abi2/status.txt)
+and [publication receipt](experiments/aurora-apsc-observer/wfi-c-control-receipt.json).
+It independently replays 13 raw BUSY C reads in cluster 0, ten of them in
+primary comparable-lag SET-to-C pairs under the unmeasured 240-tick
+cross-CPU model; cluster 1 had no primary pair. The first requested C reboot
+selected stock and yielded no packet, as the
+[incident record](experiments/aurora-apsc-observer/WFI-C-BOOT-SELECTION-INCIDENT.md)
+states. B/A controls and cross-boot comparability remain open; no energy or
+wake result is claimed.

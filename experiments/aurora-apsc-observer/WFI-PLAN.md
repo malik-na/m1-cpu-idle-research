@@ -21,8 +21,11 @@ After the successful D pilot, the original research entry and image were
 retired under the plan's first-boot rule. The reviewed
 [retirement receipt](wfi-efi-retirement-receipt.json) is a later operational
 record, not an amendment to the capture decision gates below.
-The later [E result](WFI-E-RESULT.md) is a separate command-state observation;
-the remaining C/B/A controls and comparison gates below are still pending.
+The later [E result](WFI-E-RESULT.md) is a separate command-state observation.
+The [C control](WFI-C-CONTROL-RESULT.md) is a later, separate fresh-boot
+capture; the first automatic C reboot selected stock and acquired nothing,
+as recorded in the [boot-selection incident](WFI-C-BOOT-SELECTION-INCIDENT.md).
+The remaining B/A controls and comparison gates below are still pending.
 
 ## Site and scope
 
@@ -35,8 +38,9 @@ records, and the original WFI instruction/retry and command writes remain
 unchanged. A BUSY sample proves BUSY only at this **first-attempt pre-DSB
 probe**. It cannot prove BUSY at the later WFI instruction, a completed
 command, an asleep peer, or a physical rail transition. The retry path is
-unsampled. The new post-MSR read position remains untested with a
-command-register read; the D clock pilot tested the same seam without one.
+unsampled. At the plan's first checkpoint, the new post-MSR read position was
+untested with a command-register read; the D clock pilot then tested the seam
+without one. The later [E capture](WFI-E-RESULT.md) tested the read there.
 
 The [ABI 2 packet publication contract](WFI-PUBLICATION.md) was prepared
 before the first capture. It specifies private provenance checks and a
