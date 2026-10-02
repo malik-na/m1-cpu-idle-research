@@ -19,8 +19,11 @@ GNU Build-ID and live release are bound by hashes. Keep the stock Omarchy
 default and the already qualified PCPM research image bootable. On each
 fresh boot, check the selected Limine entry, all eight online CPUs, E/P
 device-tree command resources and policy masks, `apple_idle`/`menu`, LSE
-`atomics` support on every CPU, observer ABI/status, Wi-Fi, and visible
-brightness control before arming. Require AC online `1` and panel
+`atomics` support on every CPU, observer ABI/status and Wi-Fi before arming.
+On the first boot of this new image, verify visible brightness control once
+as a display-regression check; later boots need a working backlight interface
+and the fixed setting, without repeating a visual dimming test unless a
+regression is reported. Require AC online `1` and panel
 brightness `155` at preflight and both capture endpoints. Record thermal,
 network/USB and policy snapshots rather than assuming equal background
 conditions. A failed boot or device check produces an incident record, not
