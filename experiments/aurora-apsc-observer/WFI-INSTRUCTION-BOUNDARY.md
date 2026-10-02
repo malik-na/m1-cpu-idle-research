@@ -49,6 +49,10 @@ applies to wrapped driver calls only. No minimum BUSY hold time or invariant
 excluding a clear/reassert cycle is established. The [build receipt](wfi-build-receipt.json)
 has no build-time full-source or WFI-patch digest, so checked local source
 and linked-code correspondence is not cryptographic full-tree provenance.
+The source defines `APPLE_DVFS_LAST_CHG_TIME` at command-base offset `0x38`
+with a 24 MHz timebase comment but never uses it. Neither that name nor the
+comment establishes its T8103 update edge, association with BUSY completion,
+or wrap behavior; it cannot retrospectively supply a WFI-time command value.
 
 On the current native T8103 WFI research boot, checked 3 October 2026,
 the release is `7.1.12-ARCH-apsc-20261002-wfi` and the decompressed live
@@ -56,7 +60,10 @@ configuration SHA-256 is
 `f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d`.
 That configuration reports `# CONFIG_CORESIGHT is not set` and
 `# CONFIG_ARM_SPE_PMU is not set`. It has `CONFIG_ARM64_BRBE=y`, but BRBE
-hardware support was not verified. `/sys/bus/coresight/devices` is absent;
+hardware support was not verified. The active Apple PMU driver has no BRBE
+initialization; the pinned `arm_pmu.c` rejects branch-stack events when
+`reg_brbidr` is unset. Both Apple PMUs list only named `cycles` and
+`instructions` events in sysfs. `/sys/bus/coresight/devices` is absent;
 the exposed perf event-source devices are the two Apple PMUs, breakpoint,
 kprobe, software, tracepoint and uprobe. A name-based scan of the live
 device tree found no ETM/CoreSight/trace node, and no ETM/TRBE/SPE event
@@ -64,6 +71,17 @@ source is registered. These are **current-boot
 software and device-tree observations**, not proof that T8103 silicon lacks
 an autonomous instruction-trace facility. They do not qualify a usable
 instruction trace on this boot.
+
+A separate [m1n1 tethered hypervisor boot](https://asahilinux.org/docs/sw/tethered-boot/)
+could trace some guest MMIO access, but its [MMIO tracer](https://github.com/AsahiLinux/m1n1/blob/ce2b8a43cea4220b602af1005dc9dbfc59c9624e/src/hv/hv_vm.c)
+intercepts and emulates those accesses. Trapping WFI would likewise change
+the native instruction path. A qualified, decoded
+[ETM instruction stream](https://developer.arm.com/-/media/Arm%20Developer%20Community/PDF/Learn%20the%20Architecture/Understanding%20Trace.pdf?revision=6b56aa86-4314-49e7-a14d-3ff3e5c8fece)
+could establish WFI execution, but instruction trace alone would not report
+the simultaneous APSC register value.
+These routes need a separately qualified target and synchronized, independent
+command-state observation before they can answer the native instruction-state
+question.
 
 A stronger observation-only study would need a new protocol and separately
 built image. It could timestamp an instruction-adjacent seam and every
