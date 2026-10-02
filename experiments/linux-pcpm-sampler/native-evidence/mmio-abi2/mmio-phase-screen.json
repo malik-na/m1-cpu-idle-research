@@ -1,0 +1,869 @@
+{
+  "cross_cpu_error_bound": "E=240 ticks is predeclared but unverified across the capture",
+  "excluded": [
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 0,
+      "slot": 0
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 1,
+      "slot": 1
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 2,
+      "slot": 2
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 3,
+      "slot": 3
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 4,
+      "slot": 4
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 19,
+      "slot": 19
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 20,
+      "slot": 20
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 21,
+      "slot": 21
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 22,
+      "slot": 22
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 23,
+      "slot": 23
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 24,
+      "slot": 24
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 39,
+      "slot": 39
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 40,
+      "slot": 40
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 41,
+      "slot": 41
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 42,
+      "slot": 42
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 43,
+      "slot": 43
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 44,
+      "slot": 44
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 69,
+      "slot": 69
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 70,
+      "slot": 70
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 71,
+      "slot": 71
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 72,
+      "slot": 72
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 73,
+      "slot": 73
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 74,
+      "slot": 74
+    },
+    {
+      "raw_word": 8688,
+      "reasons": [
+        "outside_measured_phase_interior"
+      ],
+      "seq": 89,
+      "slot": 89
+    }
+  ],
+  "first_boot_numeric_pattern": {
+    "interpretation": "exploratory numeric ACTUAL codes only; requires another MMIO boot and observer-effect controls",
+    "meets_one_boot_pattern": false,
+    "modes": {
+      "four_p_active": {
+        "actual_code_counts": {
+          "15": 14
+        },
+        "modal_fraction_at_least_80_percent": true,
+        "unique_modal_actual_code": 15
+      },
+      "four_p_released": {
+        "actual_code_counts": {
+          "15": 24
+        },
+        "modal_fraction_at_least_80_percent": true,
+        "unique_modal_actual_code": 15
+      },
+      "four_p_wake": {
+        "actual_code_counts": {
+          "15": 14
+        },
+        "modal_fraction_at_least_80_percent": true,
+        "unique_modal_actual_code": 15
+      },
+      "one_p_active": {
+        "actual_code_counts": {
+          "15": 14
+        },
+        "modal_fraction_at_least_80_percent": true,
+        "unique_modal_actual_code": 15
+      }
+    }
+  },
+  "first_boot_phase_coverage_passed": true,
+  "guard_ns": 300000000,
+  "included": {
+    "four_p_active": [
+      {
+        "actual_code": 15,
+        "after_ns": 312410450450,
+        "before_ns": 312410366578,
+        "raw_word": 8688,
+        "seq": 5,
+        "slot": 5,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 312510363088,
+        "before_ns": 312510359922,
+        "raw_word": 8688,
+        "seq": 6,
+        "slot": 6,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 312610372014,
+        "before_ns": 312610367973,
+        "raw_word": 8688,
+        "seq": 7,
+        "slot": 7,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 312710362983,
+        "before_ns": 312710359566,
+        "raw_word": 8688,
+        "seq": 8,
+        "slot": 8,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 312810362118,
+        "before_ns": 312810359326,
+        "raw_word": 8688,
+        "seq": 9,
+        "slot": 9,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 312910371586,
+        "before_ns": 312910367794,
+        "raw_word": 8688,
+        "seq": 10,
+        "slot": 10,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 313010371599,
+        "before_ns": 313010367599,
+        "raw_word": 8688,
+        "seq": 11,
+        "slot": 11,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 313110363915,
+        "before_ns": 313110361290,
+        "raw_word": 8688,
+        "seq": 12,
+        "slot": 12,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 313210379854,
+        "before_ns": 313210367063,
+        "raw_word": 8688,
+        "seq": 13,
+        "slot": 13,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 313310371629,
+        "before_ns": 313310367379,
+        "raw_word": 8688,
+        "seq": 14,
+        "slot": 14,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 313410372152,
+        "before_ns": 313410367861,
+        "raw_word": 8688,
+        "seq": 15,
+        "slot": 15,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 313510373676,
+        "before_ns": 313510369301,
+        "raw_word": 8688,
+        "seq": 16,
+        "slot": 16,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 313610361367,
+        "before_ns": 313610358659,
+        "raw_word": 8688,
+        "seq": 17,
+        "slot": 17,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 313711030452,
+        "before_ns": 313711025536,
+        "raw_word": 8688,
+        "seq": 18,
+        "slot": 18,
+        "target_code": 0
+      }
+    ],
+    "four_p_released": [
+      {
+        "actual_code": 15,
+        "after_ns": 316410371156,
+        "before_ns": 316410366739,
+        "raw_word": 8688,
+        "seq": 45,
+        "slot": 45,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 316510365220,
+        "before_ns": 316510360887,
+        "raw_word": 8688,
+        "seq": 46,
+        "slot": 46,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 316610367535,
+        "before_ns": 316610363868,
+        "raw_word": 8688,
+        "seq": 47,
+        "slot": 47,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 316710372682,
+        "before_ns": 316710368974,
+        "raw_word": 8688,
+        "seq": 48,
+        "slot": 48,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 316810372121,
+        "before_ns": 316810368580,
+        "raw_word": 8688,
+        "seq": 49,
+        "slot": 49,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 316910374061,
+        "before_ns": 316910370311,
+        "raw_word": 8688,
+        "seq": 50,
+        "slot": 50,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 317010536998,
+        "before_ns": 317010533248,
+        "raw_word": 8688,
+        "seq": 51,
+        "slot": 51,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 317110372747,
+        "before_ns": 317110368206,
+        "raw_word": 8688,
+        "seq": 52,
+        "slot": 52,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 317210373658,
+        "before_ns": 317210369283,
+        "raw_word": 8688,
+        "seq": 53,
+        "slot": 53,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 317310937550,
+        "before_ns": 317310932884,
+        "raw_word": 8688,
+        "seq": 54,
+        "slot": 54,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 317410373313,
+        "before_ns": 317410369063,
+        "raw_word": 8688,
+        "seq": 55,
+        "slot": 55,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 317510376057,
+        "before_ns": 317510371973,
+        "raw_word": 8688,
+        "seq": 56,
+        "slot": 56,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 317610380384,
+        "before_ns": 317610373801,
+        "raw_word": 8688,
+        "seq": 57,
+        "slot": 57,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 317710368212,
+        "before_ns": 317710364504,
+        "raw_word": 8688,
+        "seq": 58,
+        "slot": 58,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 317810891480,
+        "before_ns": 317810886772,
+        "raw_word": 8688,
+        "seq": 59,
+        "slot": 59,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 317910361783,
+        "before_ns": 317910358742,
+        "raw_word": 8688,
+        "seq": 60,
+        "slot": 60,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 318010370530,
+        "before_ns": 318010366739,
+        "raw_word": 8688,
+        "seq": 61,
+        "slot": 61,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 318111025724,
+        "before_ns": 318111020724,
+        "raw_word": 8688,
+        "seq": 62,
+        "slot": 62,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 318210370044,
+        "before_ns": 318210366169,
+        "raw_word": 8688,
+        "seq": 63,
+        "slot": 63,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 318310377801,
+        "before_ns": 318310373218,
+        "raw_word": 8688,
+        "seq": 64,
+        "slot": 64,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 318410365433,
+        "before_ns": 318410362350,
+        "raw_word": 8688,
+        "seq": 65,
+        "slot": 65,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 318510376815,
+        "before_ns": 318510369773,
+        "raw_word": 8688,
+        "seq": 66,
+        "slot": 66,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 318610376988,
+        "before_ns": 318610370114,
+        "raw_word": 8688,
+        "seq": 67,
+        "slot": 67,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 318710376162,
+        "before_ns": 318710371787,
+        "raw_word": 8688,
+        "seq": 68,
+        "slot": 68,
+        "target_code": 0
+      }
+    ],
+    "four_p_wake": [
+      {
+        "actual_code": 15,
+        "after_ns": 319411533685,
+        "before_ns": 319411529269,
+        "raw_word": 8688,
+        "seq": 75,
+        "slot": 75,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 319510373951,
+        "before_ns": 319510370076,
+        "raw_word": 8688,
+        "seq": 76,
+        "slot": 76,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 319610371054,
+        "before_ns": 319610367512,
+        "raw_word": 8688,
+        "seq": 77,
+        "slot": 77,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 319710373198,
+        "before_ns": 319710369198,
+        "raw_word": 8688,
+        "seq": 78,
+        "slot": 78,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 319810373176,
+        "before_ns": 319810369010,
+        "raw_word": 8688,
+        "seq": 79,
+        "slot": 79,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 319910374196,
+        "before_ns": 319910370029,
+        "raw_word": 8688,
+        "seq": 80,
+        "slot": 80,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 320010371343,
+        "before_ns": 320010367468,
+        "raw_word": 8688,
+        "seq": 81,
+        "slot": 81,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 320110409999,
+        "before_ns": 320110405958,
+        "raw_word": 8688,
+        "seq": 82,
+        "slot": 82,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 320210374241,
+        "before_ns": 320210370199,
+        "raw_word": 8688,
+        "seq": 83,
+        "slot": 83,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 320310374898,
+        "before_ns": 320310370690,
+        "raw_word": 8688,
+        "seq": 84,
+        "slot": 84,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 320410372638,
+        "before_ns": 320410368805,
+        "raw_word": 8688,
+        "seq": 85,
+        "slot": 85,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 320510372712,
+        "before_ns": 320510368921,
+        "raw_word": 8688,
+        "seq": 86,
+        "slot": 86,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 320610372286,
+        "before_ns": 320610367953,
+        "raw_word": 8688,
+        "seq": 87,
+        "slot": 87,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 320710372485,
+        "before_ns": 320710367860,
+        "raw_word": 8688,
+        "seq": 88,
+        "slot": 88,
+        "target_code": 0
+      }
+    ],
+    "one_p_active": [
+      {
+        "actual_code": 15,
+        "after_ns": 314410372324,
+        "before_ns": 314410368574,
+        "raw_word": 8688,
+        "seq": 25,
+        "slot": 25,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 314510372736,
+        "before_ns": 314510369028,
+        "raw_word": 8688,
+        "seq": 26,
+        "slot": 26,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 314610372649,
+        "before_ns": 314610368732,
+        "raw_word": 8688,
+        "seq": 27,
+        "slot": 27,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 314710371020,
+        "before_ns": 314710367020,
+        "raw_word": 8688,
+        "seq": 28,
+        "slot": 28,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 314810375140,
+        "before_ns": 314810371057,
+        "raw_word": 8688,
+        "seq": 29,
+        "slot": 29,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 314910373511,
+        "before_ns": 314910369303,
+        "raw_word": 8688,
+        "seq": 30,
+        "slot": 30,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 315010372843,
+        "before_ns": 315010368802,
+        "raw_word": 8688,
+        "seq": 31,
+        "slot": 31,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 315110374103,
+        "before_ns": 315110370145,
+        "raw_word": 8688,
+        "seq": 32,
+        "slot": 32,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 315210373779,
+        "before_ns": 315210369946,
+        "raw_word": 8688,
+        "seq": 33,
+        "slot": 33,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 315310373288,
+        "before_ns": 315310369330,
+        "raw_word": 8688,
+        "seq": 34,
+        "slot": 34,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 315410366756,
+        "before_ns": 315410363215,
+        "raw_word": 8688,
+        "seq": 35,
+        "slot": 35,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 315510375182,
+        "before_ns": 315510371015,
+        "raw_word": 8688,
+        "seq": 36,
+        "slot": 36,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 315610372775,
+        "before_ns": 315610368608,
+        "raw_word": 8688,
+        "seq": 37,
+        "slot": 37,
+        "target_code": 0
+      },
+      {
+        "actual_code": 15,
+        "after_ns": 315710373367,
+        "before_ns": 315710369451,
+        "raw_word": 8688,
+        "seq": 38,
+        "slot": 38,
+        "target_code": 0
+      }
+    ]
+  },
+  "measured_phase_interior_bounds_ns": {
+    "four_p_active": [
+      312358726973,
+      313758669082
+    ],
+    "four_p_released": [
+      316358702069,
+      318758665126
+    ],
+    "four_p_wake": [
+      319358721166,
+      320758743408
+    ],
+    "one_p_active": [
+      314358701164,
+      315758674611
+    ]
+  },
+  "minimum_each_required_phase": 5,
+  "physical_state_or_energy_claim": "none",
+  "required_phases": [
+    "four_p_active",
+    "four_p_released",
+    "four_p_wake"
+  ],
+  "second_mmio_boot_required_for_candidate": true,
+  "valid_full_bracket_counts": {
+    "four_p_active": 14,
+    "four_p_released": 24,
+    "four_p_wake": 14,
+    "one_p_active": 14
+  }
+}

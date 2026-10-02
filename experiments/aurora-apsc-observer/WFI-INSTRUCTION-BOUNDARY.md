@@ -53,8 +53,10 @@ The source defines `APPLE_DVFS_LAST_CHG_TIME` at command-base offset `0x38`
 with a 24 MHz timebase comment but never uses it. Neither that name nor the
 comment establishes its T8103 update edge, association with BUSY completion,
 or wrap behavior; it cannot retrospectively supply a WFI-time command value.
+The [T8103 timestamp audit](LAST-CHG-TIME-AUDIT.md) specifies the missing
+register semantics and a separate calibration route.
 
-On the current native T8103 WFI research boot, checked 3 October 2026,
+On a native T8103 WFI research boot checked 3 October 2026,
 the release is `7.1.12-ARCH-apsc-20261002-wfi` and the decompressed live
 configuration SHA-256 is
 `f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d`.
@@ -67,7 +69,7 @@ initialization; the pinned `arm_pmu.c` rejects branch-stack events when
 the exposed perf event-source devices are the two Apple PMUs, breakpoint,
 kprobe, software, tracepoint and uprobe. A name-based scan of the live
 device tree found no ETM/CoreSight/trace node, and no ETM/TRBE/SPE event
-source is registered. These are **current-boot
+source is registered. These are **that-boot
 software and device-tree observations**, not proof that T8103 silicon lacks
 an autonomous instruction-trace facility. They do not qualify a usable
 instruction trace on this boot.
@@ -89,11 +91,13 @@ retry, and independently sample command state from another cluster with
 validated cross-CPU clock alignment and complete write accounting. Such a
 sampler would still require a demonstrated temporal/semantic bridge to the
 WFI instruction; an adjacent timestamp alone does not supply the missing
-command value. The prepared [PCPM sampler](../linux-pcpm-sampler/README.md)
-is a possible separate signal for the P-cluster peer-state question, but it
-has not been rebuilt and booted on this Aurora target, and its `ACTUAL`
-field is not calibrated as rail power. No physical-state or energy claim
-can be obtained retrospectively from the ABI 2 packets.
+command value. The [PCPM sampler](../linux-pcpm-sampler/README.md) was
+rebuilt and booted on this Aurora target as a separate signal for the
+P-cluster peer-state question. Its first
+[sparse-MMIO packet](../linux-pcpm-sampler/native-evidence/mmio-abi2/README.md)
+returned the same raw word in every guarded phase and did not calibrate
+`ACTUAL` as rail power. No physical-state or energy claim can be obtained
+retrospectively from the ABI 2 packets.
 
 An `dsb sy; command read; wfi` variant with record publication after wake
 would narrow the pre-WFI gap but still leave a non-atomic interval for

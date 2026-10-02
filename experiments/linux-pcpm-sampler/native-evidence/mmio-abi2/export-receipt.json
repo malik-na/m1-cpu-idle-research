@@ -1,0 +1,202 @@
+{
+  "boundary": "The predeclared one-boot ACTUAL contrast failed: all 90 words were 0x21f0, including the guarded four-P released phase. Numeric readout is not a physical-state, rail, energy, residency, or no-observer-effect claim. Cross-CPU E=240 ticks remains unverified.",
+  "files": {
+    "after-snapshot.json": {
+      "private_input": "environment-after.json",
+      "private_input_sha256": "2b2113751016d2a380588c20da87711d138316ce84eeda7a8b8edf77c63b1986",
+      "published_sha256": "e82cfed9a3d439e4b2f5ec82fff2640693b2b81637056a3c477460eeec40b4bc",
+      "transformation": "JSON whitelist projection: power, brightness, CPU policy, online mask, temperature, USB state and monotonic time; no network/UTC/proc-stat",
+      "uncompressed_bytes": 1273
+    },
+    "apsc-events.csv.gz": {
+      "private_input": "apsc-events.csv",
+      "private_input_sha256": "a482a0ebeebffcc28bd8208d9753ce3faae4a5decb0e013f06ab81a96a7a8cb2",
+      "published_sha256": "a2a032885313d530974d3f9b5b4ac876ae14c94dabda15c1e8f9efff8befc610",
+      "transformation": "gzip level 9, empty filename, mtime=0; gunzip is byte-exact",
+      "uncompressed_bytes": 640020
+    },
+    "apsc-status-after.txt": {
+      "private_input": "apsc-status-after.txt",
+      "private_input_sha256": "49965e96a344980011d5e89ba68ce3be6c8c53304d7006a94b4c9754462af889",
+      "published_sha256": "49965e96a344980011d5e89ba68ce3be6c8c53304d7006a94b4c9754462af889",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 2115
+    },
+    "apsc-status-before.txt": {
+      "private_input": "apsc-status-before.txt",
+      "private_input_sha256": "050ac2000624139a6d5d24e1813b3b4658dd76746ecaa238a8e863ca2c2af063",
+      "published_sha256": "050ac2000624139a6d5d24e1813b3b4658dd76746ecaa238a8e863ca2c2af063",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 2031
+    },
+    "apsc-wfi-events.csv.gz": {
+      "private_input": "apsc-wfi-events.csv",
+      "private_input_sha256": "0a68e2121ed0b4ae7d8ae83c09dfcd21b322db9452911293cf9f17d665929e93",
+      "published_sha256": "a7f214f67fd5640cc68a867154cf1bce7c57b8572f8ed195d141f58e7a86e2d9",
+      "transformation": "gzip level 9, empty filename, mtime=0; gunzip is byte-exact",
+      "uncompressed_bytes": 37
+    },
+    "before-snapshot.json": {
+      "private_input": "environment-before.json",
+      "private_input_sha256": "42120d3d4205967e483384d8778c8451012953707b94388802d568b4ab07dcf2",
+      "published_sha256": "2839d613163769c1b738850312dd8b0483977dcf18583133201d34d1c543cb03",
+      "transformation": "JSON whitelist projection: power, brightness, CPU policy, online mask, temperature, USB state and monotonic time; no network/UTC/proc-stat",
+      "uncompressed_bytes": 1273
+    },
+    "control-writes.json": {
+      "private_input": "control-writes.json",
+      "private_input_sha256": "0bab7268d3270439921ea1011947df66a691580518fac7ad14baffe8d11bb32d",
+      "published_sha256": "0bab7268d3270439921ea1011947df66a691580518fac7ad14baffe8d11bb32d",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 320
+    },
+    "counter-post-events.csv.gz": {
+      "private_input": "counter-post-events.csv",
+      "private_input_sha256": "e0a7f2a4760390d1b1621079a9ce04582113ad019c800635dacc1f56245a252d",
+      "published_sha256": "4926409b1afb72e24fdc60da99ffa2e0e3042d8679c13f54a8277c56c85e070f",
+      "transformation": "gzip level 9, empty filename, mtime=0; gunzip is byte-exact",
+      "uncompressed_bytes": 338683
+    },
+    "counter-post-status.txt": {
+      "private_input": "counter-post-status.txt",
+      "private_input_sha256": "a986c1e52af7c365bde365b2d98a96136108920d5a9d3e729631762fce3bbd12",
+      "published_sha256": "a986c1e52af7c365bde365b2d98a96136108920d5a9d3e729631762fce3bbd12",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 3737
+    },
+    "counter-pre-events.csv.gz": {
+      "private_input": "counter-pre-events.csv",
+      "private_input_sha256": "f4c093c02f4a9ba88be62b87ab28adf7b5ad70b512b3dfd1f340feaa0e89a5c0",
+      "published_sha256": "21592aa06e342cb6fefdbb72bbab0759112c5e3dc13b27831b910ad088c5c89e",
+      "transformation": "gzip level 9, empty filename, mtime=0; gunzip is byte-exact",
+      "uncompressed_bytes": 167421
+    },
+    "counter-pre-status.txt": {
+      "private_input": "counter-pre-status.txt",
+      "private_input_sha256": "3d5c680e152f571542bf1e81593d8542767bb1803c1e3dfabd6d2ad6ae11aafd",
+      "published_sha256": "3d5c680e152f571542bf1e81593d8542767bb1803c1e3dfabd6d2ad6ae11aafd",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 3482
+    },
+    "environment-comparison-after.json": {
+      "private_input": "environment-comparison-after.json",
+      "private_input_sha256": "339acc3b09add3c3d0e689adf17878a1bd264d3a3f00fccce7db538630e20066",
+      "published_sha256": "339acc3b09add3c3d0e689adf17878a1bd264d3a3f00fccce7db538630e20066",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 19
+    },
+    "environment-comparison-before.json": {
+      "private_input": "environment-comparison-before.json",
+      "private_input_sha256": "7635f93eea175a315ffad71159910f0e99e693b6c218b413eacee3906a9ee389",
+      "published_sha256": "7635f93eea175a315ffad71159910f0e99e693b6c218b413eacee3906a9ee389",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 95
+    },
+    "mmio-phase-screen.json": {
+      "private_input": "mmio-phase-screen.json",
+      "private_input_sha256": "8c77601b1d0a599f8a6db137b95243bf64a37531bad3d7a0c20267ca1211b6ba",
+      "published_sha256": "8c77601b1d0a599f8a6db137b95243bf64a37531bad3d7a0c20267ca1211b6ba",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 18720
+    },
+    "mmio-review.json": {
+      "private_input": "mmio-review.json",
+      "private_input_sha256": "887ddff20b72599a242211817f8d72d94dcc73834cebd7b3174b360da21a370c",
+      "published_sha256": "887ddff20b72599a242211817f8d72d94dcc73834cebd7b3174b360da21a370c",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 372
+    },
+    "pcpm-samples.csv.gz": {
+      "private_input": "pcpm-samples.csv",
+      "private_input_sha256": "41ec5cfb168ae4f1caf53e2c065b1004d1839422a1fd534b31fdd71b62b2824a",
+      "published_sha256": "ec358ae459f95392d98d0c5e86e67dfa162d94a6b62c17d7db931218b51f8d31",
+      "transformation": "gzip level 9, empty filename, mtime=0; gunzip is byte-exact",
+      "uncompressed_bytes": 8424
+    },
+    "pcpm-status-after.txt": {
+      "private_input": "pcpm-status-after.txt",
+      "private_input_sha256": "e68f9bb877137664ebc9b5befad558a9f5394ffd222ff0f46b3a2af52ffbffa4",
+      "published_sha256": "e68f9bb877137664ebc9b5befad558a9f5394ffd222ff0f46b3a2af52ffbffa4",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 1146
+    },
+    "pcpm-status-before.txt": {
+      "private_input": "pcpm-status-before.txt",
+      "private_input_sha256": "dfb20f7b183308b9830b419904b85edd769d5f44cd20a2d7b18d669bbe55762e",
+      "published_sha256": "dfb20f7b183308b9830b419904b85edd769d5f44cd20a2d7b18d669bbe55762e",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 1041
+    },
+    "schedule.json": {
+      "private_input": "schedule.json",
+      "private_input_sha256": "9edac4f3e9b39755b8e09f58fdf67199823b6686fe86379cc61fd366ac77b4a8",
+      "published_sha256": "9edac4f3e9b39755b8e09f58fdf67199823b6686fe86379cc61fd366ac77b4a8",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 1575
+    },
+    "timeline.jsonl": {
+      "private_input": "timeline.jsonl",
+      "private_input_sha256": "446d96fc76d82bb0c8f45e8c3c46397bb1944d2944465986f5a1d26ee3540d6d",
+      "published_sha256": "db01962eca3c24baad4826df3c7f479b5e9136297c7602552564a359a35a29d5",
+      "transformation": "JSONL whitelist projection: action, monotonic timing, command, error, result; no PID/UTC",
+      "uncompressed_bytes": 1741
+    },
+    "workload-ready.jsonl": {
+      "private_input": "workload-ready.jsonl",
+      "private_input_sha256": "74b406b755c39c9359eeed1c64755274d9d03dcca4509e69d94f25e39b194997",
+      "published_sha256": "74b406b755c39c9359eeed1c64755274d9d03dcca4509e69d94f25e39b194997",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 68
+    },
+    "workload-result.jsonl": {
+      "private_input": "workload-result.jsonl",
+      "private_input_sha256": "5622acc0a214675d027003d1fe542fecc4de0731b8030429bb8a2ccf849c52d3",
+      "published_sha256": "5622acc0a214675d027003d1fe542fecc4de0731b8030429bb8a2ccf849c52d3",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 3533
+    },
+    "workload-validation.json": {
+      "private_input": "workload-validation.json",
+      "private_input_sha256": "3de0ff3b73ceee835b2fac1d86a7e8e2f95fbe0d3ba5d5bd4ba2679768305107",
+      "published_sha256": "3de0ff3b73ceee835b2fac1d86a7e8e2f95fbe0d3ba5d5bd4ba2679768305107",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 38
+    }
+  },
+  "identity": {
+    "build_id": "83a213307311f91eefb44d70718db21fea3e067c",
+    "config_sha256": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+    "entry_title": "Aurora-APSC-research-wfi-pcpm",
+    "limine_conf_sha256": "9b771472e2257fa05c52118c68270be21c8685a02a7c9c865f53a31bcf7963b0",
+    "module_package": "linux-aurora-apsc-wfi-pcpm-modules",
+    "pcpm_patch_sha256": "4a7fc879a3ed377d813e01f8986306fc62679679d39718fe83183ae466ab3b56",
+    "release": "7.1.12-ARCH-apsc-20261002-wfi-pcpm",
+    "source_tree_sha256": "9733d6cb7f1fb8bed30bbaffc6a7b22a42b68dac2acc636fe2125c3faed1d19f",
+    "uki_sha256": "fc0c1af55696ab8508874f44ce0c5ab5d19c666fb26eda53553c940aac01c55a"
+  },
+  "independent_records_review_sha256": "292bb7f1b71abf8043deb5e17c7bc2b61e8dd79a216914553feaafaa40d265cc",
+  "packet_name": "mmio-20261002T203644Z",
+  "prior_records_manifest_sha256": "3490c6e034ee41dc1a568d8371ace3816eb54c3bda0886c03b205aa45864df6f",
+  "private_manifest_sha256": "5c71b6d9e7b2a38f39f74fc6d604c1e1e82dd6268885606d3c813e3b51633c13",
+  "schema": "pcpm-native-mmio-export-v1",
+  "scope": "single fresh-boot native T8103/J313 PCPM ABI-2 sparse-MMIO and APSC records phase screen",
+  "screen": {
+    "actual_code_15_count": 90,
+    "first_boot_numeric_pattern_passed": false,
+    "machine_screen_passed": true,
+    "phase_coverage_passed": true,
+    "raw_word_0x21f0_count": 90,
+    "second_mmio_boot_required_for_candidate": true,
+    "target_code_0_count": 90
+  },
+  "source_hashes": {
+    "capture_mmio.py": "5aa265c4087b71eb83bb0f2dfa44ae4990cfcd0d36dd03ee99f1f28ee5b58a41",
+    "experiments/aurora-apsc-observer/analyze_wfi.py": "75aff2210efdb5a085e315264c7b6689657e07af42f1b7139d191746ad4b7478",
+    "experiments/linux-apsc-observer/analyze.py": "8251d18d32b94c0e7a559df9ad2ecf8b1a25808d57a0f941d27aed536e048339",
+    "experiments/linux-counter-qualification/analyze.py": "22e8f48858db78b60840c57088e82587c0d286563d8ef339a853f8663d0270c8",
+    "experiments/linux-pcpm-sampler/analyze.py": "99e4fab1c22b9c8d428a460897f8c6bcf55acd97bd0e44f842757ae87ba1be09",
+    "four_p_workload": "f2f60b81b7ee5ee9f29d1af0964bfe72a56f504c11a022cf4fff6e0570d1a0f8",
+    "four_p_workload.c": "afc49c574d9fceb24d14f5ba32d83bd753c3eeb4ea987b7d5e6091642cb476d6",
+    "protocol_mmio.py": "f366720dbd18418ed4335bad065f99dbb668530d447bb584464fd601a5ae78f8"
+  }
+}
