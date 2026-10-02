@@ -1,0 +1,172 @@
+[
+  {
+    "field": "cpu.online",
+    "observed_monotonic_ns": 263469789513,
+    "value": "0-7"
+  },
+  {
+    "field": "cpu.cpuidle_driver",
+    "observed_monotonic_ns": 263469835720,
+    "value": "apple_idle"
+  },
+  {
+    "field": "cpu.cpuidle_governor",
+    "observed_monotonic_ns": 263469862261,
+    "value": "menu"
+  },
+  {
+    "field": "policy0.related_cpus",
+    "observed_monotonic_ns": 263469885177,
+    "value": "0 1 2 3"
+  },
+  {
+    "field": "policy0.affected_cpus",
+    "observed_monotonic_ns": 263469907343,
+    "value": "0 1 2 3"
+  },
+  {
+    "field": "policy0.scaling_driver",
+    "observed_monotonic_ns": 263469928260,
+    "value": "apple-cpufreq"
+  },
+  {
+    "field": "policy0.scaling_governor",
+    "observed_monotonic_ns": 263469947884,
+    "value": "schedutil"
+  },
+  {
+    "field": "policy0.scaling_min_freq",
+    "observed_monotonic_ns": 263469966259,
+    "value": 600000
+  },
+  {
+    "field": "policy0.scaling_max_freq",
+    "observed_monotonic_ns": 263469985175,
+    "value": 2064000
+  },
+  {
+    "field": "policy0.scaling_cur_freq",
+    "observed_monotonic_ns": 263470008008,
+    "value": 600000
+  },
+  {
+    "field": "policy4.related_cpus",
+    "observed_monotonic_ns": 263470028174,
+    "value": "4 5 6 7"
+  },
+  {
+    "field": "policy4.affected_cpus",
+    "observed_monotonic_ns": 263470047840,
+    "value": "4 5 6 7"
+  },
+  {
+    "field": "policy4.scaling_driver",
+    "observed_monotonic_ns": 263470067381,
+    "value": "apple-cpufreq"
+  },
+  {
+    "field": "policy4.scaling_governor",
+    "observed_monotonic_ns": 263470085506,
+    "value": "schedutil"
+  },
+  {
+    "field": "policy4.scaling_min_freq",
+    "observed_monotonic_ns": 263470103422,
+    "value": 600000
+  },
+  {
+    "field": "policy4.scaling_max_freq",
+    "observed_monotonic_ns": 263470121588,
+    "value": 2988000
+  },
+  {
+    "field": "policy4.scaling_cur_freq",
+    "observed_monotonic_ns": 263470137963,
+    "value": 2184000
+  },
+  {
+    "field": "cpu0.deep_idle_disable",
+    "observed_monotonic_ns": 263470385416,
+    "value": 0
+  },
+  {
+    "field": "cpu1.deep_idle_disable",
+    "observed_monotonic_ns": 263470728199,
+    "value": 0
+  },
+  {
+    "field": "cpu2.deep_idle_disable",
+    "observed_monotonic_ns": 263471075608,
+    "value": 0
+  },
+  {
+    "field": "cpu3.deep_idle_disable",
+    "observed_monotonic_ns": 263471413475,
+    "value": 0
+  },
+  {
+    "field": "cpu4.deep_idle_disable",
+    "observed_monotonic_ns": 263471745884,
+    "value": 0
+  },
+  {
+    "field": "cpu5.deep_idle_disable",
+    "observed_monotonic_ns": 263472081126,
+    "value": 0
+  },
+  {
+    "field": "cpu6.deep_idle_disable",
+    "observed_monotonic_ns": 263472427618,
+    "value": 0
+  },
+  {
+    "field": "cpu7.deep_idle_disable",
+    "observed_monotonic_ns": 263472764194,
+    "value": 0
+  },
+  {
+    "field": "power.ac_online",
+    "observed_monotonic_ns": 263472886066,
+    "value": 1
+  },
+  {
+    "field": "power.battery_status",
+    "observed_monotonic_ns": 263473106977,
+    "value": "Charging"
+  },
+  {
+    "field": "power.battery_capacity_percent",
+    "observed_monotonic_ns": 263473883334,
+    "value": 70
+  },
+  {
+    "field": "power.battery_current_microamp",
+    "observed_monotonic_ns": 263474083163,
+    "value": 1572000
+  },
+  {
+    "field": "power.battery_voltage_microvolt",
+    "observed_monotonic_ns": 263474178119,
+    "value": 12555000
+  },
+  {
+    "field": "backlight.brightness",
+    "observed_monotonic_ns": 263474270950,
+    "value": 155
+  },
+  {
+    "field": "backlight.actual_brightness",
+    "observed_monotonic_ns": 263474289825,
+    "value": 164
+  },
+  {
+    "field": "backlight.max_brightness",
+    "observed_monotonic_ns": 263474309658,
+    "value": 420
+  },
+  {
+    "field": "thermal_zone0.millidegree_celsius",
+    "observed_monotonic_ns": 263474324616,
+    "value": 35800
+  }
+]

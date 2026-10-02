@@ -1,0 +1,10 @@
+{
+  "exit_status": 0,
+  "full_build_log_sha256": "25aa73324089889b1bb90337d025f4d3be4ff8dc1ea74b48120f41ef5781c744",
+  "schema": 1,
+  "targets": [
+    "Image",
+    "modules",
+    "dtbs"
+  ]
+}

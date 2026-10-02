@@ -1,0 +1,31 @@
+{
+  "scope": "ABI 2 WFI module package and separate EFI entry installed and read back; no new kernel boot or native observation",
+  "release": "7.1.12-ARCH-apsc-20261002-wfi",
+  "new_kernel_gnu_build_id": "11e80be6d8b358eee9aa847a0f814aff02b66c43",
+  "running_kernel_at_install_gnu_build_id": "eb8fe1838f2c34f24f83ec53da25d2f9ae150b12",
+  "configuration_sha256": "f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d",
+  "modules": {
+    "completed_utc": "2026-10-02T16:09:42.282462Z",
+    "package_name": "linux-aurora-apsc-wfi-modules",
+    "package_sha256": "d29546a699ad34ae85be5d196e8dca17aa8d2c336c3efdda2af189a1e3a4f81c",
+    "verified_extracted_module_count": 1867,
+    "new_and_working_package_integrity_checks_clean": true,
+    "new_package_ownership_check_clean": true,
+    "wifi_display_and_sep_dependency_checks_passed": true,
+    "working_capacity_module_package_preserved": true
+  },
+  "boot_entry": {
+    "completed_utc": "2026-10-02T16:11:59.620856Z",
+    "title": "Aurora-APSC-research-wfi-seam",
+    "uki_sha256": "4868e3547c1eafe884520238da801684069d547ffe2dc5915666b42d3ad66ce7",
+    "uki_bytes": 94771200,
+    "entry_blake2b512": "18921e54b830a658e9d5bc5cde2b6f4478c14d4c3e1a038be75f04b2ffd84ed37572dbc5113553e9a4fc9a621278f3e89cb18447644c7cf7ef86bb91f76dc63f",
+    "entry_readback_passed": true,
+    "stock_default_entry_unchanged": 2,
+    "stock_files_unchanged": true,
+    "working_capacity_uki_preserved": true,
+    "earlier_research_uki_preserved": true,
+    "efi_free_after_bytes": 42807296
+  },
+  "next_gate": "First native boot must verify selected entry, live build ID, Wi-Fi, brightness, observer ABI and capture integrity before any #5 interpretation"
+}

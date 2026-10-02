@@ -1,0 +1,14 @@
+diff --git a/drivers/cpuidle/apple-apsc-observer.c b/drivers/cpuidle/apple-apsc-observer.c
+--- a/drivers/cpuidle/apple-apsc-observer.c
++++ b/drivers/cpuidle/apple-apsc-observer.c
+@@ -33,8 +33,8 @@
+ 
+ #define APSC_CPUS 8
+ #define APSC_CLUSTERS 2
+-#define APSC_IDLE_CAP 2048
+-#define APSC_DVFS_CAP 4096
++#define APSC_IDLE_CAP 16384
++#define APSC_DVFS_CAP 8192
+ #define APSC_CMD_OFFSET 0x20
+ #define APSC_VALID_PRE  BIT(0)
+ #define APSC_VALID_CMD  BIT(1)

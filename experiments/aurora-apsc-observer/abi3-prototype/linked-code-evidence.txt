@@ -1,0 +1,113 @@
+PCPM baseline apple_cpu_deep_wfi linked instructions
+<apple_cpu_deep_wfi>:
+ffff800080fb45c0:	aa0003e1 	mov	x1, x0
+ffff800080fb45c4:	f81f0ffe 	str	x30, [sp, #-16]!
+ffff800080fb45c8:	a9bf77fc 	stp	x28, x29, [sp, #-16]!
+ffff800080fb45cc:	a9bf6ffa 	stp	x26, x27, [sp, #-16]!
+ffff800080fb45d0:	a9bf67f8 	stp	x24, x25, [sp, #-16]!
+ffff800080fb45d4:	a9bf5ff6 	stp	x22, x23, [sp, #-16]!
+ffff800080fb45d8:	a9bf57f4 	stp	x20, x21, [sp, #-16]!
+ffff800080fb45dc:	a9bf4ff2 	stp	x18, x19, [sp, #-16]!
+ffff800080fb45e0:	d53df500 	mrs	x0, s3_5_c15_c5_0
+ffff800080fb45e4:	b2680400 	orr	x0, x0, #0x3000000
+ffff800080fb45e8:	d51df500 	msr	s3_5_c15_c5_0, x0
+ffff800080fb45ec:	b4000281 	cbz	x1, ffff800080fb463c <apple_cpu_deep_wfi+0x7c>
+ffff800080fb45f0:	d5033fdf 	isb
+ffff800080fb45f4:	d53be022 	mrs	x2, cntpct_el0
+ffff800080fb45f8:	b9403426 	ldr	w6, [x1, #52]
+ffff800080fb45fc:	710008df 	cmp	w6, #0x2
+ffff800080fb4600:	540000c1 	b.ne	ffff800080fb4618 <apple_cpu_deep_wfi+0x58>  // b.any
+ffff800080fb4604:	f9400023 	ldr	x3, [x1]
+ffff800080fb4608:	f9400064 	ldr	x4, [x3]
+ffff800080fb460c:	d50331bf 	dmb	oshld
+ffff800080fb4610:	ca040087 	eor	x7, x4, x4
+ffff800080fb4614:	b5000007 	cbnz	x7, ffff800080fb4614 <apple_cpu_deep_wfi+0x54>
+ffff800080fb4618:	d5033fdf 	isb
+ffff800080fb461c:	d53be025 	mrs	x5, cntpct_el0
+ffff800080fb4620:	a9009422 	stp	x2, x5, [x1, #8]
+ffff800080fb4624:	710008df 	cmp	w6, #0x2
+ffff800080fb4628:	54000041 	b.ne	ffff800080fb4630 <apple_cpu_deep_wfi+0x70>  // b.any
+ffff800080fb462c:	f9000c24 	str	x4, [x1, #24]
+ffff800080fb4630:	9100e027 	add	x7, x1, #0x38
+ffff800080fb4634:	52800028 	mov	w8, #0x1                   	// #1
+ffff800080fb4638:	889ffce8 	stlr	w8, [x7]
+ffff800080fb463c:	d5033f9f 	dsb	sy
+ffff800080fb4640:	d503207f 	wfi
+ffff800080fb4644:	d538c100 	mrs	x0, isr_el1
+ffff800080fb4648:	b4ffffa0 	cbz	x0, ffff800080fb463c <apple_cpu_deep_wfi+0x7c>
+ffff800080fb464c:	d53df500 	mrs	x0, s3_5_c15_c5_0
+ffff800080fb4650:	9267f800 	and	x0, x0, #0xfffffffffeffffff
+ffff800080fb4654:	d51df500 	msr	s3_5_c15_c5_0, x0
+ffff800080fb4658:	a8c14ff2 	ldp	x18, x19, [sp], #16
+ffff800080fb465c:	a8c157f4 	ldp	x20, x21, [sp], #16
+ffff800080fb4660:	a8c15ff6 	ldp	x22, x23, [sp], #16
+ffff800080fb4664:	a8c167f8 	ldp	x24, x25, [sp], #16
+ffff800080fb4668:	a8c16ffa 	ldp	x26, x27, [sp], #16
+ffff800080fb466c:	a8c177fc 	ldp	x28, x29, [sp], #16
+ffff800080fb4670:	f84107fe 	ldr	x30, [sp], #16
+ffff800080fb4674:	d65f03c0 	ret
+ffff800080fb4678:	d503201f 	nop
+ffff800080fb467c:	d503201f 	nop
+
+ABI3 candidate apple_cpu_deep_wfi linked instructions
+<apple_cpu_deep_wfi>:
+ffff800080fb4800:	aa0003e1 	mov	x1, x0
+ffff800080fb4804:	f81f0ffe 	str	x30, [sp, #-16]!
+ffff800080fb4808:	a9bf77fc 	stp	x28, x29, [sp, #-16]!
+ffff800080fb480c:	a9bf6ffa 	stp	x26, x27, [sp, #-16]!
+ffff800080fb4810:	a9bf67f8 	stp	x24, x25, [sp, #-16]!
+ffff800080fb4814:	a9bf5ff6 	stp	x22, x23, [sp, #-16]!
+ffff800080fb4818:	a9bf57f4 	stp	x20, x21, [sp, #-16]!
+ffff800080fb481c:	a9bf4ff2 	stp	x18, x19, [sp, #-16]!
+ffff800080fb4820:	d53df500 	mrs	x0, s3_5_c15_c5_0
+ffff800080fb4824:	b2680400 	orr	x0, x0, #0x3000000
+ffff800080fb4828:	d51df500 	msr	s3_5_c15_c5_0, x0
+ffff800080fb482c:	b40003a1 	cbz	x1, ffff800080fb48a0 <apple_cpu_deep_wfi+0xa0>
+ffff800080fb4830:	d5033fdf 	isb
+ffff800080fb4834:	d53be022 	mrs	x2, cntpct_el0
+ffff800080fb4838:	b9403426 	ldr	w6, [x1, #52]
+ffff800080fb483c:	f9400023 	ldr	x3, [x1]
+ffff800080fb4840:	f9402829 	ldr	x9, [x1, #80]
+ffff800080fb4844:	d280002a 	mov	x10, #0x1                   	// #1
+ffff800080fb4848:	f8ea012b 	ldaddal	x10, x11, [x9]
+ffff800080fb484c:	9100056b 	add	x11, x11, #0x1
+ffff800080fb4850:	f900202b 	str	x11, [x1, #64]
+ffff800080fb4854:	d5033fbf 	dmb	sy
+ffff800080fb4858:	aa1f03e4 	mov	x4, xzr
+ffff800080fb485c:	710008df 	cmp	w6, #0x2
+ffff800080fb4860:	54000041 	b.ne	ffff800080fb4868 <apple_cpu_deep_wfi+0x68>  // b.any
+ffff800080fb4864:	f9400064 	ldr	x4, [x3]
+ffff800080fb4868:	d50331bf 	dmb	oshld
+ffff800080fb486c:	ca040087 	eor	x7, x4, x4
+ffff800080fb4870:	b5000007 	cbnz	x7, ffff800080fb4870 <apple_cpu_deep_wfi+0x70>
+ffff800080fb4874:	d5033fbf 	dmb	sy
+ffff800080fb4878:	f8ea012b 	ldaddal	x10, x11, [x9]
+ffff800080fb487c:	9100056b 	add	x11, x11, #0x1
+ffff800080fb4880:	f900242b 	str	x11, [x1, #72]
+ffff800080fb4884:	d5033fdf 	isb
+ffff800080fb4888:	d53be025 	mrs	x5, cntpct_el0
+ffff800080fb488c:	a9009422 	stp	x2, x5, [x1, #8]
+ffff800080fb4890:	f9000c24 	str	x4, [x1, #24]
+ffff800080fb4894:	9100e027 	add	x7, x1, #0x38
+ffff800080fb4898:	52800028 	mov	w8, #0x1                   	// #1
+ffff800080fb489c:	889ffce8 	stlr	w8, [x7]
+ffff800080fb48a0:	d5033f9f 	dsb	sy
+ffff800080fb48a4:	d503207f 	wfi
+ffff800080fb48a8:	d538c100 	mrs	x0, isr_el1
+ffff800080fb48ac:	b4ffffa0 	cbz	x0, ffff800080fb48a0 <apple_cpu_deep_wfi+0xa0>
+ffff800080fb48b0:	d53df500 	mrs	x0, s3_5_c15_c5_0
+ffff800080fb48b4:	9267f800 	and	x0, x0, #0xfffffffffeffffff
+ffff800080fb48b8:	d51df500 	msr	s3_5_c15_c5_0, x0
+ffff800080fb48bc:	a8c14ff2 	ldp	x18, x19, [sp], #16
+ffff800080fb48c0:	a8c157f4 	ldp	x20, x21, [sp], #16
+ffff800080fb48c4:	a8c15ff6 	ldp	x22, x23, [sp], #16
+ffff800080fb48c8:	a8c167f8 	ldp	x24, x25, [sp], #16
+ffff800080fb48cc:	a8c16ffa 	ldp	x26, x27, [sp], #16
+ffff800080fb48d0:	a8c177fc 	ldp	x28, x29, [sp], #16
+ffff800080fb48d4:	f84107fe 	ldr	x30, [sp], #16
+ffff800080fb48d8:	d65f03c0 	ret
+ffff800080fb48dc:	d503201f 	nop
+
+ABI3 linked cluster_ticket symbol
+
+12867: ffff800082192b00   256 OBJECT  LOCAL  DEFAULT   39 cluster_ticket

@@ -1,6 +1,6 @@
 # Planning a joint PCPM and software-idle capture
 
-This is a later-native procedure for [PCPM calibration](README.md), not a capture record. It requires separately authorized native boot and acquisition, a qualified target configuration, and the [APSC observer's prerequisites](../linux-apsc-observer/NATIVE-RUN.md). No joint capture has run. Both collectors are one-shot instruments and have independent, synchronous control writes.
+This is the procedure for [PCPM calibration](README.md), not a capture record. It requires a qualified native boot and acquisition, a qualified target configuration, and the [APSC observer's prerequisites](../linux-apsc-observer/NATIVE-RUN.md). One [records-only joint capture](NATIVE-RECORDS-RESULT.md) has completed; sparse MMIO and matched controls remain future work. Both collectors are one-shot instruments and have independent, synchronous control writes.
 
 ## Common time domain
 

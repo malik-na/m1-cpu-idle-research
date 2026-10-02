@@ -124,7 +124,7 @@ new file mode 100644
 index 0000000..bc11b59
 --- /dev/null
 +++ b/drivers/soc/apple/apple-pcpm-sampler.c
-@@ -0,0 +1,541 @@
+@@ -0,0 +1,547 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/* Sparse read-only T8103 PCPM experiment. No CPU power-control changes. */
 +#include <linux/capability.h>
@@ -299,29 +299,35 @@ index 0000000..bc11b59
 +
 +static int qualify_regmap(void)
 +{
-+	struct device_node *np, *extra;
++	struct device_node *np, *selected = NULL;
 +	struct resource res;
 +	u32 width;
 +	int ret = -ENODEV;
 +
-+	np = of_find_compatible_node(NULL, NULL, "apple,t8103-pmgr");
++	/* T8103 also has a smaller PMGR mini bank with this compatible. */
++	for (np = of_find_compatible_node(NULL, NULL, "apple,t8103-pmgr"); np;
++	     np = of_find_compatible_node(np, NULL, "apple,t8103-pmgr")) {
++		if (of_address_to_resource(np, 0, &res) ||
++		    res.start != PCPM_PMGR_BASE ||
++		    resource_size(&res) != PCPM_PMGR_SIZE)
++			continue;
++		if (selected) {
++			of_node_put(np);
++			of_node_put(selected);
++			return ret;
++		}
++		selected = of_node_get(np);
++	}
++	np = selected;
 +	if (!np)
 +		return ret;
-+	/* Reject ambiguous multiple banks without releasing our retained node. */
-+	extra = of_find_compatible_node(of_node_get(np), NULL, "apple,t8103-pmgr");
-+	if (extra) {
-+		of_node_put(extra);
-+		goto out;
-+	}
 +	if (!of_device_is_available(np) ||
 +	    !of_device_is_compatible(np, "syscon") ||
-+	    !of_device_is_compatible(np, "simple-mfd") ||
-+	    of_address_to_resource(np, 0, &res))
++	    !of_device_is_compatible(np, "simple-mfd"))
 +		goto out;
-+	pmgr_phys = res.start;
-+	pmgr_size = resource_size(&res);
-+	if (pmgr_phys != PCPM_PMGR_BASE || pmgr_size != PCPM_PMGR_SIZE ||
-+	    of_find_property(np, "clocks", NULL) ||
++	pmgr_phys = PCPM_PMGR_BASE;
++	pmgr_size = PCPM_PMGR_SIZE;
++	if (of_find_property(np, "clocks", NULL) ||
 +	    of_find_property(np, "resets", NULL) ||
 +	    of_find_property(np, "hwlocks", NULL) ||
 +	    of_find_property(np, "big-endian", NULL) ||

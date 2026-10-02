@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "baseline_object_sha256": "255ef21840b138c1b4940b81bdc4a8078371cdd528045399e76050941e331162",
+  "candidate_object_sha256": "0411251825c02a160516999c8f172aad1a38b40f8a3036a6b420b4ad9c5dcf38",
+  "candidate_ticket_offsets": [
+    72,
+    120
+  ],
+  "candidate_mmio_read_offset": 100,
+  "candidate_dsb_offset": 160,
+  "candidate_wfi_offset": 164,
+  "baseline_dsb_offset": 124,
+  "original_dsb_through_ret_bytes_identical": true,
+  "clock_branch_skips_only_apsc_load": true,
+  "first_attempt_ticket_count": 2,
+  "first_attempt_apsc_read_count": 1
+}

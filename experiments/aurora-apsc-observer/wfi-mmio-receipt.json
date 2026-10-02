@@ -1,0 +1,454 @@
+{
+  "activity_summary": {
+    "aggregate_cpu": {
+      "clock_ticks_per_second": 100,
+      "context_switches_delta": 23862,
+      "cpu_busy_jiffies_delta": 361,
+      "cpu_idle_iowait_jiffies_delta": 6665,
+      "cpu_total_jiffies_delta": 7026,
+      "procs_blocked_before_after": [
+        0,
+        0
+      ],
+      "procs_running_before_after": [
+        1,
+        2
+      ],
+      "scope": "whole-system counters include workers and collector; background CPU cannot be isolated"
+    },
+    "interior_equivalence": "not_established_by_endpoints",
+    "network": {
+      "interface_name_type_set_equal": true,
+      "other_nonloopback_count_before_after": [
+        0,
+        0
+      ],
+      "other_nonloopback_operstate_counts_before_after": [
+        {},
+        {}
+      ],
+      "other_nonloopback_traffic_delta": {
+        "rx_bytes": 0,
+        "rx_packets": 0,
+        "tx_bytes": 0,
+        "tx_packets": 0
+      },
+      "traffic_delta_scope": "endpoint counters; null on interface change or counter reset; traffic may occur outside capture",
+      "wlan0_carrier_before_after": [
+        1,
+        1
+      ],
+      "wlan0_operstate_before_after": [
+        "up",
+        "up"
+      ],
+      "wlan0_traffic_delta": {
+        "rx_bytes": 152928,
+        "rx_packets": 302,
+        "tx_bytes": 201251,
+        "tx_packets": 310
+      }
+    },
+    "observation_times_monotonic_ns": {
+      "after": [
+        272270065983,
+        272271942056
+      ],
+      "before": [
+        263474877853,
+        263475304635
+      ]
+    },
+    "scope": "read-only endpoints outside capture; fixed wlan0 label only; no process, network address, arbitrary interface name or USB identity export",
+    "usb": {
+      "device_count_before_after": [
+        0,
+        0
+      ],
+      "identity_scope": "private VID:PID/class retained; public identity equality and counts only; root hubs included",
+      "vendor_product_class_multiset_equal": true
+    }
+  },
+  "boot_qualification": {
+    "fdt_same_boot_checked": true,
+    "fdt_topology": {
+      "clusters": {
+        "0": {
+          "command_address": "0x210e20020",
+          "controller_base": "0x210e20000",
+          "controller_bytes": 4096,
+          "logical_cpus": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "performance_domain_phandle": "0xa"
+        },
+        "1": {
+          "command_address": "0x211e20020",
+          "controller_base": "0x211e20000",
+          "controller_bytes": 4096,
+          "logical_cpus": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "performance_domain_phandle": "0xd"
+        }
+      },
+      "compatible": [
+        "apple,j313",
+        "apple,t8103",
+        "apple,arm-platform"
+      ],
+      "cpu_count": 8,
+      "model": "Apple MacBook Air (M1, 2020)",
+      "validated_against_same_boot_fdt": true
+    },
+    "fdt_topology_projection_sha256": "a78ddbc535ad78c45344244373c6a8e357d6d90e614a18a4b3a21d164c84476c"
+  },
+  "build_chain": {
+    "aurora_source_commit": "90a95335a49aec3a0045a76da140452ad6585eb3",
+    "build_time_wfi_patch_or_source_digest_recorded": false,
+    "uki_sha256_at_deployment_readback": "4868e3547c1eafe884520238da801684069d547ffe2dc5915666b42d3ad66ce7",
+    "wfi_build_receipt_sha256": "42958c63369eeb3a9d289f87acb7ea2fcab1dcb6250f93dce089335c7b455335",
+    "wfi_deployment_receipt_sha256": "86b3e1f1ee76264938930f8fe4f4d17fcb096ef4b02c42a490340217b7900ac0",
+    "wfi_patch_file_sha256_at_publication": "a64cf4849bd708b7297df1c9d7f15298817d79beea0ef906490025a7071904d2",
+    "wfi_patch_hash_scope": "repository patch file bytes at publication; the build receipt does not record a build-time WFI patch or source-tree digest, so this hash alone does not cryptographically bind those bytes to the built image"
+  },
+  "c_hook_comparable_lag": null,
+  "claim_boundary": "first-attempt pre-DSB probe only; WFI-instruction state, physical power, energy and a guaranteed cross-CPU clock bound remain unobserved",
+  "collector_acquisition_sha256": "b6a5f3a281c66d43c23a557aa1a3e271b88b9c36f6c8899d9eae7670c79eec00",
+  "conditions": {
+    "battery_capacity_percent_after": 70,
+    "battery_capacity_percent_before": 70,
+    "brightness": 155,
+    "charger_online": 1,
+    "interior_condition_changes": "not_observed",
+    "policy_charger_brightness_endpoints_equal": true,
+    "usb_network_background_activity": "read_only_endpoints_observed; interior_and_background_equivalence_unproven"
+  },
+  "counter_decoder_options": {
+    "endpoint_uncertainty_ticks": 4,
+    "guaranteed_capture_clock_error_bound": false,
+    "pairwise_tolerance_ticks": 240
+  },
+  "counter_pre_post_eligible_under_declared_model": true,
+  "d_pilot_capture_boundary_model": null,
+  "d_pilot_matched_model_interior_probe_count": null,
+  "device_acceptance": {
+    "basis": "same-boot operator-confirmed functionality plus private live device/readback checks; no independent Wi-Fi traffic or visual measurement",
+    "brightness_adjustment_user_confirmed": true,
+    "brightness_changed_to": 40,
+    "brightness_restoration_user_confirmed": true,
+    "brightness_restored_to": 155,
+    "wifi_user_confirmed": true
+  },
+  "evidence_files": {
+    "activity-summary.json": {
+      "private_input_sha256": {
+        "environment-observation-after.json": "533464594d717f63e257e4e6ee79feee0295732127ce0d9f64e6fd6f2ca3fd94",
+        "environment-observation-before.json": "edd7f9cbde91894cfa173eebd916e8020e397a906b3f9f0e394004bb85f6e3bd"
+      },
+      "published_sha256": "aee49703721ad309532f46fed80fd9351f15cb7a1991538f0d37fac6759198fe",
+      "transformation": "validated aggregate endpoint projection with interface and USB identifiers suppressed",
+      "uncompressed_bytes": null
+    },
+    "chronology.json": {
+      "private_input_sha256": "7c8d683f81d3c8507e12ce0ba46f2d34d930609b1352fa57611378fca1540cc6",
+      "published_sha256": "46bbb1e8d95a1793ea9dcfb1d3f6db486d0f10054298bc826863ed03460beaa4",
+      "transformation": "strict action/field projection",
+      "uncompressed_bytes": null
+    },
+    "counter-events.csv.gz": {
+      "private_input_sha256": "378319bba25757d8075e1b69928875b5ff13e80acf8a68149675c02a41a23bea",
+      "published_sha256": "a9d85e406d749b6a22db06ab0e0715a67dbc9509e868057a3b691f39250e4ee0",
+      "transformation": "gzip level 9, mtime=0",
+      "uncompressed_bytes": 338683
+    },
+    "counter-pre-events.csv.gz": {
+      "private_input_sha256": "c227d5aeac544193554ae392ac2909c8a3d742e09e7ee3b3cacd4759aba1acc5",
+      "published_sha256": "0379c910e839a610184065d96ad5755bd0957d6942f7cd4a6df615b2dc45332b",
+      "transformation": "gzip level 9, mtime=0",
+      "uncompressed_bytes": 167421
+    },
+    "counter-pre-status.txt": {
+      "private_input_sha256": "e4675026f90f7245faf0f5c52c6b13b8265e86c12bd42ded227e02794604c73d",
+      "published_sha256": "e4675026f90f7245faf0f5c52c6b13b8265e86c12bd42ded227e02794604c73d",
+      "transformation": "byte exact",
+      "uncompressed_bytes": 3482
+    },
+    "counter-status.txt": {
+      "private_input_sha256": "551421f1f82669764d1804c5c2d1d65c06cb1b3e262043650c7542ffc556784f",
+      "published_sha256": "551421f1f82669764d1804c5c2d1d65c06cb1b3e262043650c7542ffc556784f",
+      "transformation": "byte exact",
+      "uncompressed_bytes": 3737
+    },
+    "environment-after.json": {
+      "private_input_sha256": "59ad2f6fcd5d57262833e86daaf33abcd3c7270be61da60b0c7cae15efaae8c8",
+      "published_sha256": "f1996943a96a1e972249f7d91f1ae81450a32bfa935aaa6df2e073f61a5e5b8e",
+      "transformation": "fixed-label sysfs condition projection",
+      "uncompressed_bytes": null
+    },
+    "environment-before.json": {
+      "private_input_sha256": "f3660600b8a49dbca171909a930f9c20dbc033ea5f75b4128e0c8d9fa9de7dfc",
+      "published_sha256": "344f4066eed36c8d2bbd682553d23104b2654978ca8ee676f87b17f959f8eebd",
+      "transformation": "fixed-label sysfs condition projection",
+      "uncompressed_bytes": null
+    },
+    "events.csv.gz": {
+      "private_input_sha256": "c32fb2976a250c006709341a9bd81a437af5a7c42826e5956733c94701ffe4e0",
+      "published_sha256": "59ba8a4bde4c5389023264384b384756101346a1c49c62d966b0ec181c09c612",
+      "transformation": "gzip level 9, mtime=0",
+      "uncompressed_bytes": 75414
+    },
+    "status.txt": {
+      "private_input_sha256": "e291d8222de8fc9d5685aca3dc9aaf54da3e5a8d9808093c495d55a4f9dd0957",
+      "published_sha256": "e291d8222de8fc9d5685aca3dc9aaf54da3e5a8d9808093c495d55a4f9dd0957",
+      "transformation": "byte exact",
+      "uncompressed_bytes": 2112
+    },
+    "wfi-events.csv.gz": {
+      "private_input_sha256": "a53cd02715251157ccf0d6f6f6501596805ba92ec78317fee14273db05cf6938",
+      "published_sha256": "5d06a939e2d4c055b8e9029bbe2549e39095f9bb6ad9aa78bfe1632a2938dc24",
+      "transformation": "gzip level 9, mtime=0",
+      "uncompressed_bytes": 31049
+    },
+    "workload-cpu1.csv.gz": {
+      "private_input_sha256": "92849815bbd67f9d21fce1dccfbd02d4698c09fd0dd6133cfc4cd9e317d9ff2f",
+      "published_sha256": "7e80e4f6a30f3c84c8ef9a9008aad1bdc3a6fc6acd84fab8b415b3752afd49c7",
+      "transformation": "gzip level 9, mtime=0",
+      "uncompressed_bytes": 2671
+    },
+    "workload-cpu5.csv.gz": {
+      "private_input_sha256": "377b432f4a8617c33bca0fc69f2de5664f77b46880485e8d6c3ead1b5fef81fd",
+      "published_sha256": "b012d910d3bc25a4b08f5c142bdb8e5bb7ad240f15c2c12b89c266cca3087c9f",
+      "transformation": "gzip level 9, mtime=0",
+      "uncompressed_bytes": 2671
+    }
+  },
+  "external_window_elapsed_ns": 2038349747,
+  "gnu_build_id": "11e80be6d8b358eee9aa847a0f814aff02b66c43",
+  "integrity_basis": "current ABI 2 analyzer agrees exactly with saved output and reports clean",
+  "integrity_clean": true,
+  "kernel_config_sha256": "f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d",
+  "mode": "wfi_mmio",
+  "observer_abi": 2,
+  "observer_analysis_private_sha256": "9d618cb1d24c877593e8b309440a27a40b07639fc3ab7b6c4a7f5185ca5569ac",
+  "observer_loss_and_drain": {
+    "interrupted": 0,
+    "missing_commit_total": 0,
+    "overflow_total": 0,
+    "wfi_pending_after_drain": 0,
+    "wfi_prepare_after_stop": 0,
+    "wfi_prepare_bad_mapping": 0
+  },
+  "packet_sha256s_sha256": "2f4583ade9e17892bfa0f79691ac3deec5892bda302855bacdf17c099a9d2b31",
+  "paired_opportunity_by_cluster": {
+    "0": {
+      "ambiguous_earliest_sample": 0,
+      "ambiguous_set_sample_order": 0,
+      "clean_interior_samples": 368,
+      "exploratory_busy": 1,
+      "exploratory_model_qualified_pairs_with_cross_cpu_set_sample": 2,
+      "exploratory_model_qualified_pairs_with_same_cpu_set_sample": 4,
+      "exploratory_only_pair": 5,
+      "exploratory_pairs": 6,
+      "lag_exceeds_exploratory_bound": 0,
+      "no_ordered_sample_within_exploratory_search": 149,
+      "possible_intervening_set": 0,
+      "primary_busy": 1,
+      "primary_exposure_gate_20": false,
+      "primary_model_qualified_pairs_with_cross_cpu_set_sample": 0,
+      "primary_model_qualified_pairs_with_same_cpu_set_sample": 1,
+      "primary_pairs": 1,
+      "set_not_strictly_interior": 0,
+      "successful_sets": 155
+    },
+    "1": {
+      "ambiguous_earliest_sample": 0,
+      "ambiguous_set_sample_order": 0,
+      "clean_interior_samples": 195,
+      "exploratory_busy": 3,
+      "exploratory_model_qualified_pairs_with_cross_cpu_set_sample": 1,
+      "exploratory_model_qualified_pairs_with_same_cpu_set_sample": 3,
+      "exploratory_only_pair": 2,
+      "exploratory_pairs": 4,
+      "lag_exceeds_exploratory_bound": 0,
+      "no_ordered_sample_within_exploratory_search": 27,
+      "possible_intervening_set": 0,
+      "primary_busy": 2,
+      "primary_exposure_gate_20": false,
+      "primary_model_qualified_pairs_with_cross_cpu_set_sample": 0,
+      "primary_model_qualified_pairs_with_same_cpu_set_sample": 2,
+      "primary_pairs": 2,
+      "set_not_strictly_interior": 0,
+      "successful_sets": 31
+    }
+  },
+  "paired_opportunity_model": {
+    "assumed_pairwise_clock_error_ticks": 240,
+    "clock_bound_is_assumed_not_measured": true,
+    "exploratory_bound_ticks": 2400,
+    "negative_claim_supported": false,
+    "primary_bound_ticks": 600,
+    "status": "conditional_software_screen"
+  },
+  "paired_opportunity_status": "conditional_software_screen",
+  "private_boot_cmdline": "retained in hashed packet; not independently decoded here",
+  "private_full_fdt": "retained in hashed packet; only selected same-boot topology was checked by the private qualification",
+  "private_kernel_log": "pre-arm and post-capture journalctl succeeded with nonempty current-boot output; log contents remain private and unreviewed by publisher",
+  "release": "7.1.12-ARCH-apsc-20261002-wfi",
+  "requested_window_ms": 2000,
+  "reverse_coverage_counts": {
+    "matched_wfi_sample": 564,
+    "open_interval_without_sample_unresolved": 0,
+    "unexplained_paired_path_without_sample": 0
+  },
+  "scope": "one complete, independently decoded ABI 2 native WFI packet; full boot packet remains private",
+  "selected_entry": "Aurora-APSC-research-wfi-seam",
+  "single_packet_boot_distinctness": "not_established; compare private boot IDs across packets",
+  "source_sha256": {
+    "abi1_event_parser": "8251d18d32b94c0e7a559df9ad2ecf8b1a25808d57a0f941d27aed536e048339",
+    "counter_decoder": "22e8f48858db78b60840c57088e82587c0d286563d8ef339a853f8663d0270c8",
+    "publisher": "c0e294c390c5f1fdf6689e82c67c43c27985e2fc67bfa464dcd3e6340afe9eba",
+    "wfi_decoder": "75aff2210efdb5a085e315264c7b6689657e07af42f1b7139d191746ad4b7478"
+  },
+  "source_sha256_scope": "publication-time decoder and publisher files; collector digest is acquisition-time saved source",
+  "wfi_peer_candidate_by_cluster": {
+    "0": {
+      "candidate_busy": 0,
+      "candidate_clear": 1,
+      "candidate_primary_busy": 0,
+      "candidate_primary_busy_other_cpu_writer": 0,
+      "candidate_primary_busy_same_cpu_writer": 0,
+      "candidate_primary_exposure_gate_20": false,
+      "candidate_primary_other_cpu_writer": 0,
+      "candidate_primary_pairs": 0,
+      "candidate_primary_same_cpu_writer": 0,
+      "candidate_samples": 1,
+      "committed_samples": 369
+    },
+    "1": {
+      "candidate_busy": 1,
+      "candidate_clear": 6,
+      "candidate_primary_busy": 0,
+      "candidate_primary_busy_other_cpu_writer": 0,
+      "candidate_primary_busy_same_cpu_writer": 0,
+      "candidate_primary_exposure_gate_20": false,
+      "candidate_primary_other_cpu_writer": 0,
+      "candidate_primary_pairs": 0,
+      "candidate_primary_same_cpu_writer": 0,
+      "candidate_samples": 7,
+      "committed_samples": 195
+    }
+  },
+  "wfi_peer_candidate_status": "conditional_software_screen",
+  "wfi_probe": {
+    "in_window": 564,
+    "in_window_by_cluster": {
+      "0": {
+        "busy_bit31": 1,
+        "samples": 369,
+        "set_bit25": 0
+      },
+      "1": {
+        "busy_bit31": 3,
+        "samples": 195,
+        "set_bit25": 0
+      }
+    },
+    "post_stop_drain": 0,
+    "straddling_stop": 0,
+    "total": 564
+  },
+  "worker_pulses_fully_inside_external_window_by_cpu": {
+    "1": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43
+    ],
+    "5": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43
+    ]
+  },
+  "workload_sha256": "82f4ce1145c8135c8b28246a9681d2316083cd1bb1a936a736b8a6cd03102d2b"
+}

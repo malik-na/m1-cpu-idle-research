@@ -1,0 +1,386 @@
+{
+  "activity_summary": {
+    "aggregate_cpu": {
+      "clock_ticks_per_second": 100,
+      "context_switches_delta": 81085,
+      "cpu_busy_jiffies_delta": 669,
+      "cpu_idle_iowait_jiffies_delta": 6300,
+      "cpu_total_jiffies_delta": 6969,
+      "procs_blocked_before_after": [
+        0,
+        0
+      ],
+      "procs_running_before_after": [
+        3,
+        2
+      ],
+      "scope": "whole-system counters include workers and collector; background CPU cannot be isolated"
+    },
+    "interior_equivalence": "not_established_by_endpoints",
+    "network": {
+      "interface_name_type_set_equal": true,
+      "other_nonloopback_count_before_after": [
+        0,
+        0
+      ],
+      "other_nonloopback_operstate_counts_before_after": [
+        {},
+        {}
+      ],
+      "other_nonloopback_traffic_delta": {
+        "rx_bytes": 0,
+        "rx_packets": 0,
+        "tx_bytes": 0,
+        "tx_packets": 0
+      },
+      "traffic_delta_scope": "endpoint counters; null on interface change or counter reset; traffic may occur outside capture",
+      "wlan0_carrier_before_after": [
+        1,
+        1
+      ],
+      "wlan0_operstate_before_after": [
+        "up",
+        "up"
+      ],
+      "wlan0_traffic_delta": {
+        "rx_bytes": 124494,
+        "rx_packets": 189,
+        "tx_bytes": 45310,
+        "tx_packets": 149
+      }
+    },
+    "observation_times_monotonic_ns": {
+      "after": [
+        365036876881,
+        365038019527
+      ],
+      "before": [
+        356286041870,
+        356286430738
+      ]
+    },
+    "scope": "read-only endpoints outside capture; fixed wlan0 label only; no process, network address, arbitrary interface name or USB identity export",
+    "usb": {
+      "device_count_before_after": [
+        0,
+        0
+      ],
+      "identity_scope": "private VID:PID/class retained; public identity equality and counts only; root hubs included",
+      "vendor_product_class_multiset_equal": true
+    }
+  },
+  "boot_qualification": {
+    "fdt_same_boot_checked": true,
+    "fdt_topology": {
+      "clusters": {
+        "0": {
+          "command_address": "0x210e20020",
+          "controller_base": "0x210e20000",
+          "controller_bytes": 4096,
+          "logical_cpus": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "performance_domain_phandle": "0xa"
+        },
+        "1": {
+          "command_address": "0x211e20020",
+          "controller_base": "0x211e20000",
+          "controller_bytes": 4096,
+          "logical_cpus": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "performance_domain_phandle": "0xd"
+        }
+      },
+      "compatible": [
+        "apple,j313",
+        "apple,t8103",
+        "apple,arm-platform"
+      ],
+      "cpu_count": 8,
+      "model": "Apple MacBook Air (M1, 2020)",
+      "validated_against_same_boot_fdt": true
+    },
+    "fdt_topology_projection_sha256": "a78ddbc535ad78c45344244373c6a8e357d6d90e614a18a4b3a21d164c84476c"
+  },
+  "build_chain": {
+    "aurora_source_commit": "90a95335a49aec3a0045a76da140452ad6585eb3",
+    "build_time_wfi_patch_or_source_digest_recorded": false,
+    "uki_sha256_at_deployment_readback": "4868e3547c1eafe884520238da801684069d547ffe2dc5915666b42d3ad66ce7",
+    "wfi_build_receipt_sha256": "42958c63369eeb3a9d289f87acb7ea2fcab1dcb6250f93dce089335c7b455335",
+    "wfi_deployment_receipt_sha256": "86b3e1f1ee76264938930f8fe4f4d17fcb096ef4b02c42a490340217b7900ac0",
+    "wfi_patch_file_sha256_at_publication": "a64cf4849bd708b7297df1c9d7f15298817d79beea0ef906490025a7071904d2",
+    "wfi_patch_hash_scope": "repository patch file bytes at publication; the build receipt does not record a build-time WFI patch or source-tree digest, so this hash alone does not cryptographically bind those bytes to the built image"
+  },
+  "c_hook_comparable_lag": null,
+  "claim_boundary": "first-attempt pre-DSB probe only; WFI-instruction state, physical power, energy and a guaranteed cross-CPU clock bound remain unobserved",
+  "collector_acquisition_sha256": "b6a5f3a281c66d43c23a557aa1a3e271b88b9c36f6c8899d9eae7670c79eec00",
+  "conditions": {
+    "battery_capacity_percent_after": 88,
+    "battery_capacity_percent_before": 88,
+    "brightness": 155,
+    "charger_online": 1,
+    "interior_condition_changes": "not_observed",
+    "policy_charger_brightness_endpoints_equal": true,
+    "usb_network_background_activity": "read_only_endpoints_observed; interior_and_background_equivalence_unproven"
+  },
+  "counter_decoder_options": {
+    "endpoint_uncertainty_ticks": 4,
+    "guaranteed_capture_clock_error_bound": false,
+    "pairwise_tolerance_ticks": 240
+  },
+  "counter_pre_post_eligible_under_declared_model": true,
+  "d_pilot_capture_boundary_model": null,
+  "d_pilot_matched_model_interior_probe_count": null,
+  "device_acceptance": {
+    "basis": "same-boot operator-confirmed functionality plus private live device/readback checks; no independent Wi-Fi traffic or visual measurement",
+    "brightness_adjustment_user_confirmed": true,
+    "brightness_changed_to": 40,
+    "brightness_restoration_user_confirmed": true,
+    "brightness_restored_to": 155,
+    "wifi_user_confirmed": true
+  },
+  "evidence_files": {
+    "activity-summary.json": {
+      "private_input_sha256": {
+        "environment-observation-after.json": "3f37da0717e70350a2cd9a490e4c5f100ae0972cecc5652fc12a35266c36d9a2",
+        "environment-observation-before.json": "901a174e10689f3149ac1ce7e6033b7f25c5955420be871cae000af8d636f431"
+      },
+      "published_sha256": "f4b28b0f479475963cda013eec5c381112a9bed8a86285fab57df40a1467c0c4",
+      "transformation": "validated aggregate endpoint projection with interface and USB identifiers suppressed",
+      "uncompressed_bytes": null
+    },
+    "chronology.json": {
+      "private_input_sha256": "ffac08072c7c81b2f25945aedb64fa157c0d7d53f5937dcc52332988333e464b",
+      "published_sha256": "76e1b2038214d5c0aea17f7cea583cbef891cf7313feed92b07354a287a42589",
+      "transformation": "strict action/field projection",
+      "uncompressed_bytes": null
+    },
+    "counter-events.csv.gz": {
+      "private_input_sha256": "29766cfd530bcd775fe7278f6e232c4a435a532ecf874f9360f1f2f2c214c0b6",
+      "published_sha256": "fb0e06a9cf7daf5ecd69966cbb8a09b1e8024a68670c0b1049dd56ece041fd3c",
+      "transformation": "gzip level 9, mtime=0",
+      "uncompressed_bytes": 338683
+    },
+    "counter-pre-events.csv.gz": {
+      "private_input_sha256": "7efc7c9aeb9ef3b6de6a9c62372d317213719103776f45e5c95887b5cccf8f79",
+      "published_sha256": "9eff4b4dd582941ed819b8395bc965292ec0d5eba23539e87a9565b1d60337d6",
+      "transformation": "gzip level 9, mtime=0",
+      "uncompressed_bytes": 167421
+    },
+    "counter-pre-status.txt": {
+      "private_input_sha256": "c5b97aca1d12f513be652df1e4489a491e86b736fbcb90402b5e2d899fe1bf85",
+      "published_sha256": "c5b97aca1d12f513be652df1e4489a491e86b736fbcb90402b5e2d899fe1bf85",
+      "transformation": "byte exact",
+      "uncompressed_bytes": 3482
+    },
+    "counter-status.txt": {
+      "private_input_sha256": "43b2ecb0b88ba35d00db2a2550ebfa8ea3df04ecfdc0ccc4d9303f5486a35975",
+      "published_sha256": "43b2ecb0b88ba35d00db2a2550ebfa8ea3df04ecfdc0ccc4d9303f5486a35975",
+      "transformation": "byte exact",
+      "uncompressed_bytes": 3737
+    },
+    "environment-after.json": {
+      "private_input_sha256": "1beba1daee757a28e0b4cbcf34b80d4ab2ff9c9f80ae81755d48fce26f4b16d9",
+      "published_sha256": "0a8ad319ada6f8e9fbfafa4fd114c085e31d86149e7b8d2606e54d8e26d9779d",
+      "transformation": "fixed-label sysfs condition projection",
+      "uncompressed_bytes": null
+    },
+    "environment-before.json": {
+      "private_input_sha256": "fbfeef02fffebb5275215fd4876bfb6d29a0e0a425c30e1822d0fb950f1a10e5",
+      "published_sha256": "71dd47cae5caa405b73b7350da6bb04f99070093ba4c8e12a06bf1901a12cca0",
+      "transformation": "fixed-label sysfs condition projection",
+      "uncompressed_bytes": null
+    },
+    "events.csv.gz": {
+      "private_input_sha256": "8846e38d61ba1767b10a9393fac6c7cf082b49d278448f6a02fb27001a9ae3cb",
+      "published_sha256": "0fb665883108221b2b81226e3def4293b749628ae124502d268f384aad8114b0",
+      "transformation": "gzip level 9, mtime=0",
+      "uncompressed_bytes": 60755
+    },
+    "status.txt": {
+      "private_input_sha256": "f175a7ff26df5196c2c64174ceddce86f72a335043999aa0c48a74fbf669f292",
+      "published_sha256": "f175a7ff26df5196c2c64174ceddce86f72a335043999aa0c48a74fbf669f292",
+      "transformation": "byte exact",
+      "uncompressed_bytes": 2089
+    },
+    "wfi-events.csv.gz": {
+      "private_input_sha256": "0a68e2121ed0b4ae7d8ae83c09dfcd21b322db9452911293cf9f17d665929e93",
+      "published_sha256": "a7f214f67fd5640cc68a867154cf1bce7c57b8572f8ed195d141f58e7a86e2d9",
+      "transformation": "gzip level 9, mtime=0",
+      "uncompressed_bytes": 37
+    },
+    "workload-cpu1.csv.gz": {
+      "private_input_sha256": "cb8325173f6c1a44c45ce2df1bb365b960191c0d06fa9bfc05ccb767270cfc71",
+      "published_sha256": "3bd286c5052e54139ba5f90d99c245fe9580294a52ad8cd4164d421f1c673f0a",
+      "transformation": "gzip level 9, mtime=0",
+      "uncompressed_bytes": 2671
+    },
+    "workload-cpu5.csv.gz": {
+      "private_input_sha256": "2ac2d066c751ce39c419cd67f7030efb5da7992e9819ef537960772e5e332191",
+      "published_sha256": "e21ecbeead819f6a364c08aa6be87fa4e996796cc5d7386fc1f9f764c5d43488",
+      "transformation": "gzip level 9, mtime=0",
+      "uncompressed_bytes": 2671
+    }
+  },
+  "external_window_elapsed_ns": 2066110980,
+  "gnu_build_id": "11e80be6d8b358eee9aa847a0f814aff02b66c43",
+  "integrity_basis": "current ABI 2 analyzer agrees exactly with saved output and reports clean",
+  "integrity_clean": true,
+  "kernel_config_sha256": "f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d",
+  "mode": "records",
+  "observer_abi": 2,
+  "observer_analysis_private_sha256": "64f9cba322e260d7018389f22fae63c3d434ec41d2bfffa97ec22bdb72ad8254",
+  "observer_loss_and_drain": {
+    "interrupted": 0,
+    "missing_commit_total": 0,
+    "overflow_total": 0,
+    "wfi_pending_after_drain": 0,
+    "wfi_prepare_after_stop": 0,
+    "wfi_prepare_bad_mapping": 0
+  },
+  "packet_sha256s_sha256": "a659495e2d24fefcdb0d3cc1d0ab7507e1960d0b7833162319e9858ce063743c",
+  "paired_opportunity_by_cluster": null,
+  "paired_opportunity_model": {
+    "assumed_pairwise_clock_error_ticks": 240,
+    "clock_bound_is_assumed_not_measured": true,
+    "exploratory_bound_ticks": 2400,
+    "negative_claim_supported": false,
+    "primary_bound_ticks": 600,
+    "status": "not_applicable_without_wfi_mmio"
+  },
+  "paired_opportunity_status": "not_applicable_without_wfi_mmio",
+  "private_boot_cmdline": "retained in hashed packet; not independently decoded here",
+  "private_full_fdt": "retained in hashed packet; only selected same-boot topology was checked by the private qualification",
+  "private_kernel_log": "pre-arm and post-capture journalctl succeeded with nonempty current-boot output; log contents remain private and unreviewed by publisher",
+  "release": "7.1.12-ARCH-apsc-20261002-wfi",
+  "requested_window_ms": 2000,
+  "reverse_coverage_counts": {
+    "matched_wfi_sample": 0,
+    "open_interval_without_sample_unresolved": 0,
+    "unexplained_paired_path_without_sample": 0
+  },
+  "scope": "one complete, independently decoded ABI 2 native WFI packet; full boot packet remains private",
+  "selected_entry": "Aurora-APSC-research-wfi-seam",
+  "single_packet_boot_distinctness": "not_established; compare private boot IDs across packets",
+  "source_sha256": {
+    "abi1_event_parser": "8251d18d32b94c0e7a559df9ad2ecf8b1a25808d57a0f941d27aed536e048339",
+    "counter_decoder": "22e8f48858db78b60840c57088e82587c0d286563d8ef339a853f8663d0270c8",
+    "publisher": "c0e294c390c5f1fdf6689e82c67c43c27985e2fc67bfa464dcd3e6340afe9eba",
+    "wfi_decoder": "75aff2210efdb5a085e315264c7b6689657e07af42f1b7139d191746ad4b7478"
+  },
+  "source_sha256_scope": "publication-time decoder and publisher files; collector digest is acquisition-time saved source",
+  "wfi_peer_candidate_by_cluster": null,
+  "wfi_peer_candidate_status": "not_applicable_without_wfi_probe",
+  "wfi_probe": {
+    "in_window": 0,
+    "in_window_by_cluster": {
+      "0": {
+        "busy_bit31": null,
+        "samples": 0,
+        "set_bit25": null
+      },
+      "1": {
+        "busy_bit31": null,
+        "samples": 0,
+        "set_bit25": null
+      }
+    },
+    "post_stop_drain": 0,
+    "straddling_stop": 0,
+    "total": 0
+  },
+  "worker_pulses_fully_inside_external_window_by_cpu": {
+    "1": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43
+    ],
+    "5": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43
+    ]
+  },
+  "workload_sha256": "82f4ce1145c8135c8b28246a9681d2316083cd1bb1a936a736b8a6cd03102d2b"
+}

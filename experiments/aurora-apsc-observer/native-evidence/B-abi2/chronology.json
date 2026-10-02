@@ -1,0 +1,78 @@
+[
+  {
+    "action": "begin",
+    "duration_ms": 2000,
+    "mode": "records",
+    "monotonic_ns": 356271184733,
+    "observer_abi": 2,
+    "release": "7.1.12-ARCH-apsc-20261002-wfi",
+    "utc": "2026-10-02T18:36:55.777203+00:00",
+    "workload_sha256": "82f4ce1145c8135c8b28246a9681d2316083cd1bb1a936a736b8a6cd03102d2b"
+  },
+  {
+    "action": "counter_pre_begin",
+    "monotonic_ns": 356313041444,
+    "utc": "2026-10-02T18:36:55.819063+00:00"
+  },
+  {
+    "action": "counter_pre_end",
+    "monotonic_ns": 356320047145,
+    "utc": "2026-10-02T18:36:55.826061+00:00"
+  },
+  {
+    "action": "settling_begin",
+    "monotonic_ns": 356426683051,
+    "seconds": 5,
+    "utc": "2026-10-02T18:36:55.932698+00:00"
+  },
+  {
+    "action": "settling_end",
+    "monotonic_ns": 361426859469,
+    "utc": "2026-10-02T18:37:00.932847+00:00"
+  },
+  {
+    "action": "window_begin",
+    "monotonic_ns": 362577117253,
+    "utc": "2026-10-02T18:37:02.083108+00:00"
+  },
+  {
+    "action": "window_end",
+    "monotonic_ns": 364643228233,
+    "utc": "2026-10-02T18:37:04.149195+00:00"
+  },
+  {
+    "action": "observer_drained",
+    "monotonic_ns": 364649415456,
+    "utc": "2026-10-02T18:37:04.155417+00:00"
+  },
+  {
+    "action": "workload_complete",
+    "cpu": 1,
+    "exit_status": 0,
+    "monotonic_ns": 364650762307,
+    "utc": "2026-10-02T18:37:04.156766+00:00"
+  },
+  {
+    "action": "workload_complete",
+    "cpu": 5,
+    "exit_status": 0,
+    "monotonic_ns": 364652846812,
+    "utc": "2026-10-02T18:37:04.158850+00:00"
+  },
+  {
+    "action": "counter_post_begin",
+    "monotonic_ns": 364653751337,
+    "utc": "2026-10-02T18:37:04.159757+00:00"
+  },
+  {
+    "action": "counter_post_end",
+    "monotonic_ns": 364661646238,
+    "utc": "2026-10-02T18:37:04.167624+00:00"
+  },
+  {
+    "action": "complete",
+    "clock_bound_not_exported": true,
+    "monotonic_ns": 365052940886,
+    "utc": "2026-10-02T18:37:04.558953+00:00"
+  }
+]

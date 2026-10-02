@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "action": "retired_obsolete_first_research_efi_entry_and_image",
+  "completed_utc": "2026-10-02T17:55:55.072110+00:00",
+  "scope": "the original Aurora-APSC-research Limine stanza and its EFI image only",
+  "running_replacement_entry": "Aurora-APSC-research-wfi-seam",
+  "running_release": "7.1.12-ARCH-apsc-20261002-wfi",
+  "running_gnu_build_id": "11e80be6d8b358eee9aa847a0f814aff02b66c43",
+  "prerequisite_pushed_commit": "85352a557704a91c693216e133df4f9b92999d1e",
+  "d_pilot_receipt": "wfi-clock-pilot-receipt.json",
+  "obsolete_uki": {
+    "sha256": "d884fc9a1744061a024bf28a4c4f70c27b21752862992ac1c00a61136ec81cdd",
+    "bytes": 94702592,
+    "verified_private_backup": true
+  },
+  "limine_config_sha256_before": "fed43c11f641b8913a09ed2ccac0a2d590d0f6ef143999aac3a7f492b95e02c0",
+  "limine_config_sha256_after": "0c388b2e35d617c6474018d517186815036aecb8c6b180508ef714e62be48f86",
+  "stock_default_entry": 2,
+  "stock_fallback_unchanged": true,
+  "capacity_and_wfi_images_unchanged": true,
+  "post_retirement_readback": {
+    "preflight": "passed",
+    "limine_layout": "post_retirement",
+    "retained_image_hashes_checked": 5,
+    "one_shot_pending": false
+  },
+  "efi_filesystem_bytes": {
+    "total": 523132928,
+    "used_before": 480325632,
+    "free_before": 42807296,
+    "used_after": 385622016,
+    "free_after": 137510912
+  },
+  "limine_snapper_usage_limit_percent": 85,
+  "private_retirement_receipt_sha256": "a2da4f0161b438c3544025c63beadf9f3e12b8bfa6a28a6a800c7a2e2ded79f2",
+  "boundary": "EFI space and boot-entry housekeeping only; no new idle, energy, wake or WFI command-state result"
+}

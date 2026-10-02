@@ -1,0 +1,1102 @@
+[
+  {
+    "path": "/sys/devices/system/cpu/online",
+    "observed_monotonic_ns": 144663810759,
+    "raw_text": "0-7\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpuidle/current_driver",
+    "observed_monotonic_ns": 144663872549,
+    "raw_text": "apple_idle\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpuidle/current_governor_ro",
+    "observed_monotonic_ns": 144663910298,
+    "raw_text": "menu\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpufreq/policy0/related_cpus",
+    "observed_monotonic_ns": 144663944797,
+    "raw_text": "0 1 2 3\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpufreq/policy0/affected_cpus",
+    "observed_monotonic_ns": 144663976838,
+    "raw_text": "0 1 2 3\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpufreq/policy0/scaling_driver",
+    "observed_monotonic_ns": 144664020129,
+    "raw_text": "apple-cpufreq\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpufreq/policy0/scaling_governor",
+    "observed_monotonic_ns": 144664051294,
+    "raw_text": "schedutil\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq",
+    "observed_monotonic_ns": 144664080377,
+    "raw_text": "600000\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq",
+    "observed_monotonic_ns": 144664108876,
+    "raw_text": "2064000\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq",
+    "observed_monotonic_ns": 144664135042,
+    "raw_text": "600000\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpufreq/policy4/related_cpus",
+    "observed_monotonic_ns": 144664162375,
+    "raw_text": "4 5 6 7\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpufreq/policy4/affected_cpus",
+    "observed_monotonic_ns": 144664189916,
+    "raw_text": "4 5 6 7\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpufreq/policy4/scaling_driver",
+    "observed_monotonic_ns": 144664216957,
+    "raw_text": "apple-cpufreq\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpufreq/policy4/scaling_governor",
+    "observed_monotonic_ns": 144664243915,
+    "raw_text": "schedutil\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpufreq/policy4/scaling_min_freq",
+    "observed_monotonic_ns": 144664269622,
+    "raw_text": "600000\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpufreq/policy4/scaling_max_freq",
+    "observed_monotonic_ns": 144664295247,
+    "raw_text": "2988000\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpufreq/policy4/scaling_cur_freq",
+    "observed_monotonic_ns": 144664319496,
+    "raw_text": "1500000\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/above",
+    "observed_monotonic_ns": 144664341037,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/below",
+    "observed_monotonic_ns": 144664362703,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/default_status",
+    "observed_monotonic_ns": 144664383828,
+    "raw_text": "enabled\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/desc",
+    "observed_monotonic_ns": 144664404744,
+    "raw_text": "CPU clock-gated\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/disable",
+    "observed_monotonic_ns": 144664425452,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/latency",
+    "observed_monotonic_ns": 144664446493,
+    "raw_text": "1\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/name",
+    "observed_monotonic_ns": 144664467492,
+    "raw_text": "WFI\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/power",
+    "observed_monotonic_ns": 144664488659,
+    "raw_text": "4294967295\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/rejected",
+    "observed_monotonic_ns": 144664509158,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/residency",
+    "observed_monotonic_ns": 144664530533,
+    "raw_text": "1\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/time",
+    "observed_monotonic_ns": 144664557865,
+    "raw_text": "81161222\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/usage",
+    "observed_monotonic_ns": 144664578865,
+    "raw_text": "191083\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/above",
+    "observed_monotonic_ns": 144664599489,
+    "raw_text": "22653\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/below",
+    "observed_monotonic_ns": 144664619655,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/default_status",
+    "observed_monotonic_ns": 144664640697,
+    "raw_text": "enabled\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/desc",
+    "observed_monotonic_ns": 144664660154,
+    "raw_text": "CPU/cluster powered down\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/disable",
+    "observed_monotonic_ns": 144664681154,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/latency",
+    "observed_monotonic_ns": 144664701820,
+    "raw_text": "10\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/name",
+    "observed_monotonic_ns": 144664721195,
+    "raw_text": "CPU PD\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/power",
+    "observed_monotonic_ns": 144664740652,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/rejected",
+    "observed_monotonic_ns": 144664760194,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/residency",
+    "observed_monotonic_ns": 144664778901,
+    "raw_text": "10000\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/time",
+    "observed_monotonic_ns": 144664804067,
+    "raw_text": "32428024\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/usage",
+    "observed_monotonic_ns": 144664823775,
+    "raw_text": "23437\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/above",
+    "observed_monotonic_ns": 144664843608,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/below",
+    "observed_monotonic_ns": 144664863483,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/default_status",
+    "observed_monotonic_ns": 144664882815,
+    "raw_text": "enabled\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/desc",
+    "observed_monotonic_ns": 144664902315,
+    "raw_text": "CPU clock-gated\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/disable",
+    "observed_monotonic_ns": 144664921398,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/latency",
+    "observed_monotonic_ns": 144664940606,
+    "raw_text": "1\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/name",
+    "observed_monotonic_ns": 144664959855,
+    "raw_text": "WFI\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/power",
+    "observed_monotonic_ns": 144664979230,
+    "raw_text": "4294967295\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/rejected",
+    "observed_monotonic_ns": 144664999438,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/residency",
+    "observed_monotonic_ns": 144665028145,
+    "raw_text": "1\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/time",
+    "observed_monotonic_ns": 144665054520,
+    "raw_text": "79717428\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/usage",
+    "observed_monotonic_ns": 144665074061,
+    "raw_text": "121148\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/above",
+    "observed_monotonic_ns": 144665093560,
+    "raw_text": "11274\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/below",
+    "observed_monotonic_ns": 144665113351,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/default_status",
+    "observed_monotonic_ns": 144665132684,
+    "raw_text": "enabled\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/desc",
+    "observed_monotonic_ns": 144665152184,
+    "raw_text": "CPU/cluster powered down\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/disable",
+    "observed_monotonic_ns": 144665172183,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/latency",
+    "observed_monotonic_ns": 144665192724,
+    "raw_text": "10\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/name",
+    "observed_monotonic_ns": 144665211974,
+    "raw_text": "CPU PD\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/power",
+    "observed_monotonic_ns": 144665231599,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/rejected",
+    "observed_monotonic_ns": 144665252515,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/residency",
+    "observed_monotonic_ns": 144665272764,
+    "raw_text": "10000\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/time",
+    "observed_monotonic_ns": 144665298222,
+    "raw_text": "29603717\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/usage",
+    "observed_monotonic_ns": 144665317846,
+    "raw_text": "12143\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/above",
+    "observed_monotonic_ns": 144665337763,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/below",
+    "observed_monotonic_ns": 144665358429,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/default_status",
+    "observed_monotonic_ns": 144665385136,
+    "raw_text": "enabled\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/desc",
+    "observed_monotonic_ns": 144665406469,
+    "raw_text": "CPU clock-gated\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/disable",
+    "observed_monotonic_ns": 144665427510,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/latency",
+    "observed_monotonic_ns": 144665447968,
+    "raw_text": "1\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/name",
+    "observed_monotonic_ns": 144665468384,
+    "raw_text": "WFI\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/power",
+    "observed_monotonic_ns": 144665489342,
+    "raw_text": "4294967295\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/rejected",
+    "observed_monotonic_ns": 144665509342,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/residency",
+    "observed_monotonic_ns": 144665529299,
+    "raw_text": "1\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/time",
+    "observed_monotonic_ns": 144665554465,
+    "raw_text": "77356131\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/usage",
+    "observed_monotonic_ns": 144665573840,
+    "raw_text": "126395\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/above",
+    "observed_monotonic_ns": 144665593965,
+    "raw_text": "7555\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/below",
+    "observed_monotonic_ns": 144665615089,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/default_status",
+    "observed_monotonic_ns": 144665635088,
+    "raw_text": "enabled\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/desc",
+    "observed_monotonic_ns": 144665655213,
+    "raw_text": "CPU/cluster powered down\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/disable",
+    "observed_monotonic_ns": 144665674713,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/latency",
+    "observed_monotonic_ns": 144665695170,
+    "raw_text": "10\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/name",
+    "observed_monotonic_ns": 144665714712,
+    "raw_text": "CPU PD\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/power",
+    "observed_monotonic_ns": 144665735003,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/rejected",
+    "observed_monotonic_ns": 144665755127,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/residency",
+    "observed_monotonic_ns": 144665774377,
+    "raw_text": "10000\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/time",
+    "observed_monotonic_ns": 144665798626,
+    "raw_text": "34153552\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/usage",
+    "observed_monotonic_ns": 144665818084,
+    "raw_text": "8436\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/above",
+    "observed_monotonic_ns": 144665837500,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/below",
+    "observed_monotonic_ns": 144665856666,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/default_status",
+    "observed_monotonic_ns": 144665875666,
+    "raw_text": "enabled\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/desc",
+    "observed_monotonic_ns": 144665895290,
+    "raw_text": "CPU clock-gated\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/disable",
+    "observed_monotonic_ns": 144665915290,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/latency",
+    "observed_monotonic_ns": 144665935914,
+    "raw_text": "1\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/name",
+    "observed_monotonic_ns": 144665955456,
+    "raw_text": "WFI\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/power",
+    "observed_monotonic_ns": 144665974622,
+    "raw_text": "4294967295\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/rejected",
+    "observed_monotonic_ns": 144665994371,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/residency",
+    "observed_monotonic_ns": 144666019621,
+    "raw_text": "1\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/time",
+    "observed_monotonic_ns": 144666045203,
+    "raw_text": "68737277\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/usage",
+    "observed_monotonic_ns": 144666064828,
+    "raw_text": "110438\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/above",
+    "observed_monotonic_ns": 144666084536,
+    "raw_text": "9331\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/below",
+    "observed_monotonic_ns": 144666105410,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/default_status",
+    "observed_monotonic_ns": 144666124868,
+    "raw_text": "enabled\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/desc",
+    "observed_monotonic_ns": 144666145284,
+    "raw_text": "CPU/cluster powered down\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/disable",
+    "observed_monotonic_ns": 144666164575,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/latency",
+    "observed_monotonic_ns": 144666184700,
+    "raw_text": "10\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/name",
+    "observed_monotonic_ns": 144666204616,
+    "raw_text": "CPU PD\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/power",
+    "observed_monotonic_ns": 144666224157,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/rejected",
+    "observed_monotonic_ns": 144666243948,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/residency",
+    "observed_monotonic_ns": 144666263906,
+    "raw_text": "10000\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/time",
+    "observed_monotonic_ns": 144666289447,
+    "raw_text": "45476212\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/usage",
+    "observed_monotonic_ns": 144666309072,
+    "raw_text": "10652\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/above",
+    "observed_monotonic_ns": 144666331030,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/below",
+    "observed_monotonic_ns": 144666351612,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/default_status",
+    "observed_monotonic_ns": 144666371612,
+    "raw_text": "enabled\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/desc",
+    "observed_monotonic_ns": 144666400861,
+    "raw_text": "CPU clock-gated\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/disable",
+    "observed_monotonic_ns": 144666421111,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/latency",
+    "observed_monotonic_ns": 144666441443,
+    "raw_text": "1\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/name",
+    "observed_monotonic_ns": 144666461485,
+    "raw_text": "WFI\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/power",
+    "observed_monotonic_ns": 144666482026,
+    "raw_text": "4294967295\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/rejected",
+    "observed_monotonic_ns": 144666502317,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/residency",
+    "observed_monotonic_ns": 144666522150,
+    "raw_text": "1\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/time",
+    "observed_monotonic_ns": 144666554149,
+    "raw_text": "44110932\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/usage",
+    "observed_monotonic_ns": 144666573649,
+    "raw_text": "117182\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/above",
+    "observed_monotonic_ns": 144666592565,
+    "raw_text": "6004\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/below",
+    "observed_monotonic_ns": 144666611481,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/default_status",
+    "observed_monotonic_ns": 144666630230,
+    "raw_text": "enabled\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/desc",
+    "observed_monotonic_ns": 144666649063,
+    "raw_text": "CPU/cluster powered down\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/disable",
+    "observed_monotonic_ns": 144666668438,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/latency",
+    "observed_monotonic_ns": 144666687854,
+    "raw_text": "10\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/name",
+    "observed_monotonic_ns": 144666707937,
+    "raw_text": "CPU PD\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/power",
+    "observed_monotonic_ns": 144666728186,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/rejected",
+    "observed_monotonic_ns": 144666747103,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/residency",
+    "observed_monotonic_ns": 144666766727,
+    "raw_text": "10000\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/time",
+    "observed_monotonic_ns": 144666791935,
+    "raw_text": "85663167\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/usage",
+    "observed_monotonic_ns": 144666812059,
+    "raw_text": "7332\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/above",
+    "observed_monotonic_ns": 144666831184,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/below",
+    "observed_monotonic_ns": 144666851642,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/default_status",
+    "observed_monotonic_ns": 144666871516,
+    "raw_text": "enabled\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/desc",
+    "observed_monotonic_ns": 144666891182,
+    "raw_text": "CPU clock-gated\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/disable",
+    "observed_monotonic_ns": 144666910265,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/latency",
+    "observed_monotonic_ns": 144666929556,
+    "raw_text": "1\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/name",
+    "observed_monotonic_ns": 144666948806,
+    "raw_text": "WFI\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/power",
+    "observed_monotonic_ns": 144666968014,
+    "raw_text": "4294967295\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/rejected",
+    "observed_monotonic_ns": 144666987972,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/residency",
+    "observed_monotonic_ns": 144667012763,
+    "raw_text": "1\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/time",
+    "observed_monotonic_ns": 144667039179,
+    "raw_text": "10817620\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/usage",
+    "observed_monotonic_ns": 144667059428,
+    "raw_text": "38324\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/above",
+    "observed_monotonic_ns": 144667078636,
+    "raw_text": "3586\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/below",
+    "observed_monotonic_ns": 144667099510,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/default_status",
+    "observed_monotonic_ns": 144667119302,
+    "raw_text": "enabled\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/desc",
+    "observed_monotonic_ns": 144667139509,
+    "raw_text": "CPU/cluster powered down\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/disable",
+    "observed_monotonic_ns": 144667159009,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/latency",
+    "observed_monotonic_ns": 144667179050,
+    "raw_text": "10\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/name",
+    "observed_monotonic_ns": 144667199050,
+    "raw_text": "CPU PD\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/power",
+    "observed_monotonic_ns": 144667218424,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/rejected",
+    "observed_monotonic_ns": 144667237757,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/residency",
+    "observed_monotonic_ns": 144667257923,
+    "raw_text": "10000\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/time",
+    "observed_monotonic_ns": 144667282923,
+    "raw_text": "121676313\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/usage",
+    "observed_monotonic_ns": 144667302797,
+    "raw_text": "4612\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/above",
+    "observed_monotonic_ns": 144667321630,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/below",
+    "observed_monotonic_ns": 144667340963,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/default_status",
+    "observed_monotonic_ns": 144667360129,
+    "raw_text": "enabled\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/desc",
+    "observed_monotonic_ns": 144667378670,
+    "raw_text": "CPU clock-gated\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/disable",
+    "observed_monotonic_ns": 144667398045,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/latency",
+    "observed_monotonic_ns": 144667416669,
+    "raw_text": "1\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/name",
+    "observed_monotonic_ns": 144667435294,
+    "raw_text": "WFI\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/power",
+    "observed_monotonic_ns": 144667454335,
+    "raw_text": "4294967295\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/rejected",
+    "observed_monotonic_ns": 144667473085,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/residency",
+    "observed_monotonic_ns": 144667492542,
+    "raw_text": "1\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/time",
+    "observed_monotonic_ns": 144667524833,
+    "raw_text": "9539176\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/usage",
+    "observed_monotonic_ns": 144667544999,
+    "raw_text": "30791\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/above",
+    "observed_monotonic_ns": 144667564916,
+    "raw_text": "2526\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/below",
+    "observed_monotonic_ns": 144667584582,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/default_status",
+    "observed_monotonic_ns": 144667607540,
+    "raw_text": "enabled\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/desc",
+    "observed_monotonic_ns": 144667627247,
+    "raw_text": "CPU/cluster powered down\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/disable",
+    "observed_monotonic_ns": 144667650538,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/latency",
+    "observed_monotonic_ns": 144667675454,
+    "raw_text": "10\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/name",
+    "observed_monotonic_ns": 144667695204,
+    "raw_text": "CPU PD\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/power",
+    "observed_monotonic_ns": 144667714662,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/rejected",
+    "observed_monotonic_ns": 144667734245,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/residency",
+    "observed_monotonic_ns": 144667753953,
+    "raw_text": "10000\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/time",
+    "observed_monotonic_ns": 144667778744,
+    "raw_text": "122891376\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/usage",
+    "observed_monotonic_ns": 144667798868,
+    "raw_text": "3300\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/above",
+    "observed_monotonic_ns": 144667817743,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/below",
+    "observed_monotonic_ns": 144667837284,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/default_status",
+    "observed_monotonic_ns": 144667856492,
+    "raw_text": "enabled\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/desc",
+    "observed_monotonic_ns": 144667876200,
+    "raw_text": "CPU clock-gated\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/disable",
+    "observed_monotonic_ns": 144667896032,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/latency",
+    "observed_monotonic_ns": 144667914865,
+    "raw_text": "1\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/name",
+    "observed_monotonic_ns": 144667934115,
+    "raw_text": "WFI\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/power",
+    "observed_monotonic_ns": 144667953156,
+    "raw_text": "4294967295\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/rejected",
+    "observed_monotonic_ns": 144667972530,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/residency",
+    "observed_monotonic_ns": 144667991738,
+    "raw_text": "1\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/time",
+    "observed_monotonic_ns": 144668023154,
+    "raw_text": "10987927\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/usage",
+    "observed_monotonic_ns": 144668043195,
+    "raw_text": "40923\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/above",
+    "observed_monotonic_ns": 144668063028,
+    "raw_text": "2106\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/below",
+    "observed_monotonic_ns": 144668082819,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/default_status",
+    "observed_monotonic_ns": 144668101902,
+    "raw_text": "enabled\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/desc",
+    "observed_monotonic_ns": 144668120902,
+    "raw_text": "CPU/cluster powered down\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/disable",
+    "observed_monotonic_ns": 144668140526,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/latency",
+    "observed_monotonic_ns": 144668159192,
+    "raw_text": "10\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/name",
+    "observed_monotonic_ns": 144668181442,
+    "raw_text": "CPU PD\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/power",
+    "observed_monotonic_ns": 144668200316,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/rejected",
+    "observed_monotonic_ns": 144668219066,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/residency",
+    "observed_monotonic_ns": 144668238066,
+    "raw_text": "10000\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/time",
+    "observed_monotonic_ns": 144668261482,
+    "raw_text": "123327495\n"
+  },
+  {
+    "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/usage",
+    "observed_monotonic_ns": 144668280314,
+    "raw_text": "2647\n"
+  },
+  {
+    "path": "/sys/class/power_supply/macsmc-ac/online",
+    "observed_monotonic_ns": 144668306647,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/class/power_supply/tps6598x-source-psy-0-0038/online",
+    "observed_monotonic_ns": 144668540350,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/class/power_supply/tps6598x-source-psy-0-003f/online",
+    "observed_monotonic_ns": 144668569182,
+    "raw_text": "0\n"
+  },
+  {
+    "path": "/sys/class/power_supply/macsmc-battery/status",
+    "observed_monotonic_ns": 144668598973,
+    "raw_text": "Discharging\n"
+  },
+  {
+    "path": "/sys/class/power_supply/macsmc-battery/capacity",
+    "observed_monotonic_ns": 144669148001,
+    "raw_text": "66\n"
+  },
+  {
+    "path": "/sys/class/power_supply/macsmc-battery/current_now",
+    "observed_monotonic_ns": 144669440411,
+    "raw_text": "-375000\n"
+  },
+  {
+    "path": "/sys/class/power_supply/macsmc-battery/voltage_now",
+    "observed_monotonic_ns": 144669690196,
+    "raw_text": "11743000\n"
+  },
+  {
+    "path": "/sys/class/backlight/apple-panel-bl/brightness",
+    "observed_monotonic_ns": 144669890191,
+    "raw_text": "155\n"
+  },
+  {
+    "path": "/sys/class/backlight/apple-panel-bl/actual_brightness",
+    "observed_monotonic_ns": 144669940732,
+    "raw_text": "164\n"
+  },
+  {
+    "path": "/sys/class/backlight/apple-panel-bl/max_brightness",
+    "observed_monotonic_ns": 144669990522,
+    "raw_text": "420\n"
+  },
+  {
+    "path": "/sys/class/thermal/thermal_zone0/temp",
+    "observed_monotonic_ns": 144670043896,
+    "raw_text": "34300\n"
+  }
+]

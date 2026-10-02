@@ -1,0 +1,864 @@
+diff --git c/drivers/cpufreq/apple-soc-cpufreq.c i/drivers/cpufreq/apple-soc-cpufreq.c
+index f2a1e91..d24538d 100644
+--- c/drivers/cpufreq/apple-soc-cpufreq.c
++++ i/drivers/cpufreq/apple-soc-cpufreq.c
+@@ -21,6 +21,7 @@
+ #include <linux/of_address.h>
+ #include <linux/pm_opp.h>
+ #include <linux/slab.h>
++#include <linux/soc/apple/apsc-observer.h>
+ 
+ #define APPLE_DVFS_CMD				0x20
+ #define APPLE_DVFS_CMD_BUSY			BIT(31)
+@@ -196,6 +197,9 @@ static int apple_soc_cpufreq_set_target(struct cpufreq_policy *policy,
+ 	struct apple_cpu_priv *priv = policy->driver_data;
+ 	unsigned int pstate = policy->freq_table[index].driver_data;
+ 	u64 reg;
++#ifdef CONFIG_ARM_APPLE_APSC_OBSERVER
++	u64 pre_cmd;
++#endif
+ 
+ 	/* OPP level is a hardware ID, not the frequency-table array index. */
+ 	if (pstate < priv->info->min_pstate || pstate > priv->info->max_pstate)
+@@ -206,6 +210,9 @@ static int apple_soc_cpufreq_set_target(struct cpufreq_policy *policy,
+ 	if (readq_poll_timeout_atomic(priv->reg_base + APPLE_DVFS_CMD, reg,
+ 				      !(reg & APPLE_DVFS_CMD_BUSY), 2,
+ 				      APPLE_DVFS_TRANSITION_TIMEOUT)) {
++#ifdef CONFIG_ARM_APPLE_APSC_OBSERVER
++		apple_apsc_observer_dvfs_poll_fail(policy, index, pstate, reg, -EIO);
++#endif
+ 		if (priv->info->verify_transition) {
+ 			priv->transition_failed = true;
+ 			dev_err(priv->cpu_dev,
+@@ -228,6 +235,10 @@ static int apple_soc_cpufreq_set_target(struct cpufreq_policy *policy,
+ 			return 0;
+ 	}
+ 
++#ifdef CONFIG_ARM_APPLE_APSC_OBSERVER
++	pre_cmd = reg;
++#endif
++
+ 	reg &= ~priv->info->ps1_mask;
+ 	reg |= pstate << priv->info->ps1_shift;
+ 	if (priv->info->has_ps2) {
+@@ -236,7 +247,13 @@ static int apple_soc_cpufreq_set_target(struct cpufreq_policy *policy,
+ 	}
+ 	reg |= APPLE_DVFS_CMD_SET;
+ 
++#ifdef CONFIG_ARM_APPLE_APSC_OBSERVER
++	apple_apsc_observer_dvfs_write(policy,
++			priv->reg_base + APPLE_DVFS_CMD, index,
++			pstate, pre_cmd, reg);
++#else
+ 	writeq_relaxed(reg, priv->reg_base + APPLE_DVFS_CMD);
++#endif
+ 
+ 	if (priv->info->verify_transition &&
+ 	    readq_poll_timeout_atomic(priv->reg_base + APPLE_DVFS_CMD, reg,
+diff --git c/drivers/cpuidle/Kconfig.arm i/drivers/cpuidle/Kconfig.arm
+index c6870f0..24080cc 100644
+--- c/drivers/cpuidle/Kconfig.arm
++++ i/drivers/cpuidle/Kconfig.arm
+@@ -138,3 +138,13 @@ config ARM_APPLE_CPUIDLE
+ 	select CPU_IDLE_MULTIPLE_DRIVERS
+ 	help
+ 	  Select this to enable cpuidle on Apple SoCs.
++
++config ARM_APPLE_APSC_OBSERVER
++	bool "Experimental Apple T8103 APSC CPU-idle observer"
++	depends on ARM_APPLE_CPUIDLE && ARM_APPLE_SOC_CPUFREQ=y && DEBUG_FS
++	depends on ARCH_APPLE
++	default n
++	help
++	  Build a default-off, one-shot diagnostic recorder for the Apple
++	  T8103 cpufreq command and deep-idle software entry path. It does
++	  not alter idle or DVFS policy. Capture is armed through debugfs.
+diff --git c/drivers/cpuidle/Makefile i/drivers/cpuidle/Makefile
+index f9e7a71..f805e3a 100644
+--- c/drivers/cpuidle/Makefile
++++ i/drivers/cpuidle/Makefile
+@@ -30,6 +30,7 @@ obj-$(CONFIG_ARM_PSCI_CPUIDLE_DOMAIN)	+= cpuidle-psci-domain.o
+ obj-$(CONFIG_ARM_TEGRA_CPUIDLE)		+= cpuidle-tegra.o
+ obj-$(CONFIG_ARM_QCOM_SPM_CPUIDLE)	+= cpuidle-qcom-spm.o
+ obj-$(CONFIG_ARM_APPLE_CPUIDLE)		+= cpuidle-apple.o
++obj-$(CONFIG_ARM_APPLE_APSC_OBSERVER)	+= apple-apsc-observer.o
+ 
+ ###############################################################################
+ # MIPS drivers
+diff --git c/drivers/cpuidle/apple-apsc-observer.c i/drivers/cpuidle/apple-apsc-observer.c
+new file mode 100644
+index 0000000..0eeb22a
+--- /dev/null
++++ i/drivers/cpuidle/apple-apsc-observer.c
+@@ -0,0 +1,687 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Experimental T8103 APSC observer. This records CPU-side events only;
++ * neither the MMIO sample nor a WFI boundary establishes rail power state.
++ */
++#include <linux/atomic.h>
++#include <linux/cpu.h>
++#include <linux/cpufreq.h>
++#include <linux/cpumask.h>
++#include <linux/debugfs.h>
++#include <linux/delay.h>
++#include <linux/err.h>
++#include <linux/fs.h>
++#include <linux/init.h>
++#include <linux/io.h>
++#include <linux/ioport.h>
++#include <linux/kernel.h>
++#include <linux/mm.h>
++#include <linux/module.h>
++#include <linux/mutex.h>
++#include <linux/of.h>
++#include <linux/of_address.h>
++#include <linux/preempt.h>
++#include <linux/rcupdate.h>
++#include <linux/seq_file.h>
++#include <linux/slab.h>
++#include <linux/smp.h>
++#include <linux/uaccess.h>
++#include <linux/vmalloc.h>
++#include <asm/arch_timer.h>
++#include <asm/sysreg.h>
++#include <linux/soc/apple/apsc-observer.h>
++
++#define APSC_CPUS 8
++#define APSC_CLUSTERS 2
++#define APSC_IDLE_CAP 2048
++#define APSC_DVFS_CAP 4096
++#define APSC_CMD_OFFSET 0x20
++#define APSC_VALID_PRE  BIT(0)
++#define APSC_VALID_CMD  BIT(1)
++#define APSC_VALID_POLICY BIT(2)
++
++enum apsc_kind { APSC_DVFS, APSC_IDLE_ENTER, APSC_IDLE_EXIT, APSC_PM_FAIL };
++enum apsc_mode { APSC_RECORDS, APSC_MMIO };
++enum apsc_state { APSC_READY, APSC_ACTIVE, APSC_COMPLETE, APSC_INVALID };
++
++struct apsc_event {
++	u64 token, t0, t1, policy_mask, pre_cmd, cmd;
++	u32 seq, cpu, cluster, policy_cpu, flags;
++	u32 requested_index, requested_pstate;
++	s32 ret;
++	u8 kind, valid, fast_switch, committed;
++};
++
++struct apsc_stream {
++	atomic_t attempts;
++	struct apsc_event *events;
++	u32 capacity;
++};
++
++static struct apsc_stream idle_stream[APSC_CPUS];
++static struct apsc_stream dvfs_stream[APSC_CLUSTERS];
++static void __iomem *cluster_base[APSC_CLUSTERS];
++static u64 cluster_cpus[APSC_CLUSTERS];
++static u64 cluster_cmd_phys[APSC_CLUSTERS];
++static u64 cluster_resource_size[APSC_CLUSTERS];
++static int cpu_cluster[APSC_CPUS];
++static u64 idle_token[APSC_CPUS];
++static unsigned int cluster_policy_cpu[APSC_CLUSTERS];
++static u64 policy_mask_start[APSC_CLUSTERS], policy_mask_end[APSC_CLUSTERS];
++static int policy_cpu_start[APSC_CLUSTERS], policy_cpu_end[APSC_CLUSTERS];
++static int fast_start[APSC_CLUSTERS], fast_end[APSC_CLUSTERS];
++static u64 start_online_mask, end_online_mask;
++static u64 start_tick, stop_tick, end_tick, counter_frequency;
++static enum apsc_mode capture_mode;
++static enum apsc_state capture_state;
++static bool capture_used;
++static bool capture_active;
++static bool capture_interrupted;
++static DEFINE_MUTEX(capture_lock);
++static struct dentry *observer_dir;
++
++static u64 apsc_now(void)
++{
++	return arch_timer_read_cntpct_el0();
++}
++
++static u64 apsc_online_mask(void)
++{
++	u64 mask = 0;
++	int cpu;
++
++	for_each_online_cpu(cpu)
++		if (cpu < 64)
++			mask |= BIT_ULL(cpu);
++	return mask;
++}
++
++static struct apsc_event *apsc_reserve(struct apsc_stream *stream, u32 *seq)
++{
++	int index = atomic_fetch_inc_relaxed(&stream->attempts);
++
++	*seq = index;
++	if (index >= stream->capacity)
++		return NULL;
++	return &stream->events[index];
++}
++
++static void apsc_publish(struct apsc_event *e)
++{
++	smp_store_release(&e->committed, 1);
++}
++
++static u64 apsc_policy_mask(const struct cpufreq_policy *policy)
++{
++	u64 mask = 0;
++	int cpu;
++
++	for_each_cpu(cpu, policy->related_cpus)
++		if (cpu < 64)
++			mask |= BIT_ULL(cpu);
++	return mask;
++}
++
++static void apsc_record_dvfs(struct cpufreq_policy *policy,
++			     u32 requested_index, u32 requested_pstate,
++			     u64 pre_cmd, u64 cmd, int ret,
++			     u64 t0, u64 t1, bool wrote)
++{
++	struct apsc_event *e;
++	u32 seq;
++	int writer = raw_smp_processor_id();
++	int target = policy->cpu;
++	int cluster;
++
++	if (target >= APSC_CPUS)
++		return;
++	cluster = READ_ONCE(cpu_cluster[target]);
++	if (cluster < 0 || cluster >= APSC_CLUSTERS)
++		return;
++	e = apsc_reserve(&dvfs_stream[cluster], &seq);
++	if (!e)
++		return;
++	e->kind = APSC_DVFS;
++	e->seq = seq;
++	e->cpu = writer;
++	e->cluster = cluster;
++	e->policy_cpu = target;
++	e->policy_mask = apsc_policy_mask(policy);
++	e->fast_switch = READ_ONCE(policy->fast_switch_enabled);
++	e->requested_index = requested_index;
++	e->requested_pstate = requested_pstate;
++	e->pre_cmd = pre_cmd;
++	e->cmd = cmd;
++	e->t0 = t0;
++	e->t1 = t1;
++	e->ret = ret;
++	e->valid = APSC_VALID_PRE | APSC_VALID_POLICY;
++	if (wrote)
++		e->valid |= APSC_VALID_CMD;
++	apsc_publish(e);
++}
++
++void apple_apsc_observer_dvfs_write(struct cpufreq_policy *policy,
++				   void __iomem *cmd_addr, u32 requested_index,
++				   u32 requested_pstate, u64 pre_cmd, u64 cmd)
++{
++	u64 t0, t1;
++
++	/* This region is an RCU-sched reader for the stop/grace-period drain. */
++	preempt_disable_notrace();
++	if (unlikely(!smp_load_acquire(&capture_active))) {
++		writeq_relaxed(cmd, cmd_addr);
++		preempt_enable_no_resched_notrace();
++		return;
++	}
++	t0 = apsc_now();
++	writeq_relaxed(cmd, cmd_addr); /* The original driver's one SET write. */
++	t1 = apsc_now();
++	apsc_record_dvfs(policy, requested_index, requested_pstate,
++			 pre_cmd, cmd, 0, t0, t1, true);
++	preempt_enable_no_resched_notrace();
++}
++
++void apple_apsc_observer_dvfs_poll_fail(struct cpufreq_policy *policy,
++				       u32 requested_index, u32 requested_pstate,
++				       u64 pre_cmd, int ret)
++{
++	u64 tick;
++
++	preempt_disable_notrace();
++	if (smp_load_acquire(&capture_active)) {
++		tick = apsc_now();
++		apsc_record_dvfs(policy, requested_index, requested_pstate,
++				 pre_cmd, 0, ret, tick, tick, false);
++	}
++	preempt_enable_no_resched_notrace();
++}
++
++u64 apple_apsc_observer_idle_enter(void)
++{
++	struct apsc_event *e;
++	u64 t0, t1, token, cmd = 0;
++	u32 seq;
++	int cpu;
++	int cluster;
++	int ret = 0;
++	u32 flags = 0;
++
++	preempt_disable_notrace();
++	cpu = raw_smp_processor_id();
++	if (unlikely(!smp_load_acquire(&capture_active)) || cpu >= APSC_CPUS)
++		goto inactive;
++	cluster = READ_ONCE(cpu_cluster[cpu]);
++	if (cluster < 0 || cluster >= APSC_CLUSTERS)
++		goto inactive;
++	token = ++idle_token[cpu];
++	e = apsc_reserve(&idle_stream[cpu], &seq);
++	if (!e)
++		goto done;
++	t0 = apsc_now();
++	if (capture_mode == APSC_MMIO) {
++		if (likely(cluster_base[cluster])) {
++			/* readq orders the returned MMIO value before the second tick. */
++			cmd = readq(cluster_base[cluster] + APSC_CMD_OFFSET);
++			flags |= 1;
++		} else {
++			ret = -ENODEV;
++		}
++	}
++	t1 = apsc_now();
++	e->kind = APSC_IDLE_ENTER;
++	e->seq = seq;
++	e->cpu = cpu;
++	e->cluster = cluster;
++	e->token = token;
++	e->t0 = t0;
++	e->t1 = t1;
++	e->cmd = cmd;
++	e->ret = ret;
++	e->flags = flags;
++	e->valid = flags ? APSC_VALID_CMD : 0;
++	apsc_publish(e);
++done:
++	preempt_enable_no_resched_notrace();
++	return token;
++inactive:
++	preempt_enable_no_resched_notrace();
++	return 0;
++}
++
++void apple_apsc_observer_idle_exit(u64 token)
++{
++	struct apsc_event *e;
++	u32 seq;
++	u64 tick;
++	int cpu;
++
++	preempt_disable_notrace();
++	cpu = raw_smp_processor_id();
++	if (!token || unlikely(!smp_load_acquire(&capture_active)) || cpu >= APSC_CPUS)
++		goto done;
++	tick = apsc_now();
++	e = apsc_reserve(&idle_stream[cpu], &seq);
++	if (!e)
++		goto done;
++	e->kind = APSC_IDLE_EXIT;
++	e->seq = seq;
++	e->cpu = cpu;
++	e->cluster = cpu_cluster[cpu];
++	e->token = token;
++	e->t0 = tick;
++	e->t1 = tick;
++	apsc_publish(e);
++done:
++	preempt_enable_no_resched_notrace();
++}
++
++void apple_apsc_observer_cpu_pm_fail(int ret)
++{
++	struct apsc_event *e;
++	u32 seq;
++	u64 tick;
++	int cpu;
++
++	preempt_disable_notrace();
++	cpu = raw_smp_processor_id();
++	if (unlikely(!smp_load_acquire(&capture_active)) || cpu >= APSC_CPUS)
++		goto done;
++	tick = apsc_now();
++	e = apsc_reserve(&idle_stream[cpu], &seq);
++	if (!e)
++		goto done;
++	e->kind = APSC_PM_FAIL;
++	e->seq = seq;
++	e->cpu = cpu;
++	e->cluster = cpu_cluster[cpu];
++	e->token = ++idle_token[cpu];
++	e->t0 = tick;
++	e->t1 = tick;
++	e->ret = ret;
++	apsc_publish(e);
++done:
++	preempt_enable_no_resched_notrace();
++}
++
++static int apsc_snapshot_policy(int cluster, bool at_start)
++{
++	struct cpufreq_policy *policy;
++	u64 mask;
++	int fast, cpu;
++
++	policy = cpufreq_cpu_get(cluster_policy_cpu[cluster]);
++	if (!policy)
++		return -ENODEV;
++	mask = apsc_policy_mask(policy);
++	fast = READ_ONCE(policy->fast_switch_enabled);
++	cpu = policy->cpu;
++	cpufreq_cpu_put(policy);
++	if (mask != cluster_cpus[cluster])
++		return -EINVAL;
++	if (at_start) {
++		policy_mask_start[cluster] = mask;
++		policy_cpu_start[cluster] = cpu;
++		fast_start[cluster] = fast;
++	} else {
++		policy_mask_end[cluster] = mask;
++		policy_cpu_end[cluster] = cpu;
++		fast_end[cluster] = fast;
++	}
++	return 0;
++}
++
++static ssize_t apsc_capture_write(struct file *file, const char __user *user,
++				  size_t count, loff_t *ppos)
++{
++	char input[40], mode[16], extra;
++	enum apsc_mode requested_mode;
++	unsigned int duration;
++	int ret, i;
++
++	if (!count || count >= sizeof(input))
++		return -EINVAL;
++	if (copy_from_user(input, user, count))
++		return -EFAULT;
++	input[count] = '\0';
++	if (sscanf(input, "%15s %u %c", mode, &duration, &extra) != 2 ||
++	    duration < 100 || duration > 10000)
++		return -EINVAL;
++	if (!strcmp(mode, "records"))
++		requested_mode = APSC_RECORDS;
++	else if (!strcmp(mode, "mmio"))
++		requested_mode = APSC_MMIO;
++	else
++		return -EINVAL;
++	if (!mutex_trylock(&capture_lock))
++		return -EBUSY;
++	if (cmpxchg(&capture_used, false, true))
++		goto used;
++	capture_mode = requested_mode;
++	WRITE_ONCE(capture_state, APSC_ACTIVE);
++
++	/* Sleeping control task owns hotplug exclusion; no idle hook takes it. */
++	cpus_read_lock();
++	start_online_mask = apsc_online_mask();
++	if (start_online_mask != 0xff) {
++		ret = -EINVAL;
++		goto invalid;
++	}
++	for (i = 0; i < APSC_CLUSTERS; i++) {
++		ret = apsc_snapshot_policy(i, true);
++		if (ret)
++			goto invalid;
++	}
++	start_tick = apsc_now();
++	smp_store_release(&capture_active, true);
++	capture_interrupted = !!msleep_interruptible(duration);
++	smp_store_release(&capture_active, false);
++	stop_tick = apsc_now();
++	synchronize_rcu();
++	end_tick = apsc_now();
++	end_online_mask = apsc_online_mask();
++	ret = 0;
++	for (i = 0; i < APSC_CLUSTERS; i++) {
++		if (apsc_snapshot_policy(i, false))
++			ret = -EINVAL;
++		if (policy_mask_start[i] != policy_mask_end[i] ||
++		    policy_cpu_start[i] != policy_cpu_end[i] ||
++		    fast_start[i] != fast_end[i])
++			ret = -EINVAL;
++	}
++	if (capture_interrupted || end_online_mask != start_online_mask)
++		ret = -EINVAL;
++	WRITE_ONCE(capture_state, ret ? APSC_INVALID : APSC_COMPLETE);
++	cpus_read_unlock();
++	mutex_unlock(&capture_lock);
++	return capture_interrupted ? -EINTR : count;
++
++invalid:
++	WRITE_ONCE(capture_state, APSC_INVALID);
++	cpus_read_unlock();
++	mutex_unlock(&capture_lock);
++	return ret;
++used:
++	mutex_unlock(&capture_lock);
++	return -EBUSY;
++}
++
++static const char *apsc_state_name(void)
++{
++	switch (READ_ONCE(capture_state)) {
++	case APSC_READY: return "ready";
++	case APSC_ACTIVE: return "active";
++	case APSC_COMPLETE: return "complete";
++	default: return "invalid";
++	}
++}
++
++static void apsc_stream_status(struct seq_file *s, const char *prefix,
++			       int id, struct apsc_stream *stream)
++{
++	u32 attempts = atomic_read(&stream->attempts);
++	u32 slots = min(attempts, stream->capacity);
++	u32 committed = 0, i;
++
++	for (i = 0; i < slots; i++)
++		committed += !!smp_load_acquire(&stream->events[i].committed);
++	seq_printf(s, "%s%d_attempts=%u\n%s%d_committed=%u\n",
++		   prefix, id, attempts, prefix, id, committed);
++	seq_printf(s, "%s%d_overflow=%u\n%s%d_missing_commit=%u\n",
++		   prefix, id, attempts - slots, prefix, id, slots - committed);
++}
++
++static int apsc_status_show(struct seq_file *s, void *unused)
++{
++	int i;
++
++	if (!mutex_trylock(&capture_lock))
++		return -EBUSY;
++	seq_puts(s, "abi=1\n");
++	seq_printf(s, "state=%s\nmode=%s\n", apsc_state_name(),
++		   capture_mode == APSC_MMIO ? "mmio" : "records");
++	seq_printf(s, "cntfrq=%llu\nstart_tick=%llu\nstop_tick=%llu\nend_tick=%llu\n",
++		   counter_frequency, start_tick, stop_tick, end_tick);
++	seq_printf(s, "start_online_mask=0x%llx\nend_online_mask=0x%llx\n",
++		   start_online_mask, end_online_mask);
++	seq_printf(s, "interrupted=%u\n", capture_interrupted);
++	for (i = 0; i < APSC_CLUSTERS; i++) {
++		seq_printf(s, "cluster%d_cpus=0x%llx\n", i, cluster_cpus[i]);
++		seq_printf(s, "cluster%d_cmd_phys=0x%llx\ncluster%d_resource_size=0x%llx\n",
++			   i, cluster_cmd_phys[i], i, cluster_resource_size[i]);
++		seq_printf(s, "cluster%d_policy_mask_start=0x%llx\ncluster%d_policy_mask_end=0x%llx\n",
++			   i, policy_mask_start[i], i, policy_mask_end[i]);
++		seq_printf(s, "cluster%d_policy_cpu_start=%d\ncluster%d_policy_cpu_end=%d\n",
++			   i, policy_cpu_start[i], i, policy_cpu_end[i]);
++		seq_printf(s, "cluster%d_fast_switch_start=%d\ncluster%d_fast_switch_end=%d\n",
++			   i, fast_start[i], i, fast_end[i]);
++	}
++	for (i = 0; i < APSC_CPUS; i++)
++		apsc_stream_status(s, "idle", i, &idle_stream[i]);
++	for (i = 0; i < APSC_CLUSTERS; i++)
++		apsc_stream_status(s, "dvfs", i, &dvfs_stream[i]);
++	mutex_unlock(&capture_lock);
++	return 0;
++}
++
++static int apsc_status_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, apsc_status_show, NULL);
++}
++
++static const struct file_operations apsc_status_fops = {
++	.owner = THIS_MODULE,
++	.open = apsc_status_open,
++	.read = seq_read,
++	.llseek = seq_lseek,
++	.release = single_release,
++};
++
++static const char *apsc_kind_name(u8 kind)
++{
++	switch (kind) {
++	case APSC_DVFS: return "dvfs";
++	case APSC_IDLE_ENTER: return "idle_enter";
++	case APSC_IDLE_EXIT: return "idle_exit";
++	default: return "cpu_pm_fail";
++	}
++}
++
++static void apsc_event_csv(struct seq_file *s, const struct apsc_event *e)
++{
++	seq_printf(s, "%s,%u,%u,%u,", apsc_kind_name(e->kind),
++		   e->seq, e->cpu, e->cluster);
++	if (e->valid & APSC_VALID_POLICY)
++		seq_printf(s, "%u,0x%llx,%u,", e->policy_cpu,
++			   e->policy_mask, e->fast_switch);
++	else
++		seq_puts(s, ",,,");
++	if (e->kind == APSC_DVFS)
++		seq_printf(s, "%u,%u,", e->requested_index, e->requested_pstate);
++	else
++		seq_puts(s, ",,");
++	if (e->kind != APSC_DVFS)
++		seq_printf(s, "%llu,", e->token);
++	else
++		seq_putc(s, ',');
++	seq_printf(s, "%llu,%llu,", e->t0, e->t1);
++	if (e->valid & APSC_VALID_PRE)
++		seq_printf(s, "0x%llx,", e->pre_cmd);
++	else
++		seq_putc(s, ',');
++	if (e->valid & APSC_VALID_CMD)
++		seq_printf(s, "0x%llx,", e->cmd);
++	else
++		seq_putc(s, ',');
++	seq_printf(s, "%d,%u\n", e->ret, e->flags);
++}
++
++static void apsc_stream_csv(struct seq_file *s, struct apsc_stream *stream)
++{
++	u32 slots = min_t(u32, atomic_read(&stream->attempts), stream->capacity);
++	u32 i;
++
++	for (i = 0; i < slots; i++)
++		if (smp_load_acquire(&stream->events[i].committed))
++			apsc_event_csv(s, &stream->events[i]);
++}
++
++static int apsc_events_show(struct seq_file *s, void *unused)
++{
++	int i;
++
++	if (!mutex_trylock(&capture_lock))
++		return -EBUSY;
++	seq_puts(s, "kind,seq,cpu,cluster,policy_cpu,policy_mask,fast_switch,requested_index,requested_pstate,token,t0,t1,pre_cmd,cmd,ret,flags\n");
++	for (i = 0; i < APSC_CPUS; i++)
++		apsc_stream_csv(s, &idle_stream[i]);
++	for (i = 0; i < APSC_CLUSTERS; i++)
++		apsc_stream_csv(s, &dvfs_stream[i]);
++	mutex_unlock(&capture_lock);
++	return 0;
++}
++
++static int apsc_events_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, apsc_events_show, NULL);
++}
++
++static const struct file_operations apsc_events_fops = {
++	.owner = THIS_MODULE,
++	.open = apsc_events_open,
++	.read = seq_read,
++	.llseek = seq_lseek,
++	.release = single_release,
++};
++
++static const struct file_operations apsc_capture_fops = {
++	.owner = THIS_MODULE,
++	.write = apsc_capture_write,
++	.llseek = noop_llseek,
++};
++
++static int __init apsc_map_boot_dt(void)
++{
++	struct device_node *nodes[APSC_CLUSTERS] = {};
++	struct device_node *cpu_np, *pd;
++	struct resource res;
++	int cpu, cluster, found = 0, ret = -ENODEV;
++
++	if (!of_machine_is_compatible("apple,t8103") ||
++	    num_possible_cpus() != APSC_CPUS)
++		return -ENODEV;
++	for_each_possible_cpu(cpu) {
++		if (cpu >= APSC_CPUS)
++			goto out;
++		cpu_np = of_cpu_device_node_get(cpu);
++		if (!cpu_np)
++			goto out;
++		pd = of_parse_phandle(cpu_np, "performance-domains", 0);
++		of_node_put(cpu_np);
++		if (!pd)
++			goto out;
++		if (!of_device_is_compatible(pd, "apple,t8103-cluster-cpufreq") ||
++		    of_address_to_resource(pd, 0, &res) ||
++		    resource_size(&res) < APSC_CMD_OFFSET + sizeof(u64)) {
++			of_node_put(pd);
++			goto out;
++		}
++		for (cluster = 0; cluster < found; cluster++)
++			if (nodes[cluster] == pd)
++				break;
++		if (cluster == found) {
++			if (found >= APSC_CLUSTERS) {
++				of_node_put(pd);
++				goto out;
++			}
++			nodes[found] = pd;
++			cluster_cmd_phys[found] = res.start + APSC_CMD_OFFSET;
++			cluster_resource_size[found] = resource_size(&res);
++			cluster_base[found] = of_iomap(pd, 0);
++			if (!cluster_base[found]) {
++				nodes[found] = NULL;
++				of_node_put(pd);
++				goto out;
++			}
++			cluster_policy_cpu[found] = cpu;
++			found++;
++		} else {
++			of_node_put(pd);
++		}
++		cpu_cluster[cpu] = cluster;
++		cluster_cpus[cluster] |= BIT_ULL(cpu);
++	}
++	if (found == APSC_CLUSTERS)
++		ret = 0;
++out:
++	for (cluster = 0; cluster < found; cluster++)
++		of_node_put(nodes[cluster]);
++	if (ret)
++		for (cluster = 0; cluster < APSC_CLUSTERS; cluster++)
++			if (cluster_base[cluster]) {
++				iounmap(cluster_base[cluster]);
++				cluster_base[cluster] = NULL;
++			}
++	return ret;
++}
++
++static int __init apsc_observer_init(void)
++{
++	struct dentry *d;
++	int i, ret;
++
++	ret = apsc_map_boot_dt();
++	if (ret)
++		return ret;
++	for (i = 0; i < APSC_CPUS; i++) {
++		idle_stream[i].capacity = APSC_IDLE_CAP;
++		idle_stream[i].events = kvcalloc(APSC_IDLE_CAP,
++						 sizeof(struct apsc_event), GFP_KERNEL);
++		if (!idle_stream[i].events) {
++			ret = -ENOMEM;
++			goto out;
++		}
++	}
++	for (i = 0; i < APSC_CLUSTERS; i++) {
++		dvfs_stream[i].capacity = APSC_DVFS_CAP;
++		dvfs_stream[i].events = kvcalloc(APSC_DVFS_CAP,
++						 sizeof(struct apsc_event), GFP_KERNEL);
++		if (!dvfs_stream[i].events) {
++			ret = -ENOMEM;
++			goto out;
++		}
++	}
++	counter_frequency = read_sysreg(cntfrq_el0);
++	capture_state = APSC_READY;
++	observer_dir = debugfs_create_dir("apple_apsc_observer", NULL);
++	if (IS_ERR_OR_NULL(observer_dir)) {
++		ret = -ENODEV;
++		goto out;
++	}
++	d = debugfs_create_file("capture", 0200, observer_dir, NULL,
++				&apsc_capture_fops);
++	if (IS_ERR_OR_NULL(d))
++		goto debugfs_error;
++	d = debugfs_create_file("status", 0400, observer_dir, NULL,
++				&apsc_status_fops);
++	if (IS_ERR_OR_NULL(d))
++		goto debugfs_error;
++	d = debugfs_create_file("events.csv", 0400, observer_dir, NULL,
++				&apsc_events_fops);
++	if (IS_ERR_OR_NULL(d))
++		goto debugfs_error;
++	return 0;
++debugfs_error:
++	ret = -ENODEV;
++	debugfs_remove_recursive(observer_dir);
++out:
++	for (i = 0; i < APSC_CPUS; i++)
++		kvfree(idle_stream[i].events);
++	for (i = 0; i < APSC_CLUSTERS; i++) {
++		kvfree(dvfs_stream[i].events);
++		if (cluster_base[i])
++			iounmap(cluster_base[i]);
++	}
++	return ret;
++}
++late_initcall(apsc_observer_init);
+diff --git c/drivers/cpuidle/cpuidle-apple.c i/drivers/cpuidle/cpuidle-apple.c
+index 67c7846..09bcc64 100644
+--- c/drivers/cpuidle/cpuidle-apple.c
++++ i/drivers/cpuidle/cpuidle-apple.c
+@@ -10,6 +10,7 @@
+ #include <linux/cpu_pm.h>
+ #include <linux/platform_device.h>
+ #include <linux/of.h>
++#include <linux/soc/apple/apsc-observer.h>
+ #include <asm/cpuidle.h>
+ 
+ enum idle_state {
+@@ -67,13 +68,31 @@ static __cpuidle int apple_enter_wfi(struct cpuidle_device *dev, struct cpuidle_
+ 
+ static __cpuidle int apple_enter_idle(struct cpuidle_device *dev, struct cpuidle_driver *drv, int index)
+ {
++#ifdef CONFIG_ARM_APPLE_APSC_OBSERVER
++	u64 observer_token;
++	int pm_ret;
++#endif
+ 	/*
+ 	 * Deep WFI will clobber FP state, among other things.
+ 	 * The CPU PM notifier will take care of saving that and anything else
+ 	 * that needs to be notified of the CPU powering down.
+ 	 */
++#ifdef CONFIG_ARM_APPLE_APSC_OBSERVER
++	pm_ret = cpu_pm_enter();
++	if (pm_ret) {
++		instrumentation_begin();
++		apple_apsc_observer_cpu_pm_fail(pm_ret);
++		instrumentation_end();
++		return -1;
++	}
++	/* No recorder reference or RCU read section crosses deep WFI. */
++	instrumentation_begin();
++	observer_token = apple_apsc_observer_idle_enter();
++	instrumentation_end();
++#else
+ 	if (cpu_pm_enter())
+ 		return -1;
++#endif
+ 
+ 	ct_cpuidle_enter();
+ 
+@@ -88,6 +107,12 @@ static __cpuidle int apple_enter_idle(struct cpuidle_device *dev, struct cpuidle
+ 
+ 	ct_cpuidle_exit();
+ 
++#ifdef CONFIG_ARM_APPLE_APSC_OBSERVER
++	instrumentation_begin();
++	apple_apsc_observer_idle_exit(observer_token);
++	instrumentation_end();
++#endif
++
+ 	cpu_pm_exit();
+ 
+ 	return index;
+diff --git c/include/linux/soc/apple/apsc-observer.h i/include/linux/soc/apple/apsc-observer.h
+new file mode 100644
+index 0000000..a2da317
+--- /dev/null
++++ i/include/linux/soc/apple/apsc-observer.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _LINUX_SOC_APPLE_APSC_OBSERVER_H
++#define _LINUX_SOC_APPLE_APSC_OBSERVER_H
++
++#include <linux/types.h>
++
++struct cpufreq_policy;
++
++#ifdef CONFIG_ARM_APPLE_APSC_OBSERVER
++u64 apple_apsc_observer_idle_enter(void);
++void apple_apsc_observer_idle_exit(u64 token);
++void apple_apsc_observer_cpu_pm_fail(int ret);
++void apple_apsc_observer_dvfs_write(struct cpufreq_policy *policy,
++				   void __iomem *cmd_addr, u32 requested_index,
++				   u32 requested_pstate, u64 pre_cmd, u64 cmd);
++void apple_apsc_observer_dvfs_poll_fail(struct cpufreq_policy *policy,
++				       u32 requested_index, u32 requested_pstate,
++				       u64 pre_cmd, int ret);
++#endif
++
++#endif

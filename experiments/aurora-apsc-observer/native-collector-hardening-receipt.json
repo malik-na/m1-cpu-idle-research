@@ -1,0 +1,27 @@
+{
+  "amended_at_utc": "2026-10-02T13:08:52Z",
+  "scope": "collector validation only, after readiness checks and before the first native measurement window; no kernel, firmware, boot, policy, workload binary or observer change",
+  "historical_source_hashes": {
+    "collect_native.py": "38178b5b0f13cdbeb040f50365a6d913a661fc60f836cb8d141b48689774e439",
+    "NATIVE-PLAN.md": "a33c7c6345e715430eaed57a75e68970b949ae2b6e5a2b979af599384a4425e5"
+  },
+  "amended_source_hashes": {
+    "collect_native.py": "ad237e9ae058c5a67931e5ba0119dc98229509e7ef24e887d300c1ffe2a408e5",
+    "NATIVE-PLAN.md": "fc7111b08e49ed7e0b202068f7f47186f0e5666e43955329dff42efa35c2c110"
+  },
+  "workload_binary_sha256": "82f4ce1145c8135c8b28246a9681d2316083cd1bb1a936a736b8a6cd03102d2b",
+  "changes": [
+    "reject optimized Python before any assertion-based acquisition gate",
+    "require exact pretested workload binary hash",
+    "check workers remain live immediately before observer arming",
+    "validate both CPU-specific 44-pulse CSV exports and timings",
+    "record backlight brightness before and after the window",
+    "require eligible post-counter acquisition and a clean observer decoder result before marking a packet complete"
+  ],
+  "validation": [
+    "Python bytecode compilation succeeded",
+    "both retained stock-kernel pilot workload CSVs passed the new structure checks",
+    "git diff --check succeeded"
+  ],
+  "known_limit": "the kernel counter pre-phase has no in-kernel timeout; the declared five-second bound is checked only after its synchronous control write returns"
+}

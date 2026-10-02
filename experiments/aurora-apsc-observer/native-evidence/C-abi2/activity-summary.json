@@ -1,0 +1,70 @@
+{
+  "aggregate_cpu": {
+    "clock_ticks_per_second": 100,
+    "context_switches_delta": 37427,
+    "cpu_busy_jiffies_delta": 472,
+    "cpu_idle_iowait_jiffies_delta": 6442,
+    "cpu_total_jiffies_delta": 6914,
+    "procs_blocked_before_after": [
+      0,
+      0
+    ],
+    "procs_running_before_after": [
+      3,
+      1
+    ],
+    "scope": "whole-system counters include workers and collector; background CPU cannot be isolated"
+  },
+  "interior_equivalence": "not_established_by_endpoints",
+  "network": {
+    "interface_name_type_set_equal": true,
+    "other_nonloopback_count_before_after": [
+      0,
+      0
+    ],
+    "other_nonloopback_operstate_counts_before_after": [
+      {},
+      {}
+    ],
+    "other_nonloopback_traffic_delta": {
+      "rx_bytes": 0,
+      "rx_packets": 0,
+      "tx_bytes": 0,
+      "tx_packets": 0
+    },
+    "traffic_delta_scope": "endpoint counters; null on interface change or counter reset; traffic may occur outside capture",
+    "wlan0_carrier_before_after": [
+      1,
+      1
+    ],
+    "wlan0_operstate_before_after": [
+      "up",
+      "up"
+    ],
+    "wlan0_traffic_delta": {
+      "rx_bytes": 164581,
+      "rx_packets": 323,
+      "tx_bytes": 99454,
+      "tx_packets": 270
+    }
+  },
+  "observation_times_monotonic_ns": {
+    "after": [
+      265168349326,
+      265169758838
+    ],
+    "before": [
+      256486490601,
+      256486906550
+    ]
+  },
+  "scope": "read-only endpoints outside capture; fixed wlan0 label only; no process, network address, arbitrary interface name or USB identity export",
+  "usb": {
+    "device_count_before_after": [
+      0,
+      0
+    ],
+    "identity_scope": "private VID:PID/class retained; public identity equality and counts only; root hubs included",
+    "vendor_product_class_multiset_equal": true
+  }
+}

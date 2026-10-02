@@ -1,0 +1,46 @@
+{
+  "source_pin": "90a95335a49aec3a0045a76da140452ad6585eb3",
+  "scope": "whole-source olddefconfig acceptance; individual/full compilation and final-link results reported separately",
+  "variants": [
+    {
+      "variant": "pristine",
+      "release": "7.1.12-ARCH",
+      "config_sha256": "84bb71434e905f3b1360142e075a89b0bccb5e5bd7ca82eb892a362512df260e",
+      "diff_from_exported_config": ""
+    },
+    {
+      "variant": "off",
+      "release": "7.1.12-ARCH",
+      "config_sha256": "7a46a5cfbd4158b1792a5ef4f6a368900160ba9e77f768535f2084a3bec4de15",
+      "diff_from_exported_config": "+APPLE_COUNTER_QUALIFICATION n\n+ARM_APPLE_APSC_OBSERVER n\n"
+    },
+    {
+      "variant": "on",
+      "release": "7.1.12-ARCH-apsc-20261002",
+      "config_sha256": "f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d",
+      "diff_from_exported_config": " LOCALVERSION \"-ARCH\" -> \"-ARCH-apsc-20261002\"\n+APPLE_COUNTER_QUALIFICATION y\n+ARM_APPLE_APSC_OBSERVER y\n"
+    }
+  ],
+  "configuration_changes_reviewed": true,
+  "stock_configuration_options_retained": true,
+  "neutral_build_identity": {
+    "KBUILD_BUILD_USER": "m1-idle-research",
+    "KBUILD_BUILD_HOST": "t8103-research",
+    "KBUILD_BUILD_TIMESTAMP": "2026-10-02 05:45:00 UTC",
+    "KBUILD_BUILD_VERSION": "1"
+  },
+  "olddefconfig_attempts": [
+    {
+      "attempt": 1,
+      "result": "failed",
+      "cause": "isolated bison attempted its compiled-in system m4 path, which was absent",
+      "original_config_log_exit_status": 2,
+      "log_sha256": "36883bdabf9b190f3f0ed4577161c0803e2403892b1b389e3cfd4079078e2361"
+    },
+    {
+      "attempt": 2,
+      "result": "passed for all three variants",
+      "fix": "M4 environment variable points to verified isolated m4 executable; no source/config workaround"
+    }
+  ]
+}
