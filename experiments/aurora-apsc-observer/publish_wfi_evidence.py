@@ -671,7 +671,13 @@ def checked_build_chain(identity: Identity) -> dict:
             "published build/deployment identity chain differs")
     return {
         "aurora_source_commit": build["source"]["aurora_source_commit"],
-        "wfi_patch_sha256": file_sha256(directory / "0004-aurora-apsc-wfi-first-attempt.patch"),
+        "wfi_patch_file_sha256_at_publication": file_sha256(
+            directory / "0004-aurora-apsc-wfi-first-attempt.patch"),
+        "build_time_wfi_patch_or_source_digest_recorded": False,
+        "wfi_patch_hash_scope": (
+            "repository patch file bytes at publication; the build receipt does not "
+            "record a build-time WFI patch or source-tree digest, so this hash alone "
+            "does not cryptographically bind those bytes to the built image"),
         "wfi_build_receipt_sha256": file_sha256(build_path),
         "wfi_deployment_receipt_sha256": file_sha256(deployment_path),
         "uki_sha256_at_deployment_readback": build["boot_bundle"]["uki_sha256"],

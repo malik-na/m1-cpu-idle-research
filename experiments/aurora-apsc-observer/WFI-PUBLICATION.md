@@ -65,6 +65,14 @@ fields can also bind a later EFI-retirement readback to the reviewed private
 packet. This receipt alone does not justify retiring an entry; the separate
 live boot/device checks remain necessary.
 
+`build_chain.wfi_patch_file_sha256_at_publication` identifies the repository
+patch file when publication runs. The build receipt did not record a build-time
+WFI patch or source-tree digest, so the receipt explicitly sets
+`build_time_wfi_patch_or_source_digest_recorded` to false. The current private
+source files and linked object provide retrospective consistency checks, but
+this publication-time hash alone is not a cryptographic binding from patch
+bytes to the built image.
+
 The pre-capture environment amendment adds private, hashed
 `environment-observation-before.json` and
 `environment-observation-after.json` to **ABI 2** packets only. The collector

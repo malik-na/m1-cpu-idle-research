@@ -395,6 +395,12 @@ class PublishWfiEvidenceTests(unittest.TestCase):
     def test_repository_build_chain_matches_pinned_identity(self):
         chain = REAL_BUILD_CHAIN(publisher.WFI_IDENTITY)
         self.assertEqual(chain["aurora_source_commit"], "90a95335a49aec3a0045a76da140452ad6585eb3")
+        self.assertEqual(chain["wfi_patch_file_sha256_at_publication"],
+                         publisher.file_sha256(Path(publisher.__file__).with_name(
+                             "0004-aurora-apsc-wfi-first-attempt.patch")))
+        self.assertFalse(chain["build_time_wfi_patch_or_source_digest_recorded"])
+        self.assertIn("does not cryptographically bind", chain["wfi_patch_hash_scope"])
+        self.assertNotIn("wfi_patch_sha256", chain)
         self.assertEqual(chain["uki_sha256_at_deployment_readback"],
                          "4868e3547c1eafe884520238da801684069d547ffe2dc5915666b42d3ad66ce7")
 
