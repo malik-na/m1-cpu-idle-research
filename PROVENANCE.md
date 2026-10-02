@@ -79,3 +79,10 @@ the boot ID, FDT, full logs and command arguments; the public packet retains
 only reviewed numerical streams, statuses, filtered chronology and endpoint
 projections. The D result does not establish APSC BUSY, a physical power
 state, energy, wake latency or a guaranteed cross-CPU clock bound.
+
+The subsequent [EFI retirement receipt](experiments/aurora-apsc-observer/wfi-efi-retirement-receipt.json)
+records the removal of the obsolete first research entry and image after the
+qualified WFI boot and D pilot. The original image and before/after Limine
+configuration have verified private backups. Its reviewed public subset
+retains the removed image hash, configuration hashes, fallback checks and EFI
+usage; private boot ID, backup location and full configuration stay local.

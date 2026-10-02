@@ -142,3 +142,7 @@ records installation and readback of its separate module package and EFI
 entry, with the stock default, capacity entry and earlier research entry
 preserved. The later D pilot and its [public packet](native-evidence/D/status.txt)
 provide runtime evidence separately from these installation records.
+After that qualified boot and pilot, the [EFI retirement receipt](wfi-efi-retirement-receipt.json)
+records removal of only the obsolete original research entry and image. The
+stock default, capacity and WFI entries passed post-change readback; the old
+image and both config versions have verified private backups.

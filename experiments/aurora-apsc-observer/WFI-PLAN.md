@@ -17,6 +17,11 @@ unbooted; the subsequent [D clock pilot](WFI-D-RESULT.md) is a separate
 runtime result. The acquisition rules below were declared before that boot
 and remain unchanged.
 
+After the successful D pilot, the original research entry and image were
+retired under the plan's first-boot rule. The reviewed
+[retirement receipt](wfi-efi-retirement-receipt.json) is a later operational
+record, not an amendment to the capture decision gates below.
+
 ## Site and scope
 
 The ABI 2 variant reserves a slot in C and performs one bracketed command
