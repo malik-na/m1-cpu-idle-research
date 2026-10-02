@@ -181,6 +181,8 @@ def create_packet(packet: Path, mode: str, *, post_stop_wfi: bool = False,
          "expected_entry": identity.selected_entry,
          "workload_sha256": publisher.WORKLOAD_SHA256,
          "collector_sha256": digest(collector_source)},
+        {"action": "command_begin", "argv": publisher.JOURNAL_ARGV},
+        {"action": "command_end", "argv": publisher.JOURNAL_ARGV, "exit_status": 0},
         {"action": "counter_pre_begin"}, {"action": "counter_pre_end"},
         {"action": "settling_begin", "seconds": 5}, {"action": "settling_end"},
         {"action": "window_begin"}, {"action": "window_end"},
@@ -188,12 +190,15 @@ def create_packet(packet: Path, mode: str, *, post_stop_wfi: bool = False,
         {"action": "workload_complete", "cpu": 1, "exit_status": 0},
         {"action": "workload_complete", "cpu": 5, "exit_status": 0},
         {"action": "counter_post_begin"}, {"action": "counter_post_end"},
+        {"action": "command_begin", "argv": publisher.JOURNAL_ARGV},
+        {"action": "command_end", "argv": publisher.JOURNAL_ARGV, "exit_status": 0},
         {"action": "complete", "native_packet_requires_review": True,
          "clock_bound_not_exported": True},
     ]
-    ticks = [1, 1000, 2000, 3000, 5_000_000_300, 6_000_000_000,
+    ticks = [1, 500, 600, 1000, 2000, 3000, 5_000_000_300, 6_000_000_000,
              8_050_000_000, 8_050_100_000, 8_100_000_000, 8_100_100_000,
-             8_200_000_000, 8_200_100_000, 8_300_000_000]
+             8_200_000_000, 8_200_100_000, 8_260_000_000, 8_270_000_000,
+             8_300_000_000]
     for index, row in enumerate(records):
         row["utc"] = f"2026-10-02T16:00:{index:02d}+00:00"
         row["monotonic_ns"] = ticks[index]
@@ -218,6 +223,10 @@ def create_packet(packet: Path, mode: str, *, post_stop_wfi: bool = False,
         "after-snapshot.json": snapshot(8_250_000_000),
         "environment-observation-before.json": environment_observation(True),
         "environment-observation-after.json": environment_observation(False),
+        "kernel-log-preflight.stdout": b"[    1.000000] kernel boot message\n",
+        "kernel-log-preflight.stderr": b"",
+        "kernel-log.stdout": b"[    1.000000] kernel boot message\n",
+        "kernel-log.stderr": b"",
         "workload-cpu1.csv": workload(1), "workload-cpu5.csv": workload(5),
         **counter_files(),
     }
@@ -319,6 +328,7 @@ class PublishWfiEvidenceTests(unittest.TestCase):
         self.assertEqual(result["selected_entry"], self.identity.selected_entry)
         self.assertEqual(result["mode"], "wfi_clock")
         self.assertTrue(result["integrity_clean"])
+        self.assertIn("journalctl succeeded", result["private_kernel_log"])
         self.assertEqual(result["packet_sha256s_sha256"], digest((self.packet / "SHA256SUMS").read_bytes()))
         self.assertEqual(result["collector_acquisition_sha256"],
                          digest((self.packet / "collector-source.py").read_bytes()))
@@ -403,6 +413,31 @@ class PublishWfiEvidenceTests(unittest.TestCase):
         self.assertNotIn("wfi_patch_sha256", chain)
         self.assertEqual(chain["uki_sha256_at_deployment_readback"],
                          "4868e3547c1eafe884520238da801684069d547ffe2dc5915666b42d3ad66ce7")
+
+    def test_missing_kernel_journal_is_rejected(self):
+        (self.packet / "kernel-log-preflight.stdout").unlink()
+        refresh_manifest(self.packet)
+        with self.assertRaisesRegex(publisher.PublicationError, "required acquisition files"):
+            publisher.publish(self.packet, "wfi_clock", self.out, self.receipt,
+                              self.qualification, self.device_acceptance, self.identity)
+
+    def test_failed_postcapture_kernel_journal_is_rejected(self):
+        records = json.loads((self.packet / "acquisition-record.json").read_text())
+        post = [row for row in records if row.get("action") == "command_end"
+                and row.get("argv") == publisher.JOURNAL_ARGV][-1]
+        post["exit_status"] = 1
+        (self.packet / "acquisition-record.json").write_text(json.dumps(records))
+        refresh_manifest(self.packet)
+        with self.assertRaisesRegex(publisher.PublicationError, "kernel journal acquisition failed"):
+            publisher.publish(self.packet, "wfi_clock", self.out, self.receipt,
+                              self.qualification, self.device_acceptance, self.identity)
+
+    def test_empty_prearm_kernel_journal_is_rejected(self):
+        (self.packet / "kernel-log-preflight.stdout").write_bytes(b"")
+        refresh_manifest(self.packet)
+        with self.assertRaisesRegex(publisher.PublicationError, "kernel journal acquisition failed"):
+            publisher.publish(self.packet, "wfi_clock", self.out, self.receipt,
+                              self.qualification, self.device_acceptance, self.identity)
 
     def test_same_boot_qualification_rejects_other_boot_id(self):
         qualification = json.loads(self.qualification.read_text())

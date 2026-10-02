@@ -67,7 +67,11 @@ REQUIRED_PRIVATE_FILES = set(NUMERIC_FILES) | {
     "collector-source.py",
     "counter-ready.txt", "virtualization.stdout",
     "environment-observation-before.json", "environment-observation-after.json",
+    "kernel-log-preflight.stdout", "kernel-log-preflight.stderr",
+    "kernel-log.stdout", "kernel-log.stderr",
 }
+JOURNAL_ARGV = ["/usr/bin/journalctl", "--boot", "--dmesg", "--no-pager",
+                "--output=short-monotonic"]
 FILE_LINE = re.compile(r"([0-9a-f]{64})  ([A-Za-z0-9][A-Za-z0-9._-]*)\Z")
 PRIVATE_TEXT = re.compile(
     rb"/home/|/root/|/Users/|root=UUID=|machine-id|serial_number|password|passwd|"
@@ -524,6 +528,21 @@ def check_acquisition(packet: Path, mode: str, identity: Identity) -> tuple[list
         require(len(matches) == 1, f"missing or repeated acquisition action: {action}")
         positions.append(matches[0])
     require(positions == sorted(positions), "acquisition action order differs")
+    journal_commands = [index for index, row in enumerate(records)
+                        if row.get("action") == "command_begin" and row.get("argv") == JOURNAL_ARGV]
+    require(len(journal_commands) == 2,
+            "pre-arm and post-capture kernel journal commands are missing")
+    preflight, after_capture = journal_commands
+    require(0 < preflight and preflight + 1 < positions[1]
+            and positions[9] < after_capture and after_capture + 1 < positions[-1],
+            "kernel journal commands do not bracket observer acquisition")
+    for index, name in ((preflight, "kernel-log-preflight"),
+                        (after_capture, "kernel-log")):
+        end = records[index + 1]
+        require(end.get("action") == "command_end" and end.get("argv") == JOURNAL_ARGV
+                and type(end.get("exit_status")) is int and end["exit_status"] == 0
+                and (packet / f"{name}.stdout").stat().st_size > 0,
+                "current-boot kernel journal acquisition failed or is empty")
     window_begin = records[positions[5]]["monotonic_ns"]
     window_end = records[positions[6]]["monotonic_ns"]
     elapsed_ns = window_end - window_begin
@@ -924,6 +943,7 @@ def publish(packet: Path, mode: str, destination: Path, receipt_path: Path,
         "single_packet_boot_distinctness": "not_established; compare private boot IDs across packets",
         "private_boot_cmdline": "retained in hashed packet; not independently decoded here",
         "private_full_fdt": "retained in hashed packet; only selected same-boot topology was checked by the private qualification",
+        "private_kernel_log": "pre-arm and post-capture journalctl succeeded with nonempty current-boot output; log contents remain private and unreviewed by publisher",
         "wfi_probe": {
             "total": observer["wfi_probe"]["total"],
             "in_window": observer["wfi_probe"]["in_window"],

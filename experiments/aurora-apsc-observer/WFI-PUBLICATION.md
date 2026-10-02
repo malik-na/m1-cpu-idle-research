@@ -107,7 +107,11 @@ change followed by restoration to 155, plus private live driver/readback
 checks. It is process evidence, not an independent packet-transfer or visual
 brightness measurement. The full FDT, boot arguments, boot ID, boot configuration, bootctl output,
 kernel log, command arguments and unfiltered snapshots remain in the private
-packet. The saved collector source and full same-boot qualification receipt
+packet. A pre-arm `journalctl --boot --dmesg` availability check and a
+post-capture log export must both succeed with nonempty output; publication
+requires both hashed streams and the corresponding successful command records.
+The publisher does not parse the private log for warnings or errors. The saved
+collector source and full same-boot qualification receipt
 and device acceptance also remain private. The public receipt does not include the packet path, boot UUID, MAC
 address, private FDT hash or an account identifier. It does not establish
 distinct boots or matched conditions across A/B/C/D/E. Those require a later

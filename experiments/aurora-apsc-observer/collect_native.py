@@ -252,6 +252,8 @@ def main():
 
     apsc = Path('/sys/kernel/debug/apple_apsc_observer')
     counter = Path('/sys/kernel/debug/apple_counter_qualification')
+    journal_argv = ['/usr/bin/journalctl', '--boot', '--dmesg', '--no-pager',
+                    '--output=short-monotonic']
     try:
         collector_source = Path(__file__).resolve().read_bytes()
         save('collector-source.py', collector_source)
@@ -288,6 +290,10 @@ def main():
         assert (ready['cluster0_cpus'], ready['cluster1_cpus']) == ('0xf', '0xf0')
         assert (ready['cluster0_cmd_phys'], ready['cluster1_cmd_phys']) == ('0x210e20020', '0x211e20020')
         assert cqready['abi'] == '1' and cqready['pre_state'] == cqready['post_state'] == 'unused'
+        if args.observer_abi == 2:
+            journal_preflight = command(journal_argv, 'kernel-log-preflight')
+            assert journal_preflight.returncode == 0 and journal_preflight.stdout.strip(), \
+                'current-boot kernel journal unavailable before observer arming'
         mark('counter_pre_begin', control='pre 0 256')
         counter.joinpath('control').write_text('pre 0 256\n')
         mark('counter_pre_end')
@@ -368,7 +374,10 @@ def main():
         policy_fields = ('online', 'current_driver', 'current_governor_ro', 'related_cpus', 'affected_cpus',
                          'scaling_driver', 'scaling_governor', 'scaling_min_freq', 'scaling_max_freq', 'disable')
         assert all(after.get(k) == v for k, v in before.items() if Path(k).name in policy_fields), 'policy or online state changed'
-        command(['/usr/bin/journalctl', '--boot', '--dmesg', '--no-pager', '--output=short-monotonic'], 'kernel-log')
+        journal_after = command(journal_argv, 'kernel-log')
+        if args.observer_abi == 2:
+            assert journal_after.returncode == 0 and journal_after.stdout.strip(), \
+                'current-boot kernel journal unavailable after observer capture'
         mark('complete', native_packet_requires_review=True, clock_bound_not_exported=True)
     except Exception as error:
         mark('failed', error=repr(error))
