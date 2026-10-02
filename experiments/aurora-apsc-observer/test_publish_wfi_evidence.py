@@ -138,6 +138,26 @@ def counter_files() -> dict[str, bytes]:
     }
 
 
+def counter_ready_status() -> bytes:
+    """Synthetic complete ABI status with the helper's unused empty fields."""
+    _, status = counter_fixtures.fixture(rounds=2)
+    for phase in ("pre", "post"):
+        status.update({
+            f"{phase}_state": "unused", f"{phase}_reference_cpu": -1,
+            f"{phase}_rounds": 0, f"{phase}_attempted": 0,
+            f"{phase}_completed": 0, f"{phase}_error": 0,
+            f"{phase}_metadata_completed": 0,
+            f"{phase}_start_tick": "", f"{phase}_end_tick": "",
+            f"{phase}_start_online_mask": "0x0", f"{phase}_end_online_mask": "0x0",
+        })
+        for cpu in range(8):
+            for field in publisher.counter_decoder.META_FIELDS:
+                status[f"{phase}_cpu{cpu}_{field}"] = {
+                    "valid": 0, "actual": -1, "error": 0,
+                }.get(field, "")
+    return "".join(f"{key}={value}\n" for key, value in status.items()).encode()
+
+
 def create_packet(packet: Path, mode: str, *, post_stop_wfi: bool = False,
                   near_stop_wfi: bool = False) -> publisher.Identity:
     packet.mkdir(mode=0o700)
@@ -209,8 +229,7 @@ def create_packet(packet: Path, mode: str, *, post_stop_wfi: bool = False,
         "acquisition-record.json": (json.dumps(records) + "\n").encode(),
         "apsc-ready.txt": (b"abi=2\nstate=ready\ncluster0_cpus=0xf\ncluster1_cpus=0xf0\n"
                            b"cluster0_cmd_phys=0x210e20020\ncluster1_cmd_phys=0x211e20020\n"),
-        "counter-ready.txt": (b"abi=1\npre_state=unused\npost_state=unused\n"
-                              b"cluster0_cpus=0xf\ncluster1_cpus=0xf0\n"),
+        "counter-ready.txt": counter_ready_status(),
         "boot-kernel-notes.bin": note,
         "boot-config.gz": gzip.compress(config), "boot.config": config,
         "bootctl.stdout": ("  Current Entry: " + identity.selected_entry + "\n").encode(),
@@ -319,6 +338,30 @@ class PublishWfiEvidenceTests(unittest.TestCase):
                                           return_value={"synthetic_fixture": True})
         chain_patcher.start()
         self.addCleanup(chain_patcher.stop)
+
+    def test_full_unused_counter_status_allows_only_abi_optional_empty_fields(self):
+        ready_path = self.packet / "counter-ready.txt"
+        ready = ready_path.read_bytes()
+        self.assertIn(b"pre_start_tick=\n", ready)
+        self.assertIn(b"post_cpu7_cntfrq=\n", ready)
+        parsed = publisher.unused_counter_status(ready)
+        self.assertIsNone(parsed["pre_start_tick"])
+        self.assertEqual(parsed["post_cpu7_valid"], 0)
+        publisher.check_acquisition(self.packet, "wfi_clock", self.identity)
+
+        for altered, message in (
+            (ready.replace(b"pre_rounds=0\n", b"pre_rounds=\n"),
+             "invalid counter ready status"),
+            (ready.replace(b"pre_state=unused\n", b"pre_state=complete\n"),
+             "counter helper phase was used before capture"),
+            (ready.replace(b"post_cpu7_cntfrq=\n", b""),
+             "invalid counter ready status"),
+        ):
+            with self.subTest(message=message):
+                ready_path.write_bytes(altered)
+                refresh_manifest(self.packet)
+                with self.assertRaisesRegex(publisher.PublicationError, message):
+                    publisher.check_acquisition(self.packet, "wfi_clock", self.identity)
 
     def test_clock_pilot_receipt_and_only_numeric_public_files(self):
         result = publisher.publish(self.packet, "wfi_clock", self.out, self.receipt,

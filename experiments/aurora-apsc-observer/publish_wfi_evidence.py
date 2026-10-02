@@ -176,6 +176,34 @@ def values(data: bytes, label: str) -> dict[str, str]:
     return result
 
 
+def unused_counter_status(data: bytes) -> dict[str, int | str | None]:
+    """Parse the complete helper ABI, whose unused fields are legitimately empty."""
+    try:
+        status = counter_decoder.parse_status(data.decode("ascii"))
+    except (UnicodeError, counter_decoder.AnalysisError) as error:
+        raise PublicationError("invalid counter ready status") from error
+    require(status["abi"] == 1
+            and status["cluster0_cpus"] == 0xf
+            and status["cluster1_cpus"] == 0xf0,
+            "counter helper topology or ABI differs before capture")
+    for phase in ("pre", "post"):
+        require(status[f"{phase}_state"] == "unused"
+                and status[f"{phase}_reference_cpu"] == -1
+                and all(status[f"{phase}_{field}"] == 0 for field in (
+                    "rounds", "attempted", "completed", "error", "metadata_completed",
+                    "start_online_mask", "end_online_mask"))
+                and status[f"{phase}_start_tick"] is None
+                and status[f"{phase}_end_tick"] is None,
+                "counter helper phase was used before capture")
+        for cpu in range(8):
+            prefix = f"{phase}_cpu{cpu}_"
+            require(status[prefix + "valid"] == 0
+                    and status[prefix + "actual"] == -1
+                    and status[prefix + "error"] == 0,
+                    "counter helper metadata was used before capture")
+    return status
+
+
 def build_ids(data: bytes) -> list[str]:
     offset, identifiers = 0, []
     while offset < len(data):
@@ -576,12 +604,7 @@ def check_acquisition(packet: Path, mode: str, identity: Identity) -> tuple[list
             and ready.get("cluster0_cmd_phys") == "0x210e20020"
             and ready.get("cluster1_cmd_phys") == "0x211e20020",
             "observer topology or command mapping differs")
-    counter_ready = values((packet / "counter-ready.txt").read_bytes(), "counter ready status")
-    require(counter_ready.get("abi") == "1" and counter_ready.get("pre_state") == "unused"
-            and counter_ready.get("post_state") == "unused"
-            and counter_ready.get("cluster0_cpus") == "0xf"
-            and counter_ready.get("cluster1_cpus") == "0xf0",
-            "counter helper was not ready before capture")
+    unused_counter_status((packet / "counter-ready.txt").read_bytes())
     require(build_ids((packet / "boot-kernel-notes.bin").read_bytes()) == [identity.gnu_build_id],
             "boot GNU Build-ID differs")
     config = (packet / "boot.config").read_bytes()
