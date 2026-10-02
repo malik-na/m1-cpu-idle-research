@@ -145,3 +145,10 @@ validator tests. It was published while the separate full `Image modules
 dtbs` build was still running. It supplies no linked-image, deployment or
 native capture claim; the [prospective run plan](experiments/aurora-apsc-observer/WFI-ABI3-RUN-PLAN.md)
 fixes those later gates.
+
+The [ABI 3 acquisition logic review copy](experiments/aurora-apsc-observer/abi3-acquisition/README.md)
+retains the prospective one-shot A/D/E/conditional-C collector and its eleven
+synthetic tests. Its redaction receipt binds the private executable source to
+the public copy, with only the local repository path and account name
+replaced. The linked build, installed-image identity and fresh-boot controls
+remain prerequisites; this publication is not a native ABI 3 capture.

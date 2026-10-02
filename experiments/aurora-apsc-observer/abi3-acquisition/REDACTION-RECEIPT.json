@@ -1,0 +1,15 @@
+{
+  "changed_lines": [
+    31,
+    783
+  ],
+  "note": "Exactly two lines differ; all capture and validation logic is byte-identical.",
+  "private_collector_sha256": "b8dbe5134e0f1b4156b552e4232746b1e475ca7a7df05241ab29fa46b333a670",
+  "public_collector_sha256": "570d9c2a2d7b9bad721612a009651339786f74f41d0208fe653377f22172e8c7",
+  "redactions": [
+    "local repository absolute path",
+    "local account name"
+  ],
+  "schema": "abi3-collector-redaction-v1",
+  "test_sha256": "d9fb0617fca429bd608596437ee3cf9fa1688ef24f9cf0f4950041ecd4370ea2"
+}
