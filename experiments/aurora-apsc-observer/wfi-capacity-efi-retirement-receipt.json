@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "action": "retired_superseded_capacity_efi_entry_and_image",
+  "completed_utc": "2026-10-02T19:27:24.684833+00:00",
+  "scope": "Aurora-APSC-research-capacity Limine stanza and its EFI image only",
+  "qualified_replacement": {
+    "entry": "Aurora-APSC-research-wfi-seam",
+    "running_release": "7.1.12-ARCH-apsc-20261002-wfi",
+    "running_gnu_build_id": "11e80be6d8b358eee9aa847a0f814aff02b66c43",
+    "five_boot_result": "WFI-ABI2-BLOCK-RESULT.md",
+    "same_boot_wifi_and_brightness_accepted": true
+  },
+  "retired_capacity_uki": {
+    "sha256": "48cadf0d1bc4ecb071db34cfaf439688cbe639abef3deddba142e7b86b05ada9",
+    "bytes": 94702592,
+    "verified_private_backup": true,
+    "published_capacity_patch": "0003-aurora-apsc-ring-capacity.patch",
+    "published_capacity_patch_sha256": "6f80074868f02fec42cebf279d1f7cc86ff65014f0bda122f442029f270a4045"
+  },
+  "limine": {
+    "installed_version": "12.9.1",
+    "config_sha256_before": "0c388b2e35d617c6474018d517186815036aecb8c6b180508ef714e62be48f86",
+    "config_sha256_after": "04d735121664f10f106c88ef44cb502ffc142ab30e6c8fd2aa6503175aa60bf0",
+    "stock_default_entry": 2,
+    "stock_default_verified_against_expanded_menu_order": true,
+    "stock_entry_and_uki_unchanged": true,
+    "wfi_entry_and_uki_unchanged": true,
+    "stock_uki_sha256": "97e6229b65946aa24a5c863290abef8a3b1b48067655b29df819c7a9c62c4618",
+    "wfi_uki_sha256": "4868e3547c1eafe884520238da801684069d547ffe2dc5915666b42d3ad66ce7"
+  },
+  "efi_filesystem_bytes": {
+    "total": 523132928,
+    "used_before": 385622016,
+    "free_before": 137510912,
+    "used_after": 290918400,
+    "free_after": 232214528
+  },
+  "limine_snapper_usage_limit_percent": 85,
+  "post_retirement_readback": {
+    "capacity_entry_and_image_absent": true,
+    "stock_default_preserved": true,
+    "stock_and_wfi_image_hashes_match": true,
+    "private_backup_hashes_match": true
+  },
+  "private_retirement_receipt_sha256": "c2543eb2c8442ae508762001275c38dccb5647ab03095068bc108756255b251c",
+  "boundary": "EFI housekeeping after a successfully booted replacement; no new APSC command, WFI instruction, physical-state, energy, or wake observation"
+}

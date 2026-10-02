@@ -120,3 +120,11 @@ reads include one conditional software final-entrant candidate under an
 unmeasured cross-CPU clock assumption; no WFI-instruction state, physically
 asleep peer, rail power, energy, wake or Linux policy improvement follows.
 The thermal/background match and sensitive negative gates are unmet.
+
+After the qualified WFI image booted with Wi-Fi and brightness working, the
+older capacity Limine entry and EFI image were retired to preserve boot space.
+The [reviewed retirement receipt](experiments/aurora-apsc-observer/wfi-capacity-efi-retirement-receipt.json)
+records exact before/after configuration and image hashes, the verified stock
+default, retained stock/WFI images, EFI usage, and a hash-linked private
+backup. The capacity source patch and findings remain published; this
+operation adds no CPU-idle or physical-power observation.
