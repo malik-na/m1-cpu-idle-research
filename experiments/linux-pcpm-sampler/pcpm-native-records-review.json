@@ -1,0 +1,197 @@
+{
+  "apsc": {
+    "complete_p_idle_pairs": {
+      "4": 65,
+      "5": 273,
+      "6": 310,
+      "7": 170
+    },
+    "event_rows": 6884,
+    "kind_counts": {
+      "dvfs": 699,
+      "idle_enter": 3094,
+      "idle_exit": 3091
+    },
+    "mode": "records",
+    "overflow_missing_commit_totals": 0,
+    "state": "complete",
+    "trailing_unmatched_p_entries": 3,
+    "wfi_seam_rows": 0
+  },
+  "conditional_all_p_software_overlap": {
+    "all_phase_brackets": 26,
+    "assumed_pairwise_error_ticks": 240,
+    "pairwise_error_established": false,
+    "released_phase_conditionally_contained_brackets": 21,
+    "released_phase_contained_seq": [
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      52,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      67,
+      68
+    ],
+    "released_phase_guard_ms": 300,
+    "released_phase_interior_brackets": 24,
+    "seq58": {
+      "minimum_strict_margin_after_E_and_G_ticks": 6173352,
+      "pcpm_bracket_ticks": [
+        14894051089,
+        14894051127
+      ],
+      "witnesses": [
+        {
+          "cpu": 4,
+          "entry_seq": 52,
+          "entry_t1": 14885992463,
+          "exit_seq": 53,
+          "exit_t0": 14901286265,
+          "left_margin_ticks": 8034386,
+          "right_margin_ticks": 7210898,
+          "token": 27
+        },
+        {
+          "cpu": 5,
+          "entry_seq": 532,
+          "entry_t1": 14882823656,
+          "exit_seq": 533,
+          "exit_t0": 14905623205,
+          "left_margin_ticks": 11203193,
+          "right_margin_ticks": 11547838,
+          "token": 267
+        },
+        {
+          "cpu": 6,
+          "entry_seq": 608,
+          "entry_t1": 14882100665,
+          "exit_seq": 609,
+          "exit_t0": 14900248719,
+          "left_margin_ticks": 11926184,
+          "right_margin_ticks": 6173352,
+          "token": 305
+        },
+        {
+          "cpu": 7,
+          "entry_seq": 324,
+          "entry_t1": 14879415210,
+          "exit_seq": 325,
+          "exit_t0": 14901823555,
+          "left_margin_ticks": 14611639,
+          "right_margin_ticks": 7748188,
+          "token": 163
+        }
+      ]
+    },
+    "software_endpoint_guard_ticks": 24000,
+    "strict_inequalities": [
+      "entry.t1 + E + G < pcpm.counter_before",
+      "pcpm.counter_after + E + G < exit.t0"
+    ]
+  },
+  "controls": {
+    "apsc": {
+      "bytes_written": 13,
+      "command": "records 9500\n",
+      "returned_ns": 609256120956,
+      "started_ns": 599568500325
+    },
+    "pcpm": {
+      "bytes_written": 17,
+      "command": "records 90 100 0\n",
+      "returned_ns": 608568903930,
+      "started_ns": 599568429285
+    }
+  },
+  "counter_qualification": {
+    "capture_wide_cross_cpu_bound_established": false,
+    "cntfrq_hz": 24000000,
+    "metadata_valid_cpus": 8,
+    "post_completed": 1792,
+    "post_error": 0,
+    "pre_completed": 1792,
+    "pre_error": 0,
+    "raw_pre_post_constant_offset_model": "nonempty_conditional_constraints"
+  },
+  "environment": {
+    "ac_online_before_after": [
+      "1",
+      "1"
+    ],
+    "battery_percent_before_after": [
+      "100",
+      "100"
+    ],
+    "brightness_before_after": [
+      "155",
+      "155"
+    ],
+    "cpuidle_driver": "apple_idle",
+    "cpuidle_governor": "menu",
+    "online_cpus": "0-7",
+    "thermal_millidegrees_before_after": [
+      "33500",
+      "33500"
+    ]
+  },
+  "issue": "https://github.com/malik-na/m1-cpu-idle-research/issues/6",
+  "issue5_boundary": "APSC ran records-only with zero WFI-seam command reads; this packet does not answer issue #5.",
+  "manual_disposition": {
+    "basis": "The records-only run passed target, mapping, reader, loss, schedule and measured workload-phase checks; 21 released-phase brackets have complete four-P software witnesses under the predeclared E=240 assumption. Sparse MMIO can screen coarse phase differences on a fresh boot.",
+    "fresh_boot_sparse_mmio_phase_screen": "permitted_after_live_identity_and_fallback_checks",
+    "restriction": "The 240-tick bound is unverified across the capture; any all-P interval association remains conditional. No physical state or energy claim. MMIO observer effects require matched controls and a later varied-cadence boot."
+  },
+  "pcpm": {
+    "attempted": 90,
+    "counter_bracket_ticks_min_max": [
+      6,
+      84
+    ],
+    "counter_errors": 0,
+    "cpu_errors": 0,
+    "existing_internal_clockless_regmap": true,
+    "main_pmgr_phys": "0x23b700000",
+    "main_pmgr_size": "0x14000",
+    "missed_slots": 0,
+    "mode": "records",
+    "phase_interior_full_bracket_counts": {
+      "four_p_active": 14,
+      "four_p_released": 24,
+      "four_p_wake": 14,
+      "one_p_active": 14
+    },
+    "raw_valid_rows": 0,
+    "read_attempted_rows": 0,
+    "read_errors": 0,
+    "requested": 90,
+    "state": "complete",
+    "time_errors": 0,
+    "trailing_missed": 0,
+    "worker_cpu": 0
+  },
+  "physical_claims": "none",
+  "private_packet_manifest_sha256": "3490c6e034ee41dc1a568d8371ace3816eb54c3bda0886c03b205aa45864df6f",
+  "public_raw_export_receipt_sha256": "a39572f12d5aed184ba229a767035f0708d868b149150aa7f8a1f228d5f466a5",
+  "schema": "pcpm-native-records-review-v1",
+  "status": "records_only_machine_screen_passed_manual_review_complete",
+  "target": {
+    "board": "J313/T8103",
+    "configuration_sha256": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+    "gnu_build_id": "83a213307311f91eefb44d70718db21fea3e067c",
+    "release": "7.1.12-ARCH-apsc-20261002-wfi-pcpm"
+  }
+}

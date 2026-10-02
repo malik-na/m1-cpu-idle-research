@@ -1,0 +1,176 @@
+{
+  "boundary": "No PCPM MMIO register read was attempted; these records do not prove a hardware idle state, rail-off, or strict #5 final-WFI command continuity.",
+  "files": {
+    "after-snapshot.json": {
+      "private_input": "environment-after.json",
+      "private_input_sha256": "a71c24d93830839dffbed7cc057d5b11f64be81fd8db7e57460caeb5981db250",
+      "published_sha256": "12d732d71a86172b16719a2870ad0caa33e510a1092d19327c208630b2693e61",
+      "transformation": "JSON whitelist projection: power, brightness, CPU policy, online mask, temperature, monotonic time; no network/USB/UTC/proc-stat",
+      "uncompressed_bytes": 1275
+    },
+    "apsc-events.csv.gz": {
+      "private_input": "apsc-events.csv",
+      "private_input_sha256": "6870b06fd7f1c1c9de9ed73bf5c71ee9f182b3f087a5349b6e49b689dc162b1c",
+      "published_sha256": "9a9d016dcdd702616a02eed9263a8f26a0cf4e3c1b7ab7d5136ba817fbb7d734",
+      "transformation": "gzip level 9, empty filename, mtime=0; gunzip is byte-exact",
+      "uncompressed_bytes": 411537
+    },
+    "apsc-status-after.txt": {
+      "private_input": "apsc-status-after.txt",
+      "private_input_sha256": "5340842b1ac3c770c4b5c997a9ca2b933933da4126b4609db8babb67ff736c8d",
+      "published_sha256": "5340842b1ac3c770c4b5c997a9ca2b933933da4126b4609db8babb67ff736c8d",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 2110
+    },
+    "apsc-status-before.txt": {
+      "private_input": "apsc-status-before.txt",
+      "private_input_sha256": "050ac2000624139a6d5d24e1813b3b4658dd76746ecaa238a8e863ca2c2af063",
+      "published_sha256": "050ac2000624139a6d5d24e1813b3b4658dd76746ecaa238a8e863ca2c2af063",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 2031
+    },
+    "apsc-wfi-events.csv.gz": {
+      "private_input": "apsc-wfi-events.csv",
+      "private_input_sha256": "0a68e2121ed0b4ae7d8ae83c09dfcd21b322db9452911293cf9f17d665929e93",
+      "published_sha256": "a7f214f67fd5640cc68a867154cf1bce7c57b8572f8ed195d141f58e7a86e2d9",
+      "transformation": "gzip level 9, empty filename, mtime=0; gunzip is byte-exact",
+      "uncompressed_bytes": 37
+    },
+    "before-snapshot.json": {
+      "private_input": "environment-before.json",
+      "private_input_sha256": "3438e7dd8cca0825480e9537fd4a296073c3cddc36c1e4811270f100400c9d40",
+      "published_sha256": "3b6b5e069bd958e5118cf57527d09e9dbde8dfa3ee5b14e4904d91015f3f8b97",
+      "transformation": "JSON whitelist projection: power, brightness, CPU policy, online mask, temperature, monotonic time; no network/USB/UTC/proc-stat",
+      "uncompressed_bytes": 1275
+    },
+    "control-writes.json": {
+      "private_input": "control-writes.json",
+      "private_input_sha256": "35b5a8b81318fb04f6281107e92c937b816a80e80408613c4ff9646d155ffecb",
+      "published_sha256": "35b5a8b81318fb04f6281107e92c937b816a80e80408613c4ff9646d155ffecb",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 323
+    },
+    "counter-post-events.csv.gz": {
+      "private_input": "counter-post-events.csv",
+      "private_input_sha256": "89fd5694e853eb41dc5ca1975fb2dd61dcd336fd3288c5354353682fac0d0755",
+      "published_sha256": "41e93ec87f692ab73a17181cdd5d42e687564c4a45acde039f3c1b303c43c679",
+      "transformation": "gzip level 9, empty filename, mtime=0; gunzip is byte-exact",
+      "uncompressed_bytes": 353019
+    },
+    "counter-post-status.txt": {
+      "private_input": "counter-post-status.txt",
+      "private_input_sha256": "6ddb77025e2da777afd6eb8c589e88360e7936d9572734f7644db8e8b8eaa4e1",
+      "published_sha256": "6ddb77025e2da777afd6eb8c589e88360e7936d9572734f7644db8e8b8eaa4e1",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 3741
+    },
+    "counter-pre-events.csv.gz": {
+      "private_input": "counter-pre-events.csv",
+      "private_input_sha256": "b843e94eb21fdd3e08e708db3b4d4c79d775de5d13428578155323dd33fb0b00",
+      "published_sha256": "b34d4e821a5c687606a5d11fb215411a8728ce471400716142b315f6255fc23f",
+      "transformation": "gzip level 9, empty filename, mtime=0; gunzip is byte-exact",
+      "uncompressed_bytes": 174589
+    },
+    "counter-pre-status.txt": {
+      "private_input": "counter-pre-status.txt",
+      "private_input_sha256": "f02965bc9b7a33cb10032e3efe4b4a8f103a88c3193768a8935e01f207823ccb",
+      "published_sha256": "f02965bc9b7a33cb10032e3efe4b4a8f103a88c3193768a8935e01f207823ccb",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 3484
+    },
+    "first-boot-review.json": {
+      "private_input": "first-boot-review.json",
+      "private_input_sha256": "1c4d05bd8f67249ed4d6a9b67094194a6b69e4b5299f564cbd3c536531c6efe0",
+      "published_sha256": "1c4d05bd8f67249ed4d6a9b67094194a6b69e4b5299f564cbd3c536531c6efe0",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 851
+    },
+    "pcpm-phase-coverage.json": {
+      "private_input": "pcpm-phase-coverage.json",
+      "private_input_sha256": "a22470b1153fb9b90dbc8d539bb719ec7039a3c63783a5e5b9eb7859bbc709ce",
+      "published_sha256": "a22470b1153fb9b90dbc8d539bb719ec7039a3c63783a5e5b9eb7859bbc709ce",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 255
+    },
+    "pcpm-samples.csv.gz": {
+      "private_input": "pcpm-samples.csv",
+      "private_input_sha256": "3188542f4b7a5eabc18a6fe8698de6e58c7b43fde62fd9fe87840fcc3757334b",
+      "published_sha256": "c6026ff033ec2dd0b53751fe94ce9ad16aac1e10f759724d6ff7fce630108b31",
+      "transformation": "gzip level 9, empty filename, mtime=0; gunzip is byte-exact",
+      "uncompressed_bytes": 7704
+    },
+    "pcpm-status-after.txt": {
+      "private_input": "pcpm-status-after.txt",
+      "private_input_sha256": "64f0f5cfd2800240079d7561b501d865a3710b6bc6d6b9c2bdb971f7367285aa",
+      "published_sha256": "64f0f5cfd2800240079d7561b501d865a3710b6bc6d6b9c2bdb971f7367285aa",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 1149
+    },
+    "pcpm-status-before.txt": {
+      "private_input": "pcpm-status-before.txt",
+      "private_input_sha256": "dfb20f7b183308b9830b419904b85edd769d5f44cd20a2d7b18d669bbe55762e",
+      "published_sha256": "dfb20f7b183308b9830b419904b85edd769d5f44cd20a2d7b18d669bbe55762e",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 1041
+    },
+    "schedule.json": {
+      "private_input": "schedule.json",
+      "private_input_sha256": "8fbc8a05a4d4b0ee2f033bfc0b4358e34331b75e0f55b5acf8deb98583be64ab",
+      "published_sha256": "8fbc8a05a4d4b0ee2f033bfc0b4358e34331b75e0f55b5acf8deb98583be64ab",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 1388
+    },
+    "timeline.jsonl": {
+      "private_input": "timeline.jsonl",
+      "private_input_sha256": "0f86408b7a96cd59f869e5b541486a5e26a1a6c802efdca9a284add94a4c84a4",
+      "published_sha256": "e7af60f273e9a1ad75e8bc5bb301c1ae57e64b6d97cee68f869912c55e4c5a3e",
+      "transformation": "JSONL whitelist projection: action, monotonic timing, command, error, result; no PID/UTC",
+      "uncompressed_bytes": 1742
+    },
+    "workload-ready.jsonl": {
+      "private_input": "workload-ready.jsonl",
+      "private_input_sha256": "62c84df167adafd3f3379f1bda841032dc48a403f23cf168559aa4415d197232",
+      "published_sha256": "62c84df167adafd3f3379f1bda841032dc48a403f23cf168559aa4415d197232",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 68
+    },
+    "workload-result.jsonl": {
+      "private_input": "workload-result.jsonl",
+      "private_input_sha256": "ea47fe4e273efd669f5174477c0c4e6f6996988dc622e4437bcd0b592939d274",
+      "published_sha256": "ea47fe4e273efd669f5174477c0c4e6f6996988dc622e4437bcd0b592939d274",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 3534
+    },
+    "workload-validation.json": {
+      "private_input": "workload-validation.json",
+      "private_input_sha256": "3de0ff3b73ceee835b2fac1d86a7e8e2f95fbe0d3ba5d5bd4ba2679768305107",
+      "published_sha256": "3de0ff3b73ceee835b2fac1d86a7e8e2f95fbe0d3ba5d5bd4ba2679768305107",
+      "transformation": "byte-exact",
+      "uncompressed_bytes": 38
+    }
+  },
+  "identity": {
+    "build_id": "83a213307311f91eefb44d70718db21fea3e067c",
+    "config_sha256": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+    "entry_title": "Aurora-APSC-research-wfi-pcpm",
+    "limine_conf_sha256": "9b771472e2257fa05c52118c68270be21c8685a02a7c9c865f53a31bcf7963b0",
+    "module_package": "linux-aurora-apsc-wfi-pcpm-modules",
+    "pcpm_patch_sha256": "4a7fc879a3ed377d813e01f8986306fc62679679d39718fe83183ae466ab3b56",
+    "release": "7.1.12-ARCH-apsc-20261002-wfi-pcpm",
+    "source_tree_sha256": "9733d6cb7f1fb8bed30bbaffc6a7b22a42b68dac2acc636fe2125c3faed1d19f",
+    "uki_sha256": "fc0c1af55696ab8508874f44ce0c5ab5d19c666fb26eda53553c940aac01c55a"
+  },
+  "packet_name": "records-20261002T201649Z",
+  "private_manifest_sha256": "3490c6e034ee41dc1a568d8371ace3816eb54c3bda0886c03b205aa45864df6f",
+  "scope": "single native first-boot records-only PCPM/APSC/counter/workload packet",
+  "source_hashes": {
+    "capture_records.py": "8a2dfde31f7294606c43da3b2b2ef1d37100f676a9e52939b735701bcb4f1728",
+    "experiments/aurora-apsc-observer/analyze_wfi.py": "75aff2210efdb5a085e315264c7b6689657e07af42f1b7139d191746ad4b7478",
+    "experiments/linux-apsc-observer/analyze.py": "8251d18d32b94c0e7a559df9ad2ecf8b1a25808d57a0f941d27aed536e048339",
+    "experiments/linux-counter-qualification/analyze.py": "22e8f48858db78b60840c57088e82587c0d286563d8ef339a853f8663d0270c8",
+    "experiments/linux-pcpm-sampler/analyze.py": "99e4fab1c22b9c8d428a460897f8c6bcf55acd97bd0e44f842757ae87ba1be09",
+    "four_p_workload": "f2f60b81b7ee5ee9f29d1af0964bfe72a56f504c11a022cf4fff6e0570d1a0f8",
+    "four_p_workload.c": "afc49c574d9fceb24d14f5ba32d83bd753c3eeb4ea987b7d5e6091642cb476d6",
+    "protocol.py": "63f18a0cea4a8940de2abb0f0de5aff2bc2aa6f39290b86c7aaeee63849a29cb"
+  }
+}

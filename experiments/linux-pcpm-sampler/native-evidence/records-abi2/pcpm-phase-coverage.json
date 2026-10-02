@@ -1,0 +1,10 @@
+{
+  "full_bracket_interior_row_count": {
+    "four_p_active": 14,
+    "four_p_released": 24,
+    "four_p_wake": 14,
+    "one_p_active": 14
+  },
+  "guard_ns": 300000000,
+  "scope": "records-only timing; no PCPM register word or cross-CPU interval claim"
+}
