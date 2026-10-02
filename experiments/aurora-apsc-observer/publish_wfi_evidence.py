@@ -9,6 +9,7 @@ the files deliberately withheld here.
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 import csv
 from dataclasses import dataclass
 import gzip
@@ -65,6 +66,7 @@ REQUIRED_PRIVATE_FILES = set(NUMERIC_FILES) | {
     "boot-cmdline.txt", "before-snapshot.json", "after-snapshot.json",
     "collector-source.py",
     "counter-ready.txt", "virtualization.stdout",
+    "environment-observation-before.json", "environment-observation-after.json",
 }
 FILE_LINE = re.compile(r"([0-9a-f]{64})  ([A-Za-z0-9][A-Za-z0-9._-]*)\Z")
 PRIVATE_TEXT = re.compile(
@@ -348,6 +350,162 @@ def check_conditions(before: dict, after: dict) -> None:
                   if field != "scaling_cur_freq")
     require(all(before[field] == after[field] for field in stable),
             "power, brightness or CPU policy endpoints differ")
+
+
+def environment_observation(packet: Path, label: str) -> dict:
+    """Validate the new, bounded private endpoint sample without exporting IDs."""
+    raw = json.loads((packet / f"environment-observation-{label}.json").read_text())
+    require(isinstance(raw, dict) and set(raw) == {
+        "schema", "observed_monotonic_ns_begin", "observed_monotonic_ns_end",
+        "network", "usb_devices", "proc_stat"} and raw["schema"] == 1,
+        "environment observation schema differs")
+    begin, end = raw["observed_monotonic_ns_begin"], raw["observed_monotonic_ns_end"]
+    require(type(begin) is int and type(end) is int and 0 < begin <= end,
+            "environment observation time is invalid")
+    network = raw["network"]
+    require(isinstance(network, list) and 1 <= len(network) <= 64,
+            "network inventory absent or unbounded")
+    names = []
+    for row in network:
+        require(isinstance(row, dict) and set(row) == {
+            "name", "iftype", "operstate", "carrier", "rx_bytes", "tx_bytes",
+            "rx_packets", "tx_packets", "observed_monotonic_ns"},
+            "network observation fields differ")
+        name = row["name"]
+        require(isinstance(name, str) and re.fullmatch(r"[A-Za-z0-9_.-]{1,15}", name)
+                and type(row["iftype"]) is int and 0 <= row["iftype"] <= 65535
+                and row["operstate"] in {"unknown", "notpresent", "down", "lowerlayerdown",
+                                            "testing", "dormant", "up"}
+                and (row["carrier"] is None or
+                     (type(row["carrier"]) is int and row["carrier"] in (0, 1)))
+                and type(row["observed_monotonic_ns"]) is int
+                and begin <= row["observed_monotonic_ns"] <= end,
+                "network observation value differs")
+        require(all(type(row[key]) is int and 0 <= row[key] < 2**64 for key in
+                    ("rx_bytes", "tx_bytes", "rx_packets", "tx_packets")),
+                "network counter invalid")
+        names.append(name)
+    require(names == sorted(set(names)) and "wlan0" in names,
+            "network inventory order or wlan0 identity differs")
+    usb = raw["usb_devices"]
+    require(isinstance(usb, list) and len(usb) <= 64, "USB inventory unbounded")
+    nodes = []
+    for row in usb:
+        require(isinstance(row, dict) and set(row) == {
+            "node", "id_vendor", "id_product", "device_class", "observed_monotonic_ns"},
+            "USB observation fields differ")
+        node = row["node"]
+        require(isinstance(node, str) and re.fullmatch(r"[A-Za-z0-9_.:-]{1,32}", node)
+                and all(isinstance(row[key], str) and
+                        re.fullmatch(r"[0-9a-f]{4}" if key != "device_class" else r"[0-9a-f]{2}", row[key])
+                        for key in ("id_vendor", "id_product", "device_class"))
+                and type(row["observed_monotonic_ns"]) is int
+                and begin <= row["observed_monotonic_ns"] <= end,
+                "USB observation value differs")
+        nodes.append(node)
+    require(nodes == sorted(set(nodes)), "USB inventory order or uniqueness differs")
+    stat = raw["proc_stat"]
+    require(isinstance(stat, dict) and set(stat) == {
+        "cpu_jiffies_first_eight", "context_switches", "procs_running",
+        "procs_blocked", "clock_ticks_per_second", "observed_monotonic_ns"},
+        "aggregate CPU observation fields differ")
+    cpu = stat["cpu_jiffies_first_eight"]
+    require(isinstance(cpu, list) and len(cpu) == 8
+            and all(type(value) is int and 0 <= value < 2**64 for value in cpu)
+            and all(type(stat[key]) is int and 0 <= stat[key] < 2**64 for key in
+                    ("context_switches", "procs_running", "procs_blocked"))
+            and type(stat["clock_ticks_per_second"]) is int
+            and 1 <= stat["clock_ticks_per_second"] <= 10000
+            and type(stat["observed_monotonic_ns"]) is int
+            and begin <= stat["observed_monotonic_ns"] <= end,
+            "aggregate CPU observation value differs")
+    return raw
+
+
+def project_environment_activity(packet: Path, chronology: list[dict]) -> dict:
+    before = environment_observation(packet, "before")
+    after = environment_observation(packet, "after")
+    actions = {row["action"]: row["monotonic_ns"] for row in chronology}
+    require(actions["begin"] <= before["observed_monotonic_ns_begin"]
+            <= before["observed_monotonic_ns_end"] < actions["window_begin"]
+            and actions["window_end"] < after["observed_monotonic_ns_begin"]
+            <= after["observed_monotonic_ns_end"] <= actions["complete"],
+            "environment observations do not bracket the capture")
+
+    before_net = {row["name"]: row for row in before["network"]}
+    after_net = {row["name"]: row for row in after["network"]}
+    same_interfaces = ({name: row["iftype"] for name, row in before_net.items()}
+                       == {name: row["iftype"] for name, row in after_net.items()})
+    counters = ("rx_bytes", "tx_bytes", "rx_packets", "tx_packets")
+
+    def traffic_delta(names: set[str]) -> dict | None:
+        if not same_interfaces:
+            return None
+        rows = {}
+        for key in counters:
+            differences = [after_net[name][key] - before_net[name][key] for name in names]
+            if any(value < 0 for value in differences):
+                return None
+            rows[key] = sum(differences)
+        return rows
+
+    other = {name for name, row in before_net.items() if name not in ("wlan0", "lo")
+             and row["iftype"] != 772}
+    wlan0_delta = traffic_delta({"wlan0"})
+    other_delta = traffic_delta(other)
+    usb_before = Counter((row["id_vendor"], row["id_product"], row["device_class"])
+                         for row in before["usb_devices"])
+    usb_after = Counter((row["id_vendor"], row["id_product"], row["device_class"])
+                        for row in after["usb_devices"])
+    before_stat, after_stat = before["proc_stat"], after["proc_stat"]
+    require(before_stat["clock_ticks_per_second"] == after_stat["clock_ticks_per_second"],
+            "aggregate CPU clock scale changed")
+    cpu_delta = [later - earlier for earlier, later in zip(
+        before_stat["cpu_jiffies_first_eight"], after_stat["cpu_jiffies_first_eight"])]
+    context_delta = after_stat["context_switches"] - before_stat["context_switches"]
+    require(all(value >= 0 for value in cpu_delta) and context_delta >= 0,
+            "aggregate CPU counters reversed")
+    return {
+        "scope": "read-only endpoints outside capture; no process, address, interface-name or USB identity export",
+        "observation_times_monotonic_ns": {
+            "before": [before["observed_monotonic_ns_begin"], before["observed_monotonic_ns_end"]],
+            "after": [after["observed_monotonic_ns_begin"], after["observed_monotonic_ns_end"]],
+        },
+        "network": {
+            "interface_name_type_set_equal": same_interfaces,
+            "wlan0_operstate_before_after": [before_net["wlan0"]["operstate"],
+                                               after_net["wlan0"]["operstate"]],
+            "wlan0_carrier_before_after": [before_net["wlan0"]["carrier"],
+                                             after_net["wlan0"]["carrier"]],
+            "other_nonloopback_count_before_after": [
+                len(other), sum(name not in ("wlan0", "lo") and row["iftype"] != 772
+                                for name, row in after_net.items())],
+            "other_nonloopback_operstate_counts_before_after": [
+                dict(sorted(Counter(before_net[name]["operstate"] for name in other).items())),
+                dict(sorted(Counter(row["operstate"] for name, row in after_net.items()
+                                    if name not in ("wlan0", "lo") and row["iftype"] != 772).items())),
+            ],
+            "wlan0_traffic_delta": wlan0_delta,
+            "other_nonloopback_traffic_delta": other_delta,
+            "traffic_delta_scope": "endpoint counters; null on interface change or counter reset; traffic may occur outside capture",
+        },
+        "usb": {
+            "device_count_before_after": [len(before["usb_devices"]), len(after["usb_devices"])],
+            "vendor_product_class_multiset_equal": usb_before == usb_after,
+            "identity_scope": "private VID:PID/class retained; public identity equality and counts only; root hubs included",
+        },
+        "aggregate_cpu": {
+            "cpu_busy_jiffies_delta": sum(cpu_delta) - cpu_delta[3] - cpu_delta[4],
+            "cpu_idle_iowait_jiffies_delta": cpu_delta[3] + cpu_delta[4],
+            "cpu_total_jiffies_delta": sum(cpu_delta),
+            "context_switches_delta": context_delta,
+            "procs_running_before_after": [before_stat["procs_running"], after_stat["procs_running"]],
+            "procs_blocked_before_after": [before_stat["procs_blocked"], after_stat["procs_blocked"]],
+            "clock_ticks_per_second": before_stat["clock_ticks_per_second"],
+            "scope": "whole-system counters include workers and collector; background CPU cannot be isolated",
+        },
+        "interior_equivalence": "not_established_by_endpoints",
+    }
 
 
 def check_acquisition(packet: Path, mode: str, identity: Identity) -> tuple[list[dict], int, dict[str, list[int]]]:
@@ -652,6 +810,7 @@ def publish(packet: Path, mode: str, destination: Path, receipt_path: Path,
     before_rows, before = project_snapshot(packet, "before-snapshot.json")
     after_rows, after = project_snapshot(packet, "after-snapshot.json")
     check_conditions(before, after)
+    activity = project_environment_activity(packet, chronology)
     observer, counter = check_analysis(packet, mode)
     d_pilot_interior_count = (
         d_pilot_model_interior_count(observer, (packet / "status.txt").read_text())
@@ -683,11 +842,23 @@ def publish(packet: Path, mode: str, destination: Path, receipt_path: Path,
                 f"packet changed during publication: {original}")
         public[name] = (json.dumps(rows, indent=2, sort_keys=True) + "\n").encode()
         input_for_public[name] = original
+    activity_name = "activity-summary.json"
+    public[activity_name] = (json.dumps(activity, indent=2, sort_keys=True) + "\n").encode()
+    input_for_public[activity_name] = (
+        "environment-observation-before.json", "environment-observation-after.json")
     require(all(not PRIVATE_TEXT.search(contents) for contents in public.values()),
             "private-looking content in public projection")
     evidence = {}
     for name, contents in public.items():
         original = input_for_public[name]
+        if isinstance(original, tuple):
+            evidence[name] = {
+                "private_input_sha256": {source: entries[source] for source in original},
+                "published_sha256": sha256(contents),
+                "uncompressed_bytes": None,
+                "transformation": "validated aggregate endpoint projection with interface and USB identifiers suppressed",
+            }
+            continue
         evidence[name] = {
             "private_input_sha256": entries[original],
             "published_sha256": sha256(contents),
@@ -741,8 +912,9 @@ def publish(packet: Path, mode: str, destination: Path, receipt_path: Path,
             "battery_capacity_percent_after": after["power.battery_capacity_percent"],
             "policy_charger_brightness_endpoints_equal": True,
             "interior_condition_changes": "not_observed",
-            "usb_network_background_activity": "not_fully_observed",
+            "usb_network_background_activity": "read_only_endpoints_observed; interior_and_background_equivalence_unproven",
         },
+        "activity_summary": activity,
         "single_packet_boot_distinctness": "not_established; compare private boot IDs across packets",
         "private_boot_cmdline": "retained in hashed packet; not independently decoded here",
         "private_full_fdt": "retained in hashed packet; only selected same-boot topology was checked by the private qualification",
@@ -778,6 +950,10 @@ def publish(packet: Path, mode: str, destination: Path, receipt_path: Path,
              "assumed_pairwise_clock_error_ticks":
                  observer["c_hook_comparable_lag"]["assumed_pairwise_clock_error_ticks"]}
             if mode == "mmio" else None),
+        "wfi_peer_candidate_status": (
+            observer.get("wfi_peer_candidates", {}).get("status") if mode != "baseline" else None),
+        "wfi_peer_candidate_by_cluster": (
+            observer.get("wfi_peer_candidates", {}).get("by_cluster") if mode != "baseline" else None),
         "evidence_files": evidence,
         "claim_boundary": "first-attempt pre-DSB probe only; WFI-instruction state, physical power, energy and a guaranteed cross-CPU clock bound remain unobserved",
     }

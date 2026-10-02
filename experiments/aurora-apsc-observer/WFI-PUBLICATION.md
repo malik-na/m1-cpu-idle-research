@@ -39,8 +39,17 @@ interior worker pulses, or changed policy/charger/brightness endpoints causes
 publication rejection; these are review gates around the requested 2,000 ms
 window, not a cross-CPU clock calibration.
 
+The receipt's `wfi_peer_candidate_status` and
+`wfi_peer_candidate_by_cluster` fields summarize only the analyzer's
+**assumed-E=240 software peer-interval screen**. Own/peer interval and
+writer/target proofs remain in the private saved analyzer output and can be
+reconstructed from the published raw numerical streams. Raw E BUSY samples
+remain a separate observation. Candidate labels do not establish a physical
+final core, BUSY at the later WFI instruction, or a completed cluster power
+transition.
+
 Successful publication produces a receipt and a directory of exactly nine
-numerical streams plus three filtered JSON files. The observer and counter
+numerical streams plus four filtered JSON files. The observer and counter
 CSV files and two worker CSV files are byte-exact after deterministic gzip;
 the observer/counter status files are byte-exact. `chronology.json` retains
 only validated fields allowed for each named acquisition action and its time;
@@ -55,6 +64,31 @@ opportunity model. For a D pilot, its `release`, `gnu_build_id`,
 fields can also bind a later EFI-retirement readback to the reviewed private
 packet. This receipt alone does not justify retiring an entry; the separate
 live boot/device checks remain necessary.
+
+The pre-capture environment amendment adds private, hashed
+`environment-observation-before.json` and
+`environment-observation-after.json` to **ABI 2** packets only. The collector
+reads a bounded `/sys/class/net` interface inventory (state, carrier and
+byte/packet counters), a bounded `/sys/bus/usb/devices` VID:PID/class inventory,
+and aggregate `/proc/stat` CPU/context-switch counts. It does not read MAC
+addresses, IP addresses, USB serials, process names or process IDs. The ABI 1
+collector path remains unchanged. These endpoint reads occur with the existing
+before/after snapshots, outside the armed window, to avoid adding a new read
+inside the WFI observation path.
+
+`activity-summary.json` is an independently replayed projection of those
+private files. It publishes `wlan0` state and traffic deltas, aggregate
+other-interface traffic/counts, USB device counts and private VID:PID/class
+multiset equality, plus whole-system CPU/context-switch deltas. Other
+interface names, USB node names and VID:PIDs stay private; the public receipt
+links both private input hashes to the projection hash. Network counter reset
+or interface change yields a null traffic delta instead of a false zero.
+Aggregate CPU counters include the workload and collector, so they cannot
+isolate background activity. Endpoint equality does not establish USB,
+network, CPU-load or thermal equivalence throughout the capture or across
+different boots. There is no predeclared thermal tolerance; reviewers must
+leave a sensitive matched C/E negative inconclusive when comparability is
+not independently established.
 
 The `counter_pre_begin/end` and `counter_post_begin/end` chronology markers
 bracket synchronous kernel counter-qualification runs. They do not include

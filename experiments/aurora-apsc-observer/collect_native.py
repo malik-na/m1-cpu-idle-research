@@ -24,6 +24,101 @@ WORKLOAD_SHA = '82f4ce1145c8135c8b28246a9681d2316083cd1bb1a936a736b8a6cd03102d2b
 DURATION_MS = 2000
 
 
+def observe_environment(net_root=Path('/sys/class/net'),
+                        usb_root=Path('/sys/bus/usb/devices'),
+                        proc_stat=Path('/proc/stat')):
+    """Bounded read-only endpoint observation; never read MACs or USB serials.
+
+    The aggregate CPU counters include the experiment workload and collector;
+    they cannot isolate background work. All names/VID:PIDs stay private.
+    """
+    started = time.monotonic_ns()
+
+    def short_text(path):
+        value = path.read_text().strip()
+        if not value or len(value) > 64:
+            raise ValueError('environment sysfs value missing or oversized')
+        return value
+
+    interfaces = sorted(path for path in net_root.iterdir() if path.is_dir())
+    if not interfaces or len(interfaces) > 64:
+        raise ValueError('network interface inventory absent or unbounded')
+    network = []
+    for interface in interfaces:
+        name = interface.name
+        if not name or len(name) > 15 or '/' in name:
+            raise ValueError('invalid network interface name')
+        carrier_path = interface / 'carrier'
+        try:
+            carrier = int(short_text(carrier_path)) if carrier_path.exists() else None
+        except OSError:
+            carrier = None  # Some down interfaces reject carrier reads.
+        if carrier not in (None, 0, 1):
+            raise ValueError('invalid network carrier')
+        item = {
+            'name': name,
+            'iftype': int(short_text(interface / 'type')),
+            'operstate': short_text(interface / 'operstate'),
+            'carrier': carrier,
+        }
+        for field in ('rx_bytes', 'tx_bytes', 'rx_packets', 'tx_packets'):
+            item[field] = int(short_text(interface / 'statistics' / field))
+            if item[field] < 0:
+                raise ValueError('negative network statistic')
+        item['observed_monotonic_ns'] = time.monotonic_ns()
+        network.append(item)
+
+    usb_paths = sorted(path for path in usb_root.iterdir()
+                       if path.is_dir() and (path / 'idVendor').is_file()
+                       and (path / 'idProduct').is_file())
+    if len(usb_paths) > 64:
+        raise ValueError('USB device inventory unbounded')
+    usb_devices = []
+    for path in usb_paths:
+        usb_devices.append({
+            'node': path.name,
+            'id_vendor': short_text(path / 'idVendor').lower(),
+            'id_product': short_text(path / 'idProduct').lower(),
+            'device_class': short_text(path / 'bDeviceClass').lower(),
+            'observed_monotonic_ns': time.monotonic_ns(),
+        })
+
+    stat_bytes = proc_stat.read_bytes()
+    if len(stat_bytes) > 1_000_000:
+        raise ValueError('proc stat input unbounded')
+    stat_lines = stat_bytes.decode('ascii').splitlines()
+    fields = {}
+    for line in stat_lines:
+        parts = line.split()
+        if parts and parts[0] in ('cpu', 'ctxt', 'procs_running', 'procs_blocked'):
+            if parts[0] in fields:
+                raise ValueError('duplicate proc stat field')
+            fields[parts[0]] = parts[1:]
+    if set(fields) != {'cpu', 'ctxt', 'procs_running', 'procs_blocked'} or len(fields['cpu']) < 8:
+        raise ValueError('required aggregate proc stat fields missing')
+    cpu = [int(value) for value in fields['cpu'][:8]]
+    counts = {key: int(fields[key][0]) for key in ('ctxt', 'procs_running', 'procs_blocked')
+              if len(fields[key]) == 1}
+    if len(counts) != 3 or any(value < 0 for value in (*cpu, *counts.values())):
+        raise ValueError('invalid aggregate proc stat value')
+    observed = time.monotonic_ns()
+    return {
+        'schema': 1,
+        'observed_monotonic_ns_begin': started,
+        'observed_monotonic_ns_end': observed,
+        'network': network,
+        'usb_devices': usb_devices,
+        'proc_stat': {
+            'cpu_jiffies_first_eight': cpu,
+            'context_switches': counts['ctxt'],
+            'procs_running': counts['procs_running'],
+            'procs_blocked': counts['procs_blocked'],
+            'clock_ticks_per_second': os.sysconf('SC_CLK_TCK'),
+            'observed_monotonic_ns': observed,
+        },
+    }
+
+
 def values(text):
     pairs = [line.split('=', 1) for line in text.splitlines()]
     if any(len(p) != 2 for p in pairs) or len({p[0] for p in pairs}) != len(pairs):
@@ -180,6 +275,9 @@ def main():
         vm = command(['/usr/bin/systemd-detect-virt'], 'virtualization')
         assert vm.stdout.strip() == b'none', 'native provenance needs further qualification'
         before = snapshot('before')
+        if args.observer_abi == 2:
+            save('environment-observation-before.json',
+                 (json.dumps(observe_environment(), indent=2) + '\n').encode())
         assert before['/sys/devices/system/cpu/online'] == '0-7'
         assert before['/sys/devices/system/cpu/cpuidle/current_driver'] == 'apple_idle'
         assert before['/sys/devices/system/cpu/cpuidle/current_governor_ro'] == 'menu'
@@ -264,6 +362,9 @@ def main():
             assert decode.returncode == 0, 'observer analysis failed'
             assert json.loads(decode.stdout)['integrity']['clean'], 'observer capture integrity failed'
         after = snapshot('after')
+        if args.observer_abi == 2:
+            save('environment-observation-after.json',
+                 (json.dumps(observe_environment(), indent=2) + '\n').encode())
         policy_fields = ('online', 'current_driver', 'current_governor_ro', 'related_cpus', 'affected_cpus',
                          'scaling_driver', 'scaling_governor', 'scaling_min_freq', 'scaling_max_freq', 'disable')
         assert all(after.get(k) == v for k, v in before.items() if Path(k).name in policy_fields), 'policy or online state changed'

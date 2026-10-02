@@ -13,6 +13,7 @@ import unittest
 from unittest import mock
 
 import analyze_wfi
+import collect_native
 import publish_wfi_evidence as publisher
 import test_analyze_wfi as wfi_fixtures
 
@@ -68,6 +69,42 @@ def snapshot(first_tick: int) -> bytes:
                  "observed_monotonic_ns": first_tick + len(rows),
                  "raw_text": "00:11:22:33:44:55\n"})
     return (json.dumps(rows) + "\n").encode()
+
+
+def environment_observation(before: bool) -> bytes:
+    base = 100 if before else 8_250_000_100
+    offset = 0 if before else 500
+    network = []
+    for index, (name, iftype, state, carrier) in enumerate((
+            ("lo", 772, "unknown", 1), ("wlan0", 1, "up", 1))):
+        network.append({
+            "name": name, "iftype": iftype, "operstate": state, "carrier": carrier,
+            "rx_bytes": 1000 + index * 100 + offset,
+            "tx_bytes": 2000 + index * 100 + offset,
+            "rx_packets": 10 + index + offset // 100,
+            "tx_packets": 20 + index + offset // 100,
+            "observed_monotonic_ns": base + index + 1,
+        })
+    result = {
+        "schema": 1,
+        "observed_monotonic_ns_begin": base,
+        "observed_monotonic_ns_end": base + 10,
+        "network": network,
+        "usb_devices": [
+            {"node": "1-1", "id_vendor": "abcd", "id_product": "def0",
+             "device_class": "00", "observed_monotonic_ns": base + 3},
+            {"node": "usb1", "id_vendor": "1d6b", "id_product": "0002",
+             "device_class": "09", "observed_monotonic_ns": base + 4},
+        ],
+        "proc_stat": {
+            "cpu_jiffies_first_eight": [100 + offset] * 8,
+            "context_switches": 1000 + offset,
+            "procs_running": 2, "procs_blocked": 0,
+            "clock_ticks_per_second": 100,
+            "observed_monotonic_ns": base + 10,
+        },
+    }
+    return (json.dumps(result) + "\n").encode()
 
 
 def counter_files() -> dict[str, bytes]:
@@ -179,6 +216,8 @@ def create_packet(packet: Path, mode: str, *, post_stop_wfi: bool = False,
         "collector-source.py": collector_source,
         "before-snapshot.json": snapshot(100),
         "after-snapshot.json": snapshot(8_250_000_000),
+        "environment-observation-before.json": environment_observation(True),
+        "environment-observation-after.json": environment_observation(False),
         "workload-cpu1.csv": workload(1), "workload-cpu5.csv": workload(5),
         **counter_files(),
     }
@@ -291,7 +330,8 @@ class PublishWfiEvidenceTests(unittest.TestCase):
         self.assertTrue(result["device_acceptance"]["wifi_user_confirmed"])
         expected_public = {name + ".gz" if name.endswith(".csv") else name
                            for name in publisher.NUMERIC_FILES}
-        expected_public |= {"chronology.json", "environment-before.json", "environment-after.json"}
+        expected_public |= {"chronology.json", "environment-before.json", "environment-after.json",
+                            "activity-summary.json"}
         self.assertEqual({path.name for path in self.out.iterdir()}, expected_public)
         self.assertEqual(gzip.decompress((self.out / "wfi-events.csv.gz").read_bytes()),
                          (self.packet / "wfi-events.csv").read_bytes())
@@ -303,6 +343,13 @@ class PublishWfiEvidenceTests(unittest.TestCase):
             self.assertNotIn(private, public_bytes)
         self.assertEqual(result["conditions"]["charger_online"], 1)
         self.assertEqual(result["conditions"]["brightness"], 155)
+        activity = result["activity_summary"]
+        self.assertTrue(activity["usb"]["vendor_product_class_multiset_equal"])
+        self.assertEqual(activity["network"]["wlan0_traffic_delta"]["rx_bytes"], 500)
+        self.assertEqual(activity["aggregate_cpu"]["cpu_total_jiffies_delta"], 4000)
+        self.assertEqual(activity, json.loads((self.out / "activity-summary.json").read_text()))
+        self.assertNotIn("abcd", json.dumps(activity))
+        self.assertNotIn("wlan0", json.dumps(activity.get("usb")))
         self.assertEqual(json.loads((self.out / "environment-before.json").read_text())[0]["field"],
                          "cpu.online")
 
@@ -526,6 +573,63 @@ class PublishWfiEvidenceTests(unittest.TestCase):
             stream.write("0" * 64 + "  ../outside\n")
         with self.assertRaisesRegex(publisher.PublicationError, "malformed"):
             publisher.publish(self.packet, "wfi_clock", self.out, self.receipt, self.qualification, self.device_acceptance, self.identity)
+
+    def test_usb_identity_change_is_visible_without_exporting_vid_pid(self):
+        path = self.packet / "environment-observation-after.json"
+        raw = json.loads(path.read_text())
+        raw["usb_devices"][0]["id_product"] = "f001"
+        path.write_text(json.dumps(raw))
+        refresh_manifest(self.packet)
+        result = publisher.publish(self.packet, "wfi_clock", self.out, self.receipt,
+                                   self.qualification, self.device_acceptance, self.identity)
+        self.assertFalse(result["activity_summary"]["usb"]["vendor_product_class_multiset_equal"])
+        public = (self.out / "activity-summary.json").read_text()
+        self.assertNotIn("f001", public)
+        self.assertNotIn("abcd", public)
+
+    def test_usb_serial_in_private_observation_rejected(self):
+        path = self.packet / "environment-observation-before.json"
+        raw = json.loads(path.read_text())
+        raw["usb_devices"][0]["serial"] = "should-never-be-collected"
+        path.write_text(json.dumps(raw))
+        refresh_manifest(self.packet)
+        with self.assertRaisesRegex(publisher.PublicationError, "USB observation fields differ"):
+            publisher.publish(self.packet, "wfi_clock", self.out, self.receipt,
+                              self.qualification, self.device_acceptance, self.identity)
+
+    def test_environment_capture_time_must_bracket_window(self):
+        path = self.packet / "environment-observation-before.json"
+        raw = json.loads(path.read_text())
+        raw["observed_monotonic_ns_begin"] = 6_100_000_000
+        raw["observed_monotonic_ns_end"] = 6_100_000_100
+        for row in raw["network"] + raw["usb_devices"]:
+            row["observed_monotonic_ns"] = 6_100_000_050
+        raw["proc_stat"]["observed_monotonic_ns"] = 6_100_000_100
+        path.write_text(json.dumps(raw))
+        refresh_manifest(self.packet)
+        with self.assertRaisesRegex(publisher.PublicationError, "do not bracket the capture"):
+            publisher.publish(self.packet, "wfi_clock", self.out, self.receipt,
+                              self.qualification, self.device_acceptance, self.identity)
+
+    def test_read_only_collector_observation_never_reads_usb_serial(self):
+        net = self.root / "fake-net"
+        usb = self.root / "fake-usb"
+        proc = self.root / "fake-proc-stat"
+        wlan = net / "wlan0"
+        (wlan / "statistics").mkdir(parents=True)
+        for name, value in {"type": "1", "operstate": "up", "carrier": "1"}.items():
+            (wlan / name).write_text(value + "\n")
+        for name in ("rx_bytes", "tx_bytes", "rx_packets", "tx_packets"):
+            (wlan / "statistics" / name).write_text("2\n")
+        device = usb / "1-1"
+        device.mkdir(parents=True)
+        for name, value in {"idVendor": "abcd", "idProduct": "def0",
+                            "bDeviceClass": "00", "serial": "PRIVATE-SERIAL"}.items():
+            (device / name).write_text(value + "\n")
+        proc.write_text("cpu 1 2 3 4 5 6 7 8 9 10\nctxt 11\nprocs_running 2\nprocs_blocked 0\n")
+        raw = collect_native.observe_environment(net, usb, proc)
+        self.assertEqual(len(raw["usb_devices"]), 1)
+        self.assertNotIn("PRIVATE-SERIAL", json.dumps(raw))
 
 
 if __name__ == "__main__":
