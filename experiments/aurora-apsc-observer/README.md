@@ -161,3 +161,13 @@ After that qualified boot and pilot, the [EFI retirement receipt](wfi-efi-retire
 records removal of only the obsolete original research entry and image. The
 stock default, capacity and WFI entries passed post-change readback; the old
 image and both config versions have verified private backups.
+
+The later PCPM research image booted on this target with Wi-Fi and visible
+brightness control working. Its [records-only and sparse-MMIO result](../linux-pcpm-sampler/README.md)
+did not calibrate physical power state. After that replacement was qualified,
+the [guarded WFI-seam EFI retirement](WFI-EFI-RETIREMENT-RECEIPT.json)
+removed the older WFI menu entry and UKI, retained its hash-verified image
+off EFI, and independently rechecked the stock default and PCPM UKI. The
+prospective [ABI 3 ticket protocol](WFI-ABI3-TICKET-PROTOCOL.md) and
+[fixed run plan](WFI-ABI3-RUN-PLAN.md) address software final-entrant
+ordering at the pre-DSB read; they do not bridge that read to WFI.

@@ -128,3 +128,12 @@ records exact before/after configuration and image hashes, the verified stock
 default, retained stock/WFI images, EFI usage, and a hash-linked private
 backup. The capacity source patch and findings remain published; this
 operation adds no CPU-idle or physical-power observation.
+
+After the distinct PCPM image booted and passed Wi-Fi, brightness and
+observer checks, the obsolete WFI-seam menu entry and EFI image were retired
+under exact menu/image pins. The [sanitized retirement receipt](experiments/aurora-apsc-observer/WFI-EFI-RETIREMENT-RECEIPT.json)
+records independent post-change stock-default and PCPM readback, the removed
+image hash and off-EFI retention, and EFI usage falling from 73.74% to
+55.62%. The original WFI source, build/deployment receipts and native
+findings remain in this branch. This maintenance does not add hardware-idle
+evidence.
