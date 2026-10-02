@@ -153,6 +153,12 @@ def worker_summary(runs: list[dict], common: dict[str, list[int]]) -> list[dict]
 
 def interior_busy_rows(run: dict) -> list[dict]:
     packet = run["packet"]
+    candidate_screen = run["observer"]["wfi_peer_candidates"]
+    require(candidate_screen["status"] == "conditional_software_screen"
+            and candidate_screen["assumed_pairwise_clock_error_ticks"] == ERROR,
+            "E peer-interval candidate model differs")
+    candidates = {(row["cpu"], row["seq"], row["token"]): row
+                  for row in candidate_screen["candidates"]}
     _, status, _, _ = analyze_wfi.parse_abi2_status((packet / "status.txt").read_text())
     samples, _ = analyze_wfi.parse_wfi_events((packet / "wfi-events.csv").read_text(),
                                                status, "wfi_mmio")
@@ -161,11 +167,17 @@ def interior_busy_rows(run: dict) -> list[dict]:
         if (status["start_tick"] + ERROR < sample["t0"]
                 and sample["t1"] + ERROR < status["stop_tick"]
                 and sample["cmd"] & (1 << 31)):
+            candidate = candidates.get((sample["cpu"], sample["seq"], sample["token"]))
             rows.append({"cpu": sample["cpu"], "cluster": sample["cluster"],
                          "token": sample["token"], "t0": sample["t0"], "t1": sample["t1"],
                          "raw_command": hex(sample["cmd"]),
                          "site": "first-attempt pre-DSB probe",
-                         "capture_interior": "conditional_on_unproven_E240_cross_CPU_error"})
+                         "capture_interior": "conditional_on_unproven_E240_cross_CPU_error",
+                         "conditional_software_final_entrant_candidate": candidate is not None,
+                         "own_idle_interval": candidate["own_idle_interval"] if candidate else None,
+                         "peer_interval_witnesses": candidate["peer_interval_witnesses"] if candidate else None,
+                         "primary_paired_opportunity": candidate["primary_paired_opportunity"] if candidate else None,
+                         "paired_set": candidate["paired_set"] if candidate else None})
     return rows
 
 
@@ -224,6 +236,10 @@ def compare(blocks: list[list[dict]],
 
     cumulative = {cluster: {"e_primary_pairs": 0, "e_primary_busy": 0,
                             "e_exploratory_pairs": 0, "e_exploratory_busy": 0,
+                            "e_candidate_primary_pairs": 0,
+                            "e_candidate_primary_busy": 0,
+                            "e_candidate_primary_same_cpu_writer": 0,
+                            "e_candidate_primary_other_cpu_writer": 0,
                             "c_primary_pairs": 0, "c_primary_busy": 0,
                             "c_exploratory_pairs": 0, "c_exploratory_busy": 0}
                   for cluster in ("0", "1")}
@@ -236,18 +252,25 @@ def compare(blocks: list[list[dict]],
         c = by_mode["mmio"]
         e_pairs = e["observer"]["paired_opportunities"]
         c_pairs = c["observer"]["c_hook_comparable_lag"]
+        e_candidates = e["observer"]["wfi_peer_candidates"]
         require(e_pairs["status"] == c_pairs["status"] == "conditional_software_screen"
                 and e_pairs["assumed_pairwise_clock_error_ticks"] == ERROR
-                and c_pairs["assumed_pairwise_clock_error_ticks"] == ERROR,
+                and c_pairs["assumed_pairwise_clock_error_ticks"] == ERROR
+                and e_candidates["status"] == "conditional_software_screen"
+                and e_candidates["assumed_pairwise_clock_error_ticks"] == ERROR,
                 "C/E lag screen model differs")
         verify_bracket_lags(e_pairs, "E")
         verify_bracket_lags(c_pairs, "C")
         for cluster in ("0", "1"):
             ec, cc = e_pairs["by_cluster"][cluster], c_pairs["by_cluster"][cluster]
+            candidate_counts = e_candidates["by_cluster"][cluster]
             for prefix, counts in (("e", ec), ("c", cc)):
                 for stratum in ("primary", "exploratory"):
                     cumulative[cluster][f"{prefix}_{stratum}_pairs"] += counts[f"{stratum}_pairs"]
                     cumulative[cluster][f"{prefix}_{stratum}_busy"] += counts[f"{stratum}_busy"]
+            for field in ("candidate_primary_pairs", "candidate_primary_busy",
+                          "candidate_primary_same_cpu_writer", "candidate_primary_other_cpu_writer"):
+                cumulative[cluster][f"e_{field}"] += candidate_counts[field]
         positives = interior_busy_rows(e)
         all_positive.extend({"block": block_index + 1, **row} for row in positives)
         public_blocks.append({
@@ -264,6 +287,7 @@ def compare(blocks: list[list[dict]],
                         for run in selected],
             "c_primary_by_cluster": c_pairs["by_cluster"],
             "e_primary_by_cluster": e_pairs["by_cluster"],
+            "e_conditional_peer_candidate_by_cluster": e_candidates["by_cluster"],
             "wfi_bracket_ticks": {mode: by_mode[mode]["observer"]["wfi_probe"]["bracket_ticks"]
                                   for mode in ("wfi_clock", "wfi_mmio")},
             "c_hook_bracket_ticks": {
@@ -274,12 +298,18 @@ def compare(blocks: list[list[dict]],
         })
 
     enough = all(cumulative[cluster]["e_primary_pairs"] >= 20 for cluster in ("0", "1"))
+    candidate_enough = all(cumulative[cluster]["e_candidate_primary_pairs"] >= 20
+                           for cluster in ("0", "1"))
     c_control = all(cumulative[cluster]["c_primary_busy"] >= 1 for cluster in ("0", "1"))
     zero_pairs = all(cumulative[cluster]["e_primary_busy"] == 0 for cluster in ("0", "1"))
-    if all_positive:
-        decision = "first_attempt_pre_DSB_BUSY_observed"
-    elif enough and c_control and zero_pairs:
-        decision = "exposure_gate_met_but_environment_comparability_unverified_inconclusive"
+    candidate_positive = [row for row in all_positive
+                          if row["conditional_software_final_entrant_candidate"]]
+    if candidate_positive:
+        decision = "conditional_software_final_entrant_pre_DSB_BUSY_observed"
+    elif all_positive:
+        decision = "pre_DSB_BUSY_observed_candidate_final_entrant_unresolved"
+    elif candidate_enough and c_control and zero_pairs:
+        decision = "candidate_exposure_gate_met_but_environment_comparability_unverified_inconclusive"
     elif len(blocks) == 1:
         decision = "first_block_inconclusive_second_block_permitted"
     else:
@@ -287,7 +317,7 @@ def compare(blocks: list[list[dict]],
     if len(blocks) == 2:
         first_positive = any(row["block"] == 1 for row in all_positive)
         require(not first_positive,
-                "second block was not needed under first-block decision gates")
+                "second block was not needed after a first-block pre-DSB BUSY witness")
     return {
         "scope": "prospective fresh-boot ABI2 A/B/C/D/E conditional software comparison",
         "native_status": "derived_from_supplied_private_packets_only",
@@ -309,11 +339,13 @@ def compare(blocks: list[list[dict]],
         "blocks": public_blocks,
         "c_e_lag_screen_cumulative_by_cluster": cumulative,
         "descriptive_E_20_primary_pairs_each_cluster": enough,
+        "candidate_final_entrant_E_20_primary_pairs_each_cluster": candidate_enough,
         "descriptive_E_zero_BUSY_in_primary_pairs": zero_pairs,
         "C_pending_primary_lag_control_each_cluster": c_control,
         "positive_first_attempt_interior_busy_rows": all_positive,
+        "positive_conditional_software_final_entrant_busy_rows": candidate_positive,
         "decision": decision,
-        "claim_boundary": "BUSY is observed at the first-attempt pre-DSB probe only; this comparison does not establish a final-core software candidate or a physically asleep peer. WFI-instruction state, physical rail power, energy, command completion and a guaranteed cross-CPU clock bound are unobserved",
+        "claim_boundary": "a final-entrant label is conditional on complete software peer intervals and an unproven E=240 cross-CPU bound; it never proves a physically asleep peer. BUSY is observed at the first-attempt pre-DSB probe only; WFI-instruction state, physical rail power, energy and command completion are unobserved",
     }
 
 

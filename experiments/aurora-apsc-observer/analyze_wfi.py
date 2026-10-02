@@ -428,6 +428,178 @@ def c_hook_comparable_lag(events: list[dict], status: dict, mode: str,
     return result
 
 
+def wfi_peer_candidates(events: list[dict], samples: list[dict], status: dict,
+                        mode: str, integrity_reasons: list[str], pairs: dict) -> dict:
+    """Conditionally screen the *sample* against complete peer software intervals.
+
+    An idle-enter/exit pair describes a software path, not an asleep CPU. The
+    E=240 assumption covers every cross-CPU comparison, including capture
+    boundaries recorded by an unidentified control CPU. This screen never
+    moves a C-hook candidate label forward to the later WFI probe.
+    """
+    error = ASSUMED_PAIRWISE_ERROR_TICKS
+    result = {
+        "status": "conditional_software_screen",
+        "candidate_kind": "first_attempt_pre_DSB_software_final_entrant_candidate",
+        "assumed_pairwise_clock_error_ticks": error,
+        "clock_qualification": "unqualified; E=240 is an assumption over the whole capture",
+        "definition": (
+            "same-CPU/token WFI probe inside a complete own idle_enter/idle_exit "
+            "interval, with each other same-cluster CPU's idle_enter finishing "
+            "strictly before the candidate's idle_enter, and its complete "
+            "software idle interval covering the entire probe bracket by strict E=240 "
+            "margins; every interval and probe is strictly capture-interior "
+            "under the same assumed model"
+        ),
+        "claim_boundary": (
+            "software candidate only: peer hardware sleep, exact WFI-instruction "
+            "overlap, physical rail state, device completion and a guaranteed "
+            "cross-CPU clock bound are unobserved"
+        ),
+        "by_cluster": None,
+        "candidates": [],
+        "rejected_samples": [],
+        "rejection_counts": {},
+    }
+    if mode not in WFI_MODES:
+        result["status"] = "not_applicable_without_wfi_probe"
+        return result
+    if integrity_reasons:
+        result["status"] = "suppressed_integrity_failure"
+        result["integrity_reasons"] = list(integrity_reasons)
+        return result
+
+    enters = {(row["cpu"], row["token"]): row for row in events if row["kind"] == "idle_enter"}
+    exits = {(row["cpu"], row["token"]): row for row in events if row["kind"] == "idle_exit"}
+    intervals = defaultdict(list)
+    for key, entry in enters.items():
+        exit_event = exits.get(key)
+        if exit_event is not None:
+            intervals[entry["cpu"]].append((entry, exit_event))
+    interval_ends = {}
+    for cpu, rows in intervals.items():
+        rows.sort(key=lambda pair: (pair[0]["t1"], pair[0]["seq"]))
+        interval_ends[cpu] = [entry["t1"] for entry, _ in rows]
+
+    def interior(t0: int, t1: int) -> bool:
+        return status["start_tick"] + error < t0 and t1 + error < status["stop_tick"]
+
+    def interval_identity(entry: dict, exit_event: dict) -> dict:
+        return {"cpu": entry["cpu"], "cluster": entry["cluster"], "token": entry["token"],
+                "entry_seq": entry["seq"], "entry_t0": entry["t0"], "entry_t1": entry["t1"],
+                "exit_seq": exit_event["seq"], "exit_t0": exit_event["t0"],
+                "exit_t1": exit_event["t1"]}
+
+    primary_by_sample = {
+        (row["sample"]["cpu"], row["sample"]["seq"], row["sample"]["token"]): row
+        for row in pairs["decisions"] if row["status"] == "primary_pair"
+    } if pairs["status"] == "conditional_software_screen" else {}
+    counts = {str(cluster): Counter() for cluster in sorted(legacy.CLUSTER_IDS)}
+    rejected = Counter()
+    for sample in samples:
+        cpu, cluster, token = sample["cpu"], sample["cluster"], sample["token"]
+        group = counts[str(cluster)]
+        group["committed_samples"] += 1
+        reason = None
+        own_entry = enters.get((cpu, token))
+        own_exit = exits.get((cpu, token))
+        if not interior(sample["t0"], sample["t1"]):
+            reason = "sample_not_strictly_model_interior"
+        elif own_entry is None or own_exit is None:
+            reason = "own_complete_idle_interval_missing"
+        elif (own_entry["cluster"] != cluster or own_exit["cluster"] != cluster
+              or not interior(own_entry["t0"], own_exit["t1"])
+              or own_entry["t1"] >= sample["t0"] or sample["t1"] >= own_exit["t0"]):
+            reason = "own_interval_not_strictly_model_interior_or_not_covering_probe"
+
+        peer_witnesses = []
+        if reason is None:
+            peers = [peer for peer in sorted(legacy.CPU_IDS) if peer != cpu
+                     and status["clusters"][cluster] & (1 << peer)]
+            for peer in peers:
+                # Strict entry-before-probe order under the assumed error.
+                position = bisect_left(interval_ends.get(peer, []), sample["t0"] - error) - 1
+                if position < 0:
+                    reason = "peer_complete_idle_interval_missing_or_not_ordered"
+                    break
+                peer_entry, peer_exit = intervals[peer][position]
+                if not interior(peer_entry["t0"], peer_exit["t1"]):
+                    reason = "peer_interval_not_strictly_model_interior"
+                    break
+                if peer_entry["t1"] + error >= own_entry["t0"]:
+                    reason = "peer_entry_not_before_candidate_entry_under_model"
+                    break
+                if sample["t1"] + error >= peer_exit["t0"]:
+                    reason = "peer_interval_does_not_cover_full_probe_under_model"
+                    break
+                peer_witnesses.append({
+                    **interval_identity(peer_entry, peer_exit),
+                    "entry_before_candidate_entry_margin_ticks": own_entry["t0"] - peer_entry["t1"] - error,
+                    "entry_before_probe_margin_ticks": sample["t0"] - peer_entry["t1"] - error,
+                    "exit_after_probe_margin_ticks": peer_exit["t0"] - sample["t1"] - error,
+                })
+        if reason is not None:
+            rejected[reason] += 1
+            result["rejected_samples"].append({
+                "cpu": cpu, "cluster": cluster, "token": token, "seq": sample["seq"],
+                "t0": sample["t0"], "t1": sample["t1"], "reason": reason,
+            })
+            continue
+
+        key = (cpu, sample["seq"], token)
+        primary = primary_by_sample.get(key)
+        command = sample["cmd"]
+        candidate = {
+            "cpu": cpu, "cluster": cluster, "token": token, "seq": sample["seq"],
+            "t0": sample["t0"], "t1": sample["t1"],
+            "raw_command": hex(command) if command is not None else None,
+            "busy_bit31": bool(command & legacy.BUSY_BIT) if command is not None else None,
+            "own_idle_interval": interval_identity(own_entry, own_exit),
+            "peer_interval_witnesses": peer_witnesses,
+            "primary_paired_opportunity": primary is not None,
+            "paired_set": primary["set"] if primary is not None else None,
+        }
+        result["candidates"].append(candidate)
+        group["candidate_samples"] += 1
+        if command is not None:
+            group["candidate_busy"] += bool(command & legacy.BUSY_BIT)
+            group["candidate_clear"] += not bool(command & legacy.BUSY_BIT)
+        if primary is not None:
+            group["candidate_primary_pairs"] += 1
+            group["candidate_primary_busy"] += bool(command & legacy.BUSY_BIT)
+            writer_stratum = ("same_cpu_writer" if primary["set"]["cpu"] == cpu
+                              else "other_cpu_writer")
+            group[f"candidate_primary_{writer_stratum}"] += 1
+            group[f"candidate_primary_busy_{writer_stratum}"] += bool(command & legacy.BUSY_BIT)
+
+    result["rejection_counts"] = {name: rejected[name] for name in (
+        "sample_not_strictly_model_interior", "own_complete_idle_interval_missing",
+        "own_interval_not_strictly_model_interior_or_not_covering_probe",
+        "peer_complete_idle_interval_missing_or_not_ordered",
+        "peer_interval_not_strictly_model_interior",
+        "peer_entry_not_before_candidate_entry_under_model",
+        "peer_interval_does_not_cover_full_probe_under_model",
+    )}
+    result["by_cluster"] = {
+        cluster: {
+            "committed_samples": values["committed_samples"],
+            "candidate_samples": values["candidate_samples"],
+            "candidate_busy": values["candidate_busy"] if mode == "wfi_mmio" else None,
+            "candidate_clear": values["candidate_clear"] if mode == "wfi_mmio" else None,
+            "candidate_primary_pairs": values["candidate_primary_pairs"] if mode == "wfi_mmio" else None,
+            "candidate_primary_busy": values["candidate_primary_busy"] if mode == "wfi_mmio" else None,
+            "candidate_primary_same_cpu_writer": values["candidate_primary_same_cpu_writer"] if mode == "wfi_mmio" else None,
+            "candidate_primary_other_cpu_writer": values["candidate_primary_other_cpu_writer"] if mode == "wfi_mmio" else None,
+            "candidate_primary_busy_same_cpu_writer": values["candidate_primary_busy_same_cpu_writer"] if mode == "wfi_mmio" else None,
+            "candidate_primary_busy_other_cpu_writer": values["candidate_primary_busy_other_cpu_writer"] if mode == "wfi_mmio" else None,
+            "candidate_primary_exposure_gate_20": (
+                values["candidate_primary_pairs"] >= 20 if mode == "wfi_mmio" else None
+            ),
+        } for cluster, values in counts.items()
+    }
+    return result
+
+
 def analyze_text(events_csv: str, status_text: str, wfi_csv: str) -> dict:
     raw_status, projected_status, wfi_numbers, projected_text = parse_abi2_status(status_text)
     mode = raw_status["mode"]
@@ -543,6 +715,7 @@ def analyze_text(events_csv: str, status_text: str, wfi_csv: str) -> dict:
 
     pairs = paired_opportunities(events, samples, projected_status, mode, reasons)
     c_lag = c_hook_comparable_lag(events, projected_status, mode, reasons)
+    peer_candidates = wfi_peer_candidates(events, samples, projected_status, mode, reasons, pairs)
 
     return {
         "observer_abi": 2,
@@ -593,6 +766,7 @@ def analyze_text(events_csv: str, status_text: str, wfi_csv: str) -> dict:
         },
         "paired_opportunities": pairs,
         "c_hook_comparable_lag": c_lag,
+        "wfi_peer_candidates": peer_candidates,
         "claim_boundary": {
             "wfi_instruction_command_state": "not_observed",
             "cross_cpu_order": "requires separately justified counter comparability over the capture",

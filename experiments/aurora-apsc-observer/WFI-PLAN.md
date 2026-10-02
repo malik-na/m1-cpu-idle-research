@@ -92,6 +92,20 @@ error sweep, never as physical sleep or exact WFI overlap. A clean same-CPU
 SET-to-BUSY row is direct order evidence even if peer attribution remains
 conditional.
 
+Report raw interior E BUSY rows and **candidate-final-entrant E BUSY rows
+separately**. A candidate requires that the E sample's own CPU/token have a
+complete, model-interior idle-enter/exit interval and that all three other
+same-cluster CPUs have complete, model-interior software intervals whose
+entry ends strictly before the candidate's own idle-enter bracket begins,
+and whose exit starts strictly after the entire E bracket under assumed
+pairwise `E=240`. The candidate's own interval must strictly contain the
+E bracket. Missing, incomplete,
+contradictory or clock-ambiguous intervals cannot qualify. This is a
+conditional software label, not proof that peers were asleep or that BUSY
+persisted at the WFI instruction. A raw BUSY row lacking that label answers
+only the first-attempt command-state subquestion, not the candidate-final-core
+part of issue #5.
+
 For negative sensitivity, a *paired opportunity* is one distinct successful
 target-cluster SET followed by the earliest clean interior same-cluster E
 sample before any possibly intervening SET, within 600 ticks (25 microseconds)
@@ -126,6 +140,15 @@ those exposed, model-qualified opportunities. It cannot infer absence at
 WFI, a universal event rate, or a physical outcome. Require C to demonstrate
 pending commands in the comparable lag stratum before treating an E zero as
 a sensitive contrast; C and E are different boots, not event-level pairs.
+For the issue's **candidate-final-core** negative question, require at least
+20 of those primary E pairs **per cluster** to have E samples passing the
+complete own/peer interval screen above. Count that candidate-specific
+exposure separately; the generic 20-pair gate cannot substitute for it.
+If candidate-specific exposure fails, report the candidate question as
+underexposed even when generic E samples are all clear. Cross-boot thermal
+band/trend and USB/network/background comparability must also be explicitly
+reviewed before calling a zero a sensitive C-versus-E contrast; endpoints
+alone do not prove those conditions during the window.
 If the gate remains unmet after the two declared blocks, stop and publish
 the outcome as underexposed/inconclusive. A changed workload or peer-state
 observer requires a new protocol and separate arm before capture.

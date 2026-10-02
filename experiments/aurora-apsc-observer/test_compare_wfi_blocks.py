@@ -13,6 +13,7 @@ import analyze_wfi
 import compare_wfi_blocks as comparator
 import publish_wfi_evidence as publisher
 import test_publish_wfi_evidence as fixtures
+from test_analyze_wfi import peer_candidate_packet
 
 
 class CompareWfiBlocksTests(unittest.TestCase):
@@ -26,14 +27,22 @@ class CompareWfiBlocksTests(unittest.TestCase):
         self.addCleanup(patcher.stop)
         self.identity = None
 
-    def block(self, index: int = 0, duplicate_boot: bool = False) -> list[dict]:
+    def block(self, index: int = 0, duplicate_boot: bool = False,
+              raw_busy: bool = False, candidate_busy: bool = False) -> list[dict]:
         result = []
         for position, mode in enumerate(comparator.BLOCK_ORDERS[index]):
             ordinal = index * 5 + position
             packet = self.root / f"packet-{ordinal}"
             identity = fixtures.create_packet(packet, mode)
             if mode == "wfi_mmio":
-                wfi = (packet / "wfi-events.csv").read_text().replace("0x80000000", "0x0")
+                if candidate_busy:
+                    events, status, wfi = peer_candidate_packet(busy=True, include_set=True)
+                    (packet / "events.csv").write_text(events)
+                    (packet / "status.txt").write_text(status)
+                else:
+                    wfi = (packet / "wfi-events.csv").read_text()
+                    if not raw_busy:
+                        wfi = wfi.replace("0x80000000", "0x0")
                 (packet / "wfi-events.csv").write_text(wfi)
                 observer = analyze_wfi.analyze_text((packet / "events.csv").read_text(),
                                                      (packet / "status.txt").read_text(), wfi)
@@ -85,6 +94,23 @@ class CompareWfiBlocksTests(unittest.TestCase):
         self.assertEqual(result["decision"], "underexposed_or_C_control_unmet_inconclusive_stop")
         self.assertEqual(result["blocks"][1]["recorded_mode_order"],
                          list(comparator.BLOCK_ORDERS[1]))
+
+    def test_raw_busy_without_peer_witness_is_not_a_candidate_final_entrant(self):
+        result = comparator.compare([self.block(raw_busy=True)], self.identity)
+        self.assertEqual(result["decision"],
+                         "pre_DSB_BUSY_observed_candidate_final_entrant_unresolved")
+        self.assertTrue(result["positive_first_attempt_interior_busy_rows"])
+        self.assertFalse(result["positive_conditional_software_final_entrant_busy_rows"])
+
+    def test_candidate_busy_keeps_peer_proofs_separate_from_raw_busy_count(self):
+        result = comparator.compare([self.block(candidate_busy=True)], self.identity)
+        self.assertEqual(result["decision"],
+                         "conditional_software_final_entrant_pre_DSB_BUSY_observed")
+        self.assertEqual(len(result["positive_conditional_software_final_entrant_busy_rows"]), 1)
+        witness = result["positive_conditional_software_final_entrant_busy_rows"][0]
+        self.assertEqual(len(witness["peer_interval_witnesses"]), 3)
+        self.assertEqual(witness["paired_set"]["cpu"], 4)
+        self.assertEqual(result["c_e_lag_screen_cumulative_by_cluster"]["0"]["e_candidate_primary_pairs"], 1)
 
     def test_public_receipt_tamper_rejected(self):
         block = self.block()

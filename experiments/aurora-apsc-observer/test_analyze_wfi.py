@@ -108,6 +108,60 @@ def c_pairing_packet(sets, samples, *, invalid_indices=(), stop=10000):
             WFI_HEADER)
 
 
+def peer_candidate_packet(*, episodes=1, busy=False, include_set=False,
+                          peer1_entry_t1=301, peer1_exit_t0=1700,
+                          own_entry_t1=701, own_exit_t0=1500,
+                          missing_peer1_exit=False):
+    """Synthetic WFI probe with three complete peer software intervals."""
+    rows = []
+    wfi_lines = [WFI_HEADER]
+    idle_count = {cpu: 0 for cpu in range(4)}
+    wfi_count = {cpu: 0 for cpu in range(4)}
+    for episode in range(episodes):
+        base, token = episode * 2500, episode + 1
+        if include_set:
+            # CPU 4 is outside the target cluster; its cpufreq policy is 0.
+            rows.append(fixtures.record(
+                "dvfs", episode, 4, 0, policy_cpu=0, policy_mask="0x0f",
+                fast_switch=1, t0=base + 700, t1=base + 701,
+                pre_cmd="0x0", cmd="0x2000000",
+            ))
+        for cpu in range(4):
+            if cpu == 0:
+                entry_t0, entry_t1 = base + 700, base + own_entry_t1
+                probe_t0, probe_t1 = base + 1000, base + 1001
+                exit_t0 = base + own_exit_t0
+            else:
+                entry_t0 = base + 300
+                entry_t1 = base + (peer1_entry_t1 if cpu == 1 else 301)
+                probe_t0 = base + (800 if cpu == 1 and peer1_entry_t1 > 400 else 400)
+                probe_t1 = probe_t0 + 1
+                exit_t0 = base + (peer1_exit_t0 if cpu == 1 else 1700)
+            sequence = idle_count[cpu]
+            rows.append(fixtures.record("idle_enter", sequence, cpu, 0, token=token,
+                                        t0=entry_t0, t1=entry_t1))
+            idle_count[cpu] += 1
+            if not (missing_peer1_exit and cpu == 1 and episode == 0):
+                rows.append(fixtures.record("idle_exit", idle_count[cpu], cpu, 0,
+                                            token=token, t0=exit_t0, t1=exit_t0))
+                idle_count[cpu] += 1
+            raw = 0x80000000 if busy and cpu == 0 else 0
+            wfi_lines.append(f"{wfi_count[cpu]},{cpu},0,{token},{probe_t0},{probe_t1},"
+                             f"{hex(raw)},wfi_mmio\n")
+            wfi_count[cpu] += 1
+    overrides = {f"idle{cpu}": (idle_count[cpu], idle_count[cpu], 0, 0)
+                 for cpu in range(4)}
+    if include_set:
+        overrides["dvfs0"] = (episodes, episodes, 0, 0)
+    wfi_by_cpu = {cpu: (wfi_count[cpu], wfi_count[cpu], 0, 0) for cpu in range(4)}
+    stop = episodes * 2500
+    return (fixtures.event_csv(*rows),
+            status(mode="wfi_mmio", idle=(0, 0, 0, 0), wfi=(0, 0, 0, 0),
+                   overrides=overrides, wfi_by_cpu=wfi_by_cpu,
+                   start="0", stop=str(stop), end=str(stop + 1000)),
+            "".join(wfi_lines))
+
+
 class WfiAnalyzerTests(unittest.TestCase):
     def test_valid_mmio_busy_is_bounded_to_probe_site(self):
         result = analyze_wfi.analyze_text(
@@ -464,6 +518,81 @@ class WfiAnalyzerTests(unittest.TestCase):
         self.assertEqual(result["c_hook_comparable_lag"]["status"],
                          "not_applicable_without_c_hook_mmio")
         self.assertEqual(result["paired_opportunities"]["by_cluster"]["0"]["primary_busy"], 1)
+
+    def test_e_busy_candidate_requires_three_complete_model_covering_peer_intervals(self):
+        result = analyze_wfi.analyze_text(*peer_candidate_packet(busy=True, include_set=True))
+        self.assertTrue(result["integrity"]["clean"])
+        screen = result["wfi_peer_candidates"]
+        self.assertEqual(screen["status"], "conditional_software_screen")
+        self.assertEqual(screen["by_cluster"]["0"]["candidate_samples"], 1)
+        self.assertEqual(screen["by_cluster"]["0"]["candidate_busy"], 1)
+        self.assertEqual(screen["by_cluster"]["0"]["candidate_primary_pairs"], 1)
+        self.assertEqual(screen["by_cluster"]["0"]["candidate_primary_other_cpu_writer"], 1)
+        self.assertEqual(screen["by_cluster"]["0"]["candidate_primary_same_cpu_writer"], 0)
+        witness = screen["candidates"][0]
+        self.assertEqual((witness["cpu"], witness["token"]), (0, 1))
+        self.assertEqual(len(witness["peer_interval_witnesses"]), 3)
+        self.assertTrue(all(row["entry_before_probe_margin_ticks"] > 0
+                            and row["entry_before_candidate_entry_margin_ticks"] > 0
+                            and row["exit_after_probe_margin_ticks"] > 0
+                            for row in witness["peer_interval_witnesses"]))
+        self.assertEqual(witness["paired_set"]["cpu"], 4)
+        self.assertIn("software candidate only", screen["claim_boundary"])
+
+    def test_e_raw_busy_without_complete_peer_interval_is_not_candidate(self):
+        result = analyze_wfi.analyze_text(*peer_candidate_packet(
+            busy=True, missing_peer1_exit=True,
+        ))
+        self.assertTrue(result["integrity"]["clean"])
+        self.assertGreater(result["wfi_probe"]["by_cluster"]["0"]["busy_bit31"], 0)
+        screen = result["wfi_peer_candidates"]
+        self.assertEqual(screen["by_cluster"]["0"]["candidate_busy"], 0)
+        own_probe = next(row for row in screen["rejected_samples"] if row["cpu"] == 0)
+        self.assertEqual(own_probe["reason"], "peer_complete_idle_interval_missing_or_not_ordered")
+
+    def test_e_peer_clock_margin_equality_cannot_certify_candidate(self):
+        entry_boundary = analyze_wfi.analyze_text(*peer_candidate_packet(
+            busy=True, peer1_entry_t1=760,
+        ))["wfi_peer_candidates"]
+        exit_boundary = analyze_wfi.analyze_text(*peer_candidate_packet(
+            busy=True, peer1_exit_t0=1241,
+        ))["wfi_peer_candidates"]
+        self.assertEqual(entry_boundary["by_cluster"]["0"]["candidate_busy"], 0)
+        self.assertEqual(exit_boundary["by_cluster"]["0"]["candidate_busy"], 0)
+        self.assertEqual(next(row for row in entry_boundary["rejected_samples"] if row["cpu"] == 0)["reason"],
+                         "peer_complete_idle_interval_missing_or_not_ordered")
+        self.assertEqual(next(row for row in exit_boundary["rejected_samples"] if row["cpu"] == 0)["reason"],
+                         "peer_interval_does_not_cover_full_probe_under_model")
+
+    def test_peers_covering_probe_but_entering_after_own_entry_are_not_final_entrant_witness(self):
+        result = analyze_wfi.analyze_text(*peer_candidate_packet(
+            busy=True, peer1_entry_t1=721,
+        ))
+        self.assertTrue(result["integrity"]["clean"])
+        screen = result["wfi_peer_candidates"]
+        self.assertEqual(screen["by_cluster"]["0"]["candidate_busy"], 0)
+        own_probe = next(row for row in screen["rejected_samples"] if row["cpu"] == 0)
+        self.assertEqual(own_probe["reason"], "peer_entry_not_before_candidate_entry_under_model")
+
+    def test_own_idle_interval_must_strictly_contain_probe(self):
+        for change in ({"own_entry_t1": 1000}, {"own_exit_t0": 1001}):
+            with self.subTest(change=change):
+                result = analyze_wfi.analyze_text(*peer_candidate_packet(busy=True, **change))
+                self.assertTrue(result["integrity"]["clean"])
+                screen = result["wfi_peer_candidates"]
+                self.assertEqual(screen["by_cluster"]["0"]["candidate_busy"], 0)
+                own_probe = next(row for row in screen["rejected_samples"] if row["cpu"] == 0)
+                self.assertEqual(own_probe["reason"],
+                                 "own_interval_not_strictly_model_interior_or_not_covering_probe")
+
+    def test_twenty_general_e_pairs_do_not_substitute_for_candidate_exposure(self):
+        result = analyze_wfi.analyze_text(*peer_candidate_packet(
+            episodes=20, include_set=True, peer1_exit_t0=1241,
+        ))
+        self.assertTrue(result["integrity"]["clean"])
+        self.assertEqual(result["paired_opportunities"]["by_cluster"]["0"]["primary_pairs"], 20)
+        self.assertEqual(result["wfi_peer_candidates"]["by_cluster"]["0"]["candidate_primary_pairs"], 0)
+        self.assertFalse(result["wfi_peer_candidates"]["by_cluster"]["0"]["candidate_primary_exposure_gate_20"])
 
 
 if __name__ == "__main__":
