@@ -61,3 +61,14 @@ the local mode-0700 packets. The analysis's 240-tick cross-CPU bound is
 explicitly assumed and unproven through the window. This packet does not
 identify the WFI instruction state, physical cluster power, energy, wake
 latency or a Linux defect.
+
+The [ABI 2 build receipt](experiments/aurora-apsc-observer/wfi-build-receipt.json)
+records the separate `-wfi` kernel, statically reviewed first-attempt seam,
+matching module package and checked boot bundle. The later
+[deployment receipt](experiments/aurora-apsc-observer/wfi-deployment-receipt.json)
+records installed package and EFI hashes, integrity checks, preserved
+fallback entries and remaining EFI space. The source patch and protocol are
+published; package/archive contents, raw boot configuration, installation
+logs and host paths remain private. The new kernel was unbooted at this
+checkpoint, so these records establish no runtime command sample or power
+outcome.

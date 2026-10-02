@@ -9,6 +9,12 @@ only one conditional candidate sample within even 2,400 ticks of a preceding
 SET, so its separate SET and candidate totals do not establish 20 paired
 negative opportunities.
 
+The separately built ABI 2 release has now been installed as
+`Aurora-APSC-research-wfi-seam`; the [deployment receipt](wfi-deployment-receipt.json)
+records the checked module package and EFI readback. This changes the
+deployment status only. The image is **unbooted**, no ABI 2 observer sample
+exists, and the acquisition rules below remain predeclared.
+
 ## Site and scope
 
 The ABI 2 variant reserves a slot in C and performs one bracketed command
@@ -28,12 +34,17 @@ a native boot and controlled pilot succeed.
 Build from the exact installed Aurora source/config/toolchain with the
 variant-specific source delta and linked disassembly recorded. Verify image
 build ID, config hash, module hashes/vermagic, initramfs contents and installed
-UKI bytes before use. Keep the working stock boot entry/default and a separate
-research entry. On first boot, check the selected entry and live build ID,
-native T8103/FDT command mapping, all eight CPUs, cpuidle/policies, observer
-ABI, Wi-Fi and brightness before arming. If boot or device function fails,
-return to the stock entry and retain the failure record; do not interpret it
-as APSC evidence.
+UKI bytes before use. The [build receipt](wfi-build-receipt.json) and
+[deployment receipt](wfi-deployment-receipt.json) record those offline and
+installed checks. The stock default, working capacity entry and earlier
+research entry remain available through the first test boot. Retire an
+obsolete research EFI image only after its replacement boots successfully
+with the device and observer checks below; retain its source, hashes and
+findings in the repository. On first boot, check the selected entry and live
+build ID, native T8103/FDT command mapping, all eight CPUs, cpuidle/policies,
+observer ABI, Wi-Fi and brightness before arming. If boot or device function
+fails, return to the stock entry and retain the failure record; do not
+interpret it as APSC evidence.
 
 Start with one fresh-boot `wfi_clock` acquisition. Only after its raw
 status/events, slot handoff, bounded drain and user-visible device checks

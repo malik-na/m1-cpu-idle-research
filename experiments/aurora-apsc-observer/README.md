@@ -136,5 +136,7 @@ closer, first-attempt probe and stricter paired-opportunity rules. That
 variant has no native result yet.
 The [ABI 2 build receipt](wfi-build-receipt.json) records a separate
 `-wfi` release, matching staged modules, a checked initramfs and the
-linked first-attempt instructions. It is a build result only; the new
-entry has not been booted or measured.
+linked first-attempt instructions. The [deployment receipt](wfi-deployment-receipt.json)
+records installation and readback of its separate module package and EFI
+entry, with the stock default, capacity entry and earlier research entry
+preserved. The new image has not been booted or measured.

@@ -154,5 +154,7 @@ the result does not establish WFI-instruction overlap or physical power.
 
 The separately [predeclared first-attempt WFI-seam extension](WFI-PLAN.md)
 addresses the remaining near-WFI observation and paired-opportunity gaps on
-a new, yet-to-be-qualified ABI 2 image. No ABI 2 boot or capture is implied
-by this plan.
+a separately built, statically qualified ABI 2 image. Its distinct-release
+modules and EFI entry are installed and checked in the
+[deployment receipt](wfi-deployment-receipt.json). The image remains
+**unbooted**; no ABI 2 capture or hardware behavior is established.
