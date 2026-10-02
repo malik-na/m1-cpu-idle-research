@@ -1,0 +1,208 @@
+{
+  "artifacts": {
+    "files": {
+      "Module.symvers": {
+        "bytes": 1369316,
+        "sha256": "2b5baab80f93179fc4753f13944aa72d444938a00406c973d556657a6e073229"
+      },
+      "arch/arm64/boot/Image": {
+        "bytes": 34179584,
+        "sha256": "40943bd2d4324569f87565b0ef3350de1d778a9ccec2db5604a2ba7ffe425d43"
+      },
+      "arch/arm64/boot/dts/apple/t8103-j313.dtb": {
+        "bytes": 75064,
+        "sha256": "dc7d0f962852af937a00fa91d2414b7c10bfb5d326778cb7768dd12b8a8fdd9f"
+      },
+      "drivers/cpuidle/apple-apsc-observer.o": {
+        "bytes": 346560,
+        "sha256": "dc9d0591c898e09024de6a8af782d42201c67665a843c8d0c4ea1ec43994f8d7"
+      },
+      "drivers/cpuidle/cpuidle-apple.o": {
+        "bytes": 191728,
+        "sha256": "255ef21840b138c1b4940b81bdc4a8078371cdd528045399e76050941e331162"
+      },
+      "drivers/mfd/syscon.o": {
+        "bytes": 126544,
+        "sha256": "5e07c84cdcf602620a5038cd3614ac7d913e229f5e55a1185de6b2559f4c6165"
+      },
+      "drivers/soc/apple/apple-pcpm-sampler.o": {
+        "bytes": 270376,
+        "sha256": "6ae2e0fbd4eba4a2fa1e26fbe3ab00bcc3081f6709e6d573c5b7aa611cb13731"
+      },
+      "modules.order": {
+        "bytes": 58447,
+        "sha256": "7dd6924223b5488bb02249bbe0d762fd851bd972badd2f7584ff9a65d91c3600"
+      },
+      "vmlinux": {
+        "bytes": 409722976,
+        "sha256": "a247eaddfbf9c0a816d63d3eb26a9078a1ac3e92c32ad73a8dfe9cc4cae39339"
+      }
+    },
+    "gnu_build_id": "83a213307311f91eefb44d70718db21fea3e067c",
+    "kernel_release": "7.1.12-ARCH-apsc-20261002-wfi-pcpm",
+    "module_count": 1867,
+    "modules_sha256_manifest_sha256": "1823fb2deaf232810ceada5b2caefaee348464daea5ed51e41f26aebefcb4e2b"
+  },
+  "build": {
+    "first_full_attempt": {
+      "app_cgroup_oom": 0,
+      "app_cgroup_oom_kill": 0,
+      "attempt": 1,
+      "diagnostic_boundary": "make Error 1 with no linker/compiler diagnostic in merged stdout+stderr; cause undetermined",
+      "exit_code": 2,
+      "failure_target": "drivers/net/wireless/marvell/libertas/usb8xxx.o",
+      "log": "full-build-attempt1.log",
+      "log_sha256": "548899aa285454a9c665d6da2774491d8005323db57cf22308eb11732ea00455",
+      "privileged_kernel_journal_oom_lines": 0
+    },
+    "object_build_exit_code": 0,
+    "second_full_attempt": {
+      "exit_code": 0,
+      "log_sha256": "e2c674a7e8afdc4a40761acfefecd582ee3504775b3b4723ee5e4626626178ab",
+      "parallel_jobs": 2,
+      "targets": [
+        "Image",
+        "modules",
+        "dtbs"
+      ],
+      "warning_or_error_lines": 0
+    },
+    "targeted_retry_exit_code": 0
+  },
+  "configuration": {
+    "candidate_config_sha256": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+    "exact_one_option_diff_checked": true,
+    "kernel_release": "7.1.12-ARCH-apsc-20261002-wfi-pcpm",
+    "only_added_option": "CONFIG_APPLE_PCPM_SAMPLER=y",
+    "working_wfi_config_sha256": "f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d"
+  },
+  "date": "2026-10-03",
+  "deployment_state": {
+    "booted": false,
+    "efi_changed_by_this_build": false,
+    "installed": false,
+    "pcpm_capture_run": false,
+    "uki_or_initramfs_staged_by_this_build": false
+  },
+  "issue": "https://github.com/malik-na/m1-cpu-idle-research/issues/6",
+  "limits": [
+    "The first full -j4 build had an unexplained usb8xxx.o link failure; exact target passed at -j1 and full retry passed at -j2. No OOM evidence established its cause.",
+    "Static review and build success do not establish native regmap qualification, PMGR read success, observer effect, hardware rail state, power, energy, or a cross-CPU clock bound.",
+    "The Aurora source pin is inherited from the prior WFI source receipt; this new receipt cryptographically fixes the copied and patched private source trees and resulting artifacts, not the earlier booted image source provenance.",
+    "The prepared sampler is built-in and one-shot; a later native test needs a distinct boot, explicit preflight, matched controls, and retained failure packet."
+  ],
+  "private_receipt_sha256": "9e7f32a01d86e2d7bc2611decd44e733cf7059b63b86af912ee758dc9693b6a5",
+  "schema": "pcpm-aurora-native-build-public-v1",
+  "source": {
+    "aurora_source_commit_from_prior_receipt": "90a95335a49aec3a0045a76da140452ad6585eb3",
+    "base_wfi_source_tree_sha256": "10fcd125fbf18bf8b88c9f5a543aee9be7bc57e29e81336c62297d8ec79056dd",
+    "changed_file_sha256": {
+      "drivers/mfd/syscon.c": "a903e342814c1c8d7bb941e9799c0d4c57e028f1791d05b3381ea5ecb1842df5",
+      "drivers/soc/apple/Kconfig": "f80529b94a5da564ba16250bfe3691ff7ceebc96dc311cc6409e686b45aae33b",
+      "drivers/soc/apple/Makefile": "69b76c62b325fab5ba9c33862ca5cb41621a0fa95532c6d4e9e4d9e9a9eb1ab4",
+      "drivers/soc/apple/apple-pcpm-sampler.c": "a2d7c580c9d4b85e4a91aa1175ea6b57657dc350ad406779995bff8e72db8de8",
+      "include/linux/mfd/syscon.h": "cd230f9f269b9ad84e29611ad9e5d5fc51c7ce12931257fc237515b7e63c9552"
+    },
+    "copied_tree_equal": true,
+    "corrected_pcpm_patch_sha256": "4a7fc879a3ed377d813e01f8986306fc62679679d39718fe83183ae466ab3b56",
+    "patched_tree_sha256": "9733d6cb7f1fb8bed30bbaffc6a7b22a42b68dac2acc636fe2125c3faed1d19f",
+    "post_build_tree_unchanged": true
+  },
+  "static_checks": {
+    "host_checks": [
+      {
+        "command": "python3 experiments/linux-pcpm-sampler/check_pmgr_selection.py --aurora-dts <copied Aurora t8103.dtsi>",
+        "exit_code": 0,
+        "result": "14 source-derived/negative selector cases passed; full Aurora DTS digest and PMGR banks match"
+      },
+      {
+        "command": "python3 experiments/linux-pcpm-sampler/check_control_parser.py",
+        "exit_code": 0,
+        "result": "31 boundary cases passed against extracted actual C parser"
+      },
+      {
+        "command": "python3 -m unittest discover -s experiments/linux-pcpm-sampler -p 'test_*.py' -q",
+        "exit_code": 0,
+        "result": "49 decoder tests passed"
+      }
+    ],
+    "j313_dtb_equal_to_wfi_build": true,
+    "module_vermagic": {
+      "all_vermagic_matches_release": true,
+      "bad": [],
+      "critical_module_presence": {
+        "apple-sep": true,
+        "appledrm": true,
+        "brcmfmac": true,
+        "btrfs": true,
+        "dm-crypt": true,
+        "hid-apple": true
+      },
+      "module_count": 1867,
+      "release": "7.1.12-ARCH-apsc-20261002-wfi-pcpm",
+      "schema": 1
+    },
+    "object": {
+      "existing_map_accessor_call_targets": [
+        "mutex_lock",
+        "mutex_unlock",
+        "mutex_unlock"
+      ],
+      "existing_map_accessor_no_map_or_reset_call": true,
+      "sampler_msr_instruction_count": 0,
+      "sampler_object_sha256": "6ae2e0fbd4eba4a2fa1e26fbe3ab00bcc3081f6709e6d573c5b7aa611cb13731",
+      "sampler_regmap_read_relocations": 1,
+      "sampler_regmap_write_relocations": 0,
+      "sampler_wfi_instruction_count": 0,
+      "syscon_object_sha256": "5e07c84cdcf602620a5038cd3614ac7d913e229f5e55a1185de6b2559f4c6165"
+    },
+    "wfi_seam": {
+      "baseline_routine_sha256": "c8fd716fccb949e9f35aa2937a87787942b39f0b5df5e088d46f88253479b88c",
+      "candidate_routine_sha256": "2545c4ce2e5dcfd433dffa4edbd187b11adc544bbda496a882f1fb61fdccaa82",
+      "command_slot_offset": 24,
+      "commit_instruction": "STLR before original DSB/WFI",
+      "commit_slot_offset": 56,
+      "inserted_probe_bytes": 80,
+      "linked_routine_sha256": "2545c4ce2e5dcfd433dffa4edbd187b11adc544bbda496a882f1fb61fdccaa82",
+      "mmio_command_reads": 1,
+      "mmio_command_writes": 0,
+      "mode_slot_offset": 52,
+      "original_prefix_bytes": 40,
+      "original_tail_bytes": 60,
+      "retry_target": "original DSB, skipping inserted probe",
+      "tick_slot_offset": 8,
+      "wfi_instructions": 1
+    }
+  },
+  "status": "full_kernel_image_modules_dtbs_built_uninstalled_unbooted",
+  "target_board_and_pmgr": {
+    "board": "J313/T8103",
+    "main": {
+      "base": "0x23b700000",
+      "size": "0x14000"
+    },
+    "mini": {
+      "base": "0x23d280000",
+      "size": "0x4000"
+    }
+  },
+  "toolchain": {
+    "all_14_match_prior_pin": true,
+    "pinned_tool_sha256": {
+      "as": "ff23e1813fd9b31af1113d13fe580c61a76b4978dbe64a29b0dd11424c04fe0e",
+      "bc": "12f0b5b1a6046ed41680b25f9596f1c79ed8215e4a362ead88f85895bd8500aa",
+      "bindgen": "898c2a5364f33b7f8c495de4ad499e8eacdee234f021ff94a5348afdd7700c77",
+      "bison": "c49150509e81c390db368ed1900cb2a339b84d2e527b236c59cc71d8dd710687",
+      "clang": "e0f36a3de4dc41e1fdb88709ce005d2fbbbac5363680647934a6d048b2d4c8f3",
+      "flex": "6e33727280f1ba617833a517556c2f7c2f87dd5026fd5ccad4eb4516f81174e3",
+      "gcc": "741ced8152a820a28ab88603dd1ceb2343245728ac784839e4b5390f2411890e",
+      "ld": "b07b094ae88efa267dda9314058a805a0e05a6133c6f5a88fd524dbe37e32dac",
+      "m4": "8500d60ddfd92a8bc68a427db5af5b7d70e896326fd656fc7f88778f7495e31c",
+      "make": "710d136a4d85822d8019a964c89a26e4b99bd3cb6ada125db6f2360bb19c7787",
+      "objdump": "84190a971f14e050b33923e330decb03346178bb7239b2809a207eb318290918",
+      "readelf": "4bd135916c3cebba703b8d311e04f977e03d3cd998f57ed2d4c590f21166dbb7",
+      "rustc": "0dda59ecc41f9ffceb327a6c7638101ca1b33ea5ae45b6f07440f0dbe51b1f15",
+      "rustdoc": "b9d648d0e16252c637af34492ca50b04dce8105eb13393117bb09a9391f5813c"
+    }
+  }
+}

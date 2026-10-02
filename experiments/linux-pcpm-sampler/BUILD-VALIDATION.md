@@ -8,9 +8,12 @@ PMGR mini bank before sampling. The [current patch](0001-t8103-pcpm-sampler.patc
 SHA-256 `4a7fc879a3ed377d813e01f8986306fc62679679d39718fe83183ae466ab3b56`,
 corrects selection and passes a host check of the actual C function against
 both pinned DTS resource sets, plus `git apply --check` on the exact Aurora
-source. **The current patch has not been ARM64-built or booted**; none of the
-object hashes or instruction locations below validate its new compiled bytes.
-No PCPM capture has run on the M1.
+source. The corrected patch subsequently passed a complete Aurora ARM64 build
+and linked-code review, recorded separately in the
+[3 October build receipt](aurora-wfi-pcpm-build-receipt.json). The older Asahi
+object hashes and instruction locations below apply only to the former patch;
+the new receipt identifies the corrected compiled bytes. The new image has not
+been installed or booted, and no PCPM capture has run on the M1.
 
 This receipt covers the new [ABI 2](ABI.md) counter-bracket implementation.
 The prior ABI 1 patch and its validation remain preserved at
@@ -155,7 +158,7 @@ python3 experiments/linux-pcpm-sampler/check_control_parser.py
 python3 -m unittest discover -s experiments/linux-pcpm-sampler -p 'test_*.py' -v
 ```
 
-## Build reproduction and remaining gap
+## Historical Asahi build reproduction and remaining gap
 
 Use fresh private source/output directories and the immutable archive above.
 Set `pcpm_source` to a pristine extracted tree and `pcpm_output` to a new build
@@ -181,7 +184,38 @@ For combined coverage, apply the observer and counter patches before PCPM,
 enable all three options plus built-in Apple cpufreq, and build the observer
 object in addition to the targets above.
 
-Kbuild also generated normal preparation artifacts and VDSOs. No final `vmlinux`
-link, module `modpost`, native boot, debugfs capture, calibrated PCPM state,
-validated cross-CPU clock relation, or energy result is claimed. Build success cannot close
-the [native calibration ticket](https://github.com/malik-na/m1-cpu-idle-research/issues/6).
+For this historical Asahi build, Kbuild also generated normal preparation artifacts
+and VDSOs. It had no final `vmlinux` link or module `modpost`.
+
+## Corrected Aurora full build, 3 October 2026
+
+The [sanitized build receipt](aurora-wfi-pcpm-build-receipt.json) fixes the
+copied working WFI source tree, corrected patch, patched tree, target
+configuration, complete `Image modules dtbs` outputs, linked GNU Build-ID,
+module inventory and checks. The Aurora source commit inherited from the
+prior WFI receipt is `90a95335a49aec3a0045a76da140452ad6585eb3`; the
+copied and patched source-tree SHA-256 values are
+`10fcd125fbf18bf8b88c9f5a543aee9be7bc57e29e81336c62297d8ec79056dd`
+and `9733d6cb7f1fb8bed30bbaffc6a7b22a42b68dac2acc636fe2125c3faed1d19f`.
+The sole added configuration option relative to the working WFI build is
+`CONFIG_APPLE_PCPM_SAMPLER=y`; candidate configuration SHA-256 is
+`f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5`.
+The release is `7.1.12-ARCH-apsc-20261002-wfi-pcpm` and linked Build-ID is
+`83a213307311f91eefb44d70718db21fea3e067c`.
+
+The first full `-j4` attempt stopped at the unrelated `usb8xxx.o` target
+without a diagnostic that established the cause. That target passed a focused
+`-j1` retry; a full `-j2 Image modules dtbs` retry then exited successfully
+with no warning or error lines. The final Image, `vmlinux`, J313 DTB and all
+1,867 matching-release modules are hash-pinned in the receipt. Static checks
+found one sampler `regmap_read` relocation, zero `regmap_write` relocations,
+and no sampler WFI or MSR instruction. The linked WFI seam retained its
+previously reviewed probe shape. Source-derived selector, extracted-parser
+and decoder tests passed 14, 31 and 49 cases respectively.
+
+The full build establishes local source/configuration-to-binary linkage for
+this candidate. It does not establish installation, a successful native
+boot, PMGR map qualification or register access, observer effects, calibrated
+PCPM state, a cross-CPU clock bound, physical rail state or energy benefit.
+Those gates remain open in the
+[native calibration ticket](https://github.com/malik-na/m1-cpu-idle-research/issues/6).
