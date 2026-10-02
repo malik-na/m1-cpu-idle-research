@@ -158,3 +158,7 @@ the public copy, with only the local repository path and account name
 replaced. The linked build and installed-image identity are now separately
 recorded; fresh-boot controls remain prerequisites. This publication is not a
 native ABI 3 capture.
+
+The [EL2 WFI-trap feasibility note](experiments/aurora-apsc-observer/WFI-EL2-TRAP-FEASIBILITY.md)
+is a source-pinned static assessment of an unimplemented m1n1 guest route.
+It does not add a native trace or instruction-state observation.

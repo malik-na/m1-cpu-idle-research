@@ -179,3 +179,6 @@ distinct ABI 3 module package and UKI, a separate Limine entry, preserved
 stock default and PCPM fallback, and independent post-install readback.
 The ABI 3 image is installed but unbooted; no ABI 3 native capture or
 hardware-idle finding follows from this installation.
+The [EL2 WFI-trap feasibility note](WFI-EL2-TRAP-FEASIBILITY.md) checks a
+separate instruction-correlated guest diagnostic against pinned m1n1 and Arm
+semantics; the trap cannot by itself establish BUSY at a native executed WFI.
