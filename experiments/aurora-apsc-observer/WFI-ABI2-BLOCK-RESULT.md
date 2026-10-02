@@ -114,4 +114,6 @@ first-block pre-DSB BUSY witness. A further study of state at the WFI
 instruction, physical peer state, command completion or energy would need
 a separately designed observation and its own validation. No Linux
 idle-policy change, APSC wait, or physical-power improvement follows from
-this block.
+this block. The [instruction-boundary audit](WFI-INSTRUCTION-BOUNDARY.md)
+records the live trace capability check and why another identical capture
+cannot determine the command value at WFI.
