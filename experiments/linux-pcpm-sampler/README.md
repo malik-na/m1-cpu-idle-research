@@ -28,6 +28,8 @@ Only successful raw words support numeric `ACTUAL = (raw >> 4) & 15` and `TARGET
 
 ## Later native session
 
+The [pre-acquisition calibration protocol](NATIVE-CALIBRATION-PROTOCOL.md) fixes the first records-only qualification, four-P workload, matched controls, cadence, analysis guards and failure rules before the first PCPM read.
+
 1. First complete a new ARM64 object/final-link review of the corrected patch on the actual Aurora source and target configuration. Recheck the booted board, immutable kernel/configuration, both DT PMGR banks, firmware and normal PMGR driver initialization. Prepare recovery and retain the unmodified baseline.
 2. Save `status` and `samples` before acquisition, then both again after the command, even when the command reports failure. Retain the exact command and its exit status. Do not retry until the failed packet has been retained and reviewed.
 3. Across separately booted, matched windows compare no collector, `records` mode, and sparse `mmio` mode. Preserve AC/battery state, USB/display state, thermal drift, background load, kernel tracing configuration and delivered work. One-shot collection requires a separate boot for another mode or phase; do not silently add a reset/rearm interface to avoid that constraint.
