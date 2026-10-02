@@ -8,6 +8,7 @@ import io
 import json
 import os
 from pathlib import Path
+import re
 import stat
 import struct
 import subprocess
@@ -63,9 +64,38 @@ def validate_workload_csv(data, cpu, scheduled_start):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('packet_root', type=Path)
-    parser.add_argument('mode', choices=('baseline', 'records', 'mmio'))
+    parser.add_argument('mode', choices=('baseline', 'records', 'mmio', 'wfi_clock', 'wfi_mmio'))
     parser.add_argument('--workload', type=Path, required=True)
+    parser.add_argument('--observer-abi', type=int, choices=(1, 2), default=1)
+    parser.add_argument('--expected-release')
+    parser.add_argument('--expected-config-sha256')
+    parser.add_argument('--expected-build-id')
+    parser.add_argument('--expected-entry')
     args = parser.parse_args()
+    if args.observer_abi == 1:
+        if args.mode.startswith('wfi_'):
+            parser.error('WFI capture requires --observer-abi 2')
+        expected_release = args.expected_release or RELEASE
+        expected_config_sha = args.expected_config_sha256 or CONFIG_SHA
+        expected_build_id = args.expected_build_id or BUILD_ID
+        expected_entry = args.expected_entry or ENTRY
+    else:
+        missing = [name for name, value in (
+            ('--expected-release', args.expected_release),
+            ('--expected-config-sha256', args.expected_config_sha256),
+            ('--expected-build-id', args.expected_build_id),
+            ('--expected-entry', args.expected_entry),
+        ) if not value]
+        if missing:
+            parser.error('ABI 2 requires exact boot identity: ' + ', '.join(missing))
+        expected_release = args.expected_release
+        expected_config_sha = args.expected_config_sha256
+        expected_build_id = args.expected_build_id
+        expected_entry = args.expected_entry
+    if not re.fullmatch(r'[0-9a-f]{64}', expected_config_sha):
+        parser.error('expected config SHA-256 must be 64 lowercase hexadecimal digits')
+    if not re.fullmatch(r'[0-9a-f]{40}', expected_build_id):
+        parser.error('expected GNU build ID must be 40 lowercase hexadecimal digits')
     if sys.flags.optimize:
         raise RuntimeError('Python optimization disables acquisition safety checks')
     assert os.geteuid() == 0, 'authorized administrator acquisition required'
@@ -129,19 +159,21 @@ def main():
     counter = Path('/sys/kernel/debug/apple_counter_qualification')
     try:
         workload_sha = hashlib.sha256(args.workload.read_bytes()).hexdigest()
-        mark('begin', mode=args.mode, duration_ms=DURATION_MS, release=os.uname().release,
-             workload_sha256=workload_sha)
+        mark('begin', mode=args.mode, observer_abi=args.observer_abi, duration_ms=DURATION_MS,
+             release=os.uname().release, expected_release=expected_release,
+             expected_config_sha256=expected_config_sha, expected_build_id=expected_build_id,
+             expected_entry=expected_entry, workload_sha256=workload_sha)
         assert workload_sha == WORKLOAD_SHA, 'unexpected workload binary'
-        assert os.uname().release == RELEASE
+        assert os.uname().release == expected_release
         config = gzip.decompress(read('/proc/config.gz', 'boot-config.gz'))
         save('boot.config', config)
-        assert hashlib.sha256(config).hexdigest() == CONFIG_SHA
-        assert note_ids(read('/sys/kernel/notes', 'boot-kernel-notes.bin')) == [BUILD_ID]
+        assert hashlib.sha256(config).hexdigest() == expected_config_sha
+        assert note_ids(read('/sys/kernel/notes', 'boot-kernel-notes.bin')) == [expected_build_id]
         read('/sys/firmware/fdt', 'boot-fdt.bin')
         read('/proc/cmdline', 'boot-cmdline.txt')
         read('/proc/sys/kernel/random/boot_id', 'boot-id.txt')
         boot = command(['/usr/bin/bootctl', 'status', '--no-pager'], 'bootctl')
-        assert boot.returncode == 0 and ('Current Entry: ' + ENTRY).encode() in boot.stdout
+        assert boot.returncode == 0 and ('Current Entry: ' + expected_entry).encode() in boot.stdout
         vm = command(['/usr/bin/systemd-detect-virt'], 'virtualization')
         assert vm.stdout.strip() == b'none', 'native provenance needs further qualification'
         before = snapshot('before')
@@ -151,7 +183,7 @@ def main():
         assert all(before[f'/sys/devices/system/cpu/cpu{i}/cpuidle/state1/disable'] == '0' for i in range(8))
         ready = values(read(apsc / 'status', 'apsc-ready.txt').decode())
         cqready = values(read(counter / 'status', 'counter-ready.txt').decode())
-        assert ready['abi'] == '1' and ready['state'] == 'ready'
+        assert ready['abi'] == str(args.observer_abi) and ready['state'] == 'ready'
         assert (ready['cluster0_cpus'], ready['cluster1_cpus']) == ('0xf', '0xf0')
         assert (ready['cluster0_cmd_phys'], ready['cluster1_cmd_phys']) == ('0x210e20020', '0x211e20020')
         assert cqready['abi'] == '1' and cqready['pre_state'] == cqready['post_state'] == 'unused'
@@ -186,9 +218,16 @@ def main():
         else:
             apsc.joinpath('capture').write_text(f'{args.mode} {DURATION_MS}\n')
         mark('window_end')
-        read(apsc / 'status', 'status.txt')
+        captured_status = values(read(apsc / 'status', 'status.txt').decode())
         read(apsc / 'events.csv', 'events.csv')
+        if args.observer_abi == 2:
+            read(apsc / 'wfi-events.csv', 'wfi-events.csv')
         mark('observer_drained')
+        assert captured_status['abi'] == str(args.observer_abi), 'observer ABI changed during capture'
+        if args.mode == 'baseline':
+            assert captured_status['state'] == 'ready', 'baseline unexpectedly consumed observer'
+        else:
+            assert captured_status['mode'] == args.mode, 'observer capture mode differs from request'
         for cpu, child in zip((1, 5), children):
             out, err = child.communicate(b'E', timeout=15)
             save(f'workload-cpu{cpu}.csv', out); save(f'workload-cpu{cpu}.stderr', err)
@@ -211,8 +250,14 @@ def main():
         assert post['post_error'] == '0' and post['post_metadata_completed'] == '8'
         assert all(post[f'post_cpu{i}_cntfrq'] == '24000000' for i in range(8))
         if args.mode != 'baseline':
-            decode = command(['/usr/bin/python3', str(Path(__file__).resolve().parents[1] / 'linux-apsc-observer/analyze.py'),
-                              str(output / 'events.csv'), str(output / 'status.txt')], 'observer-analysis', True)
+            if args.observer_abi == 1:
+                decoder = Path(__file__).resolve().parents[1] / 'linux-apsc-observer/analyze.py'
+                decoder_args = [str(output / 'events.csv'), str(output / 'status.txt')]
+            else:
+                decoder = Path(__file__).resolve().parent / 'analyze_wfi.py'
+                decoder_args = [str(output / 'events.csv'), str(output / 'status.txt'),
+                                str(output / 'wfi-events.csv')]
+            decode = command(['/usr/bin/python3', str(decoder), *decoder_args], 'observer-analysis', True)
             assert decode.returncode == 0, 'observer analysis failed'
             assert json.loads(decode.stdout)['integrity']['clean'], 'observer capture integrity failed'
         after = snapshot('after')

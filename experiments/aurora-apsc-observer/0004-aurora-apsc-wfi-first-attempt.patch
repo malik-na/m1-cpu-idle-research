@@ -1,0 +1,428 @@
+diff --git a/drivers/cpuidle/apple-apsc-observer.c b/drivers/cpuidle/apple-apsc-observer.c
+--- a/drivers/cpuidle/apple-apsc-observer.c
++++ b/drivers/cpuidle/apple-apsc-observer.c
+@@ -14,6 +14,7 @@
+ #include <linux/init.h>
+ #include <linux/io.h>
+ #include <linux/ioport.h>
++#include <linux/jiffies.h>
+ #include <linux/kernel.h>
+ #include <linux/mm.h>
+ #include <linux/module.h>
+@@ -35,13 +36,14 @@
+ #define APSC_CLUSTERS 2
+ #define APSC_IDLE_CAP 16384
+ #define APSC_DVFS_CAP 8192
++#define APSC_WFI_CAP 16384
+ #define APSC_CMD_OFFSET 0x20
+ #define APSC_VALID_PRE  BIT(0)
+ #define APSC_VALID_CMD  BIT(1)
+ #define APSC_VALID_POLICY BIT(2)
+ 
+ enum apsc_kind { APSC_DVFS, APSC_IDLE_ENTER, APSC_IDLE_EXIT, APSC_PM_FAIL };
+-enum apsc_mode { APSC_RECORDS, APSC_MMIO };
++enum apsc_mode { APSC_RECORDS, APSC_MMIO, APSC_WFI_CLOCK, APSC_WFI_MMIO };
+ enum apsc_state { APSC_READY, APSC_ACTIVE, APSC_COMPLETE, APSC_INVALID };
+ 
+ struct apsc_event {
+@@ -58,8 +60,29 @@
+ 	u32 capacity;
+ };
+ 
++/* Assembly layout: the slot is filled before WFI and published with STLR. */
++struct apsc_wfi_sample {
++	void __iomem *cmd_addr;
++	u64 t0, t1, cmd, token;
++	u32 seq, cpu, cluster, mode, committed;
++};
++
++static_assert(offsetof(struct apsc_wfi_sample, cmd_addr) == 0);
++static_assert(offsetof(struct apsc_wfi_sample, t0) == 8);
++static_assert(offsetof(struct apsc_wfi_sample, t1) == 16);
++static_assert(offsetof(struct apsc_wfi_sample, cmd) == 24);
++static_assert(offsetof(struct apsc_wfi_sample, mode) == 52);
++static_assert(offsetof(struct apsc_wfi_sample, committed) == 56);
++
++struct apsc_wfi_stream {
++	atomic_t attempts;
++	struct apsc_wfi_sample *samples;
++	u32 capacity;
++};
++
+ static struct apsc_stream idle_stream[APSC_CPUS];
+ static struct apsc_stream dvfs_stream[APSC_CLUSTERS];
++static struct apsc_wfi_stream wfi_stream[APSC_CPUS];
+ static void __iomem *cluster_base[APSC_CLUSTERS];
+ static u64 cluster_cpus[APSC_CLUSTERS];
+ static u64 cluster_cmd_phys[APSC_CLUSTERS];
+@@ -77,6 +100,9 @@
+ static bool capture_used;
+ static bool capture_active;
+ static bool capture_interrupted;
++static u32 wfi_pending_after_drain;
++static atomic_t wfi_prepare_after_stop;
++static atomic_t wfi_prepare_bad_mapping;
+ static DEFINE_MUTEX(capture_lock);
+ static struct dentry *observer_dir;
+ 
+@@ -304,6 +330,47 @@
+ 	preempt_enable_no_resched_notrace();
+ }
+ 
++void *apple_apsc_observer_wfi_prepare(u64 token)
++{
++	struct apsc_wfi_sample *sample = NULL;
++	struct apsc_wfi_stream *stream;
++	int cpu, cluster, index;
++
++	/* A preempt-disabled RCU-sched reader, paired with capture shutdown. */
++	preempt_disable_notrace();
++	cpu = raw_smp_processor_id();
++	if (!token || (capture_mode != APSC_WFI_CLOCK &&
++		       capture_mode != APSC_WFI_MMIO))
++		goto out;
++	if (!smp_load_acquire(&capture_active)) {
++		atomic_inc(&wfi_prepare_after_stop);
++		goto out;
++	}
++	if (cpu >= APSC_CPUS) {
++		atomic_inc(&wfi_prepare_bad_mapping);
++		goto out;
++	}
++	cluster = READ_ONCE(cpu_cluster[cpu]);
++	if (cluster < 0 || cluster >= APSC_CLUSTERS || !cluster_base[cluster]) {
++		atomic_inc(&wfi_prepare_bad_mapping);
++		goto out;
++	}
++	stream = &wfi_stream[cpu];
++	index = atomic_fetch_inc_relaxed(&stream->attempts);
++	if (index >= stream->capacity)
++		goto out;
++	sample = &stream->samples[index];
++	sample->cmd_addr = cluster_base[cluster] + APSC_CMD_OFFSET;
++	sample->token = token;
++	sample->seq = index;
++	sample->cpu = cpu;
++	sample->cluster = cluster;
++	sample->mode = capture_mode == APSC_WFI_MMIO ? 2 : 1;
++out:
++	preempt_enable_no_resched_notrace();
++	return sample;
++}
++
+ static int apsc_snapshot_policy(int cluster, bool at_start)
+ {
+ 	struct cpufreq_policy *policy;
+@@ -331,6 +398,20 @@
+ 	return 0;
+ }
+ 
++static u32 apsc_wfi_pending(void)
++{
++	u32 pending = 0, attempts, slots, i;
++	int cpu;
++
++	for (cpu = 0; cpu < APSC_CPUS; cpu++) {
++		attempts = atomic_read(&wfi_stream[cpu].attempts);
++		slots = min(attempts, wfi_stream[cpu].capacity);
++		for (i = 0; i < slots; i++)
++			pending += !smp_load_acquire(&wfi_stream[cpu].samples[i].committed);
++	}
++	return pending;
++}
++
+ static ssize_t apsc_capture_write(struct file *file, const char __user *user,
+ 				  size_t count, loff_t *ppos)
+ {
+@@ -351,6 +432,10 @@
+ 		requested_mode = APSC_RECORDS;
+ 	else if (!strcmp(mode, "mmio"))
+ 		requested_mode = APSC_MMIO;
++	else if (!strcmp(mode, "wfi_clock"))
++		requested_mode = APSC_WFI_CLOCK;
++	else if (!strcmp(mode, "wfi_mmio"))
++		requested_mode = APSC_WFI_MMIO;
+ 	else
+ 		return -EINVAL;
+ 	if (!mutex_trylock(&capture_lock))
+@@ -378,6 +463,14 @@
+ 	smp_store_release(&capture_active, false);
+ 	stop_tick = apsc_now();
+ 	synchronize_rcu();
++	/* Prepared slots can still be published from the RCU-idle assembly path. */
++	if (requested_mode == APSC_WFI_CLOCK || requested_mode == APSC_WFI_MMIO) {
++		unsigned long deadline = jiffies + msecs_to_jiffies(100);
++
++		while ((wfi_pending_after_drain = apsc_wfi_pending()) &&
++		       time_before(jiffies, deadline))
++			usleep_range(100, 200);
++	}
+ 	end_tick = apsc_now();
+ 	end_online_mask = apsc_online_mask();
+ 	ret = 0;
+@@ -391,6 +484,13 @@
+ 	}
+ 	if (capture_interrupted || end_online_mask != start_online_mask)
+ 		ret = -EINVAL;
++	if (wfi_pending_after_drain)
++		ret = -EINVAL;
++	if (atomic_read(&wfi_prepare_bad_mapping))
++		ret = -EINVAL;
++	for (i = 0; i < APSC_CPUS; i++)
++		if (atomic_read(&wfi_stream[i].attempts) > wfi_stream[i].capacity)
++			ret = -EOVERFLOW;
+ 	WRITE_ONCE(capture_state, ret ? APSC_INVALID : APSC_COMPLETE);
+ 	cpus_read_unlock();
+ 	mutex_unlock(&capture_lock);
+@@ -416,6 +516,16 @@
+ 	}
+ }
+ 
++static const char *apsc_mode_name(void)
++{
++	switch (capture_mode) {
++	case APSC_MMIO: return "mmio";
++	case APSC_WFI_CLOCK: return "wfi_clock";
++	case APSC_WFI_MMIO: return "wfi_mmio";
++	default: return "records";
++	}
++}
++
+ static void apsc_stream_status(struct seq_file *s, const char *prefix,
+ 			       int id, struct apsc_stream *stream)
+ {
+@@ -431,20 +541,38 @@
+ 		   prefix, id, attempts - slots, prefix, id, slots - committed);
+ }
+ 
++static void apsc_wfi_stream_status(struct seq_file *s, int cpu)
++{
++	struct apsc_wfi_stream *stream = &wfi_stream[cpu];
++	u32 attempts = atomic_read(&stream->attempts);
++	u32 slots = min(attempts, stream->capacity);
++	u32 committed = 0, i;
++
++	for (i = 0; i < slots; i++)
++		committed += !!smp_load_acquire(&stream->samples[i].committed);
++	seq_printf(s, "wfi%d_attempts=%u\nwfi%d_committed=%u\n",
++		   cpu, attempts, cpu, committed);
++	seq_printf(s, "wfi%d_overflow=%u\nwfi%d_missing_commit=%u\n",
++		   cpu, attempts - slots, cpu, slots - committed);
++}
++
+ static int apsc_status_show(struct seq_file *s, void *unused)
+ {
+ 	int i;
+ 
+ 	if (!mutex_trylock(&capture_lock))
+ 		return -EBUSY;
+-	seq_puts(s, "abi=1\n");
+-	seq_printf(s, "state=%s\nmode=%s\n", apsc_state_name(),
+-		   capture_mode == APSC_MMIO ? "mmio" : "records");
++	seq_puts(s, "abi=2\n");
++	seq_printf(s, "state=%s\nmode=%s\n", apsc_state_name(), apsc_mode_name());
+ 	seq_printf(s, "cntfrq=%llu\nstart_tick=%llu\nstop_tick=%llu\nend_tick=%llu\n",
+ 		   counter_frequency, start_tick, stop_tick, end_tick);
+ 	seq_printf(s, "start_online_mask=0x%llx\nend_online_mask=0x%llx\n",
+ 		   start_online_mask, end_online_mask);
+ 	seq_printf(s, "interrupted=%u\n", capture_interrupted);
++	seq_printf(s, "wfi_pending_after_drain=%u\n", wfi_pending_after_drain);
++	seq_printf(s, "wfi_prepare_after_stop=%d\nwfi_prepare_bad_mapping=%d\n",
++		   atomic_read(&wfi_prepare_after_stop),
++		   atomic_read(&wfi_prepare_bad_mapping));
+ 	for (i = 0; i < APSC_CLUSTERS; i++) {
+ 		seq_printf(s, "cluster%d_cpus=0x%llx\n", i, cluster_cpus[i]);
+ 		seq_printf(s, "cluster%d_cmd_phys=0x%llx\ncluster%d_resource_size=0x%llx\n",
+@@ -458,6 +586,8 @@
+ 	}
+ 	for (i = 0; i < APSC_CPUS; i++)
+ 		apsc_stream_status(s, "idle", i, &idle_stream[i]);
++	for (i = 0; i < APSC_CPUS; i++)
++		apsc_wfi_stream_status(s, i);
+ 	for (i = 0; i < APSC_CLUSTERS; i++)
+ 		apsc_stream_status(s, "dvfs", i, &dvfs_stream[i]);
+ 	mutex_unlock(&capture_lock);
+@@ -549,6 +679,49 @@
+ static const struct file_operations apsc_events_fops = {
+ 	.owner = THIS_MODULE,
+ 	.open = apsc_events_open,
++	.read = seq_read,
++	.llseek = seq_lseek,
++	.release = single_release,
++};
++
++static int apsc_wfi_events_show(struct seq_file *s, void *unused)
++{
++	struct apsc_wfi_stream *stream;
++	struct apsc_wfi_sample *e;
++	u32 slots, i;
++	int cpu;
++
++	if (!mutex_trylock(&capture_lock))
++		return -EBUSY;
++	seq_puts(s, "seq,cpu,cluster,token,t0,t1,cmd,mode\n");
++	for (cpu = 0; cpu < APSC_CPUS; cpu++) {
++		stream = &wfi_stream[cpu];
++		slots = min_t(u32, atomic_read(&stream->attempts), stream->capacity);
++		for (i = 0; i < slots; i++) {
++			e = &stream->samples[i];
++			if (!smp_load_acquire(&e->committed))
++				continue;
++			seq_printf(s, "%u,%u,%u,%llu,%llu,%llu,",
++				   e->seq, e->cpu, e->cluster, e->token, e->t0, e->t1);
++			if (e->mode == 2)
++				seq_printf(s, "0x%llx,", e->cmd);
++			else
++				seq_putc(s, ',');
++			seq_puts(s, e->mode == 2 ? "wfi_mmio\n" : "wfi_clock\n");
++		}
++	}
++	mutex_unlock(&capture_lock);
++	return 0;
++}
++
++static int apsc_wfi_events_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, apsc_wfi_events_show, NULL);
++}
++
++static const struct file_operations apsc_wfi_events_fops = {
++	.owner = THIS_MODULE,
++	.open = apsc_wfi_events_open,
+ 	.read = seq_read,
+ 	.llseek = seq_lseek,
+ 	.release = single_release,
+@@ -641,6 +814,13 @@
+ 			ret = -ENOMEM;
+ 			goto out;
+ 		}
++		wfi_stream[i].capacity = APSC_WFI_CAP;
++		wfi_stream[i].samples = kvcalloc(APSC_WFI_CAP,
++						 sizeof(struct apsc_wfi_sample), GFP_KERNEL);
++		if (!wfi_stream[i].samples) {
++			ret = -ENOMEM;
++			goto out;
++		}
+ 	}
+ 	for (i = 0; i < APSC_CLUSTERS; i++) {
+ 		dvfs_stream[i].capacity = APSC_DVFS_CAP;
+@@ -670,6 +850,10 @@
+ 				&apsc_events_fops);
+ 	if (IS_ERR_OR_NULL(d))
+ 		goto debugfs_error;
++	d = debugfs_create_file("wfi-events.csv", 0400, observer_dir, NULL,
++				&apsc_wfi_events_fops);
++	if (IS_ERR_OR_NULL(d))
++		goto debugfs_error;
+ 	return 0;
+ debugfs_error:
+ 	ret = -ENODEV;
+@@ -677,6 +861,8 @@
+ out:
+ 	for (i = 0; i < APSC_CPUS; i++)
+ 		kvfree(idle_stream[i].events);
++	for (i = 0; i < APSC_CPUS; i++)
++		kvfree(wfi_stream[i].samples);
+ 	for (i = 0; i < APSC_CLUSTERS; i++) {
+ 		kvfree(dvfs_stream[i].events);
+ 		if (cluster_base[i])
+diff --git a/drivers/cpuidle/cpuidle-apple.c b/drivers/cpuidle/cpuidle-apple.c
+--- a/drivers/cpuidle/cpuidle-apple.c
++++ b/drivers/cpuidle/cpuidle-apple.c
+@@ -23,6 +23,10 @@
+ 	".pushsection .cpuidle.text, \"ax\"\n"
+ 	".type apple_cpu_deep_wfi, @function\n"
+ 	"apple_cpu_deep_wfi:\n"
++#ifdef CONFIG_ARM_APPLE_APSC_OBSERVER
++		/* x0 is an optional pre-reserved, permanent observer slot. */
++		"mov x1, x0\n"
++#endif
+ 		"str x30, [sp, #-16]!\n"
+ 		"stp x28, x29, [sp, #-16]!\n"
+ 		"stp x26, x27, [sp, #-16]!\n"
+@@ -35,6 +39,33 @@
+ 		"orr x0, x0, #(3L << 24)\n"
+ 		"msr s3_5_c15_c5_0, x0\n"
+ 
++#ifdef CONFIG_ARM_APPLE_APSC_OBSERVER
++		/* One bracketed read on the first attempt; retries skip this block. */
++		"cbz x1, 2f\n"
++		"isb\n"
++		"mrs x2, cntpct_el0\n"
++		"ldr w6, [x1, #52]\n"
++		"cmp w6, #2\n"
++		"b.ne 3f\n"
++		"ldr x3, [x1]\n"
++		"ldr x4, [x3]\n"
++		"dmb oshld\n"
++		/* Match arm64 readq's data-to-counter control dependency. */
++		"eor x7, x4, x4\n"
++		"cbnz x7, .\n"
++	"3:\n"
++		"isb\n"
++		"mrs x5, cntpct_el0\n"
++		"stp x2, x5, [x1, #8]\n"
++		"cmp w6, #2\n"
++		"b.ne 4f\n"
++		"str x4, [x1, #24]\n"
++	"4:\n"
++		"add x7, x1, #56\n"
++		"mov w8, #1\n"
++		"stlr w8, [x7]\n"
++	"2:\n"
++#endif
+ 	"1:\n"
+ 		"dsb sy\n"
+ 		"wfi\n"
+@@ -58,7 +89,11 @@
+ 	".popsection\n"
+ );
+ 
++#ifdef CONFIG_ARM_APPLE_APSC_OBSERVER
++void apple_cpu_deep_wfi(void *wfi_slot);
++#else
+ void apple_cpu_deep_wfi(void);
++#endif
+ 
+ static __cpuidle int apple_enter_wfi(struct cpuidle_device *dev, struct cpuidle_driver *drv, int index)
+ {
+@@ -70,6 +105,7 @@
+ {
+ #ifdef CONFIG_ARM_APPLE_APSC_OBSERVER
+ 	u64 observer_token;
++	void *wfi_slot = NULL;
+ 	int pm_ret;
+ #endif
+ 	/*
+@@ -88,6 +124,8 @@
+ 	/* No recorder reference or RCU read section crosses deep WFI. */
+ 	instrumentation_begin();
+ 	observer_token = apple_apsc_observer_idle_enter();
++	if (observer_token)
++		wfi_slot = apple_apsc_observer_wfi_prepare(observer_token);
+ 	instrumentation_end();
+ #else
+ 	if (cpu_pm_enter())
+@@ -98,7 +136,11 @@
+ 
+ 	switch(index) {
+ 	case STATE_PWRDOWN:
++#ifdef CONFIG_ARM_APPLE_APSC_OBSERVER
++		apple_cpu_deep_wfi(wfi_slot);
++#else
+ 		apple_cpu_deep_wfi();
++#endif
+ 		break;
+ 	default:
+ 		WARN_ON(1);
+diff --git a/include/linux/soc/apple/apsc-observer.h b/include/linux/soc/apple/apsc-observer.h
+--- a/include/linux/soc/apple/apsc-observer.h
++++ b/include/linux/soc/apple/apsc-observer.h
+@@ -8,6 +8,7 @@
+ 
+ #ifdef CONFIG_ARM_APPLE_APSC_OBSERVER
+ u64 apple_apsc_observer_idle_enter(void);
++void *apple_apsc_observer_wfi_prepare(u64 token);
+ void apple_apsc_observer_idle_exit(u64 token);
+ void apple_apsc_observer_cpu_pm_fail(int ret);
+ void apple_apsc_observer_dvfs_write(struct cpufreq_policy *policy,

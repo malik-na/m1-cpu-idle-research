@@ -130,3 +130,7 @@ bounded snapshots, acquisition hashes and reproducible decoder outputs.
 The sample is a conditional software-final-entrant candidate only under
 the predeclared, unproven 240-tick cross-CPU clock-error assumption. It
 does not establish BUSY at WFI, a physical power state, energy or a defect.
+The [WFI-seam extension plan](WFI-PLAN.md) and
+[source delta](0004-aurora-apsc-wfi-first-attempt.patch) predeclare a
+closer, first-attempt probe and stricter paired-opportunity rules. That
+variant has no native result yet.

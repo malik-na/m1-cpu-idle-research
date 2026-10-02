@@ -151,3 +151,8 @@ but unproven 240-tick pairwise clock-error assumption. The full
 preserve counts, timestamps, counter phases, observed matching deviations
 and the claim boundary. The cluster-0 negative-opportunity gate failed;
 the result does not establish WFI-instruction overlap or physical power.
+
+The separately [predeclared first-attempt WFI-seam extension](WFI-PLAN.md)
+addresses the remaining near-WFI observation and paired-opportunity gaps on
+a new, yet-to-be-qualified ABI 2 image. No ABI 2 boot or capture is implied
+by this plan.
