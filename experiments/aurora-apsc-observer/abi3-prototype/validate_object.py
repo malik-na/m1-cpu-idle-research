@@ -6,6 +6,11 @@ import json
 from pathlib import Path
 import re
 import subprocess
+import sys
+
+
+if sys.flags.optimize:
+    raise RuntimeError("object proof requires Python assertions enabled")
 
 
 ROOT = Path(__file__).resolve().parent
