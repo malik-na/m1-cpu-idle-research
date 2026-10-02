@@ -144,13 +144,17 @@ tree-inventory receipt, object instruction proof, 30 synthetic offline
 validator tests, and a later linked-build addendum. The full `Image modules
 dtbs` build exited successfully; the public receipt hashes its linked Image,
 vmlinux Build-ID, 1,867 modules and 111 Apple DTBs, while the build log remains
-private and hash-pinned. It supplies no deployment or native capture claim;
-the [prospective run plan](experiments/aurora-apsc-observer/WFI-ABI3-RUN-PLAN.md)
+private and hash-pinned. The separate [sanitized deployment receipt](experiments/aurora-apsc-observer/abi3-deployment-receipt.json)
+binds the distinct module package and UKI to that build and records the
+preserved stock default and PCPM fallback, EFI reserve and independent
+post-install readback. The ABI 3 image remains unbooted, with no native
+capture; the [prospective run plan](experiments/aurora-apsc-observer/WFI-ABI3-RUN-PLAN.md)
 fixes those later gates.
 
 The [ABI 3 acquisition logic review copy](experiments/aurora-apsc-observer/abi3-acquisition/README.md)
 retains the prospective one-shot A/D/E/conditional-C collector and its eighteen
 synthetic tests. Its redaction receipt binds the private executable source to
 the public copy, with only the local repository path and account name
-replaced. The linked build, installed-image identity and fresh-boot controls
-remain prerequisites; this publication is not a native ABI 3 capture.
+replaced. The linked build and installed-image identity are now separately
+recorded; fresh-boot controls remain prerequisites. This publication is not a
+native ABI 3 capture.

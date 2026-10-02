@@ -3,7 +3,9 @@
 The source/object portion was frozen **before** the full ABI 3 `Image modules
 dtbs` build completed. The linked-build addendum below was recorded after the
 build exited successfully. This is preparation for the [prospective native run
-plan](../WFI-ABI3-RUN-PLAN.md), not an installed, booted or captured result.
+plan](../WFI-ABI3-RUN-PLAN.md); this packet alone does not establish an
+installed, booted or captured result. The subsequent installation has a
+separate [sanitized deployment receipt](../abi3-deployment-receipt.json).
 The [ticket protocol](../WFI-ABI3-TICKET-PROTOCOL.md) limits a positive to
 software final-entrant order at a first-attempt **pre-DSB** command read;
 it cannot place BUSY or peers at the later WFI instruction.
@@ -55,5 +57,6 @@ python3 -m unittest -q test_validate_tickets.py
 
 Source/object and linked-build success do not establish a successful native
 boot, live LSE support, a BUSY result, physical idle, energy, or an idle-policy
-benefit. Guarded deployment, fresh-boot qualification and matched controls
-remain separate gates.
+benefit. The distinct module package and UKI have since been installed and
+read back, but fresh-boot qualification and matched controls remain separate
+gates.

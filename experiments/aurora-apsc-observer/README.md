@@ -171,6 +171,11 @@ off EFI, and independently rechecked the stock default and PCPM UKI. The
 prospective [ABI 3 ticket protocol](WFI-ABI3-TICKET-PROTOCOL.md) and
 [fixed run plan](WFI-ABI3-RUN-PLAN.md) address software final-entrant
 ordering at the pre-DSB read; they do not bridge that read to WFI. The
-[provisional ABI 3 source/object packet](abi3-prototype/README.md) preserves
-the reviewed patch, exact source-tree delta, object instruction proof and
-offline validator while its full image build remains a separate gate.
+[ABI 3 source/object and linked-build packet](abi3-prototype/README.md)
+preserves the reviewed patch, exact source-tree delta, object instruction
+proof, offline validator and successful full image build. The
+[sanitized deployment receipt](abi3-deployment-receipt.json) records the
+distinct ABI 3 module package and UKI, a separate Limine entry, preserved
+stock default and PCPM fallback, and independent post-install readback.
+The ABI 3 image is installed but unbooted; no ABI 3 native capture or
+hardware-idle finding follows from this installation.
