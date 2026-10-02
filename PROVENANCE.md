@@ -147,7 +147,7 @@ native capture claim; the [prospective run plan](experiments/aurora-apsc-observe
 fixes those later gates.
 
 The [ABI 3 acquisition logic review copy](experiments/aurora-apsc-observer/abi3-acquisition/README.md)
-retains the prospective one-shot A/D/E/conditional-C collector and its eleven
+retains the prospective one-shot A/D/E/conditional-C collector and its eighteen
 synthetic tests. Its redaction receipt binds the private executable source to
 the public copy, with only the local repository path and account name
 replaced. The linked build, installed-image identity and fresh-boot controls

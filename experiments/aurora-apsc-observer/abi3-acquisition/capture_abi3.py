@@ -48,11 +48,15 @@ MODES = {'A': 'baseline', 'D': 'wfi_clock', 'E': 'wfi_mmio', 'C': 'mmio'}
 PRIOR = {'D': 'A', 'E': 'D', 'C': 'E'}
 HEX64 = re.compile(r'[0-9a-f]{64}\Z')
 HEX40 = re.compile(r'[0-9a-f]{40}\Z')
+BOOT_ID_PATTERN = re.compile(r'[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}\Z')
 WORKLOAD_FIELDS = ['cpu', 'pulse', 'iterations', 'start_monotonic_ns',
                    'end_monotonic_ns', 'checksum']
 EVENT_HEADER = ('kind,seq,cpu,cluster,policy_cpu,policy_mask,fast_switch,'
                 'requested_index,requested_pstate,token,t0,t1,pre_cmd,cmd,ret,flags,ticket')
 WFI_HEADER = 'seq,cpu,cluster,token,t0,t1,cmd,mode,cmd_valid,ticket_pre,ticket_post'
+CONTROL_NOT_ATTEMPTED = 'not_attempted'
+CONTROL_WRITE_UNKNOWN = 'write_attempted_consumption_unknown'
+CONTROL_WRITE_COMPLETED = 'write_completed'
 
 
 class CaptureError(RuntimeError):
@@ -249,6 +253,156 @@ def check_aux_unused(pcpm: bytes, counter: bytes) -> None:
             'counter qualification control was used during ABI 3 block')
 
 
+def control_disposition(control: dict) -> dict:
+    state = control['state']
+    require(state in (CONTROL_NOT_ATTEMPTED, CONTROL_WRITE_UNKNOWN,
+                      CONTROL_WRITE_COMPLETED), 'invalid control write state')
+    return {'control_write_state': state,
+            'control_write_attempted': state != CONTROL_NOT_ATTEMPTED,
+            'capture_armed': (False if state == CONTROL_NOT_ATTEMPTED else
+                              True if state == CONTROL_WRITE_COMPLETED else None),
+            'one_shot_consumption': ('none' if state == CONTROL_NOT_ATTEMPTED else
+                                     'confirmed' if state == CONTROL_WRITE_COMPLETED else
+                                     'unknown')}
+
+
+def power_endpoints() -> dict:
+    backlight = Path('/sys/class/backlight/apple-panel-bl')
+    return {'observed_monotonic_ns': time.monotonic_ns(),
+            'ac_online': value('/sys/class/power_supply/macsmc-ac/online'),
+            'backlight_interface_present': backlight.is_dir(),
+            'brightness': value('/sys/class/backlight/apple-panel-bl/brightness')}
+
+
+def require_power_endpoints(endpoint: dict, label: str) -> None:
+    require(endpoint.get('ac_online') == '1' and
+            endpoint.get('backlight_interface_present') is True and
+            endpoint.get('brightness') == '155',
+            f'{label}: AC/brightness baseline changed')
+
+
+def boot_ledger(current_boot_id: str, current_packet: Path) -> list[dict]:
+    entries = []
+    for path in sorted(HERE.glob('abi3-[ADEC]-*')):
+        if path == current_packet:
+            continue
+        require(path.is_dir() and not path.is_symlink(), 'unsafe prior ABI3 packet entry')
+        marker = path / 'boot-id.txt'
+        if not marker.exists():
+            continue
+        require(marker.is_file() and not marker.is_symlink(), 'unsafe prior boot marker')
+        prior_id = read_bounded(marker, 128).decode('ascii').strip()
+        require(BOOT_ID_PATTERN.fullmatch(prior_id) is not None,
+                'malformed prior boot marker')
+        require(prior_id != current_boot_id,
+                f'ABI3 packet already exists for this boot: {path.name}')
+        entries.append({'packet': path.name, 'boot_id': prior_id})
+    return entries
+
+
+def boot_qualification(path: Path, boot_id: str, identity: dict,
+                       phase: str, first_a_visual_sha: str | None) -> tuple[dict, bytes]:
+    raw = read_bounded(path, 64 * 1024)
+    review = json.loads(raw)
+    common = {'schema', 'boot_id', 'release', 'entry_title', 'source',
+              'wifi_page_loaded', 'confirmed_utc'}
+    required = (common | {'brightness_start', 'brightness_test_low',
+                          'brightness_restored', 'dim_visible', 'restore_visible'}
+                if phase == 'A' else
+                common | {'phase', 'first_a_visual_receipt_sha256'})
+    require(isinstance(review, dict) and set(review) == required,
+            'boot qualification receipt schema changed')
+    require(review['boot_id'] == boot_id and
+            review['release'] == identity['release'] and
+            review['entry_title'] == identity['entry_title'] and
+            review['source'] == 'user-confirmed-current-boot' and
+            review['wifi_page_loaded'] is True and
+            isinstance(review['confirmed_utc'], str) and review['confirmed_utc'],
+            'current-boot user Wi-Fi qualification absent')
+    if phase == 'A':
+        require(first_a_visual_sha is None and
+                review['schema'] == 'abi3-user-boot-qualification-v1' and
+                review['brightness_start'] == 155 and
+                review['brightness_test_low'] == 40 and
+                review['brightness_restored'] == 155 and
+                review['dim_visible'] is True and
+                review['restore_visible'] is True,
+                'first ABI3 boot needs user-confirmed visible brightness test')
+    else:
+        require(phase in PRIOR and isinstance(first_a_visual_sha, str) and
+                HEX64.fullmatch(first_a_visual_sha) is not None and
+                review['schema'] == 'abi3-user-current-boot-wifi-v1' and
+                review['phase'] == phase and
+                review['first_a_visual_receipt_sha256'] == first_a_visual_sha,
+                'later boot must carry A visual receipt proof and current Wi-Fi confirmation')
+    return review, raw
+
+
+def first_a_visual_proof(prior: Path, phase: str,
+                         manifest_entries: dict[str, str]) -> str:
+    check = json.loads(read_bounded(prior / 'user-boot-qualification-check.json',
+                                    64 * 1024))
+    prior_boot_id = read_bounded(prior / 'boot-id.txt', 128).decode('ascii').strip()
+    require(isinstance(check, dict) and
+            check.get('phase') == PRIOR[phase] and
+            check.get('current_boot_id') == prior_boot_id and
+            check.get('current_boot_wifi_user_confirmed') is True and
+            check.get('receipt_sha256') ==
+            manifest_entries.get('user-boot-qualification.json') and
+            check.get('brightness_visible_checked_on_first_abi3_boot') is True,
+            'prior boot qualification chain missing')
+    first_a_sha = check.get('first_a_visual_receipt_sha256')
+    require(isinstance(first_a_sha, str) and
+            HEX64.fullmatch(first_a_sha) is not None,
+            'A visual receipt hash missing from prior phase')
+    if phase == 'D':
+        require(first_a_sha ==
+                manifest_entries.get('user-boot-qualification.json') and
+                check.get('current_boot_visible_brightness_confirmed') is True,
+                'A visual receipt is not bound to clean A packet')
+    else:
+        require(check.get('current_boot_visible_brightness_confirmed') is False,
+                'later phase falsely reports a repeated visual brightness test')
+    return first_a_sha
+
+
+def c_review(path: Path, prior: Path, prior_summary: dict,
+             manifest_entries: dict[str, str]) -> tuple[dict, bytes]:
+    raw = read_bounded(path, 64 * 1024)
+    review = json.loads(raw)
+    required = {'schema', 'decision', 'e_manifest_sha256', 'e_report_sha256',
+                'e_candidate_count', 'per_cluster', 'control_purpose', 'reviewed_utc'}
+    require(isinstance(review, dict) and set(review) == required,
+            'C review schema changed')
+    report = prior_summary.get('abi3_validator_summary')
+    report_sha = manifest_entries.get('abi3-validator-report.json')
+    require(isinstance(report, dict) and report.get('candidate_count') == 0 and
+            report.get('report_sha256') == report_sha and
+            prior_summary.get('phase') == 'E',
+            'prior E report/summary binding failed')
+    require(review['schema'] == 'abi3-c-control-review-v1' and
+            review['decision'] == 'run_c' and
+            review['e_manifest_sha256'] == file_digest(prior / 'MANIFEST.sha256') and
+            review['e_report_sha256'] == report_sha and
+            review['e_candidate_count'] == 0 and
+            review['control_purpose'] == 'comparable-lag-command-read-sensitivity' and
+            isinstance(review['reviewed_utc'], str) and review['reviewed_utc'],
+            'C review does not bind clean E packet/report')
+    per_cluster = review['per_cluster']
+    require(isinstance(per_cluster, dict) and set(per_cluster) == {'0', '1'},
+            'C review needs both clusters')
+    for cluster in ('0', '1'):
+        item = per_cluster[cluster]
+        require(isinstance(item, dict) and set(item) ==
+                {'potential_primary_opportunities', 'exposure_basis', 'why_control_needed'} and
+                type(item['potential_primary_opportunities']) is int and
+                item['potential_primary_opportunities'] >= 20 and
+                isinstance(item['exposure_basis'], str) and len(item['exposure_basis']) >= 20 and
+                isinstance(item['why_control_needed'], str) and len(item['why_control_needed']) >= 20,
+                f'C review cluster {cluster} lacks exposure rationale')
+    return review, raw
+
+
 def identity_schema(path: Path) -> dict:
     identity = json.loads(read_bounded(path, 64 * 1024))
     required = {'schema', 'release', 'build_id', 'config_sha256', 'entry_title',
@@ -422,7 +576,9 @@ def environment() -> dict:
         'monotonic_ns': time.monotonic_ns(),
         'ac_online': value('/sys/class/power_supply/macsmc-ac/online'),
         'battery_percent': value('/sys/class/power_supply/macsmc-battery/capacity'),
+        'backlight_interface_present': Path('/sys/class/backlight/apple-panel-bl').is_dir(),
         'brightness': value('/sys/class/backlight/apple-panel-bl/brightness'),
+        'actual_brightness': value('/sys/class/backlight/apple-panel-bl/actual_brightness'),
         'online_cpus': value('/sys/devices/system/cpu/online'),
         'cpuidle_driver': value('/sys/devices/system/cpu/cpuidle/current_driver'),
         'cpuidle_governor': value('/sys/devices/system/cpu/cpuidle/current_governor_ro'),
@@ -452,9 +608,11 @@ def environment() -> dict:
 
 
 def check_environment(pre: dict, post: dict) -> dict:
-    required = ('ac_online', 'brightness', 'online_cpus', 'cpuidle_driver',
+    required = ('ac_online', 'backlight_interface_present', 'brightness',
+                'online_cpus', 'cpuidle_driver',
                 'cpuidle_governor', 'cpuidle_state1_disabled', 'policies')
     require(pre['ac_online'] == post['ac_online'] == '1' and
+            pre['backlight_interface_present'] is post['backlight_interface_present'] is True and
             pre['brightness'] == post['brightness'] == '155' and
             pre['online_cpus'] == post['online_cpus'] == '0-7' and
             pre['cpuidle_driver'] == post['cpuidle_driver'] == 'apple_idle' and
@@ -470,7 +628,8 @@ def check_environment(pre: dict, post: dict) -> dict:
             'thermal_after': post['thermal_millidegrees']}
 
 
-def preflight(packet: Packet, identity: dict, phase: str, prior: Path | None) -> dict:
+def preflight(packet: Packet, identity: dict, phase: str, prior: Path | None,
+              qualification_path: Path, c_review_path: Path | None) -> dict:
     require(os.geteuid() == 0 and not sys.flags.optimize, 'administrator execution required')
     require(file_digest(WORKLOAD_SOURCE) == EXPECTED_WORKLOAD_SOURCE_SHA,
             'pinned workload source changed')
@@ -506,7 +665,8 @@ def preflight(packet: Packet, identity: dict, phase: str, prior: Path | None) ->
     packet.capture('boot-cmdline.txt', Path('/proc/cmdline'), 4096)
     packet.capture('proc-stat-before', Path('/proc/stat'), 1_000_000)
     boot_id = packet.capture('boot-id.txt', Path('/proc/sys/kernel/random/boot_id'), 128).decode().strip()
-    require(re.fullmatch(r'[0-9a-f-]{36}', boot_id) is not None, 'invalid boot ID')
+    require(BOOT_ID_PATTERN.fullmatch(boot_id) is not None, 'invalid boot ID')
+    packet.json('boot-ledger.json', boot_ledger(boot_id, packet.path))
     packet.capture('cpuinfo.txt', Path('/proc/cpuinfo'), 64 * 1024)
     features = cpu_features((packet.path / 'cpuinfo.txt').read_bytes())
     require(set(features) == set(range(8)) and
@@ -532,9 +692,10 @@ def preflight(packet: Packet, identity: dict, phase: str, prior: Path | None) ->
                              ['/usr/bin/pacman', '-Qkk', identity['module_package']], timeout=180)
     require(modules.returncode == 0 and b'0 altered files' in modules.stdout,
             'installed module package failed integrity check')
+    first_a_visual_sha = None
     if phase in PRIOR:
         require(prior is not None, 'prior fresh-boot packet required')
-        verify_manifest(prior)
+        prior_manifest_entries = verify_manifest(prior)
         prior_summary = json.loads(read_bounded(prior / 'acquisition-summary.json', 64 * 1024))
         prior_identity = json.loads(read_bounded(prior / 'expected-identity.json', 64 * 1024))
         prior_id = read_bounded(prior / 'boot-id.txt', 128).decode().strip()
@@ -542,19 +703,42 @@ def preflight(packet: Packet, identity: dict, phase: str, prior: Path | None) ->
                 prior_summary.get('result') == 'clean' and prior_id != boot_id and
                 prior_identity == identity,
                 'prior phase or fresh-boot gate failed')
+        first_a_visual_sha = first_a_visual_proof(prior, phase,
+                                                   prior_manifest_entries)
         if phase == 'C':
-            previous_report = json.loads(read_bounded(prior / 'abi3-validator-report.json', 16 * 1024 * 1024))
-            require(previous_report.get('candidate_count') == 0,
-                    'C control is conditional on zero E ticket witnesses')
+            require(c_review_path is not None, 'C review receipt required')
+            review, review_raw = c_review(c_review_path, prior, prior_summary,
+                                          prior_manifest_entries)
+            packet.save('c-control-review.json', review_raw)
+            packet.json('c-control-review-check.json',
+                        {'receipt_sha256': digest(review_raw),
+                         'e_manifest_sha256': review['e_manifest_sha256'],
+                         'e_report_sha256': review['e_report_sha256'],
+                         'both_cluster_rationales_present': True})
         packet.json('prior-packet-gate.json', {
             'prior_manifest_sha256': file_digest(prior / 'MANIFEST.sha256'),
             'prior_phase': PRIOR[phase], 'prior_boot_id': prior_id,
             'current_boot_id': boot_id})
     else:
         require(prior is None, 'A baseline must not inherit a prior packet')
+    qualification, qualification_raw = boot_qualification(
+        qualification_path, boot_id, identity, phase, first_a_visual_sha)
+    if phase == 'A':
+        first_a_visual_sha = digest(qualification_raw)
+    packet.save('user-boot-qualification.json', qualification_raw)
+    packet.json('user-boot-qualification-check.json',
+                {'phase': phase, 'receipt_sha256': digest(qualification_raw),
+                 'current_boot_id': boot_id,
+                 'current_boot_wifi_user_confirmed': True,
+                 'current_boot_visible_brightness_confirmed': phase == 'A',
+                 'brightness_visible_checked_on_first_abi3_boot': True,
+                 'first_a_visual_receipt_sha256': first_a_visual_sha,
+                 'current_boot_backlight_readback_expected': '155'})
     before = environment()
     packet.json('environment-before.json', before)
-    require(before['ac_online'] == '1' and before['brightness'] == '155' and
+    require(before['ac_online'] == '1' and
+            before['backlight_interface_present'] is True and
+            before['brightness'] == '155' and
             before['online_cpus'] == '0-7' and before['cpuidle_driver'] == 'apple_idle' and
             before['cpuidle_governor'] == 'menu' and
             all(v == '0' for v in before['cpuidle_state1_disabled'].values()),
@@ -568,7 +752,8 @@ def preflight(packet: Packet, identity: dict, phase: str, prior: Path | None) ->
     if prior is not None:
         previous_environment = json.loads(read_bounded(prior / 'environment-before.json', 64 * 1024))
         require(all(before[key] == previous_environment[key] for key in
-                    ('ac_online', 'brightness', 'online_cpus', 'cpuidle_driver',
+                    ('ac_online', 'backlight_interface_present', 'brightness',
+                     'online_cpus', 'cpuidle_driver',
                      'cpuidle_governor', 'cpuidle_state1_disabled', 'policies')),
                 'phase policy/power setup differs from prior boot')
     ready = status_map(packet.capture('apsc-status-before.txt', APSC / 'status', 64 * 1024))
@@ -588,18 +773,22 @@ def preflight(packet: Packet, identity: dict, phase: str, prior: Path | None) ->
     return before
 
 
-def write_capture(packet: Packet, command: str, deadline_ns: int) -> None:
+def write_capture(packet: Packet, command: str, deadline_ns: int,
+                  control: dict) -> None:
     data = command.encode('ascii')
     packet.mark('capture_write_begin', command=command.strip())
     require(time.monotonic_ns() <= deadline_ns,
             'collector missed arm offset before control write')
     descriptor = os.open(APSC / 'capture', os.O_WRONLY | os.O_CLOEXEC)
     try:
+        control['state'] = CONTROL_WRITE_UNKNOWN
+        packet.mark('capture_write_attempted', bytes=len(data))
         written = os.write(descriptor, data)
         require(written == len(data), 'short capture control write')
+        control['state'] = CONTROL_WRITE_COMPLETED
     finally:
         os.close(descriptor)
-        packet.mark('capture_write_end')
+        packet.mark('capture_write_end', **control_disposition(control))
 
 
 def wait_until_arm(target_ns: int) -> int:
@@ -632,12 +821,48 @@ def raw_after(packet: Packet) -> tuple[tuple[bytes | None, ...], list[str]]:
     return tuple(raw), errors
 
 
+def export_workers(packet: Packet, children: list, exported: set[int],
+                   reason: str) -> tuple[dict[int, bytes], list[str]]:
+    pending = [(cpu, child) for cpu, child in zip(CPUS, children) if cpu not in exported]
+    if not pending:
+        return {}, []
+    packet.mark('workload_release_begin', token='E', reason=reason,
+                cpus=[cpu for cpu, _ in pending])
+    output = {}
+    errors = []
+    for cpu, child in pending:
+        try:
+            stdout, stderr = child.communicate(b'E' if child.poll() is None else None,
+                                               timeout=25)
+        except subprocess.TimeoutExpired:
+            child.kill()
+            stdout, stderr = child.communicate()
+            errors.append(f'CPU{cpu}: export timed out')
+        except BaseException as error:
+            try:
+                child.kill()
+                stdout, stderr = child.communicate()
+            except BaseException as drain_error:
+                stdout, stderr = b'', repr(drain_error).encode()
+            errors.append(f'CPU{cpu}: export failed: {error!r}')
+        packet.save(f'workload-cpu{cpu}.csv', stdout)
+        packet.save(f'workload-cpu{cpu}.stderr', stderr)
+        packet.mark('workload_release_end', cpu=cpu, exit_status=child.returncode)
+        exported.add(cpu)
+        if child.returncode != 0:
+            errors.append(f'CPU{cpu}: workload exited {child.returncode}')
+        output[cpu] = stdout
+    return output, errors
+
+
 def run_capture(packet: Packet, identity: dict, phase: str, before: dict,
-                prior: Path | None = None) -> dict:
+                prior: Path | None = None, control: dict | None = None) -> dict:
     mode = MODES[phase]
     owner = packet.owner
     children = []
-    armed = False
+    exported: set[int] = set()
+    if control is None:
+        control = {'state': CONTROL_NOT_ATTEMPTED}
     write_error = None
     try:
         start_ns = time.monotonic_ns() + 1_000_000_000
@@ -653,6 +878,9 @@ def run_capture(packet: Packet, identity: dict, phase: str, before: dict,
         actual_arm_ns = wait_until_arm(target_ns)
         require(all(child.poll() is None for child in children),
                 'workload exited before observer window')
+        arm_endpoint = power_endpoints()
+        packet.json('power-at-arm.json', arm_endpoint)
+        require_power_endpoints(arm_endpoint, 'before window')
         packet.mark('window_begin', phase=phase, mode=mode,
                     scheduled_arm_ns=target_ns, checked_arm_ns=actual_arm_ns)
         if phase == 'A':
@@ -662,39 +890,35 @@ def run_capture(packet: Packet, identity: dict, phase: str, before: dict,
             time.sleep(DURATION_MS / 1000)
             baseline_stop_ns = time.monotonic_ns()
         else:
-            armed = True
             try:
                 write_capture(packet, f'{mode} {DURATION_MS}\n',
-                              target_ns + ARM_SLIP_LIMIT_NS)
+                              target_ns + ARM_SLIP_LIMIT_NS, control)
             except BaseException as error:
                 # A debugfs write may fail after the one-shot was consumed.
                 # Continue through raw export and both explicit E releases.
                 write_error = error
-                packet.mark('capture_write_failed', error=repr(error))
+                packet.mark('capture_write_failed', error=repr(error),
+                            **control_disposition(control))
+        endpoint_error = None
+        try:
+            stop_endpoint = power_endpoints()
+            packet.json('power-at-window-end.json', stop_endpoint)
+        except BaseException as error:
+            endpoint_error = error
+            packet.mark('power_at_window_end_failed', error=repr(error))
         packet.mark('window_end', phase=phase)
         (status_raw, events_raw, wfi_raw, pcpm_raw, counter_raw), raw_errors = raw_after(packet)
         # The explicit export token follows the completed capture, including
         # when a raw read failed.  Preserve both worker streams before any
         # status/CSV screening can reject this one-shot.
-        packet.mark('workload_release_begin', token='E')
-        workload_bytes = {}
-        release_errors = []
-        for cpu, child in zip(CPUS, children):
-            try:
-                stdout, stderr = child.communicate(b'E', timeout=25)
-            except subprocess.TimeoutExpired:
-                child.kill()
-                stdout, stderr = child.communicate()
-                release_errors.append(f'CPU{cpu}: export timed out')
-            packet.save(f'workload-cpu{cpu}.csv', stdout)
-            packet.save(f'workload-cpu{cpu}.stderr', stderr)
-            packet.mark('workload_release_end', cpu=cpu, exit_status=child.returncode)
-            if child.returncode != 0:
-                release_errors.append(f'CPU{cpu}: workload exited {child.returncode}')
-            workload_bytes[cpu] = stdout
+        workload_bytes, release_errors = export_workers(packet, children, exported,
+                                                        'window_ended')
         require(not raw_errors, 'observer raw export failed: ' + '; '.join(raw_errors))
         require(not release_errors, '; '.join(release_errors))
         require(write_error is None, f'capture write failed: {write_error!r}')
+        require(endpoint_error is None,
+                f'power endpoint read failed: {endpoint_error!r}')
+        require_power_endpoints(stop_endpoint, 'after window')
         check_aux_unused(pcpm_raw, counter_raw)
         require(pcpm_raw == (packet.path / 'pcpm-status-before.txt').read_bytes() and
                 counter_raw == (packet.path / 'counter-status-before.txt').read_bytes(),
@@ -709,7 +933,7 @@ def run_capture(packet: Packet, identity: dict, phase: str, before: dict,
             interior = (stream_check['inside_start_ns'], stream_check['inside_stop_ns'])
         packet.json('window-markers.json', {'source': 'userspace' if phase == 'A' else
                     'kernel-CLOCK_MONOTONIC', 'start_ns': interior[0],
-                    'stop_ns': interior[1], 'capture_armed': armed})
+                    'stop_ns': interior[1], **control_disposition(control)})
         packet.json('stream-status-check.json', stream_check)
         workloads = {}
         validation_errors = []
@@ -748,13 +972,18 @@ def run_capture(packet: Packet, identity: dict, phase: str, before: dict,
                              '--no-pager', '-o', 'short-monotonic'])
         require(log.returncode == 0 and log.stdout.strip(), 'kernel log after unavailable')
         return {'phase': phase, 'mode': mode, 'result': 'clean',
-                'capture_armed': armed, 'workloads': workloads,
+                **control_disposition(control), 'workloads': workloads,
                 'abi3_validator_summary': ({'busy_rows': report['busy_rows'],
                     'candidate_count': report['candidate_count'],
                     'report_sha256': file_digest(packet.path / 'abi3-validator-report.json')}
                     if report is not None else None),
                 'interpretation': 'raw record integrity only; no WFI-instruction state proof'}
     finally:
+        if len(exported) < len(children):
+            try:
+                export_workers(packet, children, exported, 'pre_arm_or_early_failure')
+            except BaseException as export_error:
+                packet.mark('workload_incident_export_failed', error=repr(export_error))
         for child in children:
             if child.poll() is None:
                 child.terminate()
@@ -770,6 +999,8 @@ def main() -> int:
     parser.add_argument('phase', choices=tuple(MODES))
     parser.add_argument('--identity-json', type=Path)
     parser.add_argument('--prior-packet', type=Path)
+    parser.add_argument('--boot-qualification-json', type=Path)
+    parser.add_argument('--c-review-json', type=Path)
     parser.add_argument('--execute', action='store_true')
     args = parser.parse_args()
     if not args.execute:
@@ -779,21 +1010,30 @@ def main() -> int:
                           'packet_created': False}, sort_keys=True))
         return 0
     require(args.identity_json is not None, 'reviewed expected identity JSON required')
+    require(args.boot_qualification_json is not None,
+            'current-boot user Wi-Fi/visual brightness receipt required')
+    require((args.c_review_json is not None) == (args.phase == 'C'),
+            'C review JSON is required only for conditional C phase')
     require(not sys.flags.optimize, 'Python optimization invalid for acquisition')
     owner = pwd.getpwnam('REDACTED_USER')
     require(os.geteuid() == 0, 'administrator execution required')
     identity = identity_schema(args.identity_json)
     stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
     packet = Packet(HERE / f'abi3-{args.phase}-{stamp}', owner)
+    control = {'state': CONTROL_NOT_ATTEMPTED}
     outcome = {'phase': args.phase, 'mode': MODES[args.phase], 'result': 'failed',
-               'capture_armed': False}
+               **control_disposition(control)}
     try:
         packet.mark('begin', phase=args.phase)
-        before = preflight(packet, identity, args.phase, args.prior_packet)
-        outcome = run_capture(packet, identity, args.phase, before, args.prior_packet)
+        before = preflight(packet, identity, args.phase, args.prior_packet,
+                           args.boot_qualification_json, args.c_review_json)
+        outcome = run_capture(packet, identity, args.phase, before,
+                              args.prior_packet, control)
         packet.mark('complete', phase=args.phase)
     except BaseException as error:
         packet.mark('failed', phase=args.phase, error=repr(error))
+        outcome['result'] = 'failed'
+        outcome.update(control_disposition(control))
         outcome['error'] = repr(error)
         # A failed one-shot still has a private, hash-sealed incident packet.
         for name, action in (
