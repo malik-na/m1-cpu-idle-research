@@ -2,17 +2,17 @@
   "activity_summary": {
     "aggregate_cpu": {
       "clock_ticks_per_second": 100,
-      "context_switches_delta": 48067,
-      "cpu_busy_jiffies_delta": 657,
-      "cpu_idle_iowait_jiffies_delta": 6334,
-      "cpu_total_jiffies_delta": 6991,
+      "context_switches_delta": 23862,
+      "cpu_busy_jiffies_delta": 361,
+      "cpu_idle_iowait_jiffies_delta": 6665,
+      "cpu_total_jiffies_delta": 7026,
       "procs_blocked_before_after": [
         0,
         0
       ],
       "procs_running_before_after": [
         1,
-        3
+        2
       ],
       "scope": "whole-system counters include workers and collector; background CPU cannot be isolated"
     },
@@ -43,20 +43,20 @@
         "up"
       ],
       "wlan0_traffic_delta": {
-        "rx_bytes": 87122,
-        "rx_packets": 230,
-        "tx_bytes": 297630,
-        "tx_packets": 295
+        "rx_bytes": 152928,
+        "rx_packets": 302,
+        "tx_bytes": 201251,
+        "tx_packets": 310
       }
     },
     "observation_times_monotonic_ns": {
       "after": [
-        628955916900,
-        628957778357
+        272270065983,
+        272271942056
       ],
       "before": [
-        620189592621,
-        620190122526
+        263474877853,
+        263475304635
       ]
     },
     "scope": "read-only endpoints outside capture; fixed wlan0 label only; no process, network address, arbitrary interface name or USB identity export",
@@ -122,8 +122,8 @@
   "claim_boundary": "first-attempt pre-DSB probe only; WFI-instruction state, physical power, energy and a guaranteed cross-CPU clock bound remain unobserved",
   "collector_acquisition_sha256": "b6a5f3a281c66d43c23a557aa1a3e271b88b9c36f6c8899d9eae7670c79eec00",
   "conditions": {
-    "battery_capacity_percent_after": 45,
-    "battery_capacity_percent_before": 44,
+    "battery_capacity_percent_after": 70,
+    "battery_capacity_percent_before": 70,
     "brightness": 155,
     "charger_online": 1,
     "interior_condition_changes": "not_observed",
@@ -136,8 +136,8 @@
     "pairwise_tolerance_ticks": 240
   },
   "counter_pre_post_eligible_under_declared_model": true,
-  "d_pilot_capture_boundary_model": "matched WFI bracket strictly inside start/stop by assumed E=240 ticks; cross-CPU error is not measured",
-  "d_pilot_matched_model_interior_probe_count": 660,
+  "d_pilot_capture_boundary_model": null,
+  "d_pilot_matched_model_interior_probe_count": null,
   "device_acceptance": {
     "basis": "same-boot operator-confirmed functionality plus private live device/readback checks; no independent Wi-Fi traffic or visual measurement",
     "brightness_adjustment_user_confirmed": true,
@@ -149,94 +149,94 @@
   "evidence_files": {
     "activity-summary.json": {
       "private_input_sha256": {
-        "environment-observation-after.json": "939724442b32b2acb514b8ea68ed55746dbc76540f3a2676dc90fda788491d82",
-        "environment-observation-before.json": "2526fc71ace3bb1bb24e0beb12667012ff429960aef908ab4c70d82b494caadd"
+        "environment-observation-after.json": "533464594d717f63e257e4e6ee79feee0295732127ce0d9f64e6fd6f2ca3fd94",
+        "environment-observation-before.json": "edd7f9cbde91894cfa173eebd916e8020e397a906b3f9f0e394004bb85f6e3bd"
       },
-      "published_sha256": "c067e86551e62f516bae5ee3c3aa12433a5838188d63b3dc635f7370ada36108",
+      "published_sha256": "aee49703721ad309532f46fed80fd9351f15cb7a1991538f0d37fac6759198fe",
       "transformation": "validated aggregate endpoint projection with interface and USB identifiers suppressed",
       "uncompressed_bytes": null
     },
     "chronology.json": {
-      "private_input_sha256": "6d1bdf39b46acb78158550fa21df205b9c520ee5cffba78af88ca20f51abb2a8",
-      "published_sha256": "e916066749aa67d6bfc136a83bf246658dc3e953a9615c82fa6facddddc32c3d",
+      "private_input_sha256": "7c8d683f81d3c8507e12ce0ba46f2d34d930609b1352fa57611378fca1540cc6",
+      "published_sha256": "46bbb1e8d95a1793ea9dcfb1d3f6db486d0f10054298bc826863ed03460beaa4",
       "transformation": "strict action/field projection",
       "uncompressed_bytes": null
     },
     "counter-events.csv.gz": {
-      "private_input_sha256": "3b0c4b933d1cc8a0f5375c88cee9e459a38be5127e80b1bc02e127e82f1275a3",
-      "published_sha256": "342101c2b067a5487155a5e84cb03bf9ac3d69219411b19a2dfd1a9f688ff00a",
+      "private_input_sha256": "378319bba25757d8075e1b69928875b5ff13e80acf8a68149675c02a41a23bea",
+      "published_sha256": "a9d85e406d749b6a22db06ab0e0715a67dbc9509e868057a3b691f39250e4ee0",
       "transformation": "gzip level 9, mtime=0",
-      "uncompressed_bytes": 353019
+      "uncompressed_bytes": 338683
     },
     "counter-pre-events.csv.gz": {
-      "private_input_sha256": "a02cef9394c10e01509a9a5c3cb48b5ba689db85a466222247d15f6e7c1048e9",
-      "published_sha256": "064a2ec790be4e6bd215aac8257813f00c01578af86708e424cc778abae9d624",
+      "private_input_sha256": "c227d5aeac544193554ae392ac2909c8a3d742e09e7ee3b3cacd4759aba1acc5",
+      "published_sha256": "0379c910e839a610184065d96ad5755bd0957d6942f7cd4a6df615b2dc45332b",
       "transformation": "gzip level 9, mtime=0",
-      "uncompressed_bytes": 174589
+      "uncompressed_bytes": 167421
     },
     "counter-pre-status.txt": {
-      "private_input_sha256": "336545b3676dcf275e5da07b476790b528d14f36eee3cfeaa02733340ac8891f",
-      "published_sha256": "336545b3676dcf275e5da07b476790b528d14f36eee3cfeaa02733340ac8891f",
+      "private_input_sha256": "e4675026f90f7245faf0f5c52c6b13b8265e86c12bd42ded227e02794604c73d",
+      "published_sha256": "e4675026f90f7245faf0f5c52c6b13b8265e86c12bd42ded227e02794604c73d",
       "transformation": "byte exact",
-      "uncompressed_bytes": 3484
+      "uncompressed_bytes": 3482
     },
     "counter-status.txt": {
-      "private_input_sha256": "0b05e2b3b5c2692e868132e8c1619f242c948dd7be9abea3a1972abcc34aa8ef",
-      "published_sha256": "0b05e2b3b5c2692e868132e8c1619f242c948dd7be9abea3a1972abcc34aa8ef",
+      "private_input_sha256": "551421f1f82669764d1804c5c2d1d65c06cb1b3e262043650c7542ffc556784f",
+      "published_sha256": "551421f1f82669764d1804c5c2d1d65c06cb1b3e262043650c7542ffc556784f",
       "transformation": "byte exact",
-      "uncompressed_bytes": 3741
+      "uncompressed_bytes": 3737
     },
     "environment-after.json": {
-      "private_input_sha256": "5e138fd109a9a75c9509ed5ee81db533ccf4ca31db0e81b004fef93a170df27c",
-      "published_sha256": "d7957555f65ae18ef38336da9c0189502fc5e5761ca1740608c4f4a86eac7285",
+      "private_input_sha256": "59ad2f6fcd5d57262833e86daaf33abcd3c7270be61da60b0c7cae15efaae8c8",
+      "published_sha256": "f1996943a96a1e972249f7d91f1ae81450a32bfa935aaa6df2e073f61a5e5b8e",
       "transformation": "fixed-label sysfs condition projection",
       "uncompressed_bytes": null
     },
     "environment-before.json": {
-      "private_input_sha256": "001b01e6ca3166c464572e7fde59db61f79ce56414a4fd43635f21fcd654662f",
-      "published_sha256": "ac6bd0f357c30352bb0d07c2b60defe52dd316f6a085d426d9bb8569b8adc34e",
+      "private_input_sha256": "f3660600b8a49dbca171909a930f9c20dbc033ea5f75b4128e0c8d9fa9de7dfc",
+      "published_sha256": "344f4066eed36c8d2bbd682553d23104b2654978ca8ee676f87b17f959f8eebd",
       "transformation": "fixed-label sysfs condition projection",
       "uncompressed_bytes": null
     },
     "events.csv.gz": {
-      "private_input_sha256": "9e2ca6dd1425f03dfe052997c8eadf573ec684e0fea8137c62ca375bbf92384f",
-      "published_sha256": "de2876373e0408b4a5e5064eec7dee1c9fcf5c357b97c704864031080ee05348",
+      "private_input_sha256": "c32fb2976a250c006709341a9bd81a437af5a7c42826e5956733c94701ffe4e0",
+      "published_sha256": "59ba8a4bde4c5389023264384b384756101346a1c49c62d966b0ec181c09c612",
       "transformation": "gzip level 9, mtime=0",
-      "uncompressed_bytes": 94749
+      "uncompressed_bytes": 75414
     },
     "status.txt": {
-      "private_input_sha256": "4c025592a499e64e468b652d6ffc179540f2c31530f6f4588b020fae5468a199",
-      "published_sha256": "4c025592a499e64e468b652d6ffc179540f2c31530f6f4588b020fae5468a199",
+      "private_input_sha256": "e291d8222de8fc9d5685aca3dc9aaf54da3e5a8d9808093c495d55a4f9dd0957",
+      "published_sha256": "e291d8222de8fc9d5685aca3dc9aaf54da3e5a8d9808093c495d55a4f9dd0957",
       "transformation": "byte exact",
-      "uncompressed_bytes": 2124
+      "uncompressed_bytes": 2112
     },
     "wfi-events.csv.gz": {
-      "private_input_sha256": "835cca225b88f2a2b0d1603adef307b8cf453e71c2551b96fc4f74572d69d287",
-      "published_sha256": "c8f4b762b7f40a96b70d947aa7e01faf7362ebf1e71676be7b6c6ed49c5aa41b",
+      "private_input_sha256": "a53cd02715251157ccf0d6f6f6501596805ba92ec78317fee14273db05cf6938",
+      "published_sha256": "5d06a939e2d4c055b8e9029bbe2549e39095f9bb6ad9aa78bfe1632a2938dc24",
       "transformation": "gzip level 9, mtime=0",
-      "uncompressed_bytes": 29761
+      "uncompressed_bytes": 31049
     },
     "workload-cpu1.csv.gz": {
-      "private_input_sha256": "fa7abc98ed0b3ecfddd7ed875a92327ddb0ad1f724c58be4094ae485b0dd559e",
-      "published_sha256": "cc7c88ab99c485ca24ffafb7b18a992871a9f9db3fa493d8185e7d8114fbd54c",
+      "private_input_sha256": "92849815bbd67f9d21fce1dccfbd02d4698c09fd0dd6133cfc4cd9e317d9ff2f",
+      "published_sha256": "7e80e4f6a30f3c84c8ef9a9008aad1bdc3a6fc6acd84fab8b415b3752afd49c7",
       "transformation": "gzip level 9, mtime=0",
       "uncompressed_bytes": 2671
     },
     "workload-cpu5.csv.gz": {
-      "private_input_sha256": "699ac978e67c53b4aadc5e0c6e8bff96542f118e32fce50964aa869fb19352b3",
-      "published_sha256": "769cf2eb6d60b67fc0a934817e81efa33dd4ee759438ac4f736657b39516faa8",
+      "private_input_sha256": "377b432f4a8617c33bca0fc69f2de5664f77b46880485e8d6c3ead1b5fef81fd",
+      "published_sha256": "b012d910d3bc25a4b08f5c142bdb8e5bb7ad240f15c2c12b89c266cca3087c9f",
       "transformation": "gzip level 9, mtime=0",
       "uncompressed_bytes": 2671
     }
   },
-  "external_window_elapsed_ns": 2031295833,
+  "external_window_elapsed_ns": 2038349747,
   "gnu_build_id": "11e80be6d8b358eee9aa847a0f814aff02b66c43",
   "integrity_basis": "current ABI 2 analyzer agrees exactly with saved output and reports clean",
   "integrity_clean": true,
   "kernel_config_sha256": "f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d",
-  "mode": "wfi_clock",
+  "mode": "wfi_mmio",
   "observer_abi": 2,
-  "observer_analysis_private_sha256": "fce936aead60151d26d451a88c4887c39c20e2c9b51ee99815c7d403544b75af",
+  "observer_analysis_private_sha256": "9d618cb1d24c877593e8b309440a27a40b07639fc3ab7b6c4a7f5185ca5569ac",
   "observer_loss_and_drain": {
     "interrupted": 0,
     "missing_commit_total": 0,
@@ -245,24 +245,65 @@
     "wfi_prepare_after_stop": 0,
     "wfi_prepare_bad_mapping": 0
   },
-  "packet_sha256s_sha256": "fe2fea5df327dcf0fc50454f88b445a7ff73b822098f6143c4d6e9b0cfacce24",
-  "paired_opportunity_by_cluster": null,
+  "packet_sha256s_sha256": "2f4583ade9e17892bfa0f79691ac3deec5892bda302855bacdf17c099a9d2b31",
+  "paired_opportunity_by_cluster": {
+    "0": {
+      "ambiguous_earliest_sample": 0,
+      "ambiguous_set_sample_order": 0,
+      "clean_interior_samples": 368,
+      "exploratory_busy": 1,
+      "exploratory_model_qualified_pairs_with_cross_cpu_set_sample": 2,
+      "exploratory_model_qualified_pairs_with_same_cpu_set_sample": 4,
+      "exploratory_only_pair": 5,
+      "exploratory_pairs": 6,
+      "lag_exceeds_exploratory_bound": 0,
+      "no_ordered_sample_within_exploratory_search": 149,
+      "possible_intervening_set": 0,
+      "primary_busy": 1,
+      "primary_exposure_gate_20": false,
+      "primary_model_qualified_pairs_with_cross_cpu_set_sample": 0,
+      "primary_model_qualified_pairs_with_same_cpu_set_sample": 1,
+      "primary_pairs": 1,
+      "set_not_strictly_interior": 0,
+      "successful_sets": 155
+    },
+    "1": {
+      "ambiguous_earliest_sample": 0,
+      "ambiguous_set_sample_order": 0,
+      "clean_interior_samples": 195,
+      "exploratory_busy": 3,
+      "exploratory_model_qualified_pairs_with_cross_cpu_set_sample": 1,
+      "exploratory_model_qualified_pairs_with_same_cpu_set_sample": 3,
+      "exploratory_only_pair": 2,
+      "exploratory_pairs": 4,
+      "lag_exceeds_exploratory_bound": 0,
+      "no_ordered_sample_within_exploratory_search": 27,
+      "possible_intervening_set": 0,
+      "primary_busy": 2,
+      "primary_exposure_gate_20": false,
+      "primary_model_qualified_pairs_with_cross_cpu_set_sample": 0,
+      "primary_model_qualified_pairs_with_same_cpu_set_sample": 2,
+      "primary_pairs": 2,
+      "set_not_strictly_interior": 0,
+      "successful_sets": 31
+    }
+  },
   "paired_opportunity_model": {
     "assumed_pairwise_clock_error_ticks": 240,
     "clock_bound_is_assumed_not_measured": true,
     "exploratory_bound_ticks": 2400,
     "negative_claim_supported": false,
     "primary_bound_ticks": 600,
-    "status": "not_applicable_without_wfi_mmio"
+    "status": "conditional_software_screen"
   },
-  "paired_opportunity_status": "not_applicable_without_wfi_mmio",
+  "paired_opportunity_status": "conditional_software_screen",
   "private_boot_cmdline": "retained in hashed packet; not independently decoded here",
   "private_full_fdt": "retained in hashed packet; only selected same-boot topology was checked by the private qualification",
   "private_kernel_log": "pre-arm and post-capture journalctl succeeded with nonempty current-boot output; log contents remain private and unreviewed by publisher",
   "release": "7.1.12-ARCH-apsc-20261002-wfi",
   "requested_window_ms": 2000,
   "reverse_coverage_counts": {
-    "matched_wfi_sample": 660,
+    "matched_wfi_sample": 564,
     "open_interval_without_sample_unresolved": 0,
     "unexplained_paired_path_without_sample": 0
   },
@@ -278,50 +319,50 @@
   "source_sha256_scope": "publication-time decoder and publisher files; collector digest is acquisition-time saved source",
   "wfi_peer_candidate_by_cluster": {
     "0": {
-      "candidate_busy": null,
-      "candidate_clear": null,
-      "candidate_primary_busy": null,
-      "candidate_primary_busy_other_cpu_writer": null,
-      "candidate_primary_busy_same_cpu_writer": null,
-      "candidate_primary_exposure_gate_20": null,
-      "candidate_primary_other_cpu_writer": null,
-      "candidate_primary_pairs": null,
-      "candidate_primary_same_cpu_writer": null,
-      "candidate_samples": 0,
-      "committed_samples": 451
+      "candidate_busy": 0,
+      "candidate_clear": 1,
+      "candidate_primary_busy": 0,
+      "candidate_primary_busy_other_cpu_writer": 0,
+      "candidate_primary_busy_same_cpu_writer": 0,
+      "candidate_primary_exposure_gate_20": false,
+      "candidate_primary_other_cpu_writer": 0,
+      "candidate_primary_pairs": 0,
+      "candidate_primary_same_cpu_writer": 0,
+      "candidate_samples": 1,
+      "committed_samples": 369
     },
     "1": {
-      "candidate_busy": null,
-      "candidate_clear": null,
-      "candidate_primary_busy": null,
-      "candidate_primary_busy_other_cpu_writer": null,
-      "candidate_primary_busy_same_cpu_writer": null,
-      "candidate_primary_exposure_gate_20": null,
-      "candidate_primary_other_cpu_writer": null,
-      "candidate_primary_pairs": null,
-      "candidate_primary_same_cpu_writer": null,
-      "candidate_samples": 65,
-      "committed_samples": 209
+      "candidate_busy": 1,
+      "candidate_clear": 6,
+      "candidate_primary_busy": 0,
+      "candidate_primary_busy_other_cpu_writer": 0,
+      "candidate_primary_busy_same_cpu_writer": 0,
+      "candidate_primary_exposure_gate_20": false,
+      "candidate_primary_other_cpu_writer": 0,
+      "candidate_primary_pairs": 0,
+      "candidate_primary_same_cpu_writer": 0,
+      "candidate_samples": 7,
+      "committed_samples": 195
     }
   },
   "wfi_peer_candidate_status": "conditional_software_screen",
   "wfi_probe": {
-    "in_window": 660,
+    "in_window": 564,
     "in_window_by_cluster": {
       "0": {
-        "busy_bit31": null,
-        "samples": 451,
-        "set_bit25": null
+        "busy_bit31": 1,
+        "samples": 369,
+        "set_bit25": 0
       },
       "1": {
-        "busy_bit31": null,
-        "samples": 209,
-        "set_bit25": null
+        "busy_bit31": 3,
+        "samples": 195,
+        "set_bit25": 0
       }
     },
     "post_stop_drain": 0,
     "straddling_stop": 0,
-    "total": 660
+    "total": 564
   },
   "worker_pulses_fully_inside_external_window_by_cpu": {
     "1": [

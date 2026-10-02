@@ -498,7 +498,7 @@ def project_environment_activity(packet: Path, chronology: list[dict]) -> dict:
     require(all(value >= 0 for value in cpu_delta) and context_delta >= 0,
             "aggregate CPU counters reversed")
     return {
-        "scope": "read-only endpoints outside capture; no process, address, interface-name or USB identity export",
+        "scope": "read-only endpoints outside capture; fixed wlan0 label only; no process, network address, arbitrary interface name or USB identity export",
         "observation_times_monotonic_ns": {
             "before": [before["observed_monotonic_ns_begin"], before["observed_monotonic_ns_end"]],
             "after": [after["observed_monotonic_ns_begin"], after["observed_monotonic_ns_end"]],

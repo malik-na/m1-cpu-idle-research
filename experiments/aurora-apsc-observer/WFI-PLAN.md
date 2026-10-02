@@ -21,6 +21,8 @@ After the successful D pilot, the original research entry and image were
 retired under the plan's first-boot rule. The reviewed
 [retirement receipt](wfi-efi-retirement-receipt.json) is a later operational
 record, not an amendment to the capture decision gates below.
+The later [E result](WFI-E-RESULT.md) is a separate command-state observation;
+the remaining C/B/A controls and comparison gates below are still pending.
 
 ## Site and scope
 

@@ -1,17 +1,17 @@
 {
   "aggregate_cpu": {
     "clock_ticks_per_second": 100,
-    "context_switches_delta": 48067,
-    "cpu_busy_jiffies_delta": 657,
-    "cpu_idle_iowait_jiffies_delta": 6334,
-    "cpu_total_jiffies_delta": 6991,
+    "context_switches_delta": 23862,
+    "cpu_busy_jiffies_delta": 361,
+    "cpu_idle_iowait_jiffies_delta": 6665,
+    "cpu_total_jiffies_delta": 7026,
     "procs_blocked_before_after": [
       0,
       0
     ],
     "procs_running_before_after": [
       1,
-      3
+      2
     ],
     "scope": "whole-system counters include workers and collector; background CPU cannot be isolated"
   },
@@ -42,20 +42,20 @@
       "up"
     ],
     "wlan0_traffic_delta": {
-      "rx_bytes": 87122,
-      "rx_packets": 230,
-      "tx_bytes": 297630,
-      "tx_packets": 295
+      "rx_bytes": 152928,
+      "rx_packets": 302,
+      "tx_bytes": 201251,
+      "tx_packets": 310
     }
   },
   "observation_times_monotonic_ns": {
     "after": [
-      628955916900,
-      628957778357
+      272270065983,
+      272271942056
     ],
     "before": [
-      620189592621,
-      620190122526
+      263474877853,
+      263475304635
     ]
   },
   "scope": "read-only endpoints outside capture; fixed wlan0 label only; no process, network address, arbitrary interface name or USB identity export",

@@ -86,3 +86,13 @@ qualified WFI boot and D pilot. The original image and before/after Limine
 configuration have verified private backups. Its reviewed public subset
 retains the removed image hash, configuration hashes, fallback checks and EFI
 usage; private boot ID, backup location and full configuration stay local.
+
+The next fresh-boot [E result](experiments/aurora-apsc-observer/WFI-E-RESULT.md)
+records four raw APSC BUSY-bit reads at the first-attempt pre-DSB probe,
+with same-CPU preceding SETs. Its [public numerical packet](experiments/aurora-apsc-observer/native-evidence/E/status.txt)
+and [reviewed receipt](experiments/aurora-apsc-observer/wfi-mmio-receipt.json)
+retain replayable event/counter/workload values, status and hash links while
+withholding boot identifiers, full FDT, boot arguments and logs. One BUSY
+row passes a conditional software peer-interval screen under assumed E=240,
+but no physical sleep or WFI-instruction state follows. C/B/A controls and
+cross-boot comparability remain open; no energy or wake result is claimed.

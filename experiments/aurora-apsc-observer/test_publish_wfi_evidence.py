@@ -397,6 +397,11 @@ class PublishWfiEvidenceTests(unittest.TestCase):
         self.assertEqual(result["conditions"]["charger_online"], 1)
         self.assertEqual(result["conditions"]["brightness"], 155)
         activity = result["activity_summary"]
+        self.assertEqual(
+            activity["scope"],
+            "read-only endpoints outside capture; fixed wlan0 label only; "
+            "no process, network address, arbitrary interface name or USB identity export",
+        )
         self.assertTrue(activity["usb"]["vendor_product_class_multiset_equal"])
         self.assertEqual(activity["network"]["wlan0_traffic_delta"]["rx_bytes"], 500)
         self.assertEqual(activity["aggregate_cpu"]["cpu_total_jiffies_delta"], 4000)

@@ -9,6 +9,13 @@ numeric streams in D are byte-exact after deterministic gzip, while its
 environment and activity files are validated projections. See the
 [ABI 2 publication contract](../WFI-PUBLICATION.md) for the exact boundary.
 
+The later, separate [E MMIO result](../WFI-E-RESULT.md) is in [`E/`](E/status.txt),
+with its [publication receipt](../wfi-mmio-receipt.json). E uses the same
+first-attempt seam and performs one command-register read. Its raw streams
+and filtered environment files follow the same ABI 2 export contract as D.
+The four BUSY-bit values are observations at the pre-DSB probe only; read the
+result's paired-opportunity and clock-model limits before interpreting them.
+
 This directory is the reviewed numerical subset of three private,
 acquisition-time hashed packets from separate boots of the same capacity
 kernel. `A` is observer-unarmed, `B` records events without command reads,

@@ -6,7 +6,9 @@ and installed [build](wfi-build-receipt.json) and
 predeclared context. This document and its synthetic tests are **publication
 preparation, not native evidence**. At this document's original checkpoint no
 ABI 2 packet had been published. The later [D pilot result](WFI-D-RESULT.md)
-and [receipt](wfi-clock-pilot-receipt.json) are separate evidence.
+and [receipt](wfi-clock-pilot-receipt.json), followed by the
+[E result](WFI-E-RESULT.md) and [receipt](wfi-mmio-receipt.json), are
+separate evidence.
 
 [`publish_wfi_evidence.py`](publish_wfi_evidence.py) accepts one private,
 acquisition-time hashed packet at a time, together with private mode-0600
