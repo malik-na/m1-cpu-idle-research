@@ -14,7 +14,7 @@ The first new-image acquisition is **records-only**. Launch APSC `records 9500` 
 
 ## Fixed workload and paired controls
 
-Use four ordinary, unprivileged processes pinned to the verified logical P CPUs. Schedule a common monotonic start `t0`; log each process's actual CPU, phase boundaries, completed work and errors. Each 9-second window has these phases:
+Use four ordinary, unprivileged, independently schedulable workers pinned to the verified logical P CPUs, with the coordinator pinned to an E core. Schedule a common monotonic start `t0`; log each worker's actual CPU, phase boundaries, completed work and errors. Each 9-second window has these phases:
 
 | Time from `t0` | P-core condition | Expected diagnostic role |
 | --- | --- | --- |
