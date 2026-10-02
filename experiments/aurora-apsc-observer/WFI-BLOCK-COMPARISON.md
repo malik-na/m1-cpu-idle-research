@@ -2,10 +2,12 @@
 
 [`compare_wfi_blocks.py`](compare_wfi_blocks.py) implements the cross-boot
 comparison declared in the [first-attempt protocol](WFI-PLAN.md). This is
-analysis preparation. The [single-packet D pilot](WFI-D-RESULT.md) has been
-published, but **no complete native ABI 2 block has been supplied to or
-accepted by this verifier at this checkpoint.** Its
-[tests](test_compare_wfi_blocks.py) use synthetic private packets only.
+analysis preparation. The individual [D](WFI-D-RESULT.md),
+[E](WFI-E-RESULT.md), [C](WFI-C-CONTROL-RESULT.md) and
+[B](WFI-B-CONTROL-RESULT.md) packets have been published, but **no complete
+native ABI 2 block has been supplied to or accepted by this verifier at this
+checkpoint**; A remains pending. Its [tests](test_compare_wfi_blocks.py)
+use synthetic private packets only.
 
 The private input JSON has schema `1` and a `blocks` array with one or two
 five-element arrays. Each element has exactly `mode`, `packet`,

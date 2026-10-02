@@ -24,6 +24,13 @@ primary comparable-lag BUSY pairs in cluster 0 and no cluster-1 primary
 opportunity. The conditional 240-tick clock model and different-boot limit
 apply. `C-abi2` is separate from the earlier capacity-kernel `C` below.
 
+The next fresh-boot [B records-only control](../WFI-B-CONTROL-RESULT.md) is
+in [`B-abi2/`](B-abi2/status.txt), with its
+[publication receipt](../wfi-b-control-receipt.json). It retains C-hook
+timestamps and event records but performs no command-register read, so its
+zero WFI and command-value samples are structural. `B-abi2` is separate
+from the earlier capacity-kernel `B` below.
+
 This directory is the reviewed numerical subset of three private,
 acquisition-time hashed packets from separate boots of the same capacity
 kernel. `A` is observer-unarmed, `B` records events without command reads,

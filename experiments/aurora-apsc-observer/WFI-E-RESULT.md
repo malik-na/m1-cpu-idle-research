@@ -96,5 +96,6 @@ or complete source tree, so the patch's publication hash alone is not a
 cryptographic source-to-binary proof. Full boot arguments, raw FDT, logs,
 boot ID and acquisition-time manifest remain private. The predeclared
 [D/E/C/B/A block](WFI-PLAN.md) now has a separate
-[fresh-boot C control](WFI-C-CONTROL-RESULT.md); B/A controls and cross-boot
+[fresh-boot C control](WFI-C-CONTROL-RESULT.md) and
+[B records-only control](WFI-B-CONTROL-RESULT.md); A and cross-boot
 comparability review remain before issue #5's full result is closed.

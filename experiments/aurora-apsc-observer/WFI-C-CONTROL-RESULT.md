@@ -90,5 +90,6 @@ conditions. Full boot identifiers, boot arguments, raw FDT and logs remain
 private. The [build receipt](wfi-build-receipt.json) lacks a build-time WFI
 patch or full source-tree digest; the reviewed patch's publication hash alone
 is not a cryptographic source-to-image proof. The predeclared
-[D/E/C/B/A block](WFI-PLAN.md) still needs fresh-boot B/A controls and
-cross-boot comparability review before issue #5's full result can be closed.
+[D/E/C/B/A block](WFI-PLAN.md) now has a separate
+[fresh-boot B control](WFI-B-CONTROL-RESULT.md); A and cross-boot
+comparability review remain before issue #5's full result can be closed.

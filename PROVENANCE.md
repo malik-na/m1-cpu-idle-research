@@ -103,5 +103,10 @@ primary comparable-lag SET-to-C pairs under the unmeasured 240-tick
 cross-CPU model; cluster 1 had no primary pair. The first requested C reboot
 selected stock and yielded no packet, as the
 [incident record](experiments/aurora-apsc-observer/WFI-C-BOOT-SELECTION-INCIDENT.md)
-states. B/A controls and cross-boot comparability remain open; no energy or
-wake result is claimed.
+states. The subsequent [B records-only control](experiments/aurora-apsc-observer/WFI-B-CONTROL-RESULT.md)
+has a separate [numerical packet](experiments/aurora-apsc-observer/native-evidence/B-abi2/status.txt)
+and [publication receipt](experiments/aurora-apsc-observer/wfi-b-control-receipt.json).
+It replays 1,066 event rows without stream loss or command reads. Its
+C-hook timestamp brackets can be compared observationally with C; the
+packets do not isolate total observer cost. The A baseline and cross-boot
+comparison remain open; no energy or wake result is claimed.
