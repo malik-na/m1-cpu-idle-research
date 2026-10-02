@@ -138,12 +138,14 @@ image hash and off-EFI retention, and EFI usage falling from 73.74% to
 findings remain in this branch. This maintenance does not add hardware-idle
 evidence.
 
-The [ABI 3 provisional source/object packet](experiments/aurora-apsc-observer/abi3-prototype/README.md)
+The [ABI 3 source/object and linked-build packet](experiments/aurora-apsc-observer/abi3-prototype/README.md)
 is a frozen two-file delta against the prior PCPM source tree, with a
-tree-inventory receipt, object instruction proof and synthetic offline
-validator tests. It was published while the separate full `Image modules
-dtbs` build was still running. It supplies no linked-image, deployment or
-native capture claim; the [prospective run plan](experiments/aurora-apsc-observer/WFI-ABI3-RUN-PLAN.md)
+tree-inventory receipt, object instruction proof, 30 synthetic offline
+validator tests, and a later linked-build addendum. The full `Image modules
+dtbs` build exited successfully; the public receipt hashes its linked Image,
+vmlinux Build-ID, 1,867 modules and 111 Apple DTBs, while the build log remains
+private and hash-pinned. It supplies no deployment or native capture claim;
+the [prospective run plan](experiments/aurora-apsc-observer/WFI-ABI3-RUN-PLAN.md)
 fixes those later gates.
 
 The [ABI 3 acquisition logic review copy](experiments/aurora-apsc-observer/abi3-acquisition/README.md)

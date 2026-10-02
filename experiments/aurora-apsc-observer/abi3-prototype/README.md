@@ -1,7 +1,8 @@
-# Provisional ABI 3 ticket source and object packet
+# ABI 3 ticket source, object, and linked-build packet
 
-This source-only packet was frozen **before** the full ABI 3 `Image modules
-dtbs` build completed. It is preparation for the [prospective native run
+The source/object portion was frozen **before** the full ABI 3 `Image modules
+dtbs` build completed. The linked-build addendum below was recorded after the
+build exited successfully. This is preparation for the [prospective native run
 plan](../WFI-ABI3-RUN-PLAN.md), not an installed, booted or captured result.
 The [ticket protocol](../WFI-ABI3-TICKET-PROTOCOL.md) limits a positive to
 software final-entrant order at a first-attempt **pre-DSB** command read;
@@ -28,7 +29,19 @@ skipping that load, and byte-identical original `dsb sy; wfi` through `ret`
 tail. The [proof script](validate_object.py) documents the disassembly
 assertions; it expects the private scratch object layout and is not a public
 binary reproduction. The ticket counter object has separately aligned
-128-byte E/P elements. Linked-image checks remain pending.
+128-byte E/P elements.
+
+The [linked-build result](LINKED-BUILD-RESULT.md), [receipt](linked-build-receipt.json),
+[build status](full-build-status.json), and [proof script](make_linked_receipt.py)
+pin a successful `Image modules dtbs` build. The linked Image SHA-256 is
+`1368f40aed236c770485eb8b1b2b0b0bc496915c21fc01fbf608f5f60243a537`
+and vmlinux GNU Build-ID is `6fbc0dc67bb746466a7244ba2fc096ecae7e6476`.
+The receipt covers 1,867 ABI 3-vermagic modules, 111 Apple DTBs including
+T8103/J313, the two linked `ldaddal` tickets, the single conditional APSC
+read, 128-byte-separated counters, and the unchanged original DSB/WFI retry
+tail. The [linked disassembly excerpt](linked-code-evidence.txt) exposes the
+checked instruction bytes. The full build log remains private; its hash is in
+the build status.
 
 The read-only [ABI 3 packet validator](validate_tickets.py) rejects missing
 or duplicate tickets, incomplete tokens, stream loss, policy/DVFS mismatch,
@@ -40,7 +53,7 @@ cd experiments/aurora-apsc-observer/abi3-prototype
 python3 -m unittest -q test_validate_tickets.py
 ```
 
-Source/object success alone does not establish a bootable image, live LSE
-support, a native BUSY result, physical idle, energy, or an idle-policy
-benefit. A full linked build, guarded deployment, fresh-boot qualification
-and matched controls are separate gates.
+Source/object and linked-build success do not establish a successful native
+boot, live LSE support, a BUSY result, physical idle, energy, or an idle-policy
+benefit. Guarded deployment, fresh-boot qualification and matched controls
+remain separate gates.
