@@ -1,10 +1,16 @@
 # PCPM sampler ABI 2 build validation
 
-The exact [patch](0001-t8103-pcpm-sampler.patch), SHA-256
+The build and object results below apply to the **former** patch SHA-256
 `5a737c38f0f9856147ac03959f5ebc7ed202c49ad54aa9e09db971d8d839a4ee`,
-passed standalone and combined application checks and ARM64 object builds on
-2 October 2026. No code was installed, booted, or executed on the M1. These are
-source/compile/instruction-review results, not a native PCPM measurement.
+which passed standalone and combined application checks and ARM64 object builds on
+2 October 2026. A later audit found that version would reject the real T8103
+PMGR mini bank before sampling. The [current patch](0001-t8103-pcpm-sampler.patch),
+SHA-256 `4a7fc879a3ed377d813e01f8986306fc62679679d39718fe83183ae466ab3b56`,
+corrects selection and passes a host check of the actual C function against
+both pinned DTS resource sets, plus `git apply --check` on the exact Aurora
+source. **The current patch has not been ARM64-built or booted**; none of the
+object hashes or instruction locations below validate its new compiled bytes.
+No PCPM capture has run on the M1.
 
 This receipt covers the new [ABI 2](ABI.md) counter-bracket implementation.
 The prior ABI 1 patch and its validation remain preserved at

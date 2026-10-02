@@ -1,0 +1,23 @@
+{
+  "scope": "Public-source T8103 PMGR nodes only; full upstream DTS files remain linked, not vendored",
+  "sources": {
+    "asahi": {
+      "revision": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+      "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/arch/arm64/boot/dts/apple/t8103.dtsi",
+      "full_dts_sha256": "9a191329f1fff3ccf32704fd9566a737b02271bd6636e47c97365ea2c1fa4d49",
+      "nodes": [
+        {"label": "pmgr", "base": "0x23b700000", "size": "0x14000", "compatible": ["apple,t8103-pmgr", "apple,pmgr", "syscon", "simple-mfd"]},
+        {"label": "pmgr_mini", "base": "0x23d280000", "size": "0x4000", "compatible": ["apple,t8103-pmgr", "apple,pmgr", "syscon", "simple-mfd"]}
+      ]
+    },
+    "aurora": {
+      "revision": "90a95335a49aec3a0045a76da140452ad6585eb3",
+      "url": "https://github.com/iconidentify/aurora-linux/blob/90a95335a49aec3a0045a76da140452ad6585eb3/arch/arm64/boot/dts/apple/t8103.dtsi",
+      "full_dts_sha256": "2f178470561cc2723a52d2357833ea9b7ad224ee804a53a098fa41bade0fd4a3",
+      "nodes": [
+        {"label": "pmgr", "base": "0x23b700000", "size": "0x14000", "compatible": ["apple,t8103-pmgr", "apple,pmgr", "syscon", "simple-mfd"]},
+        {"label": "pmgr_mini", "base": "0x23d280000", "size": "0x4000", "compatible": ["apple,t8103-pmgr", "apple,pmgr", "syscon", "simple-mfd"]}
+      ]
+    }
+  }
+}
