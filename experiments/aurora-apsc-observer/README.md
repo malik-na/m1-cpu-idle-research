@@ -1,7 +1,7 @@
 # Aurora T8103 observer port
 
-This separate port prepares [ticket #5](https://github.com/malik-na/m1-cpu-idle-research/issues/5)
-for the operator's iconidentify Aurora kernel. It targets
+This separate port and native run address [ticket #5](https://github.com/malik-na/m1-cpu-idle-research/issues/5)
+on the operator's iconidentify Aurora kernel. It targets
 [`90a95335a49aec3a0045a76da140452ad6585eb3`](https://github.com/iconidentify/aurora-linux/tree/90a95335a49aec3a0045a76da140452ad6585eb3),
 the source pin selected by the [release audit](../../notes/iconidentify-aurora-kernel-target.md).
 It preserves the original [Asahi observer](../linux-apsc-observer/README.md)
@@ -23,8 +23,9 @@ driver instructions and relocations match the pristine drivers; the complete
 checks are **source and local object evidence**. The subsequent
 [full build receipt](full-build-receipt.json) records successful
 Image/modules/DTB compilation, linked instruction checks, and a matching
-private module/initramfs/EFI bundle. Neither stage is a native capture,
-BUSY result, or energy measurement. The [build record](BUILD-VALIDATION.md)
+private module/initramfs/EFI bundle. Those build stages alone provide no
+native capture, BUSY result, or energy measurement. The later native result
+is recorded below. The [build record](BUILD-VALIDATION.md)
 and [byte receipt](build-receipt.json) state the exact scope.
 
 ## Apply to the pinned source
@@ -42,9 +43,9 @@ git apply "$aurora_patch_dir/0002-aurora-t8103-counter-qualification.patch"
 ```
 
 The options remain built-in, default-off `ARM_APPLE_APSC_OBSERVER` and
-`APPLE_COUNTER_QUALIFICATION`. A future candidate must use the qualified
-target configuration, explicitly enable both options, retain its existing
-debug/security settings, and receive a distinctive kernel release name.
+`APPLE_COUNTER_QUALIFICATION`. The native candidate used the qualified
+target configuration, explicitly enabled both options, retained its existing
+debug/security settings, and received a distinctive kernel release name.
 Enabling options with compiler defines in the preliminary build does not
 validate their Kconfig integration or establish a bootable candidate. The
 subsequent complete-source configuration checks accept both options. The
@@ -74,22 +75,23 @@ incoming table request after the existing range checks. This driver has
 no old fallback clamp; the original observer README's clamp discussion
 describes its Asahi base. The submitted raw command remains authoritative.
 
-## Actual-configuration review and next gate
+## Actual-configuration review and native outcome
 
 The installed configuration uses GCC, strong stack protection,
 `DEBUG_PREEMPT=y`, 16 KiB pages and Rust. Generated code differs from the
 earlier generic Clang build: observer hooks have a failure-only
 `__stack_chk_fail` call, and counter callbacks call `debug_smp_processor_id`.
 The hooks remain outside the context-tracking idle region; the counter
-CPU check occurs outside its b0/b1 stamp pair. These differences must be
-reviewed again in the final linked candidate. Do not weaken the target
-configuration to reproduce an earlier call-free disassembly result.
+CPU check occurs outside its b0/b1 stamp pair. The [linked review](full-build-receipt.json)
+retained those stack-failure and debug-CPU-check calls. The target
+configuration was not weakened to reproduce an earlier call-free
+disassembly result.
 
 The [protected boot inspection](../../notes/raw/native-linux-boot-qualification-20261002.json)
 links the configured current EFI bundle to the stock image/initramfs and
 the operator-reported successful boot. All three configured bundle hashes
 match; the two snapshot bundles have not been boot-tested by this work.
-The [native protocol](../linux-apsc-observer/NATIVE-RUN.md) still requires
+The [native protocol](../linux-apsc-observer/NATIVE-RUN.md) required
 a qualified native boot, verified fallback, operator authorization for
 installation/reboot/root capture, pre/post clock exchanges, matched
 inactive/records-only/MMIO controls, adequate opportunities and retained
@@ -98,7 +100,7 @@ context tracking and WFI; it does not prove BUSY at the WFI instruction,
 physical cluster collapse, a defect, or a benefit. The first native
 [pilot](native-pilot-receipt.json) contains a complete baseline and a
 records capture invalidated by CPU-0 ring overflow. It has no MMIO sample
-or complete-stream overlap result, so #5 remains open.
+or complete-stream overlap result; it did not answer #5 on its own.
 
 The [deployment receipt](deployment-receipt.json) records the explicitly authorized separate `Aurora-APSC-research` entry. The working stock files and default remain intact. Installation is not a test-boot or capture result.
 
@@ -107,8 +109,8 @@ boot despite successful pre-restart [one-shot readback](one-shot-selection-recei
 The research entry remains listed, its bundle/hash checks pass, and the stock
 default is preserved. The one-shot request is absent after restart; why
 the stock entry was selected remains unresolved. Empty retained pstore does
-not exclude a boot failure. Select the research entry at the menu and verify
-the actual boot before following the predeclared [native plan](NATIVE-PLAN.md).
+not exclude a boot failure. The later research boot is recorded below and
+in the predeclared [native plan](NATIVE-PLAN.md).
 
 A later direct menu selection did boot the research release. Wi-Fi and
 brightness then failed. The [driver regression receipt](driver-regression-receipt.json)
