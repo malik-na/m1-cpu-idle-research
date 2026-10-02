@@ -9,6 +9,7 @@ not proof that BUSY remained set at WFI or that the CPU entered a power state.
 from __future__ import annotations
 
 import argparse
+from bisect import bisect_left
 from collections import Counter, defaultdict
 import csv
 import io
@@ -25,6 +26,9 @@ WFI_HEADER = ["seq", "cpu", "cluster", "token", "t0", "t1", "cmd", "mode"]
 WFI_MODES = {"wfi_clock", "wfi_mmio"}
 ALL_MODES = {"records", "mmio", *WFI_MODES}
 WFI_FIELDS = ("attempts", "committed", "overflow", "missing_commit")
+PRIMARY_PAIR_TICKS = 600
+EXPLORATORY_PAIR_TICKS = 2400
+ASSUMED_PAIRWISE_ERROR_TICKS = 240
 
 
 def parse_abi2_status(source: str) -> tuple[dict, dict, dict, str]:
@@ -106,6 +110,177 @@ def parse_wfi_events(source: str, status: dict, mode: str) -> tuple[list[dict], 
     return samples, sequences
 
 
+def paired_opportunities(events: list[dict], samples: list[dict], status: dict,
+                         mode: str, integrity_reasons: list[str]) -> dict:
+    """Screen distinct SETs against first-attempt E rows under declared E=240.
+
+    This is a sufficient-condition screen, not a clock qualification. In
+    particular, a cross-CPU gap must be strictly ordered even after E and
+    its *largest* possible lag must fit the threshold. A competing sample
+    whose order is unresolved, or a possibly intervening SET, excludes the
+    source SET rather than allowing a later row to stand in for the first.
+    """
+    result = {
+        "status": "conditional_software_screen",
+        "primary_bound_ticks": PRIMARY_PAIR_TICKS,
+        "exploratory_bound_ticks": EXPLORATORY_PAIR_TICKS,
+        "assumed_pairwise_clock_error_ticks": ASSUMED_PAIRWISE_ERROR_TICKS,
+        "clock_qualification": "unqualified; E=240 is an assumption over the whole capture",
+        "definition": (
+            "one successful target-cluster SET to its earliest provably ordered "
+            "clean interior E sample, without another possibly intervening SET; "
+            "same-CPU SET/sample order and lag use E=0, cross-CPU use assumed E=240"
+        ),
+        "same_cpu_limit": (
+            "same-CPU SET/sample order and lag do not need a clock assumption; "
+            "cluster-earliest and no-intervening-write checks involving other "
+            "CPUs, and the capture boundary, still use assumed E=240"
+        ),
+        "interior_limit": (
+            "start/stop writer CPU is not recorded; both SET and sample are "
+            "strictly more than E=240 ticks inside recorded capture bounds "
+            "under the assumed clock model"
+        ),
+        "negative_claim_supported": False,
+        "by_cluster": None,
+        "decisions": [],
+    }
+    if mode != "wfi_mmio":
+        result["status"] = "not_applicable_without_wfi_mmio"
+        return result
+    if integrity_reasons:
+        result["status"] = "suppressed_integrity_failure"
+        result["integrity_reasons"] = list(integrity_reasons)
+        return result
+
+    error = ASSUMED_PAIRWISE_ERROR_TICKS
+
+    def interior(row: dict) -> bool:
+        return status["start_tick"] + error < row["t0"] and row["t1"] + error < status["stop_tick"]
+
+    def relative_error(a: dict, b: dict) -> int:
+        return 0 if a["cpu"] == b["cpu"] else error
+
+    def identity(row: dict) -> dict:
+        return {"cpu": row["cpu"], "cluster": row["cluster"],
+                "seq": row["seq"], "t0": row["t0"], "t1": row["t1"]}
+
+    by_cluster = {}
+    writes = defaultdict(list)
+    clean_samples = defaultdict(list)
+    for event in events:
+        if event["kind"] == "dvfs" and event["ret"] == 0:
+            writes[event["cluster"]].append(event)
+    for sample in samples:
+        if interior(sample):
+            clean_samples[sample["cluster"]].append(sample)
+
+    for cluster in sorted(legacy.CLUSTER_IDS):
+        cluster_writes = sorted(writes[cluster], key=lambda row: (row["t0"], row["t1"], row["cpu"], row["seq"]))
+        cluster_samples = sorted(clean_samples[cluster], key=lambda row: (row["t0"], row["t1"], row["cpu"], row["seq"]))
+        sample_starts = [row["t0"] for row in cluster_samples]
+        max_span = max((row["t1"] - row["t0"] for row in cluster_samples), default=0)
+        counts = Counter()
+        counts["successful_sets"] = len(cluster_writes)
+        counts["clean_interior_samples"] = len(cluster_samples)
+        for source in cluster_writes:
+            decision = {"set": {**identity(source), "policy_cpu": source["policy_cpu"],
+                                "raw_submitted_command": hex(source["cmd"])}}
+            if not interior(source):
+                decision["status"] = "set_not_strictly_interior"
+            else:
+                first = None
+                ambiguous_before_first = None
+                begin = bisect_left(sample_starts, source["t0"] - max_span - error)
+                for sample_index in range(begin, len(cluster_samples)):
+                    sample = cluster_samples[sample_index]
+                    if sample["t0"] > source["t1"] + EXPLORATORY_PAIR_TICKS + error:
+                        break
+                    e = relative_error(source, sample)
+                    if sample["t1"] + e < source["t0"]:
+                        continue
+                    if source["t1"] + e < sample["t0"]:
+                        first = sample
+                        break
+                    if ambiguous_before_first is None:
+                        ambiguous_before_first = sample
+                if ambiguous_before_first is not None:
+                    decision["status"] = "ambiguous_set_sample_order"
+                    decision["competing_sample"] = identity(ambiguous_before_first)
+                elif first is None:
+                    decision["status"] = "no_ordered_sample_within_exploratory_search"
+                else:
+                    position = bisect_left(sample_starts, first["t0"])
+                    ambiguous_earliest = None
+                    for other in cluster_samples[position:]:
+                        if other is first:
+                            continue
+                        if other["t0"] > first["t1"] + error:
+                            break
+                        if first["t1"] + relative_error(first, other) >= other["t0"]:
+                            ambiguous_earliest = other
+                            break
+                    if ambiguous_earliest is not None:
+                        decision["status"] = "ambiguous_earliest_sample"
+                        decision["competing_sample"] = identity(ambiguous_earliest)
+                    else:
+                        possible_write = None
+                        for other in cluster_writes:
+                            if other is source:
+                                continue
+                            before_source = other["t1"] + relative_error(other, source) < source["t0"]
+                            after_sample = first["t1"] + relative_error(first, other) < other["t0"]
+                            if not before_source and not after_sample:
+                                possible_write = other
+                                break
+                        if possible_write is not None:
+                            decision["status"] = "possible_intervening_set"
+                            decision["competing_set"] = identity(possible_write)
+                        else:
+                            observed_gap = first["t0"] - source["t1"]
+                            applied_error = relative_error(source, first)
+                            largest_lag = observed_gap + applied_error
+                            if largest_lag > EXPLORATORY_PAIR_TICKS:
+                                decision["status"] = "lag_exceeds_exploratory_bound"
+                            else:
+                                primary = largest_lag <= PRIMARY_PAIR_TICKS
+                                decision.update({
+                                    "status": "primary_pair" if primary else "exploratory_only_pair",
+                                    "sample": {**identity(first), "token": first["token"],
+                                               "raw_command": hex(first["cmd"]),
+                                               "busy_bit31": bool(first["cmd"] & legacy.BUSY_BIT)},
+                                    "set_to_sample_recorded_lag_ticks": observed_gap,
+                                    "largest_lag_under_model_ticks": largest_lag,
+                                    "set_sample_order_error_ticks": applied_error,
+                                    "set_sample_order_basis": "same_cpu_direct" if not applied_error else "cross_cpu_assumed_E240",
+                                })
+                                counts["exploratory_pairs"] += 1
+                                counts["exploratory_busy"] += bool(first["cmd"] & legacy.BUSY_BIT)
+                                counts["exploratory_same_cpu"] += applied_error == 0
+                                counts["exploratory_cross_cpu_conditional"] += applied_error != 0
+                                if primary:
+                                    counts["primary_pairs"] += 1
+                                    counts["primary_busy"] += bool(first["cmd"] & legacy.BUSY_BIT)
+                                    counts["primary_same_cpu"] += applied_error == 0
+                                    counts["primary_cross_cpu_conditional"] += applied_error != 0
+            counts[decision["status"]] += 1
+            result["decisions"].append(decision)
+        by_cluster[str(cluster)] = {
+            name: counts[name] for name in (
+                "successful_sets", "clean_interior_samples",
+                "primary_pairs", "primary_busy", "primary_same_cpu", "primary_cross_cpu_conditional",
+                "exploratory_pairs", "exploratory_busy", "exploratory_same_cpu",
+                "exploratory_cross_cpu_conditional", "set_not_strictly_interior",
+                "ambiguous_set_sample_order", "no_ordered_sample_within_exploratory_search",
+                "ambiguous_earliest_sample", "possible_intervening_set",
+                "lag_exceeds_exploratory_bound", "exploratory_only_pair",
+            )
+        }
+        by_cluster[str(cluster)]["primary_exposure_gate_20"] = counts["primary_pairs"] >= 20
+    result["by_cluster"] = by_cluster
+    return result
+
+
 def analyze_text(events_csv: str, status_text: str, wfi_csv: str) -> dict:
     raw_status, projected_status, wfi_numbers, projected_text = parse_abi2_status(status_text)
     mode = raw_status["mode"]
@@ -114,6 +289,8 @@ def analyze_text(events_csv: str, status_text: str, wfi_csv: str) -> dict:
     events, _ = legacy.parse_events(events_csv, projected_status)
 
     reasons = list(established["integrity"]["reasons"])
+    if not established["conditional_final_entrants"]["idle_grammar"]["consistent"]:
+        reasons.append("contradictory idle-entry/exit grammar")
     streams = {}
     for cpu in sorted(legacy.CPU_IDS):
         prefix = f"wfi{cpu}_"
@@ -217,6 +394,8 @@ def analyze_text(events_csv: str, status_text: str, wfi_csv: str) -> dict:
             group["busy_bit31"] += bool(sample["cmd"] & legacy.BUSY_BIT)
             group["set_bit25"] += bool(sample["cmd"] & legacy.SET_BIT)
 
+    pairs = paired_opportunities(events, samples, projected_status, mode, reasons)
+
     return {
         "observer_abi": 2,
         "capture_mode": mode,
@@ -264,6 +443,7 @@ def analyze_text(events_csv: str, status_text: str, wfi_csv: str) -> dict:
             "bracket_ticks": legacy.span_summary([sample["t1"] - sample["t0"] for sample in samples],
                                                   projected_status["cntfrq"]),
         },
+        "paired_opportunities": pairs,
         "claim_boundary": {
             "wfi_instruction_command_state": "not_observed",
             "cross_cpu_order": "requires separately justified counter comparability over the capture",

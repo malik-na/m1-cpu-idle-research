@@ -18,14 +18,16 @@ WFI_HEADER = "seq,cpu,cluster,token,t0,t1,cmd,mode\n"
 
 
 def status(*, mode="wfi_mmio", idle=(2, 2, 0, 0), wfi=(1, 1, 0, 0), pending=0,
-           after_stop=0, bad_mapping=0):
-    base = fixtures.status(mode="records", overrides={"idle0": idle})
+           after_stop=0, bad_mapping=0, overrides=None, wfi_by_cpu=None,
+           start="0", stop="90", end="100"):
+    base = fixtures.status(mode="records", overrides={"idle0": idle, **(overrides or {})},
+                           start=start, stop=stop, end=end)
     base = base.replace("abi=1\n", "abi=2\n").replace("mode=records\n", f"mode={mode}\n")
     lines = [f"wfi_pending_after_drain={pending}",
              f"wfi_prepare_after_stop={after_stop}",
              f"wfi_prepare_bad_mapping={bad_mapping}"]
     for cpu in range(8):
-        values = wfi if cpu == 0 else (0, 0, 0, 0)
+        values = (wfi_by_cpu or {}).get(cpu, wfi if cpu == 0 else (0, 0, 0, 0))
         lines.extend(f"wfi{cpu}_{field}={value}" for field, value in zip(analyze_wfi.WFI_FIELDS, values))
     return base + "\n".join(lines) + "\n"
 
@@ -35,6 +37,40 @@ def events():
         fixtures.record("idle_enter", 0, 0, 0, token=1, t0=20, t1=21),
         fixtures.record("idle_exit", 1, 0, 0, token=1, t0=40, t1=40),
     )
+
+
+def pairing_packet(sets, probes, *, mode="wfi_mmio", pending=0, stop=10000):
+    """Valid synthetic ABI 2 packet with independently ordered stream IDs."""
+    rows = []
+    overrides = {"idle0": (0, 0, 0, 0)}
+    for cluster in (0, 1):
+        writes = sorted((item for item in sets if item[1] == cluster), key=lambda item: item[2])
+        overrides[f"dvfs{cluster}"] = (len(writes), len(writes), 0, 0)
+        for seq, (cpu, _, t0, t1) in enumerate(writes):
+            rows.append(fixtures.record(
+                "dvfs", seq, cpu, cluster, policy_cpu=0 if cluster == 0 else 4,
+                policy_mask="0x0f" if cluster == 0 else "0xf0", fast_switch=1,
+                t0=t0, t1=t1, pre_cmd="0x0", cmd="0x2000000",
+            ))
+    wfi_lines = [WFI_HEADER]
+    wfi_by_cpu = {}
+    for cpu in range(8):
+        own = sorted((item for item in probes if item[0] == cpu), key=lambda item: item[3])
+        count = len(own)
+        overrides[f"idle{cpu}"] = (2 * count, 2 * count, 0, 0)
+        wfi_by_cpu[cpu] = (count, count, 0, 0)
+        for seq, (_, cluster, token, t0, t1, cmd) in enumerate(own):
+            rows.append(fixtures.record("idle_enter", 2 * seq, cpu, cluster,
+                                        token=token, t0=t0 - 10, t1=t0 - 9))
+            rows.append(fixtures.record("idle_exit", 2 * seq + 1, cpu, cluster,
+                                        token=token, t0=t1 + 10, t1=t1 + 10))
+            wfi_lines.append(f"{seq},{cpu},{cluster},{token},{t0},{t1},"
+                             f"{hex(cmd) if mode == 'wfi_mmio' else ''},{mode}\n")
+    return (fixtures.event_csv(*rows),
+            status(mode=mode, idle=(0, 0, 0, 0), wfi=(0, 0, 0, 0),
+                   overrides=overrides, wfi_by_cpu=wfi_by_cpu,
+                   start="0", stop=str(stop), end=str(stop + 1000), pending=pending),
+            "".join(wfi_lines))
 
 
 class WfiAnalyzerTests(unittest.TestCase):
@@ -135,6 +171,118 @@ class WfiAnalyzerTests(unittest.TestCase):
         )
         self.assertFalse(result["integrity"]["clean"])
         self.assertIn("wfi_prepare_bad_mapping=1", result["integrity"]["reasons"])
+
+    def test_same_cpu_549_tick_busy_pair_meets_primary_gate_without_pairwise_error(self):
+        result = analyze_wfi.analyze_text(*pairing_packet(
+            [(0, 0, 1000, 1001)], [(0, 0, 1, 1550, 1551, 0x80000000)]
+        ))
+        self.assertTrue(result["integrity"]["clean"])
+        pair = result["paired_opportunities"]
+        self.assertEqual(pair["by_cluster"]["0"]["primary_pairs"], 1)
+        self.assertEqual(pair["by_cluster"]["0"]["primary_busy"], 1)
+        self.assertEqual(pair["decisions"][0]["set_sample_order_basis"], "same_cpu_direct")
+        self.assertEqual(pair["decisions"][0]["largest_lag_under_model_ticks"], 549)
+        self.assertFalse(pair["by_cluster"]["0"]["primary_exposure_gate_20"])
+        self.assertFalse(pair["negative_claim_supported"])
+
+    def test_cross_cpu_requires_error_for_both_order_and_maximum_lag(self):
+        result = analyze_wfi.analyze_text(*pairing_packet(
+            [(0, 0, 1000, 1001)], [(1, 0, 1, 1302, 1303, 0)]
+        ))
+        pair = result["paired_opportunities"]
+        self.assertEqual(pair["by_cluster"]["0"]["primary_cross_cpu_conditional"], 1)
+        self.assertEqual(pair["decisions"][0]["largest_lag_under_model_ticks"], 541)
+        self.assertEqual(pair["decisions"][0]["set_sample_order_error_ticks"], 240)
+        later = analyze_wfi.analyze_text(*pairing_packet(
+            [(0, 0, 1000, 1001)], [(1, 0, 1, 1550, 1551, 0)]
+        ))["paired_opportunities"]
+        self.assertEqual(later["by_cluster"]["0"]["primary_pairs"], 0)
+        self.assertEqual(later["by_cluster"]["0"]["exploratory_pairs"], 1)
+
+    def test_cross_cpu_primary_threshold_includes_exact_600_only(self):
+        at_bound = analyze_wfi.analyze_text(*pairing_packet(
+            [(0, 0, 1000, 1001)], [(1, 0, 1, 1361, 1362, 0)]
+        ))["paired_opportunities"]
+        beyond = analyze_wfi.analyze_text(*pairing_packet(
+            [(0, 0, 1000, 1001)], [(1, 0, 1, 1362, 1363, 0)]
+        ))["paired_opportunities"]
+        self.assertEqual(at_bound["by_cluster"]["0"]["primary_pairs"], 1)
+        self.assertEqual(at_bound["decisions"][0]["largest_lag_under_model_ticks"], 600)
+        self.assertEqual(beyond["by_cluster"]["0"]["primary_pairs"], 0)
+        self.assertEqual(beyond["by_cluster"]["0"]["exploratory_pairs"], 1)
+
+    def test_ambiguous_cross_cpu_order_blocks_a_later_sample(self):
+        pair = analyze_wfi.analyze_text(*pairing_packet(
+            [(0, 0, 1000, 1001)],
+            [(1, 0, 1, 1200, 1201, 0), (0, 0, 1, 1550, 1551, 0)]
+        ))["paired_opportunities"]
+        self.assertEqual(pair["decisions"][0]["status"], "ambiguous_set_sample_order")
+        self.assertEqual(pair["by_cluster"]["0"]["primary_pairs"], 0)
+
+    def test_ambiguous_cluster_earliest_order_blocks_pair(self):
+        pair = analyze_wfi.analyze_text(*pairing_packet(
+            [(0, 0, 1000, 1001)],
+            [(0, 0, 1, 1550, 1551, 0), (1, 0, 1, 1600, 1601, 0)]
+        ))["paired_opportunities"]
+        self.assertEqual(pair["decisions"][0]["status"], "ambiguous_earliest_sample")
+        self.assertEqual(pair["by_cluster"]["0"]["primary_pairs"], 0)
+
+    def test_intervening_cluster_set_excludes_earlier_submission(self):
+        pair = analyze_wfi.analyze_text(*pairing_packet(
+            [(0, 0, 1000, 1001), (1, 0, 1300, 1301)],
+            [(0, 0, 1, 1550, 1551, 0)]
+        ))["paired_opportunities"]
+        self.assertEqual(pair["decisions"][0]["status"], "possible_intervening_set")
+        self.assertEqual(pair["decisions"][1]["status"], "primary_pair")
+        self.assertEqual(pair["by_cluster"]["0"]["primary_pairs"], 1)
+
+    def test_exploratory_bound_is_separate_from_primary(self):
+        pair = analyze_wfi.analyze_text(*pairing_packet(
+            [(0, 0, 1000, 1001)], [(0, 0, 1, 3401, 3402, 0)]
+        ))["paired_opportunities"]
+        self.assertEqual(pair["decisions"][0]["status"], "exploratory_only_pair")
+        self.assertEqual(pair["by_cluster"]["0"]["primary_pairs"], 0)
+        self.assertEqual(pair["by_cluster"]["0"]["exploratory_pairs"], 1)
+
+    def test_twenty_distinct_pairs_pass_only_the_exposure_count_gate(self):
+        sets = [(0, 0, 1000 + i * 700, 1001 + i * 700) for i in range(20)]
+        probes = [(0, 0, i + 1, 1550 + i * 700, 1551 + i * 700, 0)
+                  for i in range(20)]
+        pair = analyze_wfi.analyze_text(*pairing_packet(sets, probes, stop=20000))["paired_opportunities"]
+        self.assertEqual(pair["by_cluster"]["0"]["successful_sets"], 20)
+        self.assertEqual(pair["by_cluster"]["0"]["primary_pairs"], 20)
+        self.assertTrue(pair["by_cluster"]["0"]["primary_exposure_gate_20"])
+        self.assertFalse(pair["by_cluster"]["1"]["primary_exposure_gate_20"])
+        self.assertFalse(pair["negative_claim_supported"])
+
+    def test_unclean_or_non_mmio_packet_reports_no_exposure(self):
+        unclean = analyze_wfi.analyze_text(*pairing_packet(
+            [(0, 0, 1000, 1001)], [(0, 0, 1, 1550, 1551, 0)], pending=1
+        ))["paired_opportunities"]
+        self.assertEqual(unclean["status"], "suppressed_integrity_failure")
+        self.assertIsNone(unclean["by_cluster"])
+        clock = analyze_wfi.analyze_text(*pairing_packet(
+            [(0, 0, 1000, 1001)], [(0, 0, 1, 1550, 1551, 0)], mode="wfi_clock"
+        ))["paired_opportunities"]
+        self.assertEqual(clock["status"], "not_applicable_without_wfi_mmio")
+        self.assertIsNone(clock["by_cluster"])
+
+    def test_contradictory_idle_stream_suppresses_paired_exposure(self):
+        rows = fixtures.event_csv(
+            fixtures.record("dvfs", 0, 0, 0, policy_cpu=0, policy_mask="0x0f",
+                            fast_switch=1, t0=1000, t1=1001,
+                            pre_cmd="0x0", cmd="0x2000000"),
+            fixtures.record("idle_enter", 0, 0, 0, token=1, t0=1200, t1=1201),
+            fixtures.record("idle_enter", 1, 0, 0, token=2, t0=1540, t1=1541),
+        )
+        packet_status = status(idle=(2, 2, 0, 0), wfi=(1, 1, 0, 0),
+                               overrides={"dvfs0": (1, 1, 0, 0)},
+                               start="0", stop="10000", end="11000")
+        result = analyze_wfi.analyze_text(
+            rows, packet_status, WFI_HEADER + "0,0,0,2,1550,1551,0x0,wfi_mmio\n"
+        )
+        self.assertFalse(result["integrity"]["clean"])
+        self.assertEqual(result["paired_opportunities"]["status"], "suppressed_integrity_failure")
 
 
 if __name__ == "__main__":
