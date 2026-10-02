@@ -1,0 +1,36 @@
+{
+  "scope": "predeclared future native protocol and workload execution check; no instrumented-kernel boot or APSC capture yet",
+  "source_hashes": {
+    "experiments/aurora-apsc-observer/collect_native.py": "38178b5b0f13cdbeb040f50365a6d913a661fc60f836cb8d141b48689774e439",
+    "experiments/aurora-apsc-observer/pulse_workload.c": "8dfb8d39ed0a71e543c3f7bc57d5991d54c53d0638b68475e94b508feec98ff3",
+    "experiments/aurora-apsc-observer/NATIVE-PLAN.md": "a33c7c6345e715430eaed57a75e68970b949ae2b6e5a2b979af599384a4425e5"
+  },
+  "workload_pilot": {
+    "scope": "unprivileged stock-kernel workload execution check; no research capture or energy comparison",
+    "workload_sha256": "82f4ce1145c8135c8b28246a9681d2316083cd1bb1a936a736b8a6cd03102d2b",
+    "cpu_placement": [
+      1,
+      5
+    ],
+    "results": [
+      {
+        "cpu": 1,
+        "exit_status": 0,
+        "completed_pulses": 44,
+        "iterations_per_pulse": 1048576,
+        "csv_sha256": "8efeb2b1177d9f2e8299ded592ad90bb04b03268100d6ef392bc94fd905fdea7",
+        "min_duration_ns": 3079903,
+        "max_duration_ns": 13409011
+      },
+      {
+        "cpu": 5,
+        "exit_status": 0,
+        "completed_pulses": 44,
+        "iterations_per_pulse": 1048576,
+        "csv_sha256": "2f624b3a3869a54405d07a899c26a02f4b9cd399db95ce0607aeb94221c48fda",
+        "min_duration_ns": 3168197,
+        "max_duration_ns": 10594322
+      }
+    ]
+  }
+}

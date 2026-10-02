@@ -1,0 +1,54 @@
+{
+  "scope": "first research-kernel boot regression and prepared module restoration; no observer capture or post-repair boot yet",
+  "evidence_tiers": [
+    "live software boot log",
+    "local package and module binary checks"
+  ],
+  "ticket": "malik-na/m1-cpu-idle-research#5",
+  "research_kernel_release_observed_in_prior_boot_log": "7.1.12-ARCH-apsc-20261002",
+  "research_boot_start_local": "2026-10-02T17:16:55+05:30",
+  "operator_report": [
+    "no Wi-Fi device",
+    "brightness controls did not work"
+  ],
+  "preceding_stock_boot_cleanup": {
+    "local_time": "2026-10-02T13:39:18+05:30 to 13:39:24+05:30",
+    "service": "linux-modules-cleanup.service",
+    "condition": "research module directory was neither current kernel nor owned by a pacman package",
+    "observed_action": "copied the module directory to .old, then removed the active directory"
+  },
+  "research_boot_log_observations": [
+    "module load failed for crypto_user, i2c_dev, pkcs8_key_parser and apple-sep because the candidate release directory was missing",
+    "Apple DCP display crossbar probe remained deferred",
+    "Wi-Fi and display driver initialization seen on the stock control boot was absent"
+  ],
+  "retained_private_journal_sha256": {
+    "cleanup-stock": "dbeb73a9ab780a022980341173df45e7f3c3e7627d605e1eed541e4ccf150676",
+    "research-kernel": "58d0a9a2f65893c571862dcddbd16ca7b729f2a45d6499a4a611777485cce445",
+    "research-driver-services": "e8ec0428fe6a603fc2a224424799f28dcf3797e685a2cbbc4b256caf5643dbe7",
+    "stock-control-kernel": "565b38c097af2efb3a7c2ff4e2d8422ffb7cf62beb5d7c4b00a82c71939476b5"
+  },
+  "restoration": {
+    "package_name": "linux-aurora-apsc-modules",
+    "package_version": "7.1.12.apsc.20261002-1",
+    "package_sha256": "555479d4db49a072445c4e49b541c5a40b3a1c00ea0865b27f046650447a4467",
+    "module_manifest_sha256": "8bdaeb68886dcb04338f470ac1f532c9429ed3053ef86e4c7dded640b291bf79",
+    "module_files_byte_checked": 1867,
+    "package_owned_files_and_directories_checked": 2244,
+    "pacman_altered_files_after_metadata_alignment": 0,
+    "package_registration": "database-only after exact file restoration, avoiding automatic initramfs/EFI hooks",
+    "module_dependency_dry_runs_passed": [
+      "brcmfmac",
+      "appledrm",
+      "mux-apple-display-crossbar",
+      "apple-sep"
+    ],
+    "stock_default_preserved": true
+  },
+  "inference": "Loss of the root filesystem module tree strongly explains the reported Wi-Fi and display failures; a successful post-repair boot is still required to confirm the hardware behavior.",
+  "native_apsc_events": 0,
+  "trace_loss": null,
+  "post_repair_boot_verified": false,
+  "private_restoration_receipt_sha256": "405e5dc6741871cf10a7ef392d15d059b8444c17ab6ded53c1e147b39426103b",
+  "private_metadata_receipt_sha256": "22a1d0b632040a834cf91039d82f33e2c2dcb434fbc4b41097bd643afc244184"
+}

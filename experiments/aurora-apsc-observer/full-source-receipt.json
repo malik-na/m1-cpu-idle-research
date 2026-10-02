@@ -1,0 +1,45 @@
+{
+  "source": {
+    "source_pin": "90a95335a49aec3a0045a76da140452ad6585eb3",
+    "expected_tree": "a6f2a94ab1433507d1943b525854faaea04a88aa",
+    "reconstructed_git_tree": "a6f2a94ab1433507d1943b525854faaea04a88aa",
+    "all_file_contents_and_modes_match_pin": true,
+    "tracked_files": 94067,
+    "source_manifest_sha256": "97760a6d5a28f7117802b68629244d9ac85beddf7a77eaf63ed5bb024c184d0f",
+    "started_utc": "2026-10-02T05:39:52.409379+00:00",
+    "ended_utc": "2026-10-02T05:41:00.004589+00:00",
+    "patch_application_exit_codes": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "pristine_git_status": "clean",
+    "git_fsck_exit_status": 0
+  },
+  "reconstruction": {
+    "source_pin": "90a95335a49aec3a0045a76da140452ad6585eb3",
+    "source_tree": "a6f2a94ab1433507d1943b525854faaea04a88aa",
+    "started_utc": "2026-10-02T05:34:57.317776+00:00",
+    "prepared_utc": "2026-10-02T05:35:34.817063+00:00",
+    "archive_url": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.1.12.tar.xz",
+    "archive_sha256": "389716b3ed27e4cd520b903eea04acc33b9804c4282cb7a918f05ff14e9b5ae1",
+    "matches_https_checksum_list": true,
+    "checksum_list_signature_verified": false,
+    "source_files": 94067,
+    "matching_base_files": 93361,
+    "needs_pinned_retrieval": 706,
+    "removed_base_only_files": [
+      "rust/kernel/soc.rs",
+      "drivers/thunderbolt/nhi_ops.c",
+      "drivers/usb/host/xhci-pci.c",
+      "drivers/soc/apple/mailbox.h"
+    ]
+  },
+  "retrieval": {
+    "files": 706,
+    "failures": 0,
+    "raw_manifest_sha256": "c8de1b05e1bb40d22ed04ed212af67b001be3b21eb20ff6e37a2fce132b30c5b"
+  },
+  "raw_trees_or_sources_published": false
+}

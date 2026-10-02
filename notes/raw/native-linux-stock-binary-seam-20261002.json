@@ -1,0 +1,43 @@
+{
+  "source": "installed prepared-header vmlinux; GNU build ID matched running kernel notes in prior packet",
+  "sha256": "aa03b7e2d4d5ab604f5a49788132b07bb79a28a2658d392bee503f9e62892a12",
+  "deep_wfi": {
+    "bytes": 100,
+    "sha256": "c8fd716fccb949e9f35aa2937a87787942b39f0b5df5e088d46f88253479b88c",
+    "hex": "fe0f1ff8fc77bfa9fa6fbfa9f867bfa9f65fbfa9f457bfa9f24fbfa900f53dd5000468b200f51dd59f3f03d57f2003d500c138d5a0ffffb400f53dd500f8679200f51dd5f24fc1a8f457c1a8f65fc1a8f867c1a8fa6fc1a8fc77c1a8fe0741f8c0035fd6"
+  },
+  "soc_descriptors": {
+    "soc_t8103_info": {
+      "section": ".rodata",
+      "symbol_size": 56,
+      "hex": "010000000000000000000000000000000f00000000000000f00000000000000004000000000000001f000000000000000000000000000000",
+      "verify_transition": {
+        "byte_offset": 1,
+        "bytes": 1,
+        "raw_integer": 0,
+        "boolean": false,
+        "layout_source": "DWARF type in this installed vmlinux, independently extracted with pahole"
+      }
+    },
+    "soc_t8140_info": {
+      "section": ".rodata",
+      "symbol_size": 56,
+      "hex": "000100000000000001000000000000001f00000000000000000000000000000000000000000000001f000000000000000000000000000000",
+      "verify_transition": {
+        "byte_offset": 1,
+        "bytes": 1,
+        "raw_integer": 1,
+        "boolean": true,
+        "layout_source": "DWARF type in this installed vmlinux, independently extracted with pahole"
+      }
+    }
+  },
+  "recorded_utc": "2026-10-02T06:09:49.999071+00:00",
+  "gnu_build_id": "bc3799e844d9c536bf01aef87c76c205b0e1a5d2",
+  "type_layout": "struct apple_soc_cpufreq_info {\n\tbool                       has_ps2;              /*     0     1 */\n\tbool                       verify_transition;    /*     1     1 */\n\n\t/* XXX 6 bytes hole, try to pack */\n\n\tu64                        min_pstate;           /*     8     8 */\n\tu64                        max_pstate;           /*    16     8 */\n\tu64                        cur_pstate_mask;      /*    24     8 */\n\tu64                        cur_pstate_shift;     /*    32     8 */\n\tu64                        ps1_mask;             /*    40     8 */\n\tu64                        ps1_shift;            /*    48     8 */\n\n\t/* size: 56, cachelines: 1, members: 8 */\n\t/* sum members: 50, holes: 1, sum holes: 6 */\n\t/* last cacheline: 56 bytes */\n};\n\n",
+  "type_layout_sha256": "8989d7f92148cd22522a305cf25a27f1239608d6907960b1dd538eae93cdbb81",
+  "cpufreq_disassembly_sha256": "388fc0761b23a3d8e8b93dab782878b009881eef57f15078d1649c1a6bf71757",
+  "scope": "installed vmlinux static bytes linked by build ID to running kernel notes; not an executed branch trace, source-to-binary recipe or hardware observation",
+  "native_apsc_events": 0,
+  "trace_loss": null
+}

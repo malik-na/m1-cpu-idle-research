@@ -1,0 +1,383 @@
+{
+  "record_date": "2026-10-02",
+  "source_pin": "90a95335a49aec3a0045a76da140452ad6585eb3",
+  "scope": "all touched existing source files and preliminary obj-y builds against copied installed headers; enabled options supplied with KCFLAGS; no full-tree Kconfig acceptance, final link, installation, boot or native capture",
+  "patches": [
+    {
+      "patch": "0001-aurora-t8103-apsc-observer.patch",
+      "sha256": "409c440e0977c75276bd842088862449b80b8ada5924d568efcbd7af2daec3ed",
+      "bytes": 25150
+    },
+    {
+      "patch": "0002-aurora-t8103-counter-qualification.patch",
+      "sha256": "7b479dfe679f7c25b0e92c6b0081c244e523cd82159ece652ebd5db29a0eba07",
+      "bytes": 19616
+    }
+  ],
+  "pristine_sources": [
+    {
+      "path": "drivers/cpufreq/apple-soc-cpufreq.c",
+      "bytes": 13262,
+      "git_blob": "f2a1e91371be4921b7abab002b645c7da0143a20",
+      "sha256": "58f9544ee8d3a86b4b37864bff4d9f635da749b5f85b0f30737a13ac5ce00806"
+    },
+    {
+      "path": "drivers/cpuidle/Kconfig.arm",
+      "bytes": 4658,
+      "git_blob": "c6870f0845763218cde67de827620ba2bd76f9c8",
+      "sha256": "97c55491a6fe0e0ae0de9c65f8154ca113656bcbd8519a2de4703c81d61e61dc"
+    },
+    {
+      "path": "drivers/cpuidle/Makefile",
+      "bytes": 1933,
+      "git_blob": "f9e7a71d52c13f1953af954410f2474ad7f05782",
+      "sha256": "022a8b3b3201009f923f38b7b2f48cfec7be85dc476cbe0281a2bd47e703c29c"
+    },
+    {
+      "path": "drivers/cpuidle/cpuidle-apple.c",
+      "bytes": 4152,
+      "git_blob": "67c7846111cf32dcac84627ec7671a67a981d10f",
+      "sha256": "798148b905eda4496f0b6a5df716f4b019aa152694a85d188d1acbf54e4cef93"
+    },
+    {
+      "path": "drivers/soc/apple/Kconfig",
+      "bytes": 4748,
+      "git_blob": "0aee0fb30a5388ae2c8b3b43db235e87138774a2",
+      "sha256": "678ecfee168608082adf8b26811ffe8adc37ef1560e63aac99d56c08703b8a92"
+    },
+    {
+      "path": "drivers/soc/apple/Makefile",
+      "bytes": 894,
+      "git_blob": "064e65d0270b935340f1a4fab22365ca85e32f58",
+      "sha256": "822e10cd7baf1decb42fe0bcf1ee5540b930aa86761e34eaf0357fdd4def59e3"
+    }
+  ],
+  "patched_sources": [
+    {
+      "path": "drivers/cpufreq/apple-soc-cpufreq.c",
+      "bytes": 13703,
+      "sha256": "0c0e5606d3274110d2833f60d51e1486e82b333247890e3cee3655ed20d24653"
+    },
+    {
+      "path": "drivers/cpuidle/Kconfig.arm",
+      "bytes": 5058,
+      "sha256": "a3d217febf239d231374af1f2fec9ba88bd07f6e9309b2e99320e20b33a08b45"
+    },
+    {
+      "path": "drivers/cpuidle/Makefile",
+      "bytes": 1996,
+      "sha256": "2bd61db3705670c4202761ec7091619c05c479f33d7df4c0dc851a1c053b6e51"
+    },
+    {
+      "path": "drivers/cpuidle/apple-apsc-observer.c",
+      "bytes": 18344,
+      "sha256": "bfe017c930efcc9f0d4147734255a7b08ae1c1b39893dbc770dc6f41d93d201a"
+    },
+    {
+      "path": "drivers/cpuidle/cpuidle-apple.c",
+      "bytes": 4790,
+      "sha256": "f30bf91a35df5b97214dd11e882ec87ae5f5537838cd5ad30d429d4f98545562"
+    },
+    {
+      "path": "drivers/soc/apple/Kconfig",
+      "bytes": 5263,
+      "sha256": "061d030307d8ac6ae757e1e2329e29a0442e87c1f8cba88b8bf0c9345e73be72"
+    },
+    {
+      "path": "drivers/soc/apple/Makefile",
+      "bytes": 970,
+      "sha256": "61eabcd9bccdd94146a5644b0dcba15770a018a93507311d2fae931f14a8e1ee"
+    },
+    {
+      "path": "drivers/soc/apple/apple-counter-qualification.c",
+      "bytes": 17585,
+      "sha256": "c799cef6221c1b1bb4d2d310dcaa0d43542ac778c0a5490b2514025efba363f7"
+    },
+    {
+      "path": "include/linux/soc/apple/apsc-observer.h",
+      "bytes": 696,
+      "sha256": "ab7c672c53ebd7877f6db9c029b9626a622f0b200fb04c5268784c133fdda811"
+    }
+  ],
+  "unchanged_instrument_sources": {
+    "observer": {
+      "path": "drivers/cpuidle/apple-apsc-observer.c",
+      "sha256": "bfe017c930efcc9f0d4147734255a7b08ae1c1b39893dbc770dc6f41d93d201a",
+      "identical_to_Asahi_patch_source": true
+    },
+    "header": {
+      "path": "include/linux/soc/apple/apsc-observer.h",
+      "sha256": "ab7c672c53ebd7877f6db9c029b9626a622f0b200fb04c5268784c133fdda811",
+      "identical_to_Asahi_patch_source": true
+    },
+    "counter": {
+      "path": "drivers/soc/apple/apple-counter-qualification.c",
+      "sha256": "c799cef6221c1b1bb4d2d310dcaa0d43542ac778c0a5490b2514025efba363f7",
+      "identical_to_Asahi_patch_source": true
+    }
+  },
+  "patch_commands": [
+    {
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "0001-aurora-t8103-apsc-observer.patch"
+      ],
+      "started_utc": "2026-10-02T05:17:59.884560+00:00",
+      "ended_utc": "2026-10-02T05:17:59.886239+00:00",
+      "exit_status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "0001-aurora-t8103-apsc-observer.patch"
+      ],
+      "started_utc": "2026-10-02T05:17:59.886301+00:00",
+      "ended_utc": "2026-10-02T05:17:59.888170+00:00",
+      "exit_status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "0002-aurora-t8103-counter-qualification.patch"
+      ],
+      "started_utc": "2026-10-02T05:17:59.888200+00:00",
+      "ended_utc": "2026-10-02T05:17:59.890333+00:00",
+      "exit_status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "0002-aurora-t8103-counter-qualification.patch"
+      ],
+      "started_utc": "2026-10-02T05:17:59.890359+00:00",
+      "ended_utc": "2026-10-02T05:17:59.892646+00:00",
+      "exit_status": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "compiled_source_bytes_match": true,
+  "tools": {
+    "compiler": [
+      {
+        "executable": "gcc",
+        "sha256": "741ced8152a820a28ab88603dd1ceb2343245728ac784839e4b5390f2411890e",
+        "version_first_line": "gcc (GCC) 16.1.1 20260430",
+        "exit_status": 0
+      },
+      {
+        "executable": "ld",
+        "sha256": "b07b094ae88efa267dda9314058a805a0e05a6133c6f5a88fd524dbe37e32dac",
+        "version_first_line": "GNU ld (GNU Binutils) 2.46.0",
+        "exit_status": 0
+      },
+      {
+        "executable": "objdump",
+        "sha256": "84190a971f14e050b33923e330decb03346178bb7239b2809a207eb318290918",
+        "version_first_line": "GNU objdump (GNU Binutils) 2.46.0",
+        "exit_status": 0
+      },
+      {
+        "executable": "readelf",
+        "sha256": "4bd135916c3cebba703b8d311e04f977e03d3cd998f57ed2d4c590f21166dbb7",
+        "version_first_line": "GNU readelf (GNU Binutils) 2.46.0",
+        "exit_status": 0
+      },
+      {
+        "executable": "as",
+        "sha256": "ff23e1813fd9b31af1113d13fe580c61a76b4978dbe64a29b0dd11424c04fe0e",
+        "version_first_line": "GNU assembler (GNU Binutils) 2.46.0",
+        "exit_status": 0
+      },
+      {
+        "executable": "clang",
+        "sha256": "e0f36a3de4dc41e1fdb88709ce005d2fbbbac5363680647934a6d048b2d4c8f3",
+        "version_first_line": "clang version 22.1.8",
+        "exit_status": 0
+      },
+      {
+        "executable": "make",
+        "sha256": "710d136a4d85822d8019a964c89a26e4b99bd3cb6ada125db6f2360bb19c7787"
+      },
+      {
+        "executable": "bc",
+        "sha256": "12f0b5b1a6046ed41680b25f9596f1c79ed8215e4a362ead88f85895bd8500aa"
+      },
+      {
+        "executable": "bison",
+        "sha256": "c49150509e81c390db368ed1900cb2a339b84d2e527b236c59cc71d8dd710687"
+      },
+      {
+        "executable": "flex",
+        "sha256": "6e33727280f1ba617833a517556c2f7c2f87dd5026fd5ccad4eb4516f81174e3"
+      },
+      {
+        "executable": "m4",
+        "sha256": "8500d60ddfd92a8bc68a427db5af5b7d70e896326fd656fc7f88778f7495e31c"
+      },
+      {
+        "executable": "bindgen",
+        "sha256": "898c2a5364f33b7f8c495de4ad499e8eacdee234f021ff94a5348afdd7700c77"
+      },
+      {
+        "executable": "rustc",
+        "sha256": "0dda59ecc41f9ffceb327a6c7638101ca1b33ea5ae45b6f07440f0dbe51b1f15"
+      },
+      {
+        "executable": "rustdoc",
+        "sha256": "b9d648d0e16252c637af34492ca50b04dce8105eb13393117bb09a9391f5813c"
+      }
+    ],
+    "objects": [],
+    "configuration": {
+      "CONFIG_CC_VERSION_TEXT": "CONFIG_CC_VERSION_TEXT=\"gcc (GCC) 16.1.1 20260430\"",
+      "CONFIG_CC_IS_GCC": "CONFIG_CC_IS_GCC=y",
+      "CONFIG_GCC_VERSION": "CONFIG_GCC_VERSION=160101",
+      "CONFIG_RUSTC_VERSION": "CONFIG_RUSTC_VERSION=109301",
+      "CONFIG_RUSTC_LLVM_VERSION": "CONFIG_RUSTC_LLVM_VERSION=210108",
+      "CONFIG_PREEMPT_DYNAMIC": "CONFIG_PREEMPT_DYNAMIC=y",
+      "CONFIG_RUST": "CONFIG_RUST=y",
+      "CONFIG_RUSTC_VERSION_TEXT": "CONFIG_RUSTC_VERSION_TEXT=\"rustc 1.93.1 (01f6ddf75 2026-02-11)\"",
+      "CONFIG_ARM64_16K_PAGES": "CONFIG_ARM64_16K_PAGES=y",
+      "CONFIG_ARM_APPLE_CPUIDLE": "CONFIG_ARM_APPLE_CPUIDLE=y",
+      "CONFIG_ARM_APPLE_SOC_CPUFREQ": "CONFIG_ARM_APPLE_SOC_CPUFREQ=y",
+      "CONFIG_STACKPROTECTOR_STRONG": "CONFIG_STACKPROTECTOR_STRONG=y",
+      "CONFIG_LTO_NONE": "CONFIG_LTO_NONE=y",
+      "CONFIG_DEBUG_INFO_DWARF5": "CONFIG_DEBUG_INFO_DWARF5=y",
+      "CONFIG_DEBUG_FS": "CONFIG_DEBUG_FS=y",
+      "CONFIG_UBSAN": "# CONFIG_UBSAN is not set",
+      "CONFIG_KCSAN": "# CONFIG_KCSAN is not set",
+      "CONFIG_KASAN": "# CONFIG_KASAN is not set",
+      "CONFIG_DEBUG_PREEMPT": "CONFIG_DEBUG_PREEMPT=y",
+      "CONFIG_FTRACE": "CONFIG_FTRACE=y",
+      "CONFIG_FUNCTION_TRACER": "# CONFIG_FUNCTION_TRACER is not set",
+      "CONFIG_KCOV": "# CONFIG_KCOV is not set"
+    }
+  },
+  "object_comparisons": {
+    "scope": "preliminary object bytes; no full link or native execution",
+    "objects": {
+      "objects-pristine/cpuidle-apple.o": "08699adc35e3a0686adb20827b74adb363f3e676a62a11c904c21953fce7aab4",
+      "objects-pristine/apple-soc-cpufreq.o": "de8d1bb324c85b0989f018122cf360684f434d30f5bc584f99bc35e687f00c57",
+      "objects-off/cpuidle-apple.o": "e67b9f719b3165a89c54d41921248b6780716ef4ea47698b9e1e422a9e8f775f",
+      "objects-off/apple-soc-cpufreq.o": "ea07257ad093446e8adae47842ce3884360836b0ed87a79bd2ca30935327a836",
+      "objects-on/cpuidle-apple.o": "68acfda99a43eb7296edf6b3ec02e928d8ddda111396abdfa5965c65e8062316",
+      "objects-on/apple-soc-cpufreq.o": "e196899ea404b83ffe77c659af159053c10dec6f542831ab126b9e5a2fbcbdb3",
+      "objects-on/apple-apsc-observer.o": "d5cde89d17f0e5917acae3796843c48d0291bcffbbec1cf9306962b0104e3063",
+      "objects-on/apple-counter-qualification.o": "239af3cfed87be11e5211b3a1a803ac3fbe3937707f91f8ac4e57b4560240647"
+    },
+    "disabled_executable_changes": {
+      "cpuidle-apple": [],
+      "apple-soc-cpufreq": []
+    },
+    "deep_wfi": {
+      "pristine": {
+        "bytes": 100,
+        "sha256": "c8fd716fccb949e9f35aa2937a87787942b39f0b5df5e088d46f88253479b88c",
+        "hex": "fe0f1ff8fc77bfa9fa6fbfa9f867bfa9f65fbfa9f457bfa9f24fbfa900f53dd5000468b200f51dd59f3f03d57f2003d500c138d5a0ffffb400f53dd500f8679200f51dd5f24fc1a8f457c1a8f65fc1a8f867c1a8fa6fc1a8fc77c1a8fe0741f8c0035fd6"
+      },
+      "off": {
+        "bytes": 100,
+        "sha256": "c8fd716fccb949e9f35aa2937a87787942b39f0b5df5e088d46f88253479b88c",
+        "hex": "fe0f1ff8fc77bfa9fa6fbfa9f867bfa9f65fbfa9f457bfa9f24fbfa900f53dd5000468b200f51dd59f3f03d57f2003d500c138d5a0ffffb400f53dd500f8679200f51dd5f24fc1a8f457c1a8f65fc1a8f867c1a8fa6fc1a8fc77c1a8fe0741f8c0035fd6"
+      },
+      "on": {
+        "bytes": 100,
+        "sha256": "c8fd716fccb949e9f35aa2937a87787942b39f0b5df5e088d46f88253479b88c",
+        "hex": "fe0f1ff8fc77bfa9fa6fbfa9f867bfa9f65fbfa9f457bfa9f24fbfa900f53dd5000468b200f51dd59f3f03d57f2003d500c138d5a0ffffb400f53dd500f8679200f51dd5f24fc1a8f457c1a8f65fc1a8f867c1a8fa6fc1a8fc77c1a8fe0741f8c0035fd6"
+      }
+    },
+    "copied_header_config_sha256": "84bb71434e905f3b1360142e075a89b0bccb5e5bd7ca82eb892a362512df260e"
+  },
+  "builds": [
+    {
+      "variant": "on",
+      "completion_recorded_utc": "2026-10-02T05:02:39.046441+00:00",
+      "timestamp_correction": "the original metadata field named started_utc was written after command completion; it is not an observed start time",
+      "exit_status": 0,
+      "raw_log_basename": "header-objects-on.log",
+      "raw_log_sha256": "6f3116f2c91965675bea8c4795eeb015286a4488a1f79d9cdbc202dcf2d0e18f",
+      "compiler_warning_or_error_lines": [],
+      "enabled_defines": [
+        "CONFIG_ARM_APPLE_APSC_OBSERVER=1",
+        "CONFIG_APPLE_COUNTER_QUALIFICATION=1"
+      ]
+    },
+    {
+      "variant": "pristine",
+      "start_utc": "2026-10-02T05:04:03.573605+00:00",
+      "end_utc": "2026-10-02T05:04:05.011983+00:00",
+      "exit_status": 0,
+      "raw_log_basename": "header-objects-pristine.log",
+      "raw_log_sha256": "25a9c19e1b56d15c3870da4496971eed37c0a8156d516be076815ff81f58d3be",
+      "compiler_warning_or_error_lines": [],
+      "enabled_defines": []
+    },
+    {
+      "variant": "off",
+      "start_utc": "2026-10-02T05:04:05.012432+00:00",
+      "end_utc": "2026-10-02T05:04:06.420404+00:00",
+      "exit_status": 0,
+      "raw_log_basename": "header-objects-off.log",
+      "raw_log_sha256": "3421cd8c0b454524b53df98aef656dc7a37bffb2308169ab487a5544787ea3db",
+      "compiler_warning_or_error_lines": [],
+      "enabled_defines": []
+    }
+  ],
+  "hardware_trace_events": 0,
+  "trace_loss": null,
+  "trace_loss_meaning": "no hardware capture; not a measured zero-loss window",
+  "decoder_tests": {
+    "scope": "unchanged ABI decoders with synthetic fixtures; no native records",
+    "observer_tests": 64,
+    "counter_tests": 23,
+    "runs": [
+      {
+        "experiment": "linux-apsc-observer",
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "experiments/linux-apsc-observer",
+          "-p",
+          "test_*.py"
+        ],
+        "started_utc": "2026-10-02T05:33:44.293861+00:00",
+        "ended_utc": "2026-10-02T05:33:44.860433+00:00",
+        "exit_status": 0,
+        "log_sha256": "9faca6e845cc92ebf43c4539f46e725f921c7cfbeaa1a0aa285994fcb00392c1"
+      },
+      {
+        "experiment": "linux-counter-qualification",
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "experiments/linux-counter-qualification",
+          "-p",
+          "test_*.py"
+        ],
+        "started_utc": "2026-10-02T05:33:44.860572+00:00",
+        "ended_utc": "2026-10-02T05:33:45.203515+00:00",
+        "exit_status": 0,
+        "log_sha256": "8d076fc7ef1aa5185a424f08c6bd68eff57f862fdb0d473f0e9521527a9b66e6"
+      }
+    ]
+  }
+}

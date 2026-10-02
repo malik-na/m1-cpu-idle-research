@@ -1,0 +1,99 @@
+{
+  "scope": "protected EFI bundle and read-only current boot qualification; no native APSC events",
+  "current_kernel_bundle": {
+    "ordinal": 0,
+    "bytes": 59782144,
+    "sha256": "97e6229b65946aa24a5c863290abef8a3b1b48067655b29df819c7a9c62c4618",
+    "kernel_release": "7.1.12-2-11.17-sep-ARCH",
+    "linux_sha256": "1d08d4153742e26d7012031452db79fe500cf376a84b07261fba59f97bf945e2",
+    "initrd_sha256": "6c31553cf9936a2f662a7ea72ac94007b889c4af2eb9d2a1be4e988b9721ec07",
+    "limine_blake2b512_matches": true
+  },
+  "recovery_snapshot_bundles": [
+    {
+      "ordinal": 1,
+      "bytes": 59741696,
+      "sha256": "80a1b6b0eb79f24b49b3f06d4c86cb17138cfd26ec0f1a42d2dc0bfa422b7dcd",
+      "kernel_release": "7.1.12-2-11-ARCH",
+      "linux_sha256": "89a1a583403dbeae93df493765139b5ceead338dead3f8f7569782fef6db1ee3",
+      "initrd_sha256": "825b50e3e1bca442bb1ee0c251961c4837954b6de5ee1e5a402d533cebf82035",
+      "limine_blake2b512_matches": true
+    },
+    {
+      "ordinal": 2,
+      "bytes": 59739136,
+      "sha256": "50af0ee502787564aa58b7b9f90871ab3b9385792a4ffd562306c034e8d01569",
+      "kernel_release": "7.1.12-2-11-ARCH",
+      "linux_sha256": "89a1a583403dbeae93df493765139b5ceead338dead3f8f7569782fef6db1ee3",
+      "initrd_sha256": "b04b56c0abaf669bd59f9b4d5a7f71fa8ca9e57e36126eeacc7963e377ecf5bc",
+      "limine_blake2b512_matches": true
+    }
+  ],
+  "stage2_bundle": {
+    "ordinal": 3,
+    "bytes": 9262810,
+    "sha256": "777185d687bed27f864ebfa134ff26a19c208d8a15846465d7567ed01ac29ce4"
+  },
+  "all_entry_hashes_match_with_documented_blake2b512": true,
+  "initial_sha512_comparisons_not_limine_hash_tests": "Original collector recorded three false comparisons using SHA-512. Those raw comparisons are retained; the documented BLAKE2b-512 checks above match all three entries.",
+  "stock_cmdline_tokens_match_running_boot": true,
+  "current_boot_loader": {
+    "product": "Limine 12.9.1",
+    "firmware": "UEFI 2.110 by Das U-Boot",
+    "stub": "systemd-stub 262-1-arch",
+    "current_entry": "Omarchy.linux-aurora",
+    "one_shot_entry_control_reported": true,
+    "source": "separately authorized read-only bootctl status; private terminal record"
+  },
+  "recovery_boundary": "Current entry is linked to the operator-reported successful native reboot and current kernel notes. Snapshot bundle integrity is verified; their boot success was not tested. Stage1 source remains dirty/unresolved.",
+  "read_only_boot_packet": {
+    "record_count": 7,
+    "read_errors": 0,
+    "booted_fdt": {
+      "observed_utc": "2026-10-02T06:16:03.472910+00:00",
+      "bytes": 117983,
+      "sha256": "190f5896e778bc8dd6e76a6801c53d874e8d030baf87a15e608dfbaea35c65d9"
+    },
+    "kernel_log": {
+      "bytes": 102288,
+      "sha256": "d7cf44718c67695ed59f0db224ba69af1ddc8c36d2c9d69c7b50ffbb358d06af"
+    }
+  },
+  "booted_dt_topology": {
+    "model": "Apple MacBook Air (M1, 2020)",
+    "compatible": [
+      "apple,j313",
+      "apple,t8103",
+      "apple,arm-platform"
+    ],
+    "efficiency_cpu_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "performance_cpu_ids": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "performance_domain_phandles": {
+      "efficiency": "0x0a",
+      "performance": "0x0d"
+    },
+    "cpufreq_resources": {
+      "efficiency": {
+        "start_hex": "0x210e20000",
+        "bytes": 4096
+      },
+      "performance": {
+        "start_hex": "0x211e20000",
+        "bytes": 4096
+      }
+    },
+    "apsc_command_offset_hex": "0x20",
+    "enable_method": "spin-table"
+  },
+  "hardware_apsc_observation": false
+}

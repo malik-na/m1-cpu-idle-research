@@ -1,0 +1,9 @@
+{
+  "scope": "readback of one-time boot selection; no reboot or native capture",
+  "observed_utc": "2026-10-02T07:21:41.480896+00:00",
+  "entry_id": "Aurora-APSC-research",
+  "efi_variable_attributes": 7,
+  "raw_sha256": "060a56aaa064d850874b017caefdc88a74d26ad6b80cf73e96cd67f9fb258073",
+  "set_oneshot_exit_status": 0,
+  "persistent_stock_default_changed": false
+}

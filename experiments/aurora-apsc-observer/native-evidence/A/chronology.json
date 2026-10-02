@@ -1,0 +1,77 @@
+[
+  {
+    "action": "begin",
+    "utc": "2026-10-02T13:53:57.561454+00:00",
+    "monotonic_ns": 144645048141,
+    "mode": "baseline",
+    "duration_ms": 2000,
+    "release": "7.1.12-ARCH-apsc-20261002",
+    "workload_sha256": "82f4ce1145c8135c8b28246a9681d2316083cd1bb1a936a736b8a6cd03102d2b"
+  },
+  {
+    "action": "counter_pre_begin",
+    "utc": "2026-10-02T13:53:57.587882+00:00",
+    "monotonic_ns": 144671481235
+  },
+  {
+    "action": "counter_pre_end",
+    "utc": "2026-10-02T13:53:57.603044+00:00",
+    "monotonic_ns": 144686653608
+  },
+  {
+    "action": "settling_begin",
+    "utc": "2026-10-02T13:53:57.717846+00:00",
+    "monotonic_ns": 144801443508,
+    "seconds": 5
+  },
+  {
+    "action": "settling_end",
+    "utc": "2026-10-02T13:54:02.717991+00:00",
+    "monotonic_ns": 149801618977
+  },
+  {
+    "action": "window_begin",
+    "utc": "2026-10-02T13:54:03.868241+00:00",
+    "monotonic_ns": 150951854489
+  },
+  {
+    "action": "window_end",
+    "utc": "2026-10-02T13:54:05.868395+00:00",
+    "monotonic_ns": 152952036267
+  },
+  {
+    "action": "observer_drained",
+    "utc": "2026-10-02T13:54:05.869109+00:00",
+    "monotonic_ns": 152952705129
+  },
+  {
+    "action": "workload_complete",
+    "utc": "2026-10-02T13:54:05.920672+00:00",
+    "monotonic_ns": 153004276974,
+    "cpu": 1,
+    "exit_status": 0
+  },
+  {
+    "action": "workload_complete",
+    "utc": "2026-10-02T13:54:05.922605+00:00",
+    "monotonic_ns": 153006217185,
+    "cpu": 5,
+    "exit_status": 0
+  },
+  {
+    "action": "counter_post_begin",
+    "utc": "2026-10-02T13:54:05.923628+00:00",
+    "monotonic_ns": 153007235082
+  },
+  {
+    "action": "counter_post_end",
+    "utc": "2026-10-02T13:54:05.940607+00:00",
+    "monotonic_ns": 153024238200
+  },
+  {
+    "action": "complete",
+    "utc": "2026-10-02T13:54:06.160675+00:00",
+    "monotonic_ns": 153244266181,
+    "clock_bound_not_exported": true
+  }
+]

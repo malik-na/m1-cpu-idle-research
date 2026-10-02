@@ -1,0 +1,125 @@
+{
+  "source_pin": "90a95335a49aec3a0045a76da140452ad6585eb3",
+  "scope": "objects built through full-source Kbuild and accepted Kconfig; final kernel link and native execution are separate",
+  "objects": {
+    "scope": "full-source Kbuild object bytes; no final link or native execution",
+    "objects": {
+      "build-pristine/drivers/cpuidle/cpuidle-apple.o": "09ad20bbcb78cb5c007d6714c15a64c527d0d7893a7ea2adcb6020085c92e51d",
+      "build-pristine/drivers/cpufreq/apple-soc-cpufreq.o": "6c84cc0113d061c6e5fd3ec4372fe8e5a2cdce43007c0106e5150bf5f6fb05e9",
+      "build-off/drivers/cpuidle/cpuidle-apple.o": "79340ba6d7b7e5c5fa8aabe06e50b06d727932aca479329a59dfdb82914068d0",
+      "build-off/drivers/cpufreq/apple-soc-cpufreq.o": "efcb0d05fa51857184fdbb7d65f125cd999c8cb9f21b562a0caf4daaf6a67bf8",
+      "build-on/drivers/cpuidle/cpuidle-apple.o": "e8c0173c53a7b3d36036f4d3dc46e47c71b022590788f234ceda6b8290f74a3c",
+      "build-on/drivers/cpufreq/apple-soc-cpufreq.o": "0b1ace5f53264a53d05de26ecb02c898ce33fab1a738e9fb2312fceddb5c486f",
+      "build-on/drivers/cpuidle/apple-apsc-observer.o": "612f1c100bba10f8068f69527f614f9336005622c9242686f2b4efab83a76e55",
+      "build-on/drivers/soc/apple/apple-counter-qualification.o": "1f6f1c680e7a60887cf31dd773e6041c4b00b6f56373287bbd07e3744fe72fdf"
+    },
+    "disabled_executable_changes": {
+      "cpuidle-apple": [],
+      "apple-soc-cpufreq": []
+    },
+    "deep_wfi": {
+      "pristine": {
+        "bytes": 100,
+        "sha256": "c8fd716fccb949e9f35aa2937a87787942b39f0b5df5e088d46f88253479b88c",
+        "hex": "fe0f1ff8fc77bfa9fa6fbfa9f867bfa9f65fbfa9f457bfa9f24fbfa900f53dd5000468b200f51dd59f3f03d57f2003d500c138d5a0ffffb400f53dd500f8679200f51dd5f24fc1a8f457c1a8f65fc1a8f867c1a8fa6fc1a8fc77c1a8fe0741f8c0035fd6"
+      },
+      "off": {
+        "bytes": 100,
+        "sha256": "c8fd716fccb949e9f35aa2937a87787942b39f0b5df5e088d46f88253479b88c",
+        "hex": "fe0f1ff8fc77bfa9fa6fbfa9f867bfa9f65fbfa9f457bfa9f24fbfa900f53dd5000468b200f51dd59f3f03d57f2003d500c138d5a0ffffb400f53dd500f8679200f51dd5f24fc1a8f457c1a8f65fc1a8f867c1a8fa6fc1a8fc77c1a8fe0741f8c0035fd6"
+      },
+      "on": {
+        "bytes": 100,
+        "sha256": "c8fd716fccb949e9f35aa2937a87787942b39f0b5df5e088d46f88253479b88c",
+        "hex": "fe0f1ff8fc77bfa9fa6fbfa9f867bfa9f65fbfa9f457bfa9f24fbfa900f53dd5000468b200f51dd59f3f03d57f2003d500c138d5a0ffffb400f53dd500f8679200f51dd5f24fc1a8f457c1a8f65fc1a8f867c1a8fa6fc1a8fc77c1a8fe0741f8c0035fd6"
+      }
+    },
+    "configuration_sha256": {
+      "pristine": "84bb71434e905f3b1360142e075a89b0bccb5e5bd7ca82eb892a362512df260e",
+      "off": "7a46a5cfbd4158b1792a5ef4f6a368900160ba9e77f768535f2084a3bec4de15",
+      "on": "f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d"
+    }
+  },
+  "header_vs_full_source_executable_changes": {
+    "cpuidle-apple": [],
+    "apple-soc-cpufreq": [],
+    "apple-apsc-observer": [],
+    "apple-counter-qualification": []
+  },
+  "builds": [
+    {
+      "variant": "pristine",
+      "stage": "source-objects-pristine",
+      "started_utc": "2026-10-02T05:45:46.143996+00:00",
+      "ended_utc": "2026-10-02T05:46:06.380064+00:00",
+      "exit_status": 0,
+      "log": "source-objects-pristine.log",
+      "log_sha256": "1eb58c6bfd48a4c9278f03f45f066006f1ddf72dc7c178eed33d7f0189cf4eae",
+      "config_sha256": "84bb71434e905f3b1360142e075a89b0bccb5e5bd7ca82eb892a362512df260e",
+      "command": [
+        "make",
+        "-j4",
+        "-C",
+        "pinned-source",
+        "O=build-pristine",
+        "ARCH=arm64",
+        "CC=gcc",
+        "HOSTCC=gcc",
+        "LOCALVERSION=",
+        "drivers/cpuidle/cpuidle-apple.o",
+        "drivers/cpufreq/apple-soc-cpufreq.o"
+      ],
+      "warning_or_error_lines": []
+    },
+    {
+      "variant": "off",
+      "stage": "source-objects-off",
+      "started_utc": "2026-10-02T05:46:06.380624+00:00",
+      "ended_utc": "2026-10-02T05:46:26.533180+00:00",
+      "exit_status": 0,
+      "log": "source-objects-off.log",
+      "log_sha256": "92851705afdb91575edc6cd9daef5facdf234d39aa1a9e247f0e6f50d1f3fba1",
+      "config_sha256": "7a46a5cfbd4158b1792a5ef4f6a368900160ba9e77f768535f2084a3bec4de15",
+      "command": [
+        "make",
+        "-j4",
+        "-C",
+        "ported-source",
+        "O=build-off",
+        "ARCH=arm64",
+        "CC=gcc",
+        "HOSTCC=gcc",
+        "LOCALVERSION=",
+        "drivers/cpuidle/cpuidle-apple.o",
+        "drivers/cpufreq/apple-soc-cpufreq.o"
+      ],
+      "warning_or_error_lines": []
+    },
+    {
+      "variant": "on",
+      "stage": "source-objects-on",
+      "started_utc": "2026-10-02T05:46:26.534073+00:00",
+      "ended_utc": "2026-10-02T05:46:46.561498+00:00",
+      "exit_status": 0,
+      "log": "source-objects-on.log",
+      "log_sha256": "4dffaa25fba260688903114c8bdbc144b6f64f0ca11749d5859f44d4c61113b4",
+      "config_sha256": "f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d",
+      "command": [
+        "make",
+        "-j4",
+        "-C",
+        "ported-source",
+        "O=build-on",
+        "ARCH=arm64",
+        "CC=gcc",
+        "HOSTCC=gcc",
+        "LOCALVERSION=",
+        "drivers/cpuidle/cpuidle-apple.o",
+        "drivers/cpufreq/apple-soc-cpufreq.o",
+        "drivers/cpuidle/apple-apsc-observer.o",
+        "drivers/soc/apple/apple-counter-qualification.o"
+      ],
+      "warning_or_error_lines": []
+    }
+  ]
+}
