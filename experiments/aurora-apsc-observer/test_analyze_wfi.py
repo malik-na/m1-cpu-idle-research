@@ -180,7 +180,11 @@ class WfiAnalyzerTests(unittest.TestCase):
         pair = result["paired_opportunities"]
         self.assertEqual(pair["by_cluster"]["0"]["primary_pairs"], 1)
         self.assertEqual(pair["by_cluster"]["0"]["primary_busy"], 1)
-        self.assertEqual(pair["decisions"][0]["set_sample_order_basis"], "same_cpu_direct")
+        self.assertEqual(pair["decisions"][0]["set_sample_order_basis"],
+                         "same_cpu_direct_order_and_lag")
+        self.assertEqual(pair["by_cluster"]["0"]["primary_model_qualified_pairs_with_same_cpu_set_sample"], 1)
+        self.assertIn("model-qualified", pair["pair_count_scope"])
+        self.assertIn("not an assumption-free full paired opportunity", pair["same_cpu_local_order_scope"])
         self.assertEqual(pair["decisions"][0]["largest_lag_under_model_ticks"], 549)
         self.assertFalse(pair["by_cluster"]["0"]["primary_exposure_gate_20"])
         self.assertFalse(pair["negative_claim_supported"])
@@ -190,7 +194,7 @@ class WfiAnalyzerTests(unittest.TestCase):
             [(0, 0, 1000, 1001)], [(1, 0, 1, 1302, 1303, 0)]
         ))
         pair = result["paired_opportunities"]
-        self.assertEqual(pair["by_cluster"]["0"]["primary_cross_cpu_conditional"], 1)
+        self.assertEqual(pair["by_cluster"]["0"]["primary_model_qualified_pairs_with_cross_cpu_set_sample"], 1)
         self.assertEqual(pair["decisions"][0]["largest_lag_under_model_ticks"], 541)
         self.assertEqual(pair["decisions"][0]["set_sample_order_error_ticks"], 240)
         later = analyze_wfi.analyze_text(*pairing_packet(
@@ -227,6 +231,20 @@ class WfiAnalyzerTests(unittest.TestCase):
         self.assertEqual(pair["decisions"][0]["status"], "ambiguous_earliest_sample")
         self.assertEqual(pair["by_cluster"]["0"]["primary_pairs"], 0)
 
+    def test_same_cpu_candidate_is_not_full_pair_with_cross_cpu_competitor(self):
+        source = (0, 0, 1000, 1001)
+        same_cpu_candidate = (0, 0, 1, 1550, 1551, 0)
+        competing_sample = analyze_wfi.analyze_text(*pairing_packet(
+            [source], [same_cpu_candidate, (1, 0, 1, 1600, 1601, 0)]
+        ))["paired_opportunities"]
+        competing_write = analyze_wfi.analyze_text(*pairing_packet(
+            [source, (1, 0, 1400, 1401)], [same_cpu_candidate]
+        ))["paired_opportunities"]
+        self.assertEqual(competing_sample["decisions"][0]["status"], "ambiguous_earliest_sample")
+        self.assertEqual(competing_write["decisions"][0]["status"], "possible_intervening_set")
+        self.assertEqual(competing_sample["by_cluster"]["0"]["primary_pairs"], 0)
+        self.assertEqual(competing_write["by_cluster"]["0"]["primary_pairs"], 0)
+
     def test_intervening_cluster_set_excludes_earlier_submission(self):
         pair = analyze_wfi.analyze_text(*pairing_packet(
             [(0, 0, 1000, 1001), (1, 0, 1300, 1301)],
@@ -251,6 +269,11 @@ class WfiAnalyzerTests(unittest.TestCase):
         pair = analyze_wfi.analyze_text(*pairing_packet(sets, probes, stop=20000))["paired_opportunities"]
         self.assertEqual(pair["by_cluster"]["0"]["successful_sets"], 20)
         self.assertEqual(pair["by_cluster"]["0"]["primary_pairs"], 20)
+        self.assertEqual(
+            pair["by_cluster"]["0"]["primary_model_qualified_pairs_with_same_cpu_set_sample"]
+            + pair["by_cluster"]["0"]["primary_model_qualified_pairs_with_cross_cpu_set_sample"],
+            20,
+        )
         self.assertTrue(pair["by_cluster"]["0"]["primary_exposure_gate_20"])
         self.assertFalse(pair["by_cluster"]["1"]["primary_exposure_gate_20"])
         self.assertFalse(pair["negative_claim_supported"])

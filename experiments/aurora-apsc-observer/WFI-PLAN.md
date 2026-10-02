@@ -83,12 +83,16 @@ target-cluster SET followed by the earliest clean interior same-cluster E
 sample before any possibly intervening SET, within 600 ticks (25 microseconds)
 of submission. The 600-tick primary bound is chosen now from the earlier
 549-tick BUSY witness; report a 2,400-tick (100 microseconds) exploratory
-sweep separately. For different CPUs, order and gap additionally depend on
-the explicitly assumed clock-error bound; count same-CPU pairs without that
-assumption. Count each SET once and tabulate cluster, boot, lag, writer,
-BUSY, and exclusions. An ambiguous write or unmatched clock ordering does
-not count. A candidate final entrant also needs complete interior peer
-software intervals under the chosen error bound; this label remains
+sweep separately. For different CPUs, SET-to-sample order and gap additionally
+depend on the explicitly assumed clock-error bound. Same-CPU SET-to-sample
+order and lag do not need that bound, but the **full paired-opportunity count**
+still uses the assumed 240-tick error to establish strict capture interior
+and to exclude an earlier sample or intervening SET on another CPU. Count
+each SET once and tabulate cluster, boot, lag, writer, BUSY, and exclusions.
+An ambiguous write or unmatched clock ordering does not count. This
+clarification was made before the ABI 2 image's first capture. A candidate
+final entrant also needs complete interior peer software intervals under the
+chosen error bound; this label remains
 conditional without a separate in-sample peer-state witness.
 
 A zero-detection statement requires clean E packets, no ring overflow,

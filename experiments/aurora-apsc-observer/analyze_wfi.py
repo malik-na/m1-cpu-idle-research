@@ -131,10 +131,15 @@ def paired_opportunities(events: list[dict], samples: list[dict], status: dict,
             "clean interior E sample, without another possibly intervening SET; "
             "same-CPU SET/sample order and lag use E=0, cross-CPU use assumed E=240"
         ),
-        "same_cpu_limit": (
-            "same-CPU SET/sample order and lag do not need a clock assumption; "
-            "cluster-earliest and no-intervening-write checks involving other "
-            "CPUs, and the capture boundary, still use assumed E=240"
+        "pair_count_scope": (
+            "every primary/exploratory pair count and 20-per-cluster exposure "
+            "gate is model-qualified: strict capture interior, cluster-earliest "
+            "sample, and exclusion of intervening writes on other CPUs use "
+            "assumed E=240 even when SET and selected sample share a CPU"
+        ),
+        "same_cpu_local_order_scope": (
+            "same-CPU SET-to-sample order and lag alone are direct and use "
+            "E=0; they are not an assumption-free full paired opportunity"
         ),
         "interior_limit": (
             "start/stop writer CPU is not recorded; both SET and sample are "
@@ -252,25 +257,33 @@ def paired_opportunities(events: list[dict], samples: list[dict], status: dict,
                                     "set_to_sample_recorded_lag_ticks": observed_gap,
                                     "largest_lag_under_model_ticks": largest_lag,
                                     "set_sample_order_error_ticks": applied_error,
-                                    "set_sample_order_basis": "same_cpu_direct" if not applied_error else "cross_cpu_assumed_E240",
+                                    "set_sample_order_basis": (
+                                        "same_cpu_direct_order_and_lag" if not applied_error
+                                        else "cross_cpu_assumed_E240_order_and_lag"
+                                    ),
+                                    "full_pair_qualification": "assumed_E240_for_interior_cluster_earliest_and_intervening_writes",
                                 })
                                 counts["exploratory_pairs"] += 1
                                 counts["exploratory_busy"] += bool(first["cmd"] & legacy.BUSY_BIT)
-                                counts["exploratory_same_cpu"] += applied_error == 0
-                                counts["exploratory_cross_cpu_conditional"] += applied_error != 0
+                                counts["exploratory_model_qualified_pairs_with_same_cpu_set_sample"] += applied_error == 0
+                                counts["exploratory_model_qualified_pairs_with_cross_cpu_set_sample"] += applied_error != 0
                                 if primary:
                                     counts["primary_pairs"] += 1
                                     counts["primary_busy"] += bool(first["cmd"] & legacy.BUSY_BIT)
-                                    counts["primary_same_cpu"] += applied_error == 0
-                                    counts["primary_cross_cpu_conditional"] += applied_error != 0
+                                    counts["primary_model_qualified_pairs_with_same_cpu_set_sample"] += applied_error == 0
+                                    counts["primary_model_qualified_pairs_with_cross_cpu_set_sample"] += applied_error != 0
             counts[decision["status"]] += 1
             result["decisions"].append(decision)
         by_cluster[str(cluster)] = {
             name: counts[name] for name in (
                 "successful_sets", "clean_interior_samples",
-                "primary_pairs", "primary_busy", "primary_same_cpu", "primary_cross_cpu_conditional",
-                "exploratory_pairs", "exploratory_busy", "exploratory_same_cpu",
-                "exploratory_cross_cpu_conditional", "set_not_strictly_interior",
+                "primary_pairs", "primary_busy",
+                "primary_model_qualified_pairs_with_same_cpu_set_sample",
+                "primary_model_qualified_pairs_with_cross_cpu_set_sample",
+                "exploratory_pairs", "exploratory_busy",
+                "exploratory_model_qualified_pairs_with_same_cpu_set_sample",
+                "exploratory_model_qualified_pairs_with_cross_cpu_set_sample",
+                "set_not_strictly_interior",
                 "ambiguous_set_sample_order", "no_ordered_sample_within_exploratory_search",
                 "ambiguous_earliest_sample", "possible_intervening_set",
                 "lag_exceeds_exploratory_bound", "exploratory_only_pair",
