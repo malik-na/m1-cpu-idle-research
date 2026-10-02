@@ -1,0 +1,67 @@
+{
+  "scope": "Private build, module package and UKI staging for the predeclared ABI 2 first-attempt probe; no installation, reboot or native observation at this checkpoint",
+  "source": {
+    "aurora_source_commit": "90a95335a49aec3a0045a76da140452ad6585eb3",
+    "base": "Previously qualified source-patched tree with observer/counter and capacity patches 0001-0003",
+    "incremental_patch": "0004-aurora-apsc-wfi-first-attempt.patch",
+    "source_difference_from_base": "Exactly the three paths named by incremental_patch; full tree comparison excluded only copied Git metadata",
+    "patch_applies_to_base": true
+  },
+  "build": {
+    "configuration_sha256": "f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d",
+    "toolchain_environment": "The pinned toolchain and complete build environment in full-build-receipt.json; all 14 pinned tool binaries rechecked before build",
+    "same_release_build_exit_status": 0,
+    "same_release_module_count": 1867,
+    "same_release_module_bytes_different_from_installed": 1867,
+    "same_release_module_symvers_equal_to_installed": true,
+    "separate_release_rebuild_exit_status": 0,
+    "release": "7.1.12-ARCH-apsc-20261002-wfi",
+    "gnu_build_id": "11e80be6d8b358eee9aa847a0f814aff02b66c43",
+    "image_sha256": "f6ca1847b6e83078d247c11f18d339b6557416b981f7d1d139d18c84847ada18",
+    "vmlinux_sha256": "d514ddae106c1994adf4d93491e9519a3b83f0b57c07c7cc53143d63ff7b88a7",
+    "module_symvers_sha256": "2b5baab80f93179fc4753f13944aa72d444938a00406c973d556657a6e073229"
+  },
+  "static_seam_validation": {
+    "checker": "validate_wfi_seam.py",
+    "baseline_routine_sha256": "c8fd716fccb949e9f35aa2937a87787942b39f0b5df5e088d46f88253479b88c",
+    "candidate_object_and_linked_routine_sha256": "2545c4ce2e5dcfd433dffa4edbd187b11adc544bbda496a882f1fb61fdccaa82",
+    "original_save_and_power_control_prefix_bytes_unchanged": 40,
+    "original_dsb_wfi_retry_and_restore_tail_bytes_unchanged": 60,
+    "reviewed_inserted_probe_bytes": 80,
+    "mmio_reads": 1,
+    "new_mmio_writes": 0,
+    "wfi_instructions": 1,
+    "compiled_slot_offsets_match_assembly": true,
+    "mutation_tests_passed": 6,
+    "limits": "Static code checks cannot establish runtime MMIO behavior, peer clock order, hardware sleep or physical power"
+  },
+  "modules": {
+    "new_release_modules_install_exit_status": 0,
+    "built_and_staged_module_paths": 1867,
+    "all_staged_module_sha256_equal_built": true,
+    "all_staged_module_vermagic_matches_release": true,
+    "dependency_lookups_passed": ["brcmfmac", "appledrm", "apple-sep", "btrfs", "dm-crypt", "hid-apple"],
+    "separate_package_name": "linux-aurora-apsc-wfi-modules",
+    "separate_package_sha256": "d29546a699ad34ae85be5d196e8dca17aa8d2c336c3efdda2af189a1e3a4f81c",
+    "separate_package_module_hashes_verified": 1867,
+    "working_capacity_release_module_tree_untouched": true
+  },
+  "boot_bundle": {
+    "mkinitcpio_exit_status": 0,
+    "private_configuration_difference_from_working_recipe": "Only the modinfo module-stage path for the new release",
+    "uki_sha256": "4868e3547c1eafe884520238da801684069d547ffe2dc5915666b42d3ad66ce7",
+    "uki_bytes": 94771200,
+    "uki_blake2b512": "18921e54b830a658e9d5bc5cde2b6f4478c14d4c3e1a038be75f04b2ffd84ed37572dbc5113553e9a4fc9a621278f3e89cb18447644c7cf7ef86bb91f76dc63f",
+    "embedded_linux_equals_reviewed_image": true,
+    "embedded_cmdline_equals_working_capacity_bundle": true,
+    "embedded_release_sections_equal_new_release": true,
+    "other_bootloader_sections_equal_working_capacity_bundle": true,
+    "initrd_normalized_path_set_equals_working_capacity_bundle": true,
+    "initrd_entries": 1333,
+    "new_release_initrd_modules": 90,
+    "all_initrd_module_sha256_equal_new_stage": true,
+    "other_initrd_file_bytes_equal_working_capacity_bundle_except_private_buildconfig_stage_path": true,
+    "encrypted_root_input_storage_and_firmware_paths_present": true
+  },
+  "status": "Staged and statically qualified only; native boot and #5 acquisition pending"
+}

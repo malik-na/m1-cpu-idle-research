@@ -134,3 +134,7 @@ The [WFI-seam extension plan](WFI-PLAN.md) and
 [source delta](0004-aurora-apsc-wfi-first-attempt.patch) predeclare a
 closer, first-attempt probe and stricter paired-opportunity rules. That
 variant has no native result yet.
+The [ABI 2 build receipt](wfi-build-receipt.json) records a separate
+`-wfi` release, matching staged modules, a checked initramfs and the
+linked first-attempt instructions. It is a build result only; the new
+entry has not been booted or measured.
