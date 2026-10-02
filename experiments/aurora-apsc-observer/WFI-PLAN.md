@@ -107,6 +107,21 @@ If the gate remains unmet after the two declared blocks, stop and publish
 the outcome as underexposed/inconclusive. A changed workload or peer-state
 observer requires a new protocol and separate arm before capture.
 
+Prospective C-control clarification, recorded before any ABI 2 native capture:
+screen successful target-cluster SETs against the earliest valid, strictly
+interior same-cluster C-hook `idle_enter` MMIO sample using the same assumed
+240-tick cross-CPU ordering/interior model and possible-intervening-SET
+exclusions as E. An invalid C read suppresses that control rather than being
+skipped in favor of a later sample. Report C's 600-tick primary and 2,400-tick
+exploratory lag strata by cluster; at least one BUSY C primary pair in a
+cluster demonstrates pending command at that earlier site in a comparable
+lag stratum. This is a control for interpreting E zero, **not** an additional
+20-pair C gate or a same-event C/E comparison. The existing E 20-pair-per-
+cluster gate and claim boundary above are unchanged. Identify the SET writer
+CPU, the cpufreq policy representative CPU and cluster mask, and the C/E
+sampling CPU separately; a cluster command has no observed individual
+hardware target core in these records.
+
 Compare D/E counter brackets and B/C C-hook brackets (median, high tail and
 maximum), ring loss and matched worker timing. These do not isolate total
 ring publication cost or the fixed inactive-hook cost. No frequency/idle

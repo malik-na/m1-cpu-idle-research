@@ -294,6 +294,124 @@ def paired_opportunities(events: list[dict], samples: list[dict], status: dict,
     return result
 
 
+def c_hook_comparable_lag(events: list[dict], status: dict, mode: str,
+                          integrity_reasons: list[str]) -> dict:
+    """Apply the declared E lag/order model to the earlier C-hook MMIO site.
+
+    C is a different boot and a different probe site from E. This screen can
+    establish only whether that control observed BUSY in a comparable lag
+    stratum; it does not pair individual C and E events or qualify either
+    boot's cross-CPU clock error. An invalid C read suppresses the screen,
+    rather than silently skipping an unknown earlier sample.
+    """
+    result = {
+        "status": "conditional_software_screen",
+        "site": "C pre-WFI idle_enter MMIO hook, before context-tracking idle entry and assembly WFI",
+        "primary_bound_ticks": PRIMARY_PAIR_TICKS,
+        "exploratory_bound_ticks": EXPLORATORY_PAIR_TICKS,
+        "assumed_pairwise_clock_error_ticks": ASSUMED_PAIRWISE_ERROR_TICKS,
+        "clock_qualification": "unqualified; E=240 is an assumption over the whole capture",
+        "definition": (
+            "one successful target-cluster SET to its earliest provably ordered "
+            "valid, strictly interior same-cluster C idle_enter MMIO sample, "
+            "without another possibly intervening SET; same-CPU SET/sample "
+            "order and lag use E=0, cross-CPU use assumed E=240"
+        ),
+        "pair_count_scope": (
+            "all C primary/exploratory pairs are model-qualified: capture "
+            "interior, cluster-earliest sample, and intervening writes on "
+            "other CPUs use assumed E=240 even for a same-CPU SET/sample"
+        ),
+        "same_cpu_local_order_scope": (
+            "same-CPU SET-to-C-sample order and lag alone are direct; "
+            "a complete pair still depends on assumed E=240"
+        ),
+        "role_labels": {
+            "writer_cpu": "CPU that submitted the target-cluster SET",
+            "policy_representative_cpu": "cpufreq policy CPU, not an observed individual hardware target core",
+            "target_cluster_cpu_mask": "cluster affected by the DVFS command",
+            "sampling_cpu": "CPU executing the C idle-enter MMIO probe",
+        },
+        "invalid_c_read_count": 0,
+        "negative_claim_supported": False,
+        "by_cluster": None,
+        "decisions": [],
+        "claim_boundary": (
+            "a C BUSY read is at the earlier C hook, on another boot from E; "
+            "it does not establish a pending command at WFI, an asleep peer, "
+            "device-command completion, or physical power behavior"
+        ),
+    }
+    if mode != "mmio":
+        result["status"] = "not_applicable_without_c_hook_mmio"
+        return result
+    invalid = [event for event in events if event["kind"] == "idle_enter" and event["ret"] < 0]
+    result["invalid_c_read_count"] = len(invalid)
+    if integrity_reasons:
+        result["status"] = "suppressed_integrity_failure"
+        result["integrity_reasons"] = list(integrity_reasons)
+        return result
+    if invalid:
+        result["status"] = "suppressed_invalid_c_read"
+        return result
+
+    samples = [event for event in events if event["kind"] == "idle_enter"
+               and event["flags"] == 1 and event["ret"] == 0 and event["cmd"] is not None]
+    # The E screen already implements the predeclared strict E=240 interior,
+    # earliest-sample, ambiguous-order and competing-SET exclusions. Its
+    # event-typed input is equally applicable to valid C idle_enter rows.
+    screened = paired_opportunities(events, samples, status, "wfi_mmio", [])
+    if screened["status"] != "conditional_software_screen":
+        raise legacy.AnalysisError("internal C lag screen could not apply the declared model")
+    sources = {(event["cluster"], event["seq"]): event for event in events
+               if event["kind"] == "dvfs" and event["ret"] == 0}
+    sample_by_stream_sequence = {(event["cpu"], event["seq"]): event for event in samples}
+
+    def set_roles(identity: dict) -> dict:
+        source = sources[(identity["cluster"], identity["seq"])]
+        return {
+            "writer_cpu": source["cpu"], "target_cluster": source["cluster"],
+            "target_cluster_cpu_mask": hex(source["policy_mask"]),
+            "policy_representative_cpu": source["policy_cpu"],
+            "seq": source["seq"], "t0": source["t0"], "t1": source["t1"],
+            "raw_pre_command": hex(source["pre_cmd"]),
+            "raw_submitted_command": hex(source["cmd"]),
+        }
+
+    def sample_roles(identity: dict) -> dict:
+        sample = sample_by_stream_sequence[(identity["cpu"], identity["seq"])]
+        return {
+            "sampling_cpu": sample["cpu"], "cluster": sample["cluster"],
+            "seq": sample["seq"], "token": sample["token"],
+            "t0": sample["t0"], "t1": sample["t1"],
+            "raw_command": hex(sample["cmd"]),
+            "busy_bit31": bool(sample["cmd"] & legacy.BUSY_BIT),
+        }
+
+    for decision in screened["decisions"]:
+        projected = {"set": set_roles(decision["set"]), "status": decision["status"]}
+        if "sample" in decision:
+            projected["sample"] = sample_roles(decision["sample"])
+        if "competing_sample" in decision:
+            projected["competing_sample"] = sample_roles(decision["competing_sample"])
+        if "competing_set" in decision:
+            projected["competing_set"] = set_roles(decision["competing_set"])
+        for key in ("set_to_sample_recorded_lag_ticks", "largest_lag_under_model_ticks",
+                    "set_sample_order_error_ticks", "set_sample_order_basis",
+                    "full_pair_qualification"):
+            if key in decision:
+                projected[key] = decision[key]
+        result["decisions"].append(projected)
+
+    result["by_cluster"] = {}
+    for cluster, counts in screened["by_cluster"].items():
+        projected = {key: value for key, value in counts.items() if key != "primary_exposure_gate_20"}
+        projected["pending_c_primary_lag_observed"] = counts["primary_busy"] > 0
+        projected["pending_c_exploratory_lag_observed"] = counts["exploratory_busy"] > 0
+        result["by_cluster"][cluster] = projected
+    return result
+
+
 def analyze_text(events_csv: str, status_text: str, wfi_csv: str) -> dict:
     raw_status, projected_status, wfi_numbers, projected_text = parse_abi2_status(status_text)
     mode = raw_status["mode"]
@@ -408,6 +526,7 @@ def analyze_text(events_csv: str, status_text: str, wfi_csv: str) -> dict:
             group["set_bit25"] += bool(sample["cmd"] & legacy.SET_BIT)
 
     pairs = paired_opportunities(events, samples, projected_status, mode, reasons)
+    c_lag = c_hook_comparable_lag(events, projected_status, mode, reasons)
 
     return {
         "observer_abi": 2,
@@ -457,6 +576,7 @@ def analyze_text(events_csv: str, status_text: str, wfi_csv: str) -> dict:
                                                   projected_status["cntfrq"]),
         },
         "paired_opportunities": pairs,
+        "c_hook_comparable_lag": c_lag,
         "claim_boundary": {
             "wfi_instruction_command_state": "not_observed",
             "cross_cpu_order": "requires separately justified counter comparability over the capture",

@@ -73,6 +73,41 @@ def pairing_packet(sets, probes, *, mode="wfi_mmio", pending=0, stop=10000):
             "".join(wfi_lines))
 
 
+def c_pairing_packet(sets, samples, *, invalid_indices=(), stop=10000):
+    """Synthetic ABI 2 C-hook control, with optional failed MMIO reads."""
+    rows = []
+    overrides = {}
+    for cluster in (0, 1):
+        writes = sorted((item for item in sets if item[1] == cluster), key=lambda item: item[2])
+        overrides[f"dvfs{cluster}"] = (len(writes), len(writes), 0, 0)
+        for seq, (writer_cpu, _, t0, t1) in enumerate(writes):
+            rows.append(fixtures.record(
+                "dvfs", seq, writer_cpu, cluster,
+                policy_cpu=0 if cluster == 0 else 4,
+                policy_mask="0x0f" if cluster == 0 else "0xf0", fast_switch=1,
+                t0=t0, t1=t1, pre_cmd="0x0", cmd="0x2000000",
+            ))
+    for cpu in range(8):
+        own = sorted(((index, item) for index, item in enumerate(samples) if item[0] == cpu),
+                     key=lambda pair: pair[1][3])
+        overrides[f"idle{cpu}"] = (2 * len(own), 2 * len(own), 0, 0)
+        for seq, (index, (_, cluster, token, t0, t1, cmd)) in enumerate(own):
+            valid = index not in invalid_indices
+            rows.append(fixtures.record(
+                "idle_enter", 2 * seq, cpu, cluster, token=token, t0=t0, t1=t1,
+                cmd=hex(cmd) if valid else "", ret=0 if valid else -5,
+                flags=1 if valid else 0,
+            ))
+            rows.append(fixtures.record(
+                "idle_exit", 2 * seq + 1, cpu, cluster,
+                token=token, t0=t1 + 10, t1=t1 + 10,
+            ))
+    return (fixtures.event_csv(*rows),
+            status(mode="mmio", idle=(0, 0, 0, 0), wfi=(0, 0, 0, 0),
+                   overrides=overrides, start="0", stop=str(stop), end=str(stop + 1000)),
+            WFI_HEADER)
+
+
 class WfiAnalyzerTests(unittest.TestCase):
     def test_valid_mmio_busy_is_bounded_to_probe_site(self):
         result = analyze_wfi.analyze_text(
@@ -306,6 +341,83 @@ class WfiAnalyzerTests(unittest.TestCase):
         )
         self.assertFalse(result["integrity"]["clean"])
         self.assertEqual(result["paired_opportunities"]["status"], "suppressed_integrity_failure")
+
+    def test_c_hook_busy_same_cpu_549_tick_control_has_explicit_roles(self):
+        result = analyze_wfi.analyze_text(*c_pairing_packet(
+            [(7, 1, 1000, 1001)], [(7, 1, 1, 1550, 1551, 0x80000000)]
+        ))
+        self.assertTrue(result["integrity"]["clean"])
+        c = result["c_hook_comparable_lag"]
+        self.assertEqual(c["status"], "conditional_software_screen")
+        self.assertEqual(c["by_cluster"]["1"]["primary_pairs"], 1)
+        self.assertEqual(c["by_cluster"]["1"]["primary_busy"], 1)
+        self.assertTrue(c["by_cluster"]["1"]["pending_c_primary_lag_observed"])
+        witness = c["decisions"][0]
+        self.assertEqual(witness["set"]["writer_cpu"], 7)
+        self.assertEqual(witness["set"]["policy_representative_cpu"], 4)
+        self.assertEqual(witness["set"]["target_cluster_cpu_mask"], "0xf0")
+        self.assertEqual(witness["sample"]["sampling_cpu"], 7)
+        self.assertEqual(witness["largest_lag_under_model_ticks"], 549)
+        self.assertEqual(witness["set_sample_order_basis"], "same_cpu_direct_order_and_lag")
+        self.assertFalse(c["negative_claim_supported"])
+        self.assertEqual(result["paired_opportunities"]["status"], "not_applicable_without_wfi_mmio")
+
+    def test_c_hook_cross_cpu_primary_and_exploratory_bounds(self):
+        at_600 = analyze_wfi.analyze_text(*c_pairing_packet(
+            [(0, 0, 1000, 1001)], [(1, 0, 1, 1361, 1362, 0x80000000)]
+        ))["c_hook_comparable_lag"]
+        above_600 = analyze_wfi.analyze_text(*c_pairing_packet(
+            [(0, 0, 1000, 1001)], [(1, 0, 1, 1362, 1363, 0x80000000)]
+        ))["c_hook_comparable_lag"]
+        self.assertEqual(at_600["by_cluster"]["0"]["primary_busy"], 1)
+        self.assertEqual(at_600["decisions"][0]["largest_lag_under_model_ticks"], 600)
+        self.assertEqual(above_600["by_cluster"]["0"]["primary_busy"], 0)
+        self.assertEqual(above_600["by_cluster"]["0"]["exploratory_busy"], 1)
+        self.assertFalse(above_600["by_cluster"]["0"]["pending_c_primary_lag_observed"])
+
+    def test_c_hook_ambiguous_earlier_sample_and_intervening_set_exclude(self):
+        ambiguous = analyze_wfi.analyze_text(*c_pairing_packet(
+            [(0, 0, 1000, 1001)],
+            [(1, 0, 1, 1200, 1201, 0x80000000),
+             (0, 0, 1, 1550, 1551, 0x80000000)]
+        ))["c_hook_comparable_lag"]
+        intervening = analyze_wfi.analyze_text(*c_pairing_packet(
+            [(0, 0, 1000, 1001), (1, 0, 1300, 1301)],
+            [(0, 0, 1, 1550, 1551, 0x80000000)]
+        ))["c_hook_comparable_lag"]
+        self.assertEqual(ambiguous["decisions"][0]["status"], "ambiguous_set_sample_order")
+        self.assertEqual(ambiguous["by_cluster"]["0"]["primary_pairs"], 0)
+        self.assertEqual(intervening["decisions"][0]["status"], "possible_intervening_set")
+        self.assertEqual(intervening["by_cluster"]["0"]["primary_pairs"], 1)
+        self.assertEqual(intervening["decisions"][0]["competing_set"]["writer_cpu"], 1)
+
+    def test_c_hook_failed_read_suppresses_control_instead_of_skipping_it(self):
+        result = analyze_wfi.analyze_text(*c_pairing_packet(
+            [(0, 0, 1000, 1001)],
+            [(0, 0, 1, 1200, 1201, 0), (0, 0, 2, 1550, 1551, 0x80000000)],
+            invalid_indices=(0,),
+        ))
+        self.assertTrue(result["integrity"]["clean"])
+        c = result["c_hook_comparable_lag"]
+        self.assertEqual(c["status"], "suppressed_invalid_c_read")
+        self.assertEqual(c["invalid_c_read_count"], 1)
+        self.assertIsNone(c["by_cluster"])
+
+    def test_c_hook_requires_strict_assumed_clock_margin_for_boundary(self):
+        c = analyze_wfi.analyze_text(*c_pairing_packet(
+            [(0, 0, 1000, 1001)], [(0, 0, 1, 1550, 1551, 0x80000000)],
+            stop=1700,
+        ))["c_hook_comparable_lag"]
+        self.assertEqual(c["by_cluster"]["0"]["primary_pairs"], 0)
+        self.assertEqual(c["decisions"][0]["status"], "no_ordered_sample_within_exploratory_search")
+
+    def test_c_hook_screen_not_applied_to_e_packet(self):
+        result = analyze_wfi.analyze_text(*pairing_packet(
+            [(0, 0, 1000, 1001)], [(0, 0, 1, 1550, 1551, 0x80000000)]
+        ))
+        self.assertEqual(result["c_hook_comparable_lag"]["status"],
+                         "not_applicable_without_c_hook_mmio")
+        self.assertEqual(result["paired_opportunities"]["by_cluster"]["0"]["primary_busy"], 1)
 
 
 if __name__ == "__main__":
