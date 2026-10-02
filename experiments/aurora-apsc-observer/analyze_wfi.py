@@ -116,7 +116,8 @@ def paired_opportunities(events: list[dict], samples: list[dict], status: dict,
 
     This is a sufficient-condition screen, not a clock qualification. In
     particular, a cross-CPU gap must be strictly ordered even after E and
-    its *largest* possible lag must fit the threshold. A competing sample
+    the *largest* possible write-to-read lag across both probe brackets must
+    fit the threshold. A competing sample
     whose order is unresolved, or a possibly intervening SET, excludes the
     source SET rather than allowing a later row to stand in for the first.
     """
@@ -140,6 +141,13 @@ def paired_opportunities(events: list[dict], samples: list[dict], status: dict,
         "same_cpu_local_order_scope": (
             "same-CPU SET-to-sample order and lag alone are direct and use "
             "E=0; they are not an assumption-free full paired opportunity"
+        ),
+        "lag_bounds": (
+            "set_to_sample_recorded_lag_ticks is the gap between the SET "
+            "bracket end and sample bracket start, a lower bound on the "
+            "actual write-to-read lag; largest_lag_under_model_ticks is "
+            "sample bracket end minus SET bracket start plus E (zero for "
+            "same CPU), the conservative upper bound used for both gates"
         ),
         "interior_limit": (
             "start/stop writer CPU is not recorded; both SET and sample are "
@@ -243,8 +251,9 @@ def paired_opportunities(events: list[dict], samples: list[dict], status: dict,
                             decision["competing_set"] = identity(possible_write)
                         else:
                             observed_gap = first["t0"] - source["t1"]
+                            bracket_span = first["t1"] - source["t0"]
                             applied_error = relative_error(source, first)
-                            largest_lag = observed_gap + applied_error
+                            largest_lag = bracket_span + applied_error
                             if largest_lag > EXPLORATORY_PAIR_TICKS:
                                 decision["status"] = "lag_exceeds_exploratory_bound"
                             else:
@@ -255,6 +264,7 @@ def paired_opportunities(events: list[dict], samples: list[dict], status: dict,
                                                "raw_command": hex(first["cmd"]),
                                                "busy_bit31": bool(first["cmd"] & legacy.BUSY_BIT)},
                                     "set_to_sample_recorded_lag_ticks": observed_gap,
+                                    "set_to_sample_bracket_span_ticks": bracket_span,
                                     "largest_lag_under_model_ticks": largest_lag,
                                     "set_sample_order_error_ticks": applied_error,
                                     "set_sample_order_basis": (
@@ -326,6 +336,11 @@ def c_hook_comparable_lag(events: list[dict], status: dict, mode: str,
             "same-CPU SET-to-C-sample order and lag alone are direct; "
             "a complete pair still depends on assumed E=240"
         ),
+        "lag_bounds": (
+            "the recorded bracket gap is a lower bound; the 600/2400-tick "
+            "gates use C sample bracket end minus SET bracket start plus "
+            "assumed cross-CPU E (zero for same CPU)"
+        ),
         "role_labels": {
             "writer_cpu": "CPU that submitted the target-cluster SET",
             "policy_representative_cpu": "cpufreq policy CPU, not an observed individual hardware target core",
@@ -396,7 +411,8 @@ def c_hook_comparable_lag(events: list[dict], status: dict, mode: str,
             projected["competing_sample"] = sample_roles(decision["competing_sample"])
         if "competing_set" in decision:
             projected["competing_set"] = set_roles(decision["competing_set"])
-        for key in ("set_to_sample_recorded_lag_ticks", "largest_lag_under_model_ticks",
+        for key in ("set_to_sample_recorded_lag_ticks", "set_to_sample_bracket_span_ticks",
+                    "largest_lag_under_model_ticks",
                     "set_sample_order_error_ticks", "set_sample_order_basis",
                     "full_pair_qualification"):
             if key in decision:

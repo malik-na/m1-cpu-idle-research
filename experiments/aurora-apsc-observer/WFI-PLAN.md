@@ -109,6 +109,15 @@ final entrant also needs complete interior peer software intervals under the
 chosen error bound; this label remains
 conditional without a separate in-sample peer-state witness.
 
+**Bracket-bound clarification, before the first ABI 2 capture:** the 549-tick
+historical observation is the strict gap between the SET-write bracket end and
+the C-read bracket start, not a worst-case write-to-read elapsed time. For the
+600/2,400-tick gates, use the conservative upper bound `sample.t1 - SET.t0`
+plus assumed pairwise cross-CPU error (zero for the same CPU). Retain the
+bracket gap separately as a lower bound. This applies equally to E and the
+comparable-lag C control; an earlier decoder used the lower bound as its gate
+and was corrected before native ABI 2 acquisition.
+
 A zero-detection statement requires clean E packets, no ring overflow,
 missing commit, invalid read, mapping error or unmatched interior slot,
 unchanged topology/policies, and at least 20 primary paired opportunities

@@ -207,7 +207,7 @@ class WfiAnalyzerTests(unittest.TestCase):
         self.assertFalse(result["integrity"]["clean"])
         self.assertIn("wfi_prepare_bad_mapping=1", result["integrity"]["reasons"])
 
-    def test_same_cpu_549_tick_busy_pair_meets_primary_gate_without_pairwise_error(self):
+    def test_same_cpu_549_tick_bracket_gap_busy_pair_meets_primary_gate(self):
         result = analyze_wfi.analyze_text(*pairing_packet(
             [(0, 0, 1000, 1001)], [(0, 0, 1, 1550, 1551, 0x80000000)]
         ))
@@ -220,7 +220,9 @@ class WfiAnalyzerTests(unittest.TestCase):
         self.assertEqual(pair["by_cluster"]["0"]["primary_model_qualified_pairs_with_same_cpu_set_sample"], 1)
         self.assertIn("model-qualified", pair["pair_count_scope"])
         self.assertIn("not an assumption-free full paired opportunity", pair["same_cpu_local_order_scope"])
-        self.assertEqual(pair["decisions"][0]["largest_lag_under_model_ticks"], 549)
+        self.assertEqual(pair["decisions"][0]["set_to_sample_recorded_lag_ticks"], 549)
+        self.assertEqual(pair["decisions"][0]["set_to_sample_bracket_span_ticks"], 551)
+        self.assertEqual(pair["decisions"][0]["largest_lag_under_model_ticks"], 551)
         self.assertFalse(pair["by_cluster"]["0"]["primary_exposure_gate_20"])
         self.assertFalse(pair["negative_claim_supported"])
 
@@ -230,7 +232,7 @@ class WfiAnalyzerTests(unittest.TestCase):
         ))
         pair = result["paired_opportunities"]
         self.assertEqual(pair["by_cluster"]["0"]["primary_model_qualified_pairs_with_cross_cpu_set_sample"], 1)
-        self.assertEqual(pair["decisions"][0]["largest_lag_under_model_ticks"], 541)
+        self.assertEqual(pair["decisions"][0]["largest_lag_under_model_ticks"], 543)
         self.assertEqual(pair["decisions"][0]["set_sample_order_error_ticks"], 240)
         later = analyze_wfi.analyze_text(*pairing_packet(
             [(0, 0, 1000, 1001)], [(1, 0, 1, 1550, 1551, 0)]
@@ -240,10 +242,10 @@ class WfiAnalyzerTests(unittest.TestCase):
 
     def test_cross_cpu_primary_threshold_includes_exact_600_only(self):
         at_bound = analyze_wfi.analyze_text(*pairing_packet(
-            [(0, 0, 1000, 1001)], [(1, 0, 1, 1361, 1362, 0)]
+            [(0, 0, 1000, 1001)], [(1, 0, 1, 1359, 1360, 0)]
         ))["paired_opportunities"]
         beyond = analyze_wfi.analyze_text(*pairing_packet(
-            [(0, 0, 1000, 1001)], [(1, 0, 1, 1362, 1363, 0)]
+            [(0, 0, 1000, 1001)], [(1, 0, 1, 1360, 1361, 0)]
         ))["paired_opportunities"]
         self.assertEqual(at_bound["by_cluster"]["0"]["primary_pairs"], 1)
         self.assertEqual(at_bound["decisions"][0]["largest_lag_under_model_ticks"], 600)
@@ -291,11 +293,39 @@ class WfiAnalyzerTests(unittest.TestCase):
 
     def test_exploratory_bound_is_separate_from_primary(self):
         pair = analyze_wfi.analyze_text(*pairing_packet(
-            [(0, 0, 1000, 1001)], [(0, 0, 1, 3401, 3402, 0)]
+            [(0, 0, 1000, 1001)], [(0, 0, 1, 3399, 3400, 0)]
         ))["paired_opportunities"]
         self.assertEqual(pair["decisions"][0]["status"], "exploratory_only_pair")
         self.assertEqual(pair["by_cluster"]["0"]["primary_pairs"], 0)
         self.assertEqual(pair["by_cluster"]["0"]["exploratory_pairs"], 1)
+        self.assertEqual(pair["decisions"][0]["largest_lag_under_model_ticks"], 2400)
+
+    def test_wide_set_and_probe_brackets_cannot_falsely_pass_primary_e_gate(self):
+        result = analyze_wfi.analyze_text(*pairing_packet(
+            [(0, 0, 1000, 1300)], [(0, 0, 1, 1850, 2000, 0x80000000)]
+        ))
+        self.assertTrue(result["integrity"]["clean"])
+        pairs = result["paired_opportunities"]
+        self.assertEqual(pairs["by_cluster"]["0"]["primary_pairs"], 0)
+        self.assertEqual(pairs["by_cluster"]["0"]["primary_busy"], 0)
+        self.assertEqual(pairs["by_cluster"]["0"]["exploratory_busy"], 1)
+        witness = pairs["decisions"][0]
+        self.assertEqual(witness["status"], "exploratory_only_pair")
+        self.assertEqual(witness["set_to_sample_recorded_lag_ticks"], 550)
+        self.assertEqual(witness["set_to_sample_bracket_span_ticks"], 1000)
+        self.assertEqual(witness["largest_lag_under_model_ticks"], 1000)
+
+    def test_same_cpu_primary_bound_uses_outer_bracket_endpoints(self):
+        at_bound = analyze_wfi.analyze_text(*pairing_packet(
+            [(0, 0, 1000, 1001)], [(0, 0, 1, 1599, 1600, 0)]
+        ))["paired_opportunities"]
+        beyond = analyze_wfi.analyze_text(*pairing_packet(
+            [(0, 0, 1000, 1001)], [(0, 0, 1, 1600, 1601, 0)]
+        ))["paired_opportunities"]
+        self.assertEqual(at_bound["by_cluster"]["0"]["primary_pairs"], 1)
+        self.assertEqual(at_bound["decisions"][0]["largest_lag_under_model_ticks"], 600)
+        self.assertEqual(beyond["by_cluster"]["0"]["primary_pairs"], 0)
+        self.assertEqual(beyond["by_cluster"]["0"]["exploratory_pairs"], 1)
 
     def test_twenty_distinct_pairs_pass_only_the_exposure_count_gate(self):
         sets = [(0, 0, 1000 + i * 700, 1001 + i * 700) for i in range(20)]
@@ -357,23 +387,39 @@ class WfiAnalyzerTests(unittest.TestCase):
         self.assertEqual(witness["set"]["policy_representative_cpu"], 4)
         self.assertEqual(witness["set"]["target_cluster_cpu_mask"], "0xf0")
         self.assertEqual(witness["sample"]["sampling_cpu"], 7)
-        self.assertEqual(witness["largest_lag_under_model_ticks"], 549)
+        self.assertEqual(witness["set_to_sample_recorded_lag_ticks"], 549)
+        self.assertEqual(witness["largest_lag_under_model_ticks"], 551)
         self.assertEqual(witness["set_sample_order_basis"], "same_cpu_direct_order_and_lag")
         self.assertFalse(c["negative_claim_supported"])
         self.assertEqual(result["paired_opportunities"]["status"], "not_applicable_without_wfi_mmio")
 
     def test_c_hook_cross_cpu_primary_and_exploratory_bounds(self):
         at_600 = analyze_wfi.analyze_text(*c_pairing_packet(
-            [(0, 0, 1000, 1001)], [(1, 0, 1, 1361, 1362, 0x80000000)]
+            [(0, 0, 1000, 1001)], [(1, 0, 1, 1359, 1360, 0x80000000)]
         ))["c_hook_comparable_lag"]
         above_600 = analyze_wfi.analyze_text(*c_pairing_packet(
-            [(0, 0, 1000, 1001)], [(1, 0, 1, 1362, 1363, 0x80000000)]
+            [(0, 0, 1000, 1001)], [(1, 0, 1, 1360, 1361, 0x80000000)]
         ))["c_hook_comparable_lag"]
         self.assertEqual(at_600["by_cluster"]["0"]["primary_busy"], 1)
         self.assertEqual(at_600["decisions"][0]["largest_lag_under_model_ticks"], 600)
         self.assertEqual(above_600["by_cluster"]["0"]["primary_busy"], 0)
         self.assertEqual(above_600["by_cluster"]["0"]["exploratory_busy"], 1)
         self.assertFalse(above_600["by_cluster"]["0"]["pending_c_primary_lag_observed"])
+
+    def test_wide_set_and_probe_brackets_cannot_falsely_pass_primary_c_control(self):
+        result = analyze_wfi.analyze_text(*c_pairing_packet(
+            [(0, 0, 1000, 1300)], [(0, 0, 1, 1850, 2000, 0x80000000)]
+        ))
+        self.assertTrue(result["integrity"]["clean"])
+        control = result["c_hook_comparable_lag"]
+        self.assertEqual(control["by_cluster"]["0"]["primary_busy"], 0)
+        self.assertEqual(control["by_cluster"]["0"]["exploratory_busy"], 1)
+        self.assertFalse(control["by_cluster"]["0"]["pending_c_primary_lag_observed"])
+        witness = control["decisions"][0]
+        self.assertEqual(witness["status"], "exploratory_only_pair")
+        self.assertEqual(witness["set_to_sample_recorded_lag_ticks"], 550)
+        self.assertEqual(witness["set_to_sample_bracket_span_ticks"], 1000)
+        self.assertEqual(witness["largest_lag_under_model_ticks"], 1000)
 
     def test_c_hook_ambiguous_earlier_sample_and_intervening_set_exclude(self):
         ambiguous = analyze_wfi.analyze_text(*c_pairing_packet(
