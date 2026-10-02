@@ -147,17 +147,33 @@ vmlinux Build-ID, 1,867 modules and 111 Apple DTBs, while the build log remains
 private and hash-pinned. The separate [sanitized deployment receipt](experiments/aurora-apsc-observer/abi3-deployment-receipt.json)
 binds the distinct module package and UKI to that build and records the
 preserved stock default and PCPM fallback, EFI reserve and independent
-post-install readback. The ABI 3 image remains unbooted, with no native
-capture; the [prospective run plan](experiments/aurora-apsc-observer/WFI-ABI3-RUN-PLAN.md)
-fixes those later gates.
+post-install readback. At that checkpoint the ABI 3 image was unbooted;
+the [prospective run plan](experiments/aurora-apsc-observer/WFI-ABI3-RUN-PLAN.md)
+fixed the later native gates.
 
 The [ABI 3 acquisition logic review copy](experiments/aurora-apsc-observer/abi3-acquisition/README.md)
 retains the prospective one-shot A/D/E/conditional-C collector and its eighteen
 synthetic tests. Its redaction receipt binds the private executable source to
 the public copy, with only the local repository path and account name
 replaced. The linked build and installed-image identity are now separately
-recorded; fresh-boot controls remain prerequisites. This publication is not a
-native ABI 3 capture.
+recorded. The synthetic logic checks are separate from a native capture.
+
+The first fresh ABI 3 boot completed an [unarmed A baseline](experiments/aurora-apsc-observer/ABI3-A-BASELINE-RESULT.md)
+under that plan. The reviewed [public numerical packet](experiments/aurora-apsc-observer/native-evidence/abi3-A/README.md)
+retains filtered status lines, byte-exact header-only APSC streams after
+deterministic gzip, worker rows with times relative to their scheduled start,
+relative timeline actions, and projected endpoint context. Its receipt binds
+each public data artifact to the sealed private manifest and source file hashes.
+The private packet retains the boot identifier, operator receipt text,
+configuration, FDT, boot arguments, full logs, network/USB identities and
+absolute timestamps. Both workers completed 200 pulses, 196 per CPU fully
+inside the 10.000120857-second A window; the observer stayed unarmed and
+produced zero rows. The operator's first-boot Wi-Fi and visible-brightness
+receipt and the live source/build/deployment checks are privately bound,
+not independently proved by the public worker rows. This A packet is an
+instrument-state and delivered-work baseline, with no command-BUSY,
+WFI-instruction-state, physical-power, energy or wake finding. D/E require
+their own fresh boots and validation.
 
 The [EL2 WFI-trap feasibility note](experiments/aurora-apsc-observer/WFI-EL2-TRAP-FEASIBILITY.md)
 is a source-pinned static assessment of an unimplemented m1n1 guest route.

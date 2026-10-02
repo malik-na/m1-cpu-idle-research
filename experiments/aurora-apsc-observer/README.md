@@ -177,8 +177,15 @@ proof, offline validator and successful full image build. The
 [sanitized deployment receipt](abi3-deployment-receipt.json) records the
 distinct ABI 3 module package and UKI, a separate Limine entry, preserved
 stock default and PCPM fallback, and independent post-install readback.
-The ABI 3 image is installed but unbooted; no ABI 3 native capture or
-hardware-idle finding follows from this installation.
+The first fresh ABI 3 boot later passed its device and image checks and
+completed the [unarmed A baseline](ABI3-A-BASELINE-RESULT.md). Its
+[public numerical packet](native-evidence/abi3-A/README.md) retains the
+reviewed status, empty observer streams, and 200 worker pulses per CPU,
+with 196 pulses per CPU fully inside the A window. A had no observer
+capture command or control write; it provides no command-BUSY or
+WFI-instruction-state result. The D/E controls remain separate fresh-boot
+experiments under the fixed run plan.
+
 The [EL2 WFI-trap feasibility note](WFI-EL2-TRAP-FEASIBILITY.md) checks a
 separate instruction-correlated guest diagnostic against pinned m1n1 and Arm
 semantics; the trap cannot by itself establish BUSY at a native executed WFI.

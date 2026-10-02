@@ -1,0 +1,37 @@
+{
+  "interpretation": "unarmed work baseline; no WFI-instruction state or causal power claim",
+  "observer_abi": 3,
+  "observer_armed": false,
+  "observer_control_write_attempted": false,
+  "observer_event_rows": 0,
+  "observer_state_before_after": [
+    "ready",
+    "ready"
+  ],
+  "observer_streams_zero_and_loss_free": true,
+  "observer_wfi_event_rows": 0,
+  "pcpm_and_counter_helpers_unused": true,
+  "phase": "A",
+  "schema": "abi3-a-baseline-projection-v1",
+  "user_current_boot_wifi_and_visible_brightness_receipt_checked": true,
+  "window_duration_ns": 10000120857,
+  "window_source": "userspace CLOCK_MONOTONIC",
+  "window_start_relative_to_schedule_ns": 152291433,
+  "window_stop_relative_to_schedule_ns": 10152412290,
+  "workers": {
+    "1": {
+      "checksum_sequence_sha256": "d6750e384dbb021e45c3e3c06a0bbbf609346f176aa677e847ad9f06d514b1b2",
+      "interior_pulses": 196,
+      "interior_work_ns": 1763893162,
+      "pulses": 200,
+      "work_ns": 1778380106
+    },
+    "5": {
+      "checksum_sequence_sha256": "d6750e384dbb021e45c3e3c06a0bbbf609346f176aa677e847ad9f06d514b1b2",
+      "interior_pulses": 196,
+      "interior_work_ns": 1966471576,
+      "pulses": 200,
+      "work_ns": 1984849303
+    }
+  }
+}
