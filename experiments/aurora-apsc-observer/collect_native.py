@@ -158,12 +158,14 @@ def main():
     apsc = Path('/sys/kernel/debug/apple_apsc_observer')
     counter = Path('/sys/kernel/debug/apple_counter_qualification')
     try:
+        collector_source = Path(__file__).resolve().read_bytes()
+        save('collector-source.py', collector_source)
         workload_sha = hashlib.sha256(args.workload.read_bytes()).hexdigest()
         mark('begin', mode=args.mode, observer_abi=args.observer_abi, duration_ms=DURATION_MS,
              release=os.uname().release, expected_release=expected_release,
              expected_config_sha256=expected_config_sha, expected_build_id=expected_build_id,
              expected_entry=expected_entry, workload_sha256=workload_sha,
-             collector_sha256=hashlib.sha256(Path(__file__).resolve().read_bytes()).hexdigest())
+             collector_sha256=hashlib.sha256(collector_source).hexdigest())
         assert workload_sha == WORKLOAD_SHA, 'unexpected workload binary'
         assert os.uname().release == expected_release
         config = gzip.decompress(read('/proc/config.gz', 'boot-config.gz'))
