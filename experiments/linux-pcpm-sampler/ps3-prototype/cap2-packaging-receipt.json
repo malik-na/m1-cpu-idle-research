@@ -1,0 +1,57 @@
+{
+  "schema": "pcpu-ps3-cap2-packaging-public-v1",
+  "issue": "https://github.com/malik-na/m1-cpu-idle-research/issues/6",
+  "scope": "Private cap-two module package, initramfs and UKI prepared and inspected; no live installation or boot",
+  "status": "private_artifacts_prepared_uninstalled",
+  "identity": {
+    "release": "7.1.12-ARCH-apsc-20261002-wfi-pcpm-abi3-ps3",
+    "probe_mode": "active_only_read_enabled_cap2",
+    "max_rows": 2,
+    "max_read_attempts": 10,
+    "entry_title": "Aurora-APSC-research-pcpu-ps3",
+    "efi_filename": "omarchy_linux-aurora-apsc-wfi-pcpm-abi3-ps3.efi",
+    "source_tree_sha256": "694f6c591a6a53b65efdf6cdfbaaece4670c225b24a6abc025e634a28aeb278b",
+    "ps3_source_sha256": "c82f4ff83d6df44b37a78713d160c8c4c63cf9f1d20de3461070100f2f52720f",
+    "activation_patch_sha256": "844560313961c97e1691f2255c70effdc17377248101cfec65b422b277c6e1f1",
+    "configuration_sha256": "f06a30e6c3f4d518adec1381ef245893ac5aa51d09dc65479cad09958b8800df",
+    "linked_build_receipt_sha256": "11c08a0028b663f88d6a277af538fecf36f8501ebdabaa117e7a59780699d112",
+    "vmlinux_gnu_build_id": "2f653de7a9d2c83d50f60dfc701680ea8b578f31"
+  },
+  "artifacts": {
+    "image_sha256": "a8177c6319b4092eca9ce3965f77da478cc0706ff4bd47b488f3f074efc091b2",
+    "image_bytes": 34179584,
+    "module_package_name": "linux-aurora-apsc-wfi-pcpm-abi3-ps3-modules",
+    "module_package_sha256": "a33cc29b1116dc3e543ef1d3c544372c9e9c09f589445f03af0916c9648c102e",
+    "module_package_bytes": 2114426880,
+    "module_count": 1867,
+    "package_member_count": 2247,
+    "initramfs_sha256": "e72b3e946bb7ba4b5198088de4c0a8b1d3f89ccfcf930f2f30251624cd6a405c",
+    "initramfs_bytes": 60509560,
+    "uki_sha256": "75b14ba728505102b05e2543e91c836c418f31a4106834b99716d918641db8b7",
+    "uki_blake2b": "3987f49120b5a2d94872192122b08cda194de37aba0ed3c4e8bcd1dbc763b3ed748eb6d67477f3505e8e979cbe2d53273e50b0565745a108be0747852407f5b6",
+    "uki_bytes": 94835712
+  },
+  "private_inspection": {
+    "package_module_bytes_match_active_linked_build": true,
+    "package_inventory_matches_staged_tree": true,
+    "uki_release_kernel_and_initramfs_match": true,
+    "normalized_abi3_initramfs_inventory_matches": true,
+    "initramfs_unique_path_count": 1333,
+    "embedded_module_count": 90,
+    "embedded_module_bytes_match_active_linked_build": true,
+    "private_candidate_receipt_sha256": "d8f35206593cc6b06cf1a0c788550e7a3e8868be019f2431bfbb6ef2cd2f51b9"
+  },
+  "independent_candidate_review": {
+    "result": "artifact_identity_pass",
+    "reviewed_build_pins_match": true,
+    "package_module_bytes_matched": 1867,
+    "embedded_initramfs_module_bytes_matched": 90,
+    "uki_sections_match": true,
+    "normalized_initramfs_path_inventory_matched": 1333,
+    "scope": "Read-only candidate artifact identity and packaging review; no installation, boot or MMIO observation"
+  },
+  "limits": [
+    "The package, initramfs and UKI remain in private storage; no new module tree or EFI image was installed by this preparation.",
+    "Artifact inspection does not establish a successful boot, a PCPU register read, safe MMIO access while P cores idle, a calibrated physical state, residency, energy saving or a Linux idle-policy improvement."
+  ]
+}
