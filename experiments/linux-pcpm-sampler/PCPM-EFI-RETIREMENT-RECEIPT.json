@@ -1,0 +1,68 @@
+{
+  "bootloader": {
+    "likely_current_executable": "EFI/BOOT/BOOTAA64.EFI",
+    "marked_executables": [
+      {
+        "path": "EFI/BOOT/BOOTAA64.EFI",
+        "sha256": "6d1be5abc5a7850f238d2c8407225d85298ccac1a1be2756618854d9352849c9",
+        "unenrolled_config_hash": true,
+        "version": "Limine 12.9.1"
+      },
+      {
+        "path": "EFI/limine/limine_aa64.efi",
+        "sha256": "7a80f1e6a274db258425fdad79604e3e92736e84df45de2a75447cf3d96814ea",
+        "unenrolled_config_hash": true,
+        "version": "Limine 12.9.0"
+      }
+    ],
+    "product": "Limine 12.9.1",
+    "secure_boot": "disabled (setup)",
+    "sole_esp_config_candidate": [
+      "limine.conf"
+    ]
+  },
+  "date_utc": "2026-10-04",
+  "efi_space": {
+    "free_after_bytes": 232148992,
+    "free_before_bytes": 137314304,
+    "total_bytes": 523132928,
+    "usage_after_percent": 55.62332639095507,
+    "usage_before_percent": 73.75154637560877
+  },
+  "images": {
+    "abi3_uki_sha256": "3c00f38bce07ad99d18c762acd4aa1f318e99d06bde8e7142e86d4ef02568530",
+    "off_esp_retained_copy_sha256": "fc0c1af55696ab8508874f44ce0c5ab5d19c666fb26eda53553c940aac01c55a",
+    "retired_pcpm_uki_absent_from_esp": true,
+    "retired_pcpm_uki_bytes": 94833152,
+    "retired_pcpm_uki_sha256": "fc0c1af55696ab8508874f44ce0c5ab5d19c666fb26eda53553c940aac01c55a",
+    "stock_uki_sha256": "97e6229b65946aa24a5c863290abef8a3b1b48067655b29df819c7a9c62c4618"
+  },
+  "limits": [
+    "No reboot has tested the revised menu yet.",
+    "Limine config path and executable identity are supported by deterministic search, versioned executable inventory, a packaged fallback hash and the ABI3 menu-selection receipt; no measured boot digest attests exact executed bytes.",
+    "This is EFI maintenance, not a CPU-idle or power-state observation."
+  ],
+  "menu": {
+    "after_sha256": "c11da7925d6c690b531f03c2f21279aaf499a4e9cd961ec3c95923be48ca41c3",
+    "before_sha256": "99b667e78384ab98f9e4d6ea388908248ff48c6ae02905bf33b1350beac20b4d",
+    "obsolete_pcpm_entry_absent_after": true,
+    "stock_default_entry": 2
+  },
+  "running_abi3": {
+    "build_id": "6fbc0dc67bb746466a7244ba2fc096ecae7e6476",
+    "config_sha256": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+    "release": "7.1.12-ARCH-apsc-20261002-wfi-pcpm-abi3"
+  },
+  "schema": "pcpm-efi-retirement-public-v1",
+  "scope": "retire obsolete PCPM Limine stanza and UKI after ABI3 replacement booted; retain stock default and ABI3",
+  "verification": {
+    "independent_post_change_readback": true,
+    "preflight_script_sha256": "24eaa7b88058516f20efe8b6fadd08120a8d3d38809927d377e59087875a69d7",
+    "private_preflight_receipt_sha256": "c4e4e02d48e05c7854300253d483deadd0376295397f8c85530d6be23ee546c0",
+    "private_readback_receipt_sha256": "d1abf1ef8ddf77f46fff780c55620cef3a0bd9d208d9c6574118bee636640013",
+    "private_retirement_receipt_sha256": "b5853dfde0d284f66e67708bdf1d8c1d8200654105252848cec8d24cf3eabf01",
+    "readback_script_sha256": "b1345bc3d5db9f1513d673a2c06e8a0f65d20c8bc97d8a828f74ea4ee3bc75e3",
+    "retirement_script_sha256": "ed41a6ebbcbc33ac393dcc9f0c426ed7e7198fd01a2000c7b0af04933c468295",
+    "same_process_provenance_gate": true
+  }
+}
