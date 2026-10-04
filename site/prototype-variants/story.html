@@ -1,0 +1,79 @@
+<!-- THROWAWAY UI PROTOTYPE A. Question: can a stepped editorial story make the observation boundary clear? -->
+<section id="VariantA" data-variant="A" aria-labelledby="story-title">
+  <div class="story-kicker">01 / An observation, and its limit</div>
+  <div class="story-opening">
+    <h1 id="story-title">A pending command.<br><span>A precise limit.</span></h1>
+    <div class="story-deck">
+      <p>On the M1, a Linux idle-path probe saw the APSC command’s <strong>BUSY bit set</strong> while three peer CPUs were inside their recorded idle callbacks.</p>
+      <p>The read came before the final barrier and WFI instruction. What happened at WFI—and whether a core physically slept—remains unmeasured.</p>
+      <div class="story-context">T8103 / J313 · Native Linux · ABI 3 E capture<br>4 October 2026 · 10.411807702 s observed window</div>
+    </div>
+  </div>
+
+  <div class="story-counts" aria-label="Evidence filtering">
+    <div><span class="story-count">2,185</span><span class="story-count-label">command-word reads</span></div>
+    <span class="story-arrow" aria-hidden="true">→</span>
+    <div><span class="story-count">71</span><span class="story-count-label">reads with BUSY set</span></div>
+    <span class="story-arrow" aria-hidden="true">→</span>
+    <div><span class="story-count story-count-final">18</span><span class="story-count-label">complete software witnesses</span></div>
+  </div>
+  <p class="story-count-note">The other <strong>53 BUSY rows</strong> did not meet the complete-witness rules. Missing peer intervals and an incomplete candidate interval remain in the evidence packet; rejection reasons can overlap.</p>
+
+  <div class="story-chapter">
+    <div class="story-chapter-heading">
+      <div class="story-kicker">02 / Walk the instruction path</div>
+      <h2>Where the read ends,<br>the unknown begins.</h2>
+      <p>Choose a step to inspect what the record supports. This is a schematic of source order, <strong>not a measured time axis</strong>. Spacing conveys no duration.</p>
+      <div class="story-step-list" role="group" aria-label="Instruction-path steps">
+        <button type="button" data-story-stage="0" aria-pressed="true"><span>01</span> DVFS SET <small>preceding local event</small></button>
+        <button type="button" data-story-stage="1" aria-pressed="false"><span>02</span> BUSY sample <small>instrumented read</small></button>
+        <button type="button" data-story-stage="2" aria-pressed="false"><span>03</span> DSB <small>existing barrier</small></button>
+        <button type="button" data-story-stage="3" aria-pressed="false"><span>04</span> WFI <small>command state unknown</small></button>
+        <button type="button" data-story-stage="4" aria-pressed="false"><span>05</span> Callback exit <small>software record</small></button>
+      </div>
+    </div>
+    <div class="story-reader">
+      <div class="story-reader-top"><span>CPU 4 / token 177</span><span>ILLUSTRATION · SOURCE ORDER</span></div>
+      <div class="story-rail" aria-hidden="true">
+        <span data-story-node="0">SET</span><i></i><span data-story-node="1">READ</span><i></i><span data-story-node="2">DSB</span><i></i><span data-story-node="3">WFI</span><i></i><span data-story-node="4">EXIT</span>
+      </div>
+      <div class="story-readout" aria-live="polite" aria-atomic="true">
+        <span id="story-stage-kind" class="story-stage-kind">Recorded local order</span>
+        <h3 id="story-stage-title">A SET precedes this read.</h3>
+        <p id="story-stage-description">A successful same-CPU SET targeted cluster 1 before the read. That establishes local event order; other CPUs could also submit cluster commands, so the record does not identify which SET caused BUSY.</p>
+        <div id="story-stage-detail" class="story-stage-detail">Writer CPU 4 · cluster 1 · local upper lag: 54 counter ticks</div>
+      </div>
+      <div class="story-word"><span>Preserved command word</span><code>0x0000040080104104</code><b>BUSY · bit 31 = 1</b></div>
+      <p class="story-reader-limit">Software callback ≠ physical sleep. A pre-DSB read ≠ a command-state measurement at WFI.</p>
+    </div>
+  </div>
+
+  <div class="story-chapter story-ticket-chapter">
+    <div class="story-chapter-heading">
+      <div class="story-kicker">03 / Look at one witness</div>
+      <h2>Tickets give order.<br>They do not give time.</h2>
+      <p>For CPU 4 / token 177, all three peer callbacks entered before the candidate and exited after its read bracket.</p>
+      <p>The closest peer exit was ticket <strong>1906</strong>, one ticket after the read bracket. It could precede the candidate’s later WFI instruction.</p>
+    </div>
+    <div class="story-ticket-record">
+      <div class="story-ticket-key"><span>Exact ticket sequence · ordinal only</span><span>Cluster 1</span></div>
+      <ol class="story-ticket-list">
+        <li><code>1735</code><span>CPU 7 / token 11 enters callback</span></li>
+        <li><code>1884</code><span>CPU 5 / token 129 enters callback</span></li>
+        <li><code>1899</code><span>CPU 6 / token 160 enters callback</span></li>
+        <li><code>1903</code><span>CPU 4 / token 177 enters callback</span></li>
+        <li class="story-bracket"><code>1904 → 1905</code><span>Candidate’s BUSY read bracket</span></li>
+        <li class="story-close-peer"><code>1906</code><span>CPU 6 / token 160 exits callback</span></li>
+        <li><code>1918</code><span>CPU 5 / token 129 exits callback</span></li>
+        <li class="story-candidate-exit"><code>1919</code><span>CPU 4 / token 177 exits callback</span></li>
+        <li><code>2038</code><span>CPU 7 / token 11 exits callback</span></li>
+      </ol>
+      <div class="story-unknown"><span aria-hidden="true">?</span><p><strong>WFI has no ticket in this sequence.</strong> The candidate executes WFI after the read bracket and before its exit record. Its order relative to peer exit 1906 is not established.</p></div>
+    </div>
+  </div>
+
+  <div class="story-ending">
+    <div><div class="story-kicker">04 / What this lets us say</div><h2>Pending at the read.<br><span>Physical state still open.</span></h2></div>
+    <div><p>The 18 witnesses support a pending APSC command at the instrumented read with all three peers inside recorded software callbacks. They establish neither BUSY continuity to WFI nor a physical power-state or energy benefit.</p><p>Issue #5 stays open. Further reboots are paused until a genuinely independent timing signal becomes available. Issue #6 turns to physical-state signal calibration.</p><div class="story-source-links"><a href="/read/experiments/aurora-apsc-observer/ABI3-E-TICKET-RESULT.html">Read the full E result ↗</a><a href="/read/experiments/aurora-apsc-observer/native-evidence/abi3-E/README.html">Inspect the numerical packet ↗</a></div></div>
+  </div>
+</section>

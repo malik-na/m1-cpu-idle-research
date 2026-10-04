@@ -1,0 +1,13 @@
+/* THROWAWAY. Injected only by the development prototype entry point. */
+[data-variant][hidden] { display:none !important; }
+main { padding-bottom:5rem; }
+.prototype-notice { padding:.8rem 2.5rem; color:var(--muted); border-bottom:1px dashed var(--line); font-size:.8rem; }
+.prototype-notice strong { color:var(--accent); margin-right:1rem; }
+#prototype-switcher { position:fixed; bottom:1.1rem; left:50%; transform:translateX(-50%); z-index:100; display:flex; align-items:center; gap:.8rem; padding:.5rem .65rem; border:1px solid #66543b; border-radius:50px; background:#ede3d0; color:#171c23; box-shadow:0 8px 40px #0008; }
+#prototype-switcher div { min-width:190px; text-align:center; line-height:1.5; }
+#prototype-switcher .switcher-kicker { display:block; font-size:.6rem; letter-spacing:.12em; }
+#prototype-switcher strong { font-size:.85rem; }
+#prototype-switcher button { border:0; border-radius:30px; background:#171c23; color:#ede3d0; width:35px; height:35px; }
+#prototype-state-toggle { width:auto !important; padding:0 .8rem; font-size:.75rem; }
+#prototype-state { position:fixed; bottom:5.6rem; right:1rem; z-index:100; width:min(570px,calc(100vw - 2rem)); max-height:50vh; overflow:auto; margin:0; padding:1rem; border:1px solid var(--line); border-radius:10px; background:#111419f7; color:var(--green); font-size:.73rem; white-space:pre-wrap; overflow-wrap:anywhere; }
+@media (max-width:600px) { .prototype-notice{padding:.8rem 1rem;} #prototype-switcher{gap:.45rem;} #prototype-switcher div{min-width:150px;} }

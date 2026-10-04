@@ -1,0 +1,48 @@
+<!-- Throwaway Variant B: does an interactive raw-witness inspector explain the finding and its limit? -->
+<section id="VariantB" data-variant="B" aria-labelledby="lab-title">
+  <div class="lab-heading">
+    <div><p class="lab-kicker">NATIVE LINUX / ABI 3 E / TRACE INSPECTOR</p><h1 id="lab-title">Read the witness.</h1><p>Inspect the recorded command and the software order that qualifies it.</p></div>
+    <a class="lab-source" href="/read/experiments/aurora-apsc-observer/ABI3-E-TICKET-RESULT.html">Read the result ↗</a>
+  </div>
+
+  <div class="lab-funnel" aria-label="Capture selection funnel">
+    <div><span>Recorded command reads</span><strong>2,185</strong><small>First-attempt, pre-DSB probes</small></div>
+    <span class="lab-flow" aria-hidden="true">→</span>
+    <div><span>BUSY bit set</span><strong>71</strong><small>2,114 reads had BUSY clear</small></div>
+    <span class="lab-flow" aria-hidden="true">→</span>
+    <div class="lab-funnel-result"><span>Complete software witnesses</span><strong>18</strong><small>53 BUSY rows did not qualify</small></div>
+  </div>
+
+  <div class="lab-inspector">
+    <aside class="lab-selection" aria-label="Witness selection">
+      <h2>Witnesses <span>18</span></h2>
+      <label for="lab-witness">Candidate CPU / idle token</label>
+      <select id="lab-witness"></select>
+      <div class="lab-candidate"><span>Selected candidate</span><strong id="lab-candidate-name"></strong><small id="lab-candidate-meta"></small></div>
+      <dl class="lab-metadata"><div><dt>Target</dt><dd>T8103 / J313</dd></div><div><dt>Phase</dt><dd>E · wfi_mmio</dd></div><div><dt>ABI</dt><dd>3</dd></div><div><dt>Read location</dt><dd>Before DSB / WFI</dd></div><div><dt>Recording loss</dt><dd>0</dd></div></dl>
+      <p class="lab-quiet">Saved numerical evidence.<br>No live telemetry.</p>
+      <a href="/read/experiments/aurora-apsc-observer/native-evidence/abi3-E/README.html">Open numerical packet ↗</a>
+    </aside>
+
+    <div class="lab-workspace">
+      <div class="lab-panel-title"><h2>Software ticket order</h2><span>ORDINAL AXIS / NO TIME SCALE</span></div>
+      <p class="lab-chart-intro">Every peer entered its callback before the candidate; every peer exited after the command-read bracket.</p>
+      <div class="lab-chart-scroll"><div id="lab-ticket-plot"></div></div>
+      <div class="lab-legend"><span><i class="lab-dot candidate"></i>Candidate callback</span><span><i class="lab-dot peer"></i>Peer callback</span><span><i class="lab-dot read"></i>Command-read bracket</span></div>
+      <p class="lab-axis-note">Positions show software order. Equal spacing does not measure elapsed time. Callback intervals do not show physical sleep.</p>
+
+      <div class="lab-command-panel">
+        <div class="lab-command-header"><div><span class="lab-kicker">RAW COMMAND WORD</span><code id="lab-raw-command"></code></div><span class="lab-busy-badge">BUSY = <b id="lab-busy-value">1</b></span></div>
+        <div class="lab-bit-legend"><span>LOW 32 BITS · BIT 31 ON THE LEFT</span><span id="lab-low32"></span></div>
+        <div id="lab-command-bits" class="lab-command-bits" aria-label="Low 32 command bits"></div>
+        <p class="lab-quiet">Highlighted bit 31 is BUSY. Other bits are retained without assigning a hardware-state meaning.</p>
+      </div>
+
+      <div class="lab-seam"><span class="lab-seam-mark" aria-hidden="true">?</span><div><h3>The executed WFI remains unmeasured.</h3><p>The command was read earlier. Ticket ordering does not prove that BUSY stayed set until WFI, that the peers slept, or that the cluster powered down.</p></div></div>
+      <div class="lab-posthoc"><span id="lab-posthoc-status"></span><p>Six of the 18 witnesses also pass a <strong>post-hoc</strong> screen: all peer exit tickets follow the candidate exit ticket. This strengthens callback order; it does not establish BUSY continuity or physical sleep.</p></div>
+      <details class="lab-raw-details"><summary>View the selected validator row</summary><pre id="lab-selected-json"></pre></details>
+    </div>
+  </div>
+
+  <div class="lab-rejection-note"><strong>What happened to the other 53 BUSY rows?</strong><p>They lack a completed candidate or peer interval. All 42 cluster-0 BUSY rows lack a CPU-0 peer interval. Rejection reasons can overlap; missing software records do not describe physical CPU state.</p><a href="/read/experiments/aurora-apsc-observer/ABI3-E-TICKET-RESULT.html">Inspect rejection counts and limits ↗</a></div>
+</section>
