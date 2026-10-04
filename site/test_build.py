@@ -180,7 +180,13 @@ class RenderingTests(unittest.TestCase):
     def test_home_and_agent_handoff_preserve_evidence_boundary(self):
         home = (self.output / 'index.html').read_text()
         self.assertIn('no established Linux policy fix', home)
-        self.assertIn('Native target captures are still pending', home)
+        if 'experiments/aurora-apsc-observer/ABI3-E-TICKET-RESULT.md' in self.builder.docs:
+            self.assertNotIn('Native target captures are still pending', home)
+            self.assertIn('pre-DSB', home)
+            self.assertIn('No further #5 reboots unless a genuinely independent timing signal', home)
+            self.assertIn('physical sleep and energy remain unobserved', home)
+        else:
+            self.assertIn('Native target captures are still pending', home)
         self.assertIn('Cells are not live CPU activity', home)
         handoff = (self.output / 'llms.txt').read_text()
         self.assertIn(self.revision, handoff)
