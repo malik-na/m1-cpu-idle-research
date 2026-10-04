@@ -14,7 +14,7 @@ The starting evidence table is small enough to guide the next experiment:
 
 | Candidate | Established observation | Missing fact | Next decision |
 | --- | --- | --- | --- |
-| APSC command BUSY, issue #5 | ABI 3 retained 71 pre-DSB BUSY reads, including 18 ordered software final-entrant witnesses | Command state at the executed WFI; physical consequence | Keep #5 open; resume hardware work only when an independent timing/state route is qualified |
+| APSC command BUSY, issue #5 | ABI 3 retained 71 pre-DSB BUSY reads, including 18 ordered software final-entrant witnesses | Command state at the executed WFI; physical consequence | Keep #5 open; resume hardware work only when a genuinely independent timing signal is qualified |
 | PCPM main-PMGR `+0x48` | All 90 native reads were `0x000021f0` across the tested phases | A code sensitive to returning CPU idle | Retain the negative result; do not repeat the same PCPM-only screen |
 | PCPU0–3 main-PMGR `+0x20`–`+0x38` | Saved ADT names, field decoder, linked accessor and installed image | Native access, variability, core identity and state meaning | Qualify records, then active-only access; advance to a new phase protocol only if access succeeds |
 | APSC `LAST_CHG_TIME +0x38` | Source/binary candidate only | Qualified access and an instruction-correlated completion invariant | Do not use it as an independent timing signal yet |
