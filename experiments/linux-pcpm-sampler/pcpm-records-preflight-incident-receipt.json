@@ -1,0 +1,62 @@
+{
+  "booted_candidate": {
+    "brightness_155_to_40_to_155_visible": true,
+    "brightness_restored": 155,
+    "charger_connected": true,
+    "gnu_build_id": "83a213307311f91eefb44d70718db21fea3e067c",
+    "release": "7.1.12-ARCH-apsc-20261002-wfi-pcpm",
+    "selected_entry": "Aurora-APSC-research-wfi-pcpm",
+    "uncompressed_config_sha256": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+    "wifi_page_loaded": true
+  },
+  "collector_correction": {
+    "collector_sha256_after_fix": "8a2dfde31f7294606c43da3b2b2ef1d37100f676a9e52939b735701bcb4f1728",
+    "live_boot_id_bytes_read_after_fix": 37,
+    "native_controls_used_during_fix": false,
+    "new_maximum_per_read_bytes": 65536,
+    "previous_read_pattern": "one read request of maximum raw size plus one byte (128 MiB + 1) for a tiny procfs value",
+    "pure_tests_passed": 8,
+    "test_protocol_sha256": "024b177e469873b2222fff5f2c0a2df5bd1e0a5559b9b2187e23bb0ef45a6cf4",
+    "total_limit_still_enforced": true
+  },
+  "failure": {
+    "apsc_control_written": false,
+    "collector_sha256_before_fix": "d50ba952e2e534b171632398132b2b480b9f9ab6f469fd02a9b911990b4acfcd",
+    "counter_control_written": false,
+    "error_text": "[Errno 12] Cannot allocate memory",
+    "error_type": "OSError",
+    "pcpm_control_written": false,
+    "private_packet_file_count": 10,
+    "private_packet_manifest_sha256": "6cf825618f2af51d4018c9e7bc94502245527ade25a15f881e0d4091014b5d6e",
+    "stage": "bounded_read_of_proc_boot_id",
+    "timeline_actions": [
+      "packet_opened",
+      "failed"
+    ],
+    "workload_started": false
+  },
+  "interpretation": "The large read request is the identified collector defect at the ENOMEM site; the exact kernel allocation path was not measured. The failure packet contains no native PCPM or APSC acquisition.",
+  "issue": "https://github.com/malik-na/m1-cpu-idle-research/issues/6",
+  "next_gate": "Verify the corrected collector and unchanged unused controls before any same-boot records-only acquisition. A failed or consumed one-shot must not be retried.",
+  "publication_boundary": "Raw boot ID, command line, configuration, full FDT and private packet remain outside the public repository.",
+  "read_only_post_failure_control_state": {
+    "apsc": {
+      "abi": "2",
+      "mode": "records",
+      "state": "ready"
+    },
+    "counter": {
+      "abi": "1",
+      "post_state": "unused",
+      "pre_state": "unused"
+    },
+    "pcpm": {
+      "abi": "2",
+      "mode": "none",
+      "state": "unused"
+    }
+  },
+  "schema": "pcpm-records-preflight-incident-public-v1",
+  "status": "preflight_failed_before_any_one_shot_control",
+  "time_utc": "2026-10-02T20:12:11.305426+00:00"
+}

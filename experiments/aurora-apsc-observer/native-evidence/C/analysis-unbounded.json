@@ -1,0 +1,399 @@
+{
+  "accessor_spans": {
+    "by_kind": {
+      "cpu_pm_fail": {
+        "timestamp_only": {
+          "count": 0,
+          "nanoseconds": {
+            "max": null,
+            "median": null,
+            "min": null,
+            "p95": null
+          },
+          "ticks": {
+            "max": null,
+            "median": null,
+            "min": null,
+            "p95": null
+          }
+        }
+      },
+      "dvfs": {
+        "failed_poll_marker": {
+          "count": 0,
+          "nanoseconds": {
+            "max": null,
+            "median": null,
+            "min": null,
+            "p95": null
+          },
+          "ticks": {
+            "max": null,
+            "median": null,
+            "min": null,
+            "p95": null
+          }
+        },
+        "submitted_write": {
+          "count": 220,
+          "nanoseconds": {
+            "max": 83.33333333333333,
+            "median": 41.666666666666664,
+            "min": 0.0,
+            "p95": 41.666666666666664
+          },
+          "ticks": {
+            "max": 2,
+            "median": 1.0,
+            "min": 0,
+            "p95": 1
+          }
+        }
+      },
+      "idle_enter": {
+        "mmio_error": {
+          "count": 0,
+          "nanoseconds": {
+            "max": null,
+            "median": null,
+            "min": null,
+            "p95": null
+          },
+          "ticks": {
+            "max": null,
+            "median": null,
+            "min": null,
+            "p95": null
+          }
+        },
+        "mmio_valid": {
+          "count": 734,
+          "nanoseconds": {
+            "max": 4458.333333333333,
+            "median": 500.0,
+            "min": 166.66666666666666,
+            "p95": 791.6666666666666
+          },
+          "ticks": {
+            "max": 107,
+            "median": 12.0,
+            "min": 4,
+            "p95": 19
+          }
+        },
+        "records_no_read": {
+          "count": 0,
+          "nanoseconds": {
+            "max": null,
+            "median": null,
+            "min": null,
+            "p95": null
+          },
+          "ticks": {
+            "max": null,
+            "median": null,
+            "min": null,
+            "p95": null
+          }
+        }
+      },
+      "idle_exit": {
+        "timestamp_only": {
+          "count": 728,
+          "nanoseconds": {
+            "max": 0.0,
+            "median": 0.0,
+            "min": 0.0,
+            "p95": 0.0
+          },
+          "ticks": {
+            "max": 0,
+            "median": 0.0,
+            "min": 0,
+            "p95": 0
+          }
+        }
+      }
+    },
+    "capture_mode": "mmio",
+    "conversion": "nanoseconds=ticks*1000000000/cntfrq; converted values and even-count medians use approximate JSON numbers; null for absent observations or unknown frequency",
+    "definition": "t1-t0 probe brackets exclude record construction/publication overhead; failed-poll, idle-exit and CPU-PM-failure markers do not time those operations",
+    "median_method": "middle value for odd counts; arithmetic mean of two middle values for even counts",
+    "p95_method": "nearest rank: sorted value at ceil(0.95*count), one-based",
+    "scope": "all_committed_rows_including_straddling_and_drain"
+  },
+  "analysis_abi": 2,
+  "capture": {
+    "active_duration_ticks": 49387685,
+    "cluster_command_resources": {
+      "0": {
+        "cmd_phys": "0x210e20020",
+        "resource_size": "0x1000"
+      },
+      "1": {
+        "cmd_phys": "0x211e20020",
+        "resource_size": "0x1000"
+      }
+    },
+    "cluster_cpu_masks": {
+      "0": "0xf",
+      "1": "0xf0"
+    },
+    "cntfrq_hz": 24000000,
+    "drain_duration_ticks": 95321,
+    "end_online_mask": "0xff",
+    "end_tick": 3385110990,
+    "interrupted": false,
+    "mode": "mmio",
+    "policy_endpoints": {
+      "0": {
+        "end": {
+          "fast_switch": 1,
+          "policy_cpu": 0,
+          "policy_mask": "0xf"
+        },
+        "start": {
+          "fast_switch": 1,
+          "policy_cpu": 0,
+          "policy_mask": "0xf"
+        }
+      },
+      "1": {
+        "end": {
+          "fast_switch": 1,
+          "policy_cpu": 4,
+          "policy_mask": "0xf0"
+        },
+        "start": {
+          "fast_switch": 1,
+          "policy_cpu": 4,
+          "policy_mask": "0xf0"
+        }
+      }
+    },
+    "start_online_mask": "0xff",
+    "start_tick": 3335627984,
+    "state": "complete",
+    "stop_tick": 3385015669,
+    "target": "T8103 observer ABI v1"
+  },
+  "capture_window_records": {
+    "definition": "in_window t1<=stop_tick; straddling_stop t0<=stop_tick<t1; post_stop_drain t0>stop_tick; all bounded by end_tick",
+    "in_window": {
+      "by_kind": {
+        "cpu_pm_fail": 0,
+        "dvfs": 220,
+        "idle_enter": 734,
+        "idle_exit": 728
+      },
+      "dvfs_successful_attempted_writes": 220,
+      "idle_busy_bit31_valid_samples": 16,
+      "idle_valid_mmio_samples": 734,
+      "total": 1682
+    },
+    "post_stop_drain": {
+      "by_kind": {
+        "cpu_pm_fail": 0,
+        "dvfs": 0,
+        "idle_enter": 0,
+        "idle_exit": 0
+      },
+      "dvfs_successful_attempted_writes": 0,
+      "idle_busy_bit31_valid_samples": 0,
+      "idle_valid_mmio_samples": 0,
+      "total": 0
+    },
+    "straddling_stop": {
+      "by_kind": {
+        "cpu_pm_fail": 0,
+        "dvfs": 0,
+        "idle_enter": 0,
+        "idle_exit": 0
+      },
+      "dvfs_successful_attempted_writes": 0,
+      "idle_busy_bit31_valid_samples": 0,
+      "idle_valid_mmio_samples": 0,
+      "total": 0
+    }
+  },
+  "claim_boundary": {
+    "actual_wfi_overlap": "not_observed",
+    "candidate_software_final_entrant": "unavailable_without_clock_bound",
+    "complete_software_interval_screen_eligible": false,
+    "complete_software_interval_screen_note": "whole-stream completeness precondition only: requires a clean capture and no incomplete, boundary or contradictory idle pairs; conditional candidates may still exist among complete interior pairs; opportunity coverage and cross-CPU clock qualification remain required; never establishes actual WFI overlap",
+    "dvfs_device_completion": "not_observed",
+    "physical_idle_state": "not_observed"
+  },
+  "conditional_final_entrants": {
+    "candidates": [],
+    "claim_boundary": {
+      "actual_last_active_core": "not_established",
+      "actual_wfi_overlap": "not_observed",
+      "candidate_kind": "conditional_software_final_entrant",
+      "causal_busy_source": "not_established",
+      "coverage_note": "no candidates or no BUSY candidates cannot establish absence of hardware overlap; incomplete/boundary intervals, clock assumptions, workload opportunities and observer effects limit coverage",
+      "dvfs_device_completion": "not_observed",
+      "hardware_clock_qualified": false,
+      "negative_conclusion_supported": false,
+      "physical_idle_state": "not_observed"
+    },
+    "clock_bound_scope": "absolute relative error between any CPU pair throughout the capture, including drift and the unrecorded capture-control CPU",
+    "clock_qualification": "unqualified; a supplied bound is an assumption only",
+    "counts": {
+      "candidates": 0,
+      "candidates_busy": 0,
+      "candidates_clear": 0,
+      "candidates_without_valid_sample": 0,
+      "complete_recorded_pairs": 728,
+      "interior_pairs_after_supplied_clock_margin": null,
+      "pairs_screened": 0,
+      "pairs_without_all_peer_witnesses": 0
+    },
+    "definition": "complete software entry/exit intervals strictly inside clock-margin-adjusted capture bounds; every same-cluster peer entry ends before the candidate sample starts and its exit starts after that sample ends, each by more than the pairwise bound",
+    "dvfs_order_definition": "write.t1+E<sample.t0 is definitely before; sample.t1+E<write.t0 is definitely after; otherwise ambiguous; E=0 for the same CPU; these order recorded software brackets, never device completion",
+    "idle_grammar": {
+      "consistent": true,
+      "reason_count": 0,
+      "reason_limit": 32,
+      "reasons": [],
+      "reasons_truncated": false
+    },
+    "integrity_reasons": [],
+    "interval_exclusions": {
+      "clock_margin_boundary_pairs": 0,
+      "cpu_pm_fail": 0,
+      "cpu_pm_fail_inside_open_interval": 0,
+      "interior_unmatched_enter": 0,
+      "mismatched_exit": 0,
+      "orphan_exit": 0,
+      "recorded_capture_boundary_pairs": 0,
+      "trailing_unmatched_enter": 6
+    },
+    "nearest_write_limit": "nearest by recorded t1 among definitely-before writes may not be the most recent actual write across CPUs and is not a causal BUSY source",
+    "pairwise_clock_error_ticks": null,
+    "screen_abi": 1,
+    "status": "unavailable_without_clock_bound"
+  },
+  "evidence_origin": "unverified_input",
+  "idle_intervals": {
+    "boundary_pair_excluded": 0,
+    "complete_pairs": 728,
+    "complete_pairs_by_cpu": {
+      "0": 360,
+      "1": 165,
+      "2": 37,
+      "3": 51,
+      "4": 45,
+      "5": 43,
+      "6": 24,
+      "7": 3
+    },
+    "cpu_pm_fail": 0,
+    "definition": "paired pre-WFI idle_enter and later idle_exit records, strictly inside capture bounds; not WFI residency",
+    "missing_enter": 0,
+    "missing_exit": 6
+  },
+  "integrity": {
+    "clean": true,
+    "reasons": [],
+    "scope": "ABI/status consistency and recorded-stream completeness; incomplete idle intervals are assessed separately",
+    "streams": {
+      "dvfs0": {
+        "attempts": 189,
+        "committed": 189,
+        "csv_rows": 189,
+        "missing_commit": 0,
+        "overflow": 0,
+        "sequence_gaps": 0
+      },
+      "dvfs1": {
+        "attempts": 31,
+        "committed": 31,
+        "csv_rows": 31,
+        "missing_commit": 0,
+        "overflow": 0,
+        "sequence_gaps": 0
+      },
+      "idle0": {
+        "attempts": 720,
+        "committed": 720,
+        "csv_rows": 720,
+        "missing_commit": 0,
+        "overflow": 0,
+        "sequence_gaps": 0
+      },
+      "idle1": {
+        "attempts": 331,
+        "committed": 331,
+        "csv_rows": 331,
+        "missing_commit": 0,
+        "overflow": 0,
+        "sequence_gaps": 0
+      },
+      "idle2": {
+        "attempts": 74,
+        "committed": 74,
+        "csv_rows": 74,
+        "missing_commit": 0,
+        "overflow": 0,
+        "sequence_gaps": 0
+      },
+      "idle3": {
+        "attempts": 103,
+        "committed": 103,
+        "csv_rows": 103,
+        "missing_commit": 0,
+        "overflow": 0,
+        "sequence_gaps": 0
+      },
+      "idle4": {
+        "attempts": 91,
+        "committed": 91,
+        "csv_rows": 91,
+        "missing_commit": 0,
+        "overflow": 0,
+        "sequence_gaps": 0
+      },
+      "idle5": {
+        "attempts": 87,
+        "committed": 87,
+        "csv_rows": 87,
+        "missing_commit": 0,
+        "overflow": 0,
+        "sequence_gaps": 0
+      },
+      "idle6": {
+        "attempts": 49,
+        "committed": 49,
+        "csv_rows": 49,
+        "missing_commit": 0,
+        "overflow": 0,
+        "sequence_gaps": 0
+      },
+      "idle7": {
+        "attempts": 7,
+        "committed": 7,
+        "csv_rows": 7,
+        "missing_commit": 0,
+        "overflow": 0,
+        "sequence_gaps": 0
+      }
+    }
+  },
+  "observed_records": {
+    "by_kind": {
+      "cpu_pm_fail": 0,
+      "dvfs": 220,
+      "idle_enter": 734,
+      "idle_exit": 728
+    },
+    "dvfs_pre_poll_errors_no_write": 0,
+    "dvfs_seq_timestamp_inversions_tolerated": 0,
+    "dvfs_successful_attempted_writes": 220,
+    "idle_busy_bit31_valid_samples": 16,
+    "idle_mmio_read_errors": 0,
+    "idle_valid_mmio_samples": 734,
+    "scope": "all_committed_rows_including_straddling_and_drain",
+    "total": 1682
+  }
+}

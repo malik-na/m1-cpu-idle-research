@@ -16,8 +16,25 @@ All findings below refer to the investigated base-M1 Mac and pinned public revis
 | Historical native Linux reporting shows all eight CPUs entering `CPU PD` software state. | [Prior Native Linux Results](Prior-Native-Linux-Results.md) | Historical capture; not refreshed this session and not physical rail-off proof. |
 | A five-second macOS `ktrace` run produced 47,068 complete PMGR CPUIdle callback pairs, with longer apparent last-active-core enter callbacks. | [Live Mac Tracing](Live-Mac-Tracing.md), [sanitized aggregate](../notes/raw/ktrace/idle-5s-summary.json) | Bracket duration is software work, not evidence that the APSC wait ran or that hardware powered down. |
 | In that trace, 166 apparent last E-core entry callbacks began within 50 µs after a `CPM1PerfStateReq` marker and had 14.251 µs median bracket duration, versus 3.458 µs for 2,822 callbacks at least 1 ms after a marker or with no preceding marker. | [Reproducible trace correlation](../notes/mac-ktrace-perf-request-correlation.md) | Exploratory temporal association; no branch, DVFS BUSY, physical state, or causal energy observation. |
+| On the native T8103 Aurora capacity kernel, a cluster-1 APSC command read at the C pre-WFI hook had BUSY set 549 counter ticks after a same-CPU SET. C had 734 valid reads, 16 BUSY and zero stream loss. | [Native result](../experiments/aurora-apsc-observer/NATIVE-RESULT.md), [reviewed numerical packet](../experiments/aurora-apsc-observer/native-evidence/README.md) | Final-entrant reconstruction needs an unproven 240-tick cross-CPU bound; no observation at WFI, physical cluster state, energy, defect, or cluster-0 negative. |
+| On five distinct native boots of one Aurora WFI research image, four first-attempt pre-DSB command reads had BUSY set; one is a conditional software final-entrant candidate with a 607-tick same-CPU SET-to-read upper bound. | [ABI 2 block result](../experiments/aurora-apsc-observer/WFI-ABI2-BLOCK-RESULT.md), [sanitized five-packet comparison](../experiments/aurora-apsc-observer/wfi-abi2-first-block-comparison.json) | The candidate is exploratory only under the 600-tick primary gate and depends on an unmeasured 240-tick cross-CPU bound. No BUSY observation at the later WFI instruction, physically asleep peer, rail transition, energy effect or sensitive negative result. |
+| On a later ABI 3 native boot, 71 of 2,185 first-attempt pre-DSB command reads had BUSY set; 18 satisfy a strict software final-entrant ticket screen. For six, every peer's observer idle-exit ticket follows the candidate's post-WFI idle-exit ticket. | [ABI 3 E result](../experiments/aurora-apsc-observer/ABI3-E-TICKET-RESULT.md), [reconstructible numerical packet](../experiments/aurora-apsc-observer/native-evidence/abi3-E/README.md) | Ticket order removes the ABI 2 assumed cross-CPU clock bound for the software screen, but does not locate peers inside their exit paths. It does not put BUSY at WFI, prove peer sleep or physical power, or uniquely identify the hardware command. |
 
 ## Still open
+
+The [2 October Linux qualification](../notes/linux-native-qualification-20261002.md) refreshed the visible stock kernel/configuration and software accounting. A separate [Aurora port](../experiments/aurora-apsc-observer/README.md) passed full build and native A/B/C capture gates; its [result](../experiments/aurora-apsc-observer/NATIVE-RESULT.md) answered the narrower C-hook question. The later [ABI 2 five-boot result](../experiments/aurora-apsc-observer/WFI-ABI2-BLOCK-RESULT.md) moved the read into the first-attempt assembly path. [ABI 3](../experiments/aurora-apsc-observer/ABI3-E-TICKET-RESULT.md) established software peer order at that read without an assumed cross-CPU clock bound. The stronger WFI-instruction, hardware-state and physical-overlap question remains open.
+
+The [first requested test restart](../experiments/aurora-apsc-observer/restart-outcome-receipt.json)
+selected the stock entry. The test bundle and menu entry remained verified;
+the selection cause is unresolved. Later direct menu selection did boot the
+research images and support the separate native result above.
+
+The operator later booted the research release directly but found Wi-Fi and
+brightness unavailable. [Raw-log and package checks](../experiments/aurora-apsc-observer/driver-regression-receipt.json)
+show Omarchy had removed the unowned research modules on an earlier stock
+boot. The complete matching module tree was restored and package-owned;
+Wi-Fi and brightness worked on the later research boot. The subsequent
+capacity image yielded the A/B/C capture above.
 
 1. How often does the running macOS last-core path actually execute the pending-command wait, and how often does it observe BUSY?
 2. Can an outstanding Linux DVFS command overlap the final core's deep-WFI entry in the current native kernel, including remote writers? If so, does hardware already handle it safely?

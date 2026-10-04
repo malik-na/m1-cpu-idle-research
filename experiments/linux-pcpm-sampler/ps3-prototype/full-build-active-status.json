@@ -1,0 +1,22 @@
+{
+  "activation_patch_sha256": "844560313961c97e1691f2255c70effdc17377248101cfec65b422b277c6e1f1",
+  "config_sha256": "f06a30e6c3f4d518adec1381ef245893ac5aa51d09dc65479cad09958b8800df",
+  "disabled_archive_manifest_sha256": "f32c134ca0ad619758645e082760bc78e217c24ed1f7fd149e040bc28531fda8",
+  "disabled_linked_receipt_sha256": "dc7b48f0d579d8dd56c9bb49e79c8ee1283462983f4f1f97f1888b5051e18f51",
+  "disabled_vmlinux_build_id": "d99656b8a41f623108df884e3e31f4f78c795552",
+  "elapsed_seconds": 204.846,
+  "exit_status": 0,
+  "full_log_sha256": "9c8e4df89a893f57ffa40d704b88ee26368d2b697a81ba865f0d4a1f17d32603",
+  "linked_active_receipt_sha256": "11c08a0028b663f88d6a277af538fecf36f8501ebdabaa117e7a59780699d112",
+  "private_status_sha256": "3fbc9a8045977c1a58c6dc461eb6ca102d8416ddaf3175f33b40de71658b508b",
+  "prototype_patch_sha256": "fa1441ab91832c19d19963d7d25f81ffe35afbc9e8da62ec8ce76f2a7c99976d",
+  "read_gates": "active_only_cap2",
+  "release": "7.1.12-ARCH-apsc-20261002-wfi-pcpm-abi3-ps3",
+  "schema": 1,
+  "scope": "completed incremental active-only cap-two Image/modules/dtbs build; no boot or MMIO",
+  "targets": [
+    "Image",
+    "modules",
+    "dtbs"
+  ]
+}

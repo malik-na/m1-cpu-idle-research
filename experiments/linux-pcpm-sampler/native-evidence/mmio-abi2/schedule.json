@@ -1,0 +1,66 @@
+{
+  "apsc_command": "records 9500\n",
+  "clock_association": "unqualified; no capture-wide cross-CPU E established",
+  "conditional_pairing_E_ticks": 240,
+  "conditional_pairing_G_ticks": 24000,
+  "dispatch_target_ns": 311808593175,
+  "e_cpu": 0,
+  "p_cpus": [
+    4,
+    5,
+    6,
+    7
+  ],
+  "pcpm_command": "mmio 90 100 0\n",
+  "phase_guard_ns": 300000000,
+  "phases": [
+    {
+      "active_worker_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "eligible_end_ns": 313758593175,
+      "eligible_start_ns": 312358593175,
+      "end_ns": 314058593175,
+      "name": "four_p_active",
+      "start_ns": 312058593175
+    },
+    {
+      "active_worker_indices": [
+        0
+      ],
+      "eligible_end_ns": 315758593175,
+      "eligible_start_ns": 314358593175,
+      "end_ns": 316058593175,
+      "name": "one_p_active",
+      "start_ns": 314058593175
+    },
+    {
+      "active_worker_indices": [],
+      "eligible_end_ns": 318758593175,
+      "eligible_start_ns": 316358593175,
+      "end_ns": 319058593175,
+      "name": "four_p_released",
+      "start_ns": 316058593175
+    },
+    {
+      "active_worker_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "eligible_end_ns": 320758593175,
+      "eligible_start_ns": 319358593175,
+      "end_ns": 321058593175,
+      "name": "four_p_wake",
+      "start_ns": 319058593175
+    }
+  ],
+  "schema": 1,
+  "screen_scope": "coarse monotonic phase contrast; any APSC interval association requires independent review",
+  "workload_end_ns": 321058593175,
+  "workload_start_ns": 312058593175
+}

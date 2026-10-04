@@ -1,0 +1,16 @@
+{
+  "apsc": {
+    "bytes_written": 13,
+    "command": "records 9500\n",
+    "error": null,
+    "returned_ns": 321507136576,
+    "started_ns": 311809961932
+  },
+  "pcpm": {
+    "bytes_written": 14,
+    "command": "mmio 90 100 0\n",
+    "error": null,
+    "returned_ns": 320810444223,
+    "started_ns": 311810024764
+  }
+}

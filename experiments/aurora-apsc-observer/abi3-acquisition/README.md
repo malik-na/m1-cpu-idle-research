@@ -1,0 +1,78 @@
+# ABI 3 collector logic review copy
+
+This source is a sanitized copy of the private native acquisition collector for
+the prospective A/D/E/conditional-C ticket block. It exposes the exact
+capture/validation logic for review, including the explicit worker export
+token, loss checks, source and boot gates, fresh-boot chain, environmental
+checks, a first-boot user Wi-Fi/visible-brightness receipt and current-boot
+Wi-Fi receipts for later phases,
+an E-hash-bound C review gate, the all-packet boot ledger, and incident packet
+preservation with explicit control-write uncertainty. A carries the only
+155→40→155 visual test; D/E/C carry its receipt hash and require a current-boot
+backlight interface/readback at 155, without repeating the visual cycle. This
+public collector copy was never run for live acquisition; the private
+executable collector bound by `REDACTION-RECEIPT.json` captured the native A
+packet. The public copy is imported only for offline publication and replay.
+Its two placeholder lines for the repository path and local account make it
+unsuitable for native acquisition.
+
+`REDACTION-RECEIPT.json` binds the private and public collector hashes and
+records the only changed line numbers. The synthetic tests pass against both
+copies: `python3 -m unittest -v test_capture_abi3.py` (18 tests). The private
+workload binary and private boot/source identity are excluded.
+
+`publish_abi3_a.py` is a runnable public review copy of the offline A
+publisher. `PUBLISHER-REDACTION-RECEIPT.json` binds it to the private exporter
+and names its limited changes. To replay the published A numerical packet
+without private inputs, run from this directory:
+
+```sh
+python3 publish_abi3_a.py --verify-public-stage ../native-evidence/abi3-A
+```
+
+For a separately authorized staging run on a sealed private A packet, use
+`python3 publish_abi3_a.py --packet /absolute/private/abi3-A-TIMESTAMP --out
+/absolute/new/stage`. The output directory must not exist. The public exporter
+validates the collector redaction receipt before either command. The reviewed
+[A data packet](../native-evidence/abi3-A/README.md) contains the projection,
+its input hash mapping, and the interpretation boundary. That packet's
+`README.md` is separate repository documentation outside the staged data
+manifest; `--verify-public-stage` checks the data files and manifest, not the
+README text. Publication of raw boot, account, device, or network data is
+outside this copy.
+
+`publish_abi3_d.py` is the corresponding public review copy for the fresh-boot
+ticket-only D control. `D-PUBLISHER-REDACTION-RECEIPT.json` binds its source
+to the private exporter and public collector, A publisher and validator.
+Replay the [public D packet](../native-evidence/abi3-D/README.md) without
+private inputs from this directory:
+
+```sh
+python3 -B publish_abi3_d.py --verify-public-stage ../native-evidence/abi3-D
+```
+
+The six public D tests run with `python3 -B -m unittest -v
+test_publish_abi3_d.py`. The private exporter passed ten synthetic tests and
+an isolated staging run; the public copy reproduced the reviewed D packet
+byte for byte. D's command-empty WFI rows represent a control without the
+additional WFI-path APSC load; ordinary DVFS command reads remain in the
+event stream.
+
+`publish_abi3_e.py` is the reviewed public copy for the fresh-boot
+ticket-plus-command-read E capture. `E-PUBLISHER-REDACTION-RECEIPT.json`
+binds it to the private exporter and the public A/D publishers, collector
+and validator. It retains every raw BUSY and clear WFI command word plus
+all accepted and rejected ticket screens. Replay the
+[public E packet](../native-evidence/abi3-E/README.md) without private inputs
+from this directory:
+
+```sh
+python3 -B publish_abi3_e.py --verify-public-stage ../native-evidence/abi3-E
+```
+
+The E public tests run with `python3 -B -m unittest -v
+test_publish_abi3_e.py`; the private E exporter passed twelve synthetic
+tests. An isolated public-tool staging run on the sealed A/D/E ancestry
+reproduced all sixteen reviewed E data files and manifest byte for byte.
+The E packet demonstrates pre-DSB software ticket order only, not command
+state at the later WFI instruction.

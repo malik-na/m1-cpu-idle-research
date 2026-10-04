@@ -49,8 +49,11 @@ streaming, or power reference. E-core wakeups and timer traffic remain observers
 
 ## Mapping qualification
 
-The unique matching `apple,t8103-pmgr` node must be available and must also be `syscon`/`simple-mfd`.
-Its first resource must be exactly base `0x23b700000`, size `0x14000`; these are
+Among `apple,t8103-pmgr` nodes, exactly one must have first resource base
+`0x23b700000`, size `0x14000`; that node must be available and must also be
+`syscon`/`simple-mfd`. T8103's `pmgr_mini` is another node with the same
+compatible but a different resource, so it is not an ambiguity. Duplicate
+nodes with the expected resource are rejected. The expected address and size are
 qualification assertions, not an arbitrary-address interface. The fixed read is
 32 bits at offset `0x48`. Reject clocks, resets, hwlocks, big/native endian
 properties, or a non-4-byte/malformed `reg-io-width`. The checked T8103 tree is

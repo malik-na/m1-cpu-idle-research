@@ -1,0 +1,71 @@
+{
+  "schema": "pcpu-ps3-cap2-deployment-public-v1",
+  "issue": "https://github.com/malik-na/m1-cpu-idle-research/issues/6",
+  "scope": "Distinct cap-two module tree, UKI and Limine entry installed and independently read back before any new-kernel boot",
+  "status": "distinct_modules_and_uki_installed_unbooted",
+  "identity": {
+    "release": "7.1.12-ARCH-apsc-20261002-wfi-pcpm-abi3-ps3",
+    "entry_title": "Aurora-APSC-research-pcpu-ps3",
+    "efi_filename": "omarchy_linux-aurora-apsc-wfi-pcpm-abi3-ps3.efi",
+    "probe_mode": "active_only_read_enabled_cap2",
+    "max_rows": 2,
+    "max_read_attempts": 10,
+    "vmlinux_gnu_build_id": "2f653de7a9d2c83d50f60dfc701680ea8b578f31",
+    "linked_build_receipt_sha256": "11c08a0028b663f88d6a277af538fecf36f8501ebdabaa117e7a59780699d112",
+    "public_packaging_receipt_sha256": "c54cf303f4a27e266a221e8e73107670d4415ba4ea18e84faadecb0cda81f75c"
+  },
+  "installed_artifacts": {
+    "module_count": 1867,
+    "module_tree_hashes_match_active_linked_build": true,
+    "module_tree_package_manager_owned": false,
+    "module_package_sha256": "a33cc29b1116dc3e543ef1d3c544372c9e9c09f589445f03af0916c9648c102e",
+    "initramfs_embedded_module_count": 90,
+    "initramfs_embedded_module_hashes_match_active_linked_build": true,
+    "normalized_initramfs_unique_path_count": 1333,
+    "normalized_initramfs_inventory_matches_abi3": true,
+    "critical_module_dependency_paths_resolved": [
+      "apple-sep",
+      "appledrm",
+      "brcmfmac"
+    ],
+    "uki_sha256": "75b14ba728505102b05e2543e91c836c418f31a4106834b99716d918641db8b7",
+    "uki_bytes": 94835712
+  },
+  "boot_fallbacks": {
+    "stock_default_retained": true,
+    "stock_uki_sha256": "97e6229b65946aa24a5c863290abef8a3b1b48067655b29df819c7a9c62c4618",
+    "working_abi3_entry_and_uki_retained": true,
+    "abi3_uki_sha256": "3c00f38bce07ad99d18c762acd4aa1f318e99d06bde8e7142e86d4ef02568530",
+    "retired_pcpm_entry_and_uki_absent": true,
+    "sole_limine_config_candidate": true,
+    "limine_sha256_before": "c11da7925d6c690b531f03c2f21279aaf499a4e9cd961ec3c95923be48ca41c3",
+    "limine_sha256_after": "d2a579f8797a4df106b86be1e816d52e2e11e99c54d1f6fe5016f509c7539dc7"
+  },
+  "efi_after": {
+    "total_bytes": 523132928,
+    "free_bytes": 137310208,
+    "used_percent": 73.75,
+    "required_free_reserve_bytes": 16777216,
+    "usage_percent_including_reserve": 76.95939491692636,
+    "usage_limit_percent": 85
+  },
+  "independent_post_install_readback": {
+    "result": "installed_artifact_identity_pass",
+    "private_readback_sha256": "41580d1c36ee177da64f6220ca7e463484a2f268387173ab131893ad81062170",
+    "new_uki_and_menu_match_installer": true,
+    "stock_and_abi3_uki_match": true,
+    "all_1867_modules_match_active_linked_build": true,
+    "all_90_initramfs_modules_match_active_linked_build": true,
+    "scope": "Read-only installed-byte, fallback and Limine-menu checks before boot"
+  },
+  "private_receipts_sha256": {
+    "efi_install": "45d347e544f62008a425abd9dd7d1f105963160443d543899d5994dc55875510",
+    "efi_apply_summary": "20d1e53dd9b8e03fbdd25d9d7de10050790a430b5824254eb27adbbc135ea73b",
+    "efi_readback": "41580d1c36ee177da64f6220ca7e463484a2f268387173ab131893ad81062170"
+  },
+  "next_gate": "A separately selected first PS3 boot must verify live release, Build-ID, source/configuration, PMGR map and device function before the records-only zero-MMIO qualification; a later fresh boot is required before the bounded read pilot.",
+  "limits": [
+    "The installed #6 entry has not been booted. The sole Limine-config finding is a deterministic search/readback result, not a measured boot digest.",
+    "Module and UKI readback does not establish runtime Wi-Fi or brightness, safe PCPU MMIO access, a PCPU register value, calibrated physical state, residency, energy saving or Linux idle-policy improvement."
+  ]
+}

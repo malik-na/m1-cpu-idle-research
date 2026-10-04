@@ -1,0 +1,31 @@
+{
+  "base_entry_count_including_directories": 100233,
+  "base_file_and_symlink_count": 94071,
+  "base_manifest_tree_sha256": "8a10a2bb04372b6b3d9bc9e3b024369b36310cc2b03a70c924981ae05516c255",
+  "base_prior_pcpm_tree_sha256": "9733d6cb7f1fb8bed30bbaffc6a7b22a42b68dac2acc636fe2125c3faed1d19f",
+  "candidate_entry_count_including_directories": 100233,
+  "candidate_manifest_tree_sha256": "e703916291104ece7de51f24ecdd042fa8ac01463448ebeb1c337b85f647f462",
+  "changed_entries": [
+    "drivers/cpuidle/apple-apsc-observer.c",
+    "drivers/cpuidle/cpuidle-apple.c"
+  ],
+  "file_sha256": {
+    "drivers/cpuidle/apple-apsc-observer.c": {
+      "base": "682dcaef83941a315fd1bb6fee2fd1d1aee1ef2ff311e82f17c47f262d9b4ebc",
+      "candidate": "6939e428f19f1f8af0f4124d68d091995d6af507f6eb293f1e1c78bea3c2d505"
+    },
+    "drivers/cpuidle/cpuidle-apple.c": {
+      "base": "c68e565f2c7644997d3d82478bc709536d796fa53dd29b24ea35b760cf72aac8",
+      "candidate": "e909cab061979f66f0ead716331e55aaeedfad49602e2afd76fed25d09c80f7a"
+    }
+  },
+  "patch_applies_to_exact_pcpm_source": true,
+  "patch_reverses_from_candidate_source": true,
+  "patch_sha256": "2775fd894e7d62432b806e45f0db7a94e9d6c789dcaa0a57e7d72d0f9d7d3486",
+  "pcpm_config_sha256": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+  "schema": 1,
+  "scope": "private scratch source; no installation or runtime claim",
+  "scratch_config_sha256": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+  "scratch_release": "7.1.12-ARCH-apsc-20261002-wfi-pcpm-abi3",
+  "tree_hash_algorithm": "SHA-256 of sorted ASCII JSON lines [relative_path,type,octal_mode,content_sha256]; symlinks hash target bytes; directories have empty content"
+}

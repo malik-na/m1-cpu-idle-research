@@ -1,0 +1,657 @@
+--- a/drivers/soc/apple/Kconfig
++++ b/drivers/soc/apple/Kconfig
+@@ -34,6 +34,16 @@
+ 	  Reuses only an existing clockless generic PMGR syscon regmap.
+ 	  Sampling wakes a core and can perturb power. No power controls
+ 	  are changed. Leave disabled outside an explicitly planned test.
++
++config APPLE_PCPU_PS3_PROBE
++	bool "T8103 read-only PCPU PS3 prototype"
++	depends on APPLE_PCPM_SAMPLER && DEBUG_FS && SMP
++	default n
++	help
++	  One-shot, bounded, E-core PMGR PS3 per-core research probe.
++	  The source additionally compiles MMIO reads out by default.
++	  It reuses only the existing clockless main-PMGR syscon map.
++	  No power control, clock, reset, or cpuidle path is changed.
+ 
+ config APPLE_PMGR_MISC
+ 	bool "Apple SoC PMGR miscellaneous support"
+--- a/drivers/soc/apple/Makefile
++++ b/drivers/soc/apple/Makefile
+@@ -7,6 +7,7 @@
+ apple-mailbox-y = mailbox.o
+ 
+ obj-$(CONFIG_APPLE_PCPM_SAMPLER)	+= apple-pcpm-sampler.o
++obj-$(CONFIG_APPLE_PCPU_PS3_PROBE) += apple-pcpu-ps3-probe.o
+ 
+ obj-$(CONFIG_APPLE_PMGR_MISC)	+= apple-pmgr-misc.o
+ 
+--- /dev/null
++++ b/drivers/soc/apple/apple-pcpu-ps3-probe.c
+@@ -0,0 +1,625 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Offline T8103 PMGR PS3 per-core prototype. No CPU power-control changes. */
++#include <linux/capability.h>
++#include <linux/completion.h>
++#include <linux/cpu.h>
++#include <linux/debugfs.h>
++#include <linux/hrtimer.h>
++#include <linux/init.h>
++#include <linux/kthread.h>
++#include <linux/ktime.h>
++#include <linux/mfd/syscon.h>
++#include <linux/mutex.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_address.h>
++#include <linux/overflow.h>
++#include <linux/regmap.h>
++#include <linux/sched.h>
++#include <linux/sched/task.h>
++#include <linux/seq_file.h>
++#include <linux/uaccess.h>
++#include <asm/arch_timer.h>
++#include <asm/cpu.h>
++#include <asm/cpufeature.h>
++#include <asm/cputype.h>
++#include <asm/smp_plat.h>
++#include <asm/sysreg.h>
++
++#define PCPM_MAX_SAMPLES 12
++#define PS3_WORDS 5
++#define PS3_MAX_BRACKET_NS 1000000ULL
++#ifndef PS3_HW_GATE
++#define PS3_HW_GATE 0
++#endif
++#ifndef PS3_REVIEWED_READS
++#define PS3_REVIEWED_READS 0
++#endif
++#if (PS3_HW_GATE != 0 && PS3_HW_GATE != 1) || \
++    (PS3_REVIEWED_READS != 0 && PS3_REVIEWED_READS != 1)
++#error "PS3 gates must be exactly 0 or 1"
++#endif
++#if PS3_HW_GATE && !PS3_REVIEWED_READS
++#error "MMIO build requires an independently reviewed read protocol"
++#endif
++#define PCPM_PMGR_BASE 0x23b700000ULL
++#define PCPM_PMGR_SIZE 0x14000
++#define PCPM_COUNTER_BEFORE BIT(0)
++#define PCPM_COUNTER_AFTER BIT(1)
++#define PCPM_COUNTER_REVERSE BIT(2)
++#define PCPM_COUNTER_PREVIOUS_REVERSE BIT(3)
++#define PCPM_TIME_REVERSE BIT(4)
++#define PCPM_TIME_PREVIOUS_REVERSE BIT(5)
++#define PCPM_CPU_MISMATCH BIT(6)
++#define PCPM_BRACKET_OVERRUN BIT(7)
++
++/* PMGR bank 0 PS3: PCPU0..3, then PCPM. NOT APSC LAST_CHG_TIME. */
++static const u32 ps3_offsets[PS3_WORDS] = { 0x20, 0x28, 0x30, 0x38, 0x48 };
++static const char * const ps3_names[PS3_WORDS] = {
++	"PCPU0", "PCPU1", "PCPU2", "PCPU3", "PCPM"
++};
++
++struct ps3_word {
++	u64 before_ns, after_ns, counter_before, counter_after;
++	u32 cpu_before, cpu_after, counter_flags;
++	bool read_attempted, raw_valid;
++	u32 raw;
++	int read_errno;
++};
++
++struct pcpm_sample {
++	u32 slot, skipped_before;
++	u64 scheduled_ns, after_ns;
++	struct ps3_word words[PS3_WORDS];
++};
++
++static DEFINE_MUTEX(pcpm_lock);
++static DECLARE_COMPLETION(pcpm_done);
++static struct pcpm_sample samples[PCPM_MAX_SAMPLES];
++static struct regmap *pcpm_map;
++static const char *capture_state = "unused";
++static const char *capture_mode = "none";
++static int capture_error, worker_cpu = -1;
++static u32 requested, period_ms, phase_ms, attempted, missed_slots;
++static u32 unattempted_after_error, trailing_missed, read_attempts, read_errors;
++static u32 cpu_errors;
++static u32 e_mask, p_mask, start_online_mask, end_online_mask;
++static u64 midr[8], mpidr[8], start_ns, end_ns, budget_end_ns;
++static u64 pmgr_phys, pmgr_size;
++static bool regmap_existing, regmap_internal_clockless;
++static int regmap_stride, regmap_val_bytes;
++static char cpu_kind[8];
++static bool counter_metadata_valid;
++static int counter_metadata_cpu = -1, counter_metadata_error;
++static u32 counter_cntfrq, counter_errors, time_errors, bracket_overruns;
++static u64 counter_cntkctl, counter_mmfr0;
++static bool counter_workaround_present, counter_phys_read_workaround;
++
++/* Same ordered physical counter accessor as the separate qualification helper. */
++static notrace u64 pcpm_tick(void)
++{
++	u64 value;
++
++	mb();
++	value = arch_timer_read_cntpct_el0();
++	arch_counter_enforce_ordering(value);
++	mb();
++	return value;
++}
++
++/* Called only by the bound worker, before any stamp or PMGR read. No IPI. */
++static int qualify_counter(void)
++{
++#if IS_ENABLED(CONFIG_ARM_ARCH_TIMER_OOL_WORKAROUND)
++	const struct arch_timer_erratum_workaround *wa;
++#endif
++
++	counter_metadata_cpu = raw_smp_processor_id();
++	if (counter_metadata_cpu != worker_cpu) {
++		counter_metadata_error = -EXDEV;
++		return counter_metadata_error;
++	}
++	counter_cntfrq = arch_timer_get_cntfrq();
++	counter_cntkctl = read_sysreg(cntkctl_el1);
++	counter_mmfr0 = read_sysreg(id_aa64mmfr0_el1);
++#if IS_ENABLED(CONFIG_ARM_ARCH_TIMER_OOL_WORKAROUND)
++	wa = __this_cpu_read(timer_unstable_counter_workaround);
++	counter_workaround_present = !!wa;
++	counter_phys_read_workaround = wa && wa->read_cntpct_el0;
++#endif
++	counter_metadata_valid = true;
++	if (!counter_cntfrq)
++		counter_metadata_error = -ERANGE;
++	else if (counter_phys_read_workaround)
++		counter_metadata_error = -EOPNOTSUPP;
++	return counter_metadata_error;
++}
++
++static u32 online_mask(void)
++{
++	u32 mask = 0;
++	unsigned int cpu;
++
++	for_each_online_cpu(cpu)
++		if (cpu < 8)
++			mask |= BIT(cpu);
++	return mask;
++}
++
++/* Cached boot identity only: no remote call or P-core IPI. */
++static int qualify_topology(void)
++{
++	unsigned int cpu, e_seen = 0, p_seen = 0;
++	struct device_node *np;
++	u64 model, aff0, aff1;
++	bool is_e, is_p;
++
++	if (!of_machine_is_compatible("apple,t8103") ||
++	    num_possible_cpus() != 8 || num_online_cpus() != 8)
++		return -ENODEV;
++	for_each_possible_cpu(cpu) {
++		if (cpu >= 8 || !cpu_online(cpu))
++			return -ENODEV;
++		midr[cpu] = per_cpu(cpu_data, cpu).reg_midr;
++		mpidr[cpu] = cpu_logical_map(cpu);
++		model = midr[cpu] & MIDR_CPU_MODEL_MASK;
++		aff0 = MPIDR_AFFINITY_LEVEL(mpidr[cpu], 0);
++		aff1 = MPIDR_AFFINITY_LEVEL(mpidr[cpu], 1);
++		np = of_get_cpu_node(cpu, NULL);
++		if (!np)
++			return -ENODEV;
++		is_e = of_device_is_compatible(np, "apple,icestorm") &&
++			model == MIDR_APPLE_M1_ICESTORM && aff1 == 0;
++		is_p = of_device_is_compatible(np, "apple,firestorm") &&
++			model == MIDR_APPLE_M1_FIRESTORM && aff1 == 1;
++		of_node_put(np);
++		if (aff0 >= 4 || (!is_e && !is_p) ||
++		    MPIDR_AFFINITY_LEVEL(mpidr[cpu], 2) != (is_p ? 1 : 0) ||
++		    MPIDR_AFFINITY_LEVEL(mpidr[cpu], 3))
++			return -ENODEV;
++		if (is_e) {
++			if (e_seen & BIT(aff0))
++				return -ENODEV;
++			e_seen |= BIT(aff0);
++			e_mask |= BIT(cpu);
++			cpu_kind[cpu] = 'E';
++			if (worker_cpu < 0)
++				worker_cpu = cpu;
++		} else {
++			if (p_seen & BIT(aff0))
++				return -ENODEV;
++			p_seen |= BIT(aff0);
++			p_mask |= BIT(cpu);
++			cpu_kind[cpu] = 'P';
++		}
++	}
++	return e_seen == 0xf && p_seen == 0xf ? 0 : -ENODEV;
++}
++
++static int qualify_regmap(bool mmio)
++{
++	struct device_node *np, *selected = NULL;
++	struct resource res;
++	u32 width;
++	int ret = -ENODEV;
++
++	/* T8103 also has a smaller PMGR mini bank with this compatible. */
++	for (np = of_find_compatible_node(NULL, NULL, "apple,t8103-pmgr"); np;
++	     np = of_find_compatible_node(np, NULL, "apple,t8103-pmgr")) {
++		if (of_address_to_resource(np, 0, &res) ||
++		    res.start != PCPM_PMGR_BASE ||
++		    resource_size(&res) != PCPM_PMGR_SIZE)
++			continue;
++		if (selected) {
++			of_node_put(np);
++			of_node_put(selected);
++			return ret;
++		}
++		selected = of_node_get(np);
++	}
++	np = selected;
++	if (!np)
++		return ret;
++	if (!of_device_is_available(np) ||
++	    !of_device_is_compatible(np, "syscon") ||
++	    !of_device_is_compatible(np, "simple-mfd"))
++		goto out;
++	pmgr_phys = PCPM_PMGR_BASE;
++	pmgr_size = PCPM_PMGR_SIZE;
++	if (of_find_property(np, "clocks", NULL) ||
++	    of_find_property(np, "resets", NULL) ||
++	    of_find_property(np, "hwlocks", NULL) ||
++	    of_find_property(np, "big-endian", NULL) ||
++	    of_find_property(np, "native-endian", NULL))
++		goto out;
++	if (of_find_property(np, "reg-io-width", NULL) &&
++	    (of_property_count_u32_elems(np, "reg-io-width") != 1 ||
++	     of_property_read_u32(np, "reg-io-width", &width) || width != 4))
++		goto out;
++	/*
++	 * This ABI3 built-in-only accessor returns a pre-existing clockless map.
++	 * It never registers or maps a new resource or touches clocks/resets.
++	 * The function is not exported for modules: this probe must be built in.
++	 * A records-only acquisition qualifies this map without MMIO reads.
++	 */
++	pcpm_map = syscon_node_to_existing_clockless_regmap(np);
++	if (IS_ERR(pcpm_map)) {
++		ret = PTR_ERR(pcpm_map);
++		pcpm_map = NULL;
++		goto out;
++	}
++	regmap_existing = true;
++	regmap_internal_clockless = true;
++	regmap_stride = regmap_get_reg_stride(pcpm_map);
++	regmap_val_bytes = regmap_get_val_bytes(pcpm_map);
++	if (regmap_stride != 4 || regmap_val_bytes != 4)
++		goto out;
++	if (mmio && !PS3_HW_GATE)
++		ret = -EOPNOTSUPP;
++	else
++		ret = 0;
++out:
++	of_node_put(np);
++	return ret;
++}
++
++/* Pinned normal-priority task; no allocation/export/IPIs in this loop. */
++static int pcpm_worker(void *unused)
++{
++	u64 period = (u64)period_ms * NSEC_PER_MSEC;
++	u64 phase = (u64)phase_ms * NSEC_PER_MSEC;
++	u64 first, due, now, min_next = 0;
++	u32 slot = 0, skipped = 0;
++	struct pcpm_sample *s;
++	struct ps3_word *w, *prev;
++	unsigned int j;
++	ktime_t expires;
++
++	sched_set_normal(current, 0);
++	capture_error = qualify_counter();
++	if (capture_error)
++		goto out;
++	start_ns = ktime_get_ns();
++	/* Explicit arithmetic guard also handles a pathological uptime. */
++	if (check_add_overflow(start_ns, phase + period, &first) ||
++	    check_add_overflow(start_ns, phase + requested * period,
++			       &budget_end_ns) || budget_end_ns > S64_MAX) {
++		capture_error = -EOVERFLOW;
++		goto done;
++	}
++	while (slot < requested) {
++		due = first + (u64)slot * period;
++		now = ktime_get_ns();
++		/* Skip overdue slots and prohibit close-spaced catch-up reads. */
++		if (now >= due + period || due < min_next) {
++			slot++;
++			skipped++;
++			continue;
++		}
++		if (now < due) {
++			expires = ns_to_ktime(due);
++			set_current_state(TASK_UNINTERRUPTIBLE);
++			schedule_hrtimeout_range(&expires, 0, HRTIMER_MODE_ABS_PINNED);
++			continue;
++		}
++		s = &samples[attempted];
++		s->slot = slot;
++		s->skipped_before = skipped;
++		s->scheduled_ns = due;
++		missed_slots += skipped;
++		skipped = 0;
++		for (j = 0; j < PS3_WORDS; j++) {
++			w = &s->words[j];
++			prev = j ? &s->words[j - 1] :
++			       attempted ? &samples[attempted - 1].words[PS3_WORDS - 1] : NULL;
++			w->cpu_before = raw_smp_processor_id();
++			if (w->cpu_before != worker_cpu) {
++				w->counter_flags |= PCPM_CPU_MISMATCH;
++				cpu_errors++;
++				capture_error = -EXDEV;
++				break;
++			}
++			w->counter_before = pcpm_tick();
++			w->counter_flags |= PCPM_COUNTER_BEFORE;
++			if (prev && w->counter_before < prev->counter_after)
++				w->counter_flags |= PCPM_COUNTER_PREVIOUS_REVERSE;
++			w->before_ns = ktime_get_ns();
++			if (prev && w->before_ns < prev->after_ns)
++				w->counter_flags |= PCPM_TIME_PREVIOUS_REVERSE;
++			if (!strcmp(capture_mode, "mmio") &&
++			    !(w->counter_flags & (PCPM_COUNTER_PREVIOUS_REVERSE |
++					     PCPM_TIME_PREVIOUS_REVERSE))) {
++#if PS3_HW_GATE && PS3_REVIEWED_READS
++				w->read_attempted = true;
++				read_attempts++;
++				w->read_errno = regmap_read(pcpm_map, ps3_offsets[j], &w->raw);
++				w->raw_valid = !w->read_errno;
++#endif
++			}
++			w->after_ns = ktime_get_ns();
++			w->counter_after = pcpm_tick();
++			w->counter_flags |= PCPM_COUNTER_AFTER;
++			w->cpu_after = raw_smp_processor_id();
++			s->after_ns = w->after_ns;
++			if (w->counter_after < w->counter_before)
++				w->counter_flags |= PCPM_COUNTER_REVERSE;
++			if (w->after_ns < w->before_ns)
++				w->counter_flags |= PCPM_TIME_REVERSE;
++			if ((w->after_ns >= w->before_ns &&
++			     w->after_ns - w->before_ns > PS3_MAX_BRACKET_NS) ||
++			    (w->counter_after >= w->counter_before &&
++			     w->counter_after - w->counter_before > counter_cntfrq / 1000)) {
++				w->counter_flags |= PCPM_BRACKET_OVERRUN;
++				bracket_overruns++;
++				capture_error = -ETIMEDOUT;
++			}
++			if (w->cpu_after != worker_cpu) {
++				w->counter_flags |= PCPM_CPU_MISMATCH;
++				cpu_errors++;
++				capture_error = -EXDEV;
++			}
++			if (w->read_errno) {
++				read_errors++;
++				if (!capture_error)
++					capture_error = w->read_errno;
++			}
++			if (w->counter_flags & (PCPM_COUNTER_REVERSE |
++						 PCPM_COUNTER_PREVIOUS_REVERSE)) {
++				counter_errors++;
++				if (!capture_error)
++					capture_error = -ERANGE;
++			}
++			if (w->counter_flags & (PCPM_TIME_REVERSE |
++						 PCPM_TIME_PREVIOUS_REVERSE)) {
++				time_errors++;
++				if (!capture_error)
++					capture_error = -ERANGE;
++			}
++			if (capture_error)
++				break;
++		}
++		attempted++;
++		slot++;
++		if (capture_error)
++			break;
++		if (check_add_overflow(s->after_ns, period / 2, &min_next)) {
++			capture_error = -EOVERFLOW;
++			break;
++		}
++	}
++	trailing_missed = skipped;
++	missed_slots += skipped;
++done:
++	unattempted_after_error = requested - attempted - missed_slots;
++	end_ns = ktime_get_ns();
++out:
++	complete(&pcpm_done);
++	return 0;
++}
++
++static int parse_request(char *buf, bool *mmio, u32 *count, u32 *period, u32 *phase)
++{
++	char *tokens[4], *p = buf;
++	size_t length = strlen(buf);
++	u64 budget;
++	unsigned int i;
++
++	if (length && buf[length - 1] == '\n')
++		buf[length - 1] = '\0';
++	for (i = 0; i < ARRAY_SIZE(tokens); i++) {
++		tokens[i] = strsep(&p, " \t");
++		if (!tokens[i] || !*tokens[i])
++			return -EINVAL;
++	}
++	if (p || (strcmp(tokens[0], "mmio") && strcmp(tokens[0], "records")))
++		return -EINVAL;
++	for (i = 1; i < ARRAY_SIZE(tokens); i++) {
++		char *digit;
++
++		for (digit = tokens[i]; *digit; digit++)
++			if (*digit < '0' || *digit > '9')
++				return -EINVAL;
++	}
++	if (kstrtou32(tokens[1], 10, count) || kstrtou32(tokens[2], 10, period) ||
++	    kstrtou32(tokens[3], 10, phase) || !*count || *count > PCPM_MAX_SAMPLES ||
++	    *period < 20 || *period > 800 || *phase >= *period)
++		return -EINVAL;
++	if (check_mul_overflow((u64)*count, (u64)*period, &budget) ||
++	    check_add_overflow(budget, (u64)*phase, &budget) || budget > 10000)
++		return -EINVAL;
++	*mmio = !strcmp(tokens[0], "mmio");
++	return 0;
++}
++
++static ssize_t control_write(struct file *file, const char __user *ubuf,
++			     size_t len, loff_t *ppos)
++{
++	struct task_struct *task;
++	char buf[80];
++	u32 count, period, phase;
++	bool mmio;
++	int ret;
++
++	if (!capable(CAP_SYS_ADMIN))
++		return -EPERM;
++	if (!len || len >= sizeof(buf) || *ppos)
++		return -EINVAL;
++	if (copy_from_user(buf, ubuf, len))
++		return -EFAULT;
++	if (memchr(buf, '\0', len))
++		return -EINVAL;
++	buf[len] = '\0';
++	ret = parse_request(buf, &mmio, &count, &period, &phase);
++	if (ret)
++		return ret;
++	mutex_lock(&pcpm_lock);
++	if (strcmp(capture_state, "unused")) {
++		ret = -EALREADY;
++		goto unlock;
++	}
++	requested = count;
++	period_ms = period;
++	phase_ms = phase;
++	capture_mode = mmio ? "mmio" : "records";
++	capture_state = "failed";
++	unattempted_after_error = requested;
++	cpus_read_lock();
++	start_online_mask = online_mask();
++	ret = qualify_topology();
++	if (ret)
++		goto finish;
++	/* Both modes qualify the existing map; records never reads registers. */
++	ret = qualify_regmap(mmio);
++	if (ret)
++		goto finish;
++	task = kthread_create(pcpm_worker, NULL, "pcpm-sampler");
++	if (IS_ERR(task)) {
++		ret = PTR_ERR(task);
++		goto finish;
++	}
++	kthread_bind(task, worker_cpu);
++	get_task_struct(task);
++	wake_up_process(task);
++	wait_for_completion(&pcpm_done);
++	/* The one-shot worker has completed; join before deferred export. */
++	kthread_stop(task);
++	put_task_struct(task);
++	ret = capture_error;
++finish:
++	end_online_mask = online_mask();
++	cpus_read_unlock();
++	capture_error = ret;
++	capture_state = ret ? "failed" : "complete";
++	if (!ret)
++		ret = len;
++unlock:
++	mutex_unlock(&pcpm_lock);
++	return ret;
++}
++
++static const struct file_operations control_fops = {
++	.write = control_write,
++	.open = nonseekable_open,
++};
++
++static int status_show(struct seq_file *m, void *unused)
++{
++	unsigned int cpu;
++
++	mutex_lock(&pcpm_lock);
++	seq_printf(m, "abi=ps3-prototype-1\nstate=%s\nmode=%s\nerror=%d\n"
++		   "hardware_gate=%d\nreviewed_reads_build_gate=%d\n",
++		   capture_state, capture_mode, capture_error,
++		   PS3_HW_GATE, PS3_REVIEWED_READS);
++#define OUT_U32(name) seq_printf(m, #name "=%u\n", name)
++#define OUT_U64(name) seq_printf(m, #name "=%llu\n", name)
++#define OUT_HEX(name) seq_printf(m, #name "=0x%llx\n", (u64)(name))
++	OUT_U32(requested); OUT_U32(period_ms); OUT_U32(phase_ms);
++	OUT_U64(start_ns); OUT_U64(end_ns); OUT_U64(budget_end_ns);
++	seq_printf(m, "worker_cpu=%d\n", worker_cpu);
++	OUT_HEX(start_online_mask); OUT_HEX(end_online_mask);
++	OUT_HEX(e_mask); OUT_HEX(p_mask);
++	OUT_HEX(pmgr_phys); OUT_HEX(pmgr_size);
++	seq_printf(m, "register_offsets=0x20,0x28,0x30,0x38,0x48\n"
++		   "register_phys=0x23b700020,0x23b700028,0x23b700030,"
++		   "0x23b700038,0x23b700048\n"
++		   "regmap_existing=%u\n"
++		   "regmap_internal_clockless=%u\nregmap_stride=%d\nregmap_val_bytes=%d\n",
++		   regmap_existing, regmap_internal_clockless,
++		   regmap_stride, regmap_val_bytes);
++	OUT_U32(attempted); OUT_U32(missed_slots); OUT_U32(unattempted_after_error);
++	OUT_U32(trailing_missed); OUT_U32(read_attempts);
++	OUT_U32(read_errors); OUT_U32(cpu_errors);
++	OUT_U32(counter_errors); OUT_U32(time_errors); OUT_U32(bracket_overruns);
++	seq_printf(m, "max_completed_bracket_ns=%llu\n", PS3_MAX_BRACKET_NS);
++	seq_printf(m, "config_ool_workaround=%d\necv_alternative=%d\n"
++		   "counter_metadata_valid=%u\ncounter_metadata_cpu=%d\n"
++		   "counter_metadata_error=%d\n",
++		   IS_ENABLED(CONFIG_ARM_ARCH_TIMER_OOL_WORKAROUND),
++		   cpus_have_final_cap(ARM64_HAS_ECV), counter_metadata_valid,
++		   counter_metadata_cpu, counter_metadata_error);
++	seq_puts(m, "counter_cntfrq=");
++	if (counter_metadata_valid)
++		seq_printf(m, "%u", counter_cntfrq);
++	seq_puts(m, "\ncounter_cntkctl=");
++	if (counter_metadata_valid)
++		seq_printf(m, "0x%llx", counter_cntkctl);
++	seq_puts(m, "\ncounter_mmfr0=");
++	if (counter_metadata_valid)
++		seq_printf(m, "0x%llx", counter_mmfr0);
++	seq_puts(m, "\ncounter_workaround_present=");
++	if (counter_metadata_valid)
++		seq_printf(m, "%u", counter_workaround_present);
++	seq_puts(m, "\ncounter_phys_read_workaround=");
++	if (counter_metadata_valid)
++		seq_printf(m, "%u", counter_phys_read_workaround);
++	seq_putc(m, '\n');
++#undef OUT_U32
++#undef OUT_U64
++#undef OUT_HEX
++	for (cpu = 0; cpu < 8; cpu++)
++		seq_printf(m, "cpu%u.midr=0x%llx\ncpu%u.mpidr=0x%llx\ncpu%u.kind=%s\n",
++			   cpu, midr[cpu], cpu, mpidr[cpu], cpu,
++			   cpu_kind[cpu] == 'E' ? "E" : cpu_kind[cpu] == 'P' ? "P" : "unknown");
++	mutex_unlock(&pcpm_lock);
++	return 0;
++}
++DEFINE_SHOW_ATTRIBUTE(status);
++
++static int samples_show(struct seq_file *m, void *unused)
++{
++	unsigned int i, j;
++
++	mutex_lock(&pcpm_lock);
++	seq_puts(m, "row,slot,scheduled_ns,skipped_before,word_index,name,"
++		 "offset,physical,t_before_ns,t_after_ns,counter_before,"
++		 "counter_after,counter_flags,cpu_before,cpu_after,"
++		 "read_attempted,raw_valid,raw,read_errno\n");
++	for (i = 0; i < attempted; i++) {
++		const struct pcpm_sample *s = &samples[i];
++
++		for (j = 0; j < PS3_WORDS; j++) {
++			const struct ps3_word *w = &s->words[j];
++
++			seq_printf(m, "%u,%u,%llu,%u,%u,%s,0x%02x,0x%llx,",
++				   i, s->slot, s->scheduled_ns, s->skipped_before,
++				   j, ps3_names[j], ps3_offsets[j],
++				   PCPM_PMGR_BASE + ps3_offsets[j]);
++			if (w->counter_flags & PCPM_COUNTER_BEFORE)
++				seq_printf(m, "%llu,%llu,%llu,", w->before_ns,
++					   w->after_ns, w->counter_before);
++			else
++				seq_puts(m, ",,,");
++			if (w->counter_flags & PCPM_COUNTER_AFTER)
++				seq_printf(m, "%llu", w->counter_after);
++			seq_printf(m, ",%u,%u,%u,%u,%u,", w->counter_flags,
++				   w->cpu_before, w->cpu_after,
++				   w->read_attempted, w->raw_valid);
++			if (w->raw_valid)
++				seq_printf(m, "0x%08x", w->raw);
++			seq_printf(m, ",%d\n", w->read_errno);
++		}
++	}
++	mutex_unlock(&pcpm_lock);
++	return 0;
++}
++DEFINE_SHOW_ATTRIBUTE(samples);
++
++static int __init pcpm_init(void)
++{
++	struct dentry *dir;
++
++	if (!of_machine_is_compatible("apple,t8103"))
++		return -ENODEV;
++	dir = debugfs_create_dir("t8103_ps3_prototype", NULL);
++	if (IS_ERR_OR_NULL(dir))
++		return dir ? PTR_ERR(dir) : -ENOMEM;
++	if (IS_ERR_OR_NULL(debugfs_create_file("control", 0200, dir, NULL, &control_fops)) ||
++	    IS_ERR_OR_NULL(debugfs_create_file("status", 0400, dir, NULL, &status_fops)) ||
++	    IS_ERR_OR_NULL(debugfs_create_file("samples", 0400, dir, NULL, &samples_fops))) {
++		debugfs_remove_recursive(dir);
++		return -ENOMEM;
++	}
++	return 0;
++}
++late_initcall(pcpm_init);

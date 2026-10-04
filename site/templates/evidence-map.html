@@ -1,0 +1,63 @@
+<!-- Evidence-map homepage: source data are bound to the selected Git snapshot. -->
+<section id="EvidenceMap" aria-labelledby="map-title">
+  <div class="map-intro">
+    <div><p class="map-kicker">Native Linux / Evidence workbench</p><h1 id="map-title">Follow the evidence.<br><span>Find the missing link.</span></h1></div>
+    <p>We can observe commands and software ordering. The next question is what the silicon physically does. Select a node to see the boundary.</p>
+  </div>
+  <p class="map-current-conclusion"><strong>Current conclusion:</strong> a pending command at the pre-DSB sample; no established Linux policy fix.</p>
+  <div class="map-capture-summary" aria-label="ABI 3 E capture summary"><span><strong>$command_reads</strong> command reads</span><span><strong>$busy_reads</strong> BUSY words</span><span><strong>$witness_count</strong> software witnesses</span><a href="$abi3_result_url">Result and limits ↗</a></div>
+  <div class="map-workbench">
+    <div class="map-canvas">
+      <div class="map-canvas-label"><span>Claim map</span><span>Schematic · not a measured timeline</span></div>
+      <p class="map-capture-note">Distinct evidence: ABI 3 E command capture, earlier ABI 2 PCPM capture, and prospective PS3. These nodes do not describe one boot or simultaneous hardware state.</p>
+      <div class="map-graph" aria-label="Evidence relationships">
+        <svg viewBox="0 0 700 450" preserveAspectRatio="none" aria-hidden="true">
+          <path class="map-known-line" d="M350 70 V91 H154 V114 M350 91 H546 V114"/>
+          <path class="map-gap-line" d="M154 193 V222 H350 V254 M546 193 V222 H350 M350 326 V360"/>
+          <circle cx="350" cy="91" r="5"/><circle cx="350" cy="222" r="5"/>
+        </svg>
+        <button class="map-node map-origin" data-map-node="native" aria-pressed="false"><span class="map-node-id">T8103 / J313</span><strong>Native Linux</strong><small>Published research packets</small></button>
+        <button class="map-node map-command" data-map-node="command" aria-pressed="false"><span class="map-node-id">01 · observed</span><strong>Command ordering</strong><small>BUSY before DSB</small></button>
+        <button class="map-node map-software" data-map-node="software" aria-pressed="false"><span class="map-node-id">02 · observed</span><strong>Software state</strong><small>Observer tickets</small></button>
+        <span class="map-connector-label">Independent measurement needed</span>
+        <button class="map-node map-physical" data-map-node="physical" aria-pressed="true"><span class="map-node-id">03 · unresolved</span><strong>Physical state</strong><small>PCPM contrast failed</small></button>
+        <button class="map-node map-energy" data-map-node="energy" aria-pressed="false"><span class="map-node-id">04 · unmeasured</span><strong>Energy consequence</strong><small>No CPU-rail or energy result</small></button>
+      </div>
+      <div class="map-legend"><span><i class="map-solid"></i>Observed relationship</span><span><i class="map-dashed"></i>Evidence gap</span></div>
+    </div>
+    <aside class="map-inspector" aria-live="polite">
+      <p class="map-kicker">Selected evidence</p><div class="map-status" id="map-node-status">Unresolved</div>
+      <h2 id="map-node-title">Physical state</h2><p id="map-node-description">$initial_description</p>
+      <div class="map-inspector-rule"><span>What this supports</span><p id="map-node-support">$initial_support</p></div>
+      <div class="map-inspector-rule"><span>What would resolve the gap</span><p id="map-node-next">$initial_next</p></div>
+      <a id="map-node-source" href="$pcpm_result_url">Read the evidence ↗</a>
+    </aside>
+  </div>
+  <div class="map-register-heading"><div><p class="map-kicker">The next observable / issue #6</p><h2>A register name is a starting point.</h2></div><div class="map-modes" aria-label="Evidence view"><button data-map-mode="recorded" aria-pressed="true">Recorded result</button><button data-map-mode="planned" aria-pressed="false">Next experiment</button></div></div>
+  <div class="map-recorded">
+    <div class="map-word-summary"><p>PCPM · main PMGR +0x48</p><strong>$pcpm_word</strong><span>${pcpm_reads} successful 32-bit reads · one constant word</span></div>
+    <div class="map-word-decoder">
+      <div class="map-bit-scroll"><div class="map-bit-labels"><span>31 … 8 / retained bits</span><span>7 … 4 / ACTUAL</span><span>3 … 0 / DESIRED</span></div>
+      <div class="map-bits" id="map-bits" aria-label="32 bits of register word $pcpm_word"></div></div>
+      <div class="map-field-select" aria-label="Select register field"><button data-map-field="actual" aria-pressed="true">ACTUAL = $actual</button><button data-map-field="desired" aria-pressed="false">DESIRED = $desired</button><button data-map-field="remaining" aria-pressed="false">Other bits</button></div>
+      <p id="map-field-explanation" aria-live="polite">ACTUAL bits 7:4 decode to $actual; DESIRED bits 3:0 decode to $desired. These numeric fields do not calibrate CPU-slot physical meaning.</p>
+    </div>
+    <div class="map-constant-result"><div class="map-dot-grid" id="map-dot-grid" aria-label="${pcpm_reads} recorded reads, each register word $pcpm_word"></div><div><span class="map-result-tag">Declared contrast failed</span><h3>Same word across workload phases.</h3><p>The $pcpm_reads reads include $released_reads guarded all-P-released samples. ACTUAL stayed at $actual. These are register observations; they do not measure $pcpm_reads power states or prove that the P cores remained powered.</p><a href="$pcpm_result_url">Packet and replay instructions ↗</a></div></div>
+  </div>
+  <noscript><p class="map-plan-footnote">The PS3 image is installed but unbooted. First fresh boot: records only, zero MMIO. A reviewed records packet gates a second fresh boot with at most $attempt_cap 32-bit read attempts. <a href="$ps3_protocol_url">Read the full protocol</a>.</p></noscript>
+  <div class="map-planned" hidden>
+    <div class="map-plan-warning"><span class="map-result-tag">Installed image · unbooted</span><p>PS3 adds a fixed five-slot screen. PCPU labels do not yet establish a logical-core identity or CPU-rail meaning.</p></div>
+    <div class="map-slots" aria-label="Five allowlisted main PMGR offsets"><div><b>PCPU0</b><code>+0x20</code><span>value unknown</span></div><div><b>PCPU1</b><code>+0x28</code><span>value unknown</span></div><div><b>PCPU2</b><code>+0x30</code><span>value unknown</span></div><div><b>PCPU3</b><code>+0x38</code><span>value unknown</span></div><div><b>PCPM</b><code>+0x48</code><span>new boot unknown</span></div></div>
+    <div class="map-gates" aria-label="Prospective two-boot acquisition gates">
+      <div><span>01</span><h3>First fresh boot</h3><code>records $sample_cap 800 0</code><p>All P workers active. $attempt_cap timestamp-only word records. <strong>Zero MMIO reads.</strong></p><small>Pending · image has not booted</small></div>
+      <div><span>02</span><h3>Review the packet</h3><p>Check identity, mapping, timing, losses and machine health before allowing a register attempt.</p><small>Pending · no qualifying packet yet</small></div>
+      <div><span>03</span><h3>Second fresh boot</h3><code>mmio $sample_cap 800 0</code><p>Same linked image. All P workers active. Source cap: ${sample_cap} rows, <strong>at most $attempt_cap 32-bit attempts.</strong></p><small>Conditional on records-only review</small></div>
+    </div>
+    <p class="map-plan-footnote">One-shot per boot. Five serial reads are not an atomic snapshot. Later phase contrasts need a separately reviewed cap change and fresh gates.</p>
+    <a href="$ps3_protocol_url">Full planned protocol ↗</a> <a href="$ps3_deployment_url">Installed-image boundary ↗</a>
+  </div>
+  <footer class="map-boundary"><span>Interpretation boundary</span><p>Software CPU PD, a PMGR code, physical rail-off and measured energy are separate claims. This view makes the connecting evidence visible; it does not fill the gaps.</p></footer>
+  <p class="map-plan-footnote">Issue #5 stays open. No further #5 reboots unless a genuinely independent timing signal becomes available. Experimental effort is on <a href="$ps3_protocol_url">issue #6’s state-signal screen</a>.</p>
+</section>
+
+<script type="application/json" id="evidence-map-data">$evidence_json</script>

@@ -1,0 +1,657 @@
+diff --git c/drivers/soc/apple/Kconfig i/drivers/soc/apple/Kconfig
+index 0aee0fb..af3d8b7 100644
+--- c/drivers/soc/apple/Kconfig
++++ i/drivers/soc/apple/Kconfig
+@@ -150,6 +150,17 @@ config APPLE_PMP
+ 
+ 	  Say 'y' here if you have an Apple SoC.
+ 
++config APPLE_COUNTER_QUALIFICATION
++	bool "Experimental T8103 physical-counter qualification"
++	depends on ARM64 && SMP && ARCH_APPLE && DEBUG_FS && ARM_ARCH_TIMER
++	default n
++	help
++	  Build a finite, explicitly commanded physical-counter diagnostic.
++	  It runs synchronous cross-CPU exchanges outside idle measurements
++	  and retains separate before/after raw records in debugfs. This
++	  does not prove a clock error bound or change CPU power policy.
++	  Say N unless preparing a reviewed native research experiment.
++
+ endmenu
+ 
+ endif
+diff --git c/drivers/soc/apple/Makefile i/drivers/soc/apple/Makefile
+index 064e65d..3bfed3d 100644
+--- c/drivers/soc/apple/Makefile
++++ i/drivers/soc/apple/Makefile
+@@ -30,3 +30,5 @@ apple-sep-y := sep.o hwrng_shim.o store_shim.o bio_shim.o sha_shim.o \
+ 		pm_shim.o
+ 
+ obj-$(CONFIG_APPLE_PMP) += pmp.o
++
++obj-$(CONFIG_APPLE_COUNTER_QUALIFICATION) += apple-counter-qualification.o
+diff --git c/drivers/soc/apple/apple-counter-qualification.c i/drivers/soc/apple/apple-counter-qualification.c
+new file mode 100644
+index 0000000..c5b9deb
+--- /dev/null
++++ i/drivers/soc/apple/apple-counter-qualification.c
+@@ -0,0 +1,619 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Finite diagnostic exchanges, not a clock-skew guarantee or idle hook. */
++#include <linux/completion.h>
++#include <linux/cpu.h>
++#include <linux/debugfs.h>
++#include <linux/err.h>
++#include <linux/fs.h>
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/kthread.h>
++#include <linux/module.h>
++#include <linux/mutex.h>
++#include <linux/of.h>
++#include <linux/sched.h>
++#include <linux/sched/task.h>
++#include <linux/seq_file.h>
++#include <linux/smp.h>
++#include <linux/uaccess.h>
++#include <asm/arch_timer.h>
++#include <asm/cpufeature.h>
++#include <asm/sysreg.h>
++
++#define CQ_CPUS 8
++#define CQ_ROUNDS 256
++#define CQ_CAPACITY (CQ_ROUNDS * (CQ_CPUS - 1))
++#define CQ_A0 BIT(0)
++#define CQ_B0 BIT(1)
++#define CQ_B1 BIT(2)
++#define CQ_A1 BIT(3)
++
++enum cq_state { CQ_UNUSED, CQ_RUNNING, CQ_COMPLETE, CQ_FAILED };
++
++struct cq_cpu {
++	u64 cntkctl, mmfr0;
++	u32 cntfrq;
++	int actual, error;
++	bool valid, workaround_present, phys_read_workaround;
++};
++
++struct cq_record {
++	u64 request_seq, ack_seq, a0, b0, b1, a1;
++	u32 round, source_cntfrq, target_cntfrq, flags;
++	int source_requested, source_before, source_after;
++	int target_requested, target_actual, call_status;
++};
++
++struct cq_phase {
++	struct cq_cpu cpus[CQ_CPUS];
++	struct cq_record records[CQ_CAPACITY];
++	struct completion done;
++	u64 start_tick, end_tick, start_online_mask, end_online_mask;
++	u32 rounds, attempted, completed, metadata_completed;
++	int reference_cpu, error;
++	enum cq_state state;
++	bool start_valid, end_valid;
++};
++
++struct cq_exchange {
++	struct cq_record *record;
++	struct cq_phase *phase;
++	u64 request, acknowledgment;
++};
++
++static struct cq_phase phases[2];
++static u64 cluster_cpus[2];
++static DEFINE_MUTEX(cq_lock);
++static struct dentry *cq_dir;
++
++/* This deliberately heavy stamp belongs outside the idle capture. */
++static notrace u64 cq_tick(void)
++{
++	u64 value;
++
++	mb();
++	value = arch_timer_read_cntpct_el0();
++	arch_counter_enforce_ordering(value);
++	mb();
++	return value;
++}
++
++static u64 cq_online_mask(void)
++{
++	u64 mask = 0;
++	int cpu;
++
++	for_each_online_cpu(cpu)
++		if (cpu < CQ_CPUS)
++			mask |= BIT_ULL(cpu);
++	return mask;
++}
++
++/* Caller is pinned, or executing in an SMP callback. No raw timer read. */
++static void cq_cpu_metadata(void *data)
++{
++	struct cq_cpu *cpu = data;
++#if IS_ENABLED(CONFIG_ARM_ARCH_TIMER_OOL_WORKAROUND)
++	const struct arch_timer_erratum_workaround *wa;
++
++	wa = __this_cpu_read(timer_unstable_counter_workaround);
++	cpu->workaround_present = !!wa;
++	cpu->phys_read_workaround = wa && wa->read_cntpct_el0;
++#endif
++	cpu->actual = smp_processor_id();
++	cpu->cntfrq = arch_timer_get_cntfrq();
++	cpu->cntkctl = read_sysreg(cntkctl_el1);
++	cpu->mmfr0 = read_sysreg(id_aa64mmfr0_el1);
++	cpu->valid = true;
++	if (!cpu->cntfrq)
++		cpu->error = -ERANGE;
++	else if (cpu->phys_read_workaround)
++		cpu->error = -EOPNOTSUPP;
++}
++
++static bool cq_same_cpu_metadata(const struct cq_cpu *a,
++				 const struct cq_cpu *b)
++{
++	return a->valid && b->valid && a->actual == b->actual &&
++		a->cntfrq == b->cntfrq && a->cntkctl == b->cntkctl &&
++		a->mmfr0 == b->mmfr0 &&
++		a->workaround_present == b->workaround_present &&
++		a->phys_read_workaround == b->phys_read_workaround;
++}
++
++static void cq_target(void *data)
++{
++	struct cq_exchange *exchange = data;
++	struct cq_record *record = exchange->record;
++	u64 request = smp_load_acquire(&exchange->request);
++
++	record->target_actual = smp_processor_id();
++	record->target_cntfrq = arch_timer_get_cntfrq();
++	if (request != record->request_seq)
++		record->call_status = -EPROTO;
++	else if (record->target_actual != record->target_requested)
++		record->call_status = -EXDEV;
++	else if (has_erratum_handler(read_cntpct_el0))
++		record->call_status = -EOPNOTSUPP;
++	else if (record->target_cntfrq !=
++		 exchange->phase->cpus[record->target_requested].cntfrq)
++		record->call_status = -ERANGE;
++	else {
++		record->b0 = cq_tick();
++		record->flags |= CQ_B0;
++		record->b1 = cq_tick();
++		record->flags |= CQ_B1;
++		if (record->b1 < record->b0 ||
++		    arch_timer_get_cntfrq() != record->target_cntfrq)
++			record->call_status = -ERANGE;
++	}
++	/* Publish failure too; absence of stamps must not resemble zero skew. */
++	smp_store_release(&exchange->acknowledgment, request);
++}
++
++static void cq_round(struct cq_phase *phase, u32 round, int target)
++{
++	struct cq_record *record = &phase->records[phase->attempted++];
++	struct cq_exchange exchange = { .record = record, .phase = phase };
++	int ret;
++
++	record->round = round;
++	record->request_seq = phase->attempted;
++	if (phase == &phases[1])
++		record->request_seq += phases[0].attempted;
++	record->source_requested = phase->reference_cpu;
++	record->target_requested = target;
++	record->source_before = record->source_after = -1;
++	record->target_actual = -1;
++
++	record->source_before = get_cpu();
++	record->source_cntfrq = arch_timer_get_cntfrq();
++	if (irqs_disabled()) {
++		record->call_status = -EPERM;
++		goto out;
++	}
++	if (record->source_before != phase->reference_cpu) {
++		record->call_status = -EXDEV;
++		goto out;
++	}
++	if (has_erratum_handler(read_cntpct_el0)) {
++		record->call_status = -EOPNOTSUPP;
++		goto out;
++	}
++	if (record->source_cntfrq != phase->cpus[phase->reference_cpu].cntfrq) {
++		record->call_status = -ERANGE;
++		goto out;
++	}
++	record->a0 = cq_tick();
++	record->flags |= CQ_A0;
++	smp_store_release(&exchange.request, record->request_seq);
++	ret = smp_call_function_single(target, cq_target, &exchange, true);
++	record->ack_seq = smp_load_acquire(&exchange.acknowledgment);
++	if (ret)
++		record->call_status = ret;
++	else if (!record->call_status && record->ack_seq != record->request_seq)
++		record->call_status = -EPROTO;
++	if (has_erratum_handler(read_cntpct_el0)) {
++		if (!record->call_status)
++			record->call_status = -EOPNOTSUPP;
++		goto out;
++	}
++	record->a1 = cq_tick();
++	record->flags |= CQ_A1;
++	if (!record->call_status && (record->a1 < record->a0 ||
++		arch_timer_get_cntfrq() != record->source_cntfrq))
++		record->call_status = -ERANGE;
++ out:
++	record->source_after = smp_processor_id();
++	if (!record->call_status && record->source_after != phase->reference_cpu)
++		record->call_status = -EXDEV;
++	put_cpu();
++	if (record->call_status)
++		phase->error = record->call_status;
++	else
++		phase->completed++;
++}
++
++static int cq_worker(void *data)
++{
++	struct cq_phase *phase = data;
++	u32 round;
++	int cpu, ret, reference;
++
++	if (irqs_disabled()) {
++		phase->error = -EPERM;
++		goto done;
++	}
++	/* Gather all metadata even when a prior CPU fails validation. */
++	for (cpu = 0; cpu < CQ_CPUS; cpu++) {
++		struct cq_cpu *meta = &phase->cpus[cpu];
++
++		ret = smp_call_function_single(cpu, cq_cpu_metadata, meta, true);
++		if (ret)
++			meta->error = ret;
++		else if (meta->actual != cpu)
++			meta->error = -EXDEV;
++		if (meta->valid)
++			phase->metadata_completed++;
++	}
++	for (cpu = 0; cpu < CQ_CPUS; cpu++) {
++		struct cq_cpu *meta = &phase->cpus[cpu];
++
++		if (!meta->error && (!meta->valid || meta->cntfrq !=
++			phase->cpus[phase->reference_cpu].cntfrq))
++			meta->error = -ERANGE;
++		if (!meta->error && phase == &phases[1] &&
++		    !cq_same_cpu_metadata(meta, &phases[0].cpus[cpu]))
++			meta->error = -ESTALE;
++		if (meta->error && !phase->error)
++			phase->error = meta->error;
++	}
++	if (phase->error)
++		goto done;
++
++	reference = get_cpu();
++	if (reference != phase->reference_cpu)
++		phase->error = -EXDEV;
++	else if (has_erratum_handler(read_cntpct_el0))
++		phase->error = -EOPNOTSUPP;
++	else {
++		phase->start_tick = cq_tick();
++		phase->start_valid = true;
++	}
++	put_cpu();
++	if (phase->error)
++		goto done;
++
++	for (round = 0; round < phase->rounds; round++) {
++		for (cpu = 0; cpu < CQ_CPUS; cpu++) {
++			if (cpu == phase->reference_cpu)
++				continue;
++			if (phase->attempted >= CQ_CAPACITY) {
++				phase->error = -ENOSPC;
++				goto end_stamp;
++			}
++			cq_round(phase, round, cpu);
++			if (phase->error)
++				goto end_stamp;
++			cond_resched();
++		}
++	}
++ end_stamp:
++	reference = get_cpu();
++	if (reference != phase->reference_cpu) {
++		if (!phase->error)
++			phase->error = -EXDEV;
++	} else if (has_erratum_handler(read_cntpct_el0)) {
++		if (!phase->error)
++			phase->error = -EOPNOTSUPP;
++	} else {
++		phase->end_tick = cq_tick();
++		phase->end_valid = true;
++		if (!phase->error && phase->end_tick < phase->start_tick)
++			phase->error = -ERANGE;
++	}
++	put_cpu();
++ done:
++	complete(&phase->done);
++	return phase->error;
++}
++
++static int cq_run(struct cq_phase *phase)
++{
++	struct task_struct *worker;
++	int ret;
++
++	/* Caller holds cq_lock; worker never acquires it. */
++	cpus_read_lock();
++	phase->start_online_mask = cq_online_mask();
++	if (num_online_cpus() != CQ_CPUS || phase->start_online_mask != 0xff) {
++		phase->error = -ENODEV;
++		goto out;
++	}
++	worker = kthread_create(cq_worker, phase, "apple-cntqual");
++	if (IS_ERR(worker)) {
++		phase->error = PTR_ERR(worker);
++		goto out;
++	}
++	/* Extra reference permits stop/join after the worker has returned. */
++	get_task_struct(worker);
++	sched_set_normal(worker, 0);
++	kthread_bind(worker, phase->reference_cpu);
++	wake_up_process(worker);
++	wait_for_completion(&phase->done);
++	ret = kthread_stop(worker);
++	put_task_struct(worker);
++	if (!phase->error && ret)
++		phase->error = ret;
++ out:
++	phase->end_online_mask = cq_online_mask();
++	if (!phase->error && phase->end_online_mask != phase->start_online_mask)
++		phase->error = -ESTALE;
++	cpus_read_unlock();
++	phase->state = phase->error ? CQ_FAILED : CQ_COMPLETE;
++	return phase->error;
++}
++
++static char *cq_argument(char **cursor)
++{
++	char *argument;
++
++	while ((argument = strsep(cursor, " \t\r\n")))
++		if (*argument)
++			return argument;
++	return NULL;
++}
++
++static int cq_decimal(const char *argument, unsigned int *value)
++{
++	const char *digit;
++
++	if (!argument || !*argument)
++		return -EINVAL;
++	for (digit = argument; *digit; digit++)
++		if (*digit < '0' || *digit > '9')
++			return -EINVAL;
++	return kstrtouint(argument, 10, value);
++}
++
++static ssize_t cq_control_write(struct file *file, const char __user *buffer,
++				size_t count, loff_t *offset)
++{
++	struct cq_phase *phase;
++	char command[64], *cursor, *verb, *reference_arg, *rounds_arg;
++	unsigned int reference, rounds;
++	int ret;
++
++	if (!count || count >= sizeof(command))
++		return -EINVAL;
++	if (copy_from_user(command, buffer, count))
++		return -EFAULT;
++	command[count] = '\0';
++	/* Embedded NUL must not hide an additional command. */
++	if (strlen(command) != count)
++		return -EINVAL;
++	cursor = command;
++	verb = cq_argument(&cursor);
++	if (!verb)
++		return -EINVAL;
++	ret = mutex_lock_interruptible(&cq_lock);
++	if (ret)
++		return ret;
++	if (!strcmp(verb, "pre")) {
++		reference_arg = cq_argument(&cursor);
++		rounds_arg = cq_argument(&cursor);
++		if (cq_argument(&cursor) || cq_decimal(reference_arg, &reference) ||
++		    cq_decimal(rounds_arg, &rounds) || reference >= CQ_CPUS ||
++		    !rounds || rounds > CQ_ROUNDS) {
++			ret = -EINVAL;
++			goto out;
++		}
++		if (phases[0].state != CQ_UNUSED) {
++			ret = -EALREADY;
++			goto out;
++		}
++		phase = &phases[0];
++		phase->reference_cpu = reference;
++		phase->rounds = rounds;
++	} else if (!strcmp(verb, "post") && !cq_argument(&cursor)) {
++		if (phases[1].state != CQ_UNUSED) {
++			ret = -EALREADY;
++			goto out;
++		}
++		if (phases[0].state != CQ_COMPLETE) {
++			ret = -EINVAL;
++			goto out;
++		}
++		phase = &phases[1];
++		phase->reference_cpu = phases[0].reference_cpu;
++		phase->rounds = phases[0].rounds;
++	} else {
++		ret = -EINVAL;
++		goto out;
++	}
++	phase->state = CQ_RUNNING;
++	ret = cq_run(phase);
++ out:
++	mutex_unlock(&cq_lock);
++	return ret ? ret : count;
++}
++
++static const struct file_operations cq_control_fops = {
++	.owner = THIS_MODULE,
++	.write = cq_control_write,
++	.open = nonseekable_open,
++};
++
++static void cq_optional_tick(struct seq_file *s, const char *name,
++			     bool valid, u64 value)
++{
++	seq_printf(s, "%s=", name);
++	if (valid)
++		seq_printf(s, "%llu", value);
++	seq_putc(s, '\n');
++}
++
++static int cq_status_show(struct seq_file *s, void *unused)
++{
++	static const char * const states[] = {
++		"unused", "running", "complete", "failed"
++	};
++	static const char * const names[] = { "pre", "post" };
++	int p, cpu;
++
++	mutex_lock(&cq_lock);
++	seq_printf(s, "abi=1\npossible_mask=0xff\ncluster0_cpus=0x%llx\ncluster1_cpus=0x%llx\n",
++		   cluster_cpus[0], cluster_cpus[1]);
++	seq_printf(s, "config_ool_workaround=%d\necv_alternative=%d\ncapacity_per_phase=%d\n",
++		   IS_ENABLED(CONFIG_ARM_ARCH_TIMER_OOL_WORKAROUND),
++		   cpus_have_final_cap(ARM64_HAS_ECV), CQ_CAPACITY);
++	for (p = 0; p < ARRAY_SIZE(phases); p++) {
++		struct cq_phase *phase = &phases[p];
++		const char *name = names[p];
++		char key[32];
++
++		seq_printf(s, "%s_state=%s\n%s_reference_cpu=%d\n%s_rounds=%u\n",
++			   name, states[phase->state], name, phase->reference_cpu,
++			   name, phase->rounds);
++		seq_printf(s, "%s_attempted=%u\n%s_completed=%u\n%s_error=%d\n%s_metadata_completed=%u\n",
++			   name, phase->attempted, name, phase->completed,
++			   name, phase->error, name, phase->metadata_completed);
++		snprintf(key, sizeof(key), "%s_start_tick", name);
++		cq_optional_tick(s, key, phase->start_valid, phase->start_tick);
++		snprintf(key, sizeof(key), "%s_end_tick", name);
++		cq_optional_tick(s, key, phase->end_valid, phase->end_tick);
++		seq_printf(s, "%s_start_online_mask=0x%llx\n%s_end_online_mask=0x%llx\n",
++			   name, phase->start_online_mask, name, phase->end_online_mask);
++		for (cpu = 0; cpu < CQ_CPUS; cpu++) {
++			struct cq_cpu *meta = &phase->cpus[cpu];
++
++			seq_printf(s, "%s_cpu%d_valid=%u\n%s_cpu%d_actual=%d\n%s_cpu%d_error=%d\n",
++				   name, cpu, meta->valid, name, cpu, meta->actual,
++				   name, cpu, meta->error);
++			seq_printf(s, "%s_cpu%d_cntfrq=", name, cpu);
++			if (meta->valid)
++				seq_printf(s, "%u", meta->cntfrq);
++			seq_printf(s, "\n%s_cpu%d_cntkctl=", name, cpu);
++			if (meta->valid)
++				seq_printf(s, "0x%llx", meta->cntkctl);
++			seq_printf(s, "\n%s_cpu%d_mmfr0=", name, cpu);
++			if (meta->valid)
++				seq_printf(s, "0x%llx", meta->mmfr0);
++			seq_printf(s, "\n%s_cpu%d_workaround_present=", name, cpu);
++			if (meta->valid)
++				seq_printf(s, "%u", meta->workaround_present);
++			seq_printf(s, "\n%s_cpu%d_phys_read_workaround=", name, cpu);
++			if (meta->valid)
++				seq_printf(s, "%u", meta->phys_read_workaround);
++			seq_putc(s, '\n');
++		}
++	}
++	mutex_unlock(&cq_lock);
++	return 0;
++}
++DEFINE_SHOW_ATTRIBUTE(cq_status);
++
++static void cq_csv_tick(struct seq_file *s, const struct cq_record *record,
++			u32 flag, u64 tick)
++{
++	if (record->flags & flag)
++		seq_printf(s, "%llu", tick);
++	seq_putc(s, ',');
++}
++
++static int cq_events_show(struct seq_file *s, void *unused)
++{
++	static const char * const names[] = { "pre", "post" };
++	int p;
++	u32 i;
++
++	mutex_lock(&cq_lock);
++	seq_puts(s, "phase,round,request_seq,ack_seq,source_requested,source_before,source_after,target_requested,target_actual,a0,b0,b1,a1,source_cntfrq,target_cntfrq,call_status,flags\n");
++	for (p = 0; p < ARRAY_SIZE(phases); p++) {
++		struct cq_phase *phase = &phases[p];
++
++		for (i = 0; i < phase->attempted; i++) {
++			struct cq_record *record = &phase->records[i];
++
++			seq_printf(s, "%s,%u,%llu,%llu,%d,%d,%d,%d,%d,",
++				   names[p], record->round, record->request_seq,
++				   record->ack_seq, record->source_requested,
++				   record->source_before, record->source_after,
++				   record->target_requested, record->target_actual);
++			cq_csv_tick(s, record, CQ_A0, record->a0);
++			cq_csv_tick(s, record, CQ_B0, record->b0);
++			cq_csv_tick(s, record, CQ_B1, record->b1);
++			cq_csv_tick(s, record, CQ_A1, record->a1);
++			if (record->source_before >= 0)
++				seq_printf(s, "%u", record->source_cntfrq);
++			seq_putc(s, ',');
++			if (record->target_actual >= 0)
++				seq_printf(s, "%u", record->target_cntfrq);
++			seq_printf(s, ",%d,%u\n", record->call_status, record->flags);
++		}
++	}
++	mutex_unlock(&cq_lock);
++	return 0;
++}
++DEFINE_SHOW_ATTRIBUTE(cq_events);
++
++static int __init cq_topology(void)
++{
++	struct device_node *nodes[2] = {};
++	struct device_node *cpu_np, *domain;
++	int cpu, cluster, found = 0, ret = -ENODEV;
++
++	if (!of_machine_is_compatible("apple,t8103") || num_possible_cpus() != CQ_CPUS)
++		return -ENODEV;
++	for_each_possible_cpu(cpu) {
++		if (cpu >= CQ_CPUS)
++			goto out;
++		cpu_np = of_cpu_device_node_get(cpu);
++		if (!cpu_np)
++			goto out;
++		domain = of_parse_phandle(cpu_np, "performance-domains", 0);
++		of_node_put(cpu_np);
++		if (!domain)
++			goto out;
++		if (!of_device_is_compatible(domain, "apple,t8103-cluster-cpufreq")) {
++			of_node_put(domain);
++			goto out;
++		}
++		for (cluster = 0; cluster < found; cluster++)
++			if (nodes[cluster] == domain)
++				break;
++		if (cluster == found) {
++			if (found == ARRAY_SIZE(nodes)) {
++				of_node_put(domain);
++				goto out;
++			}
++			nodes[found++] = domain;
++		} else {
++			of_node_put(domain);
++		}
++		cluster_cpus[cluster] |= BIT_ULL(cpu);
++	}
++	if (found == 2 && hweight64(cluster_cpus[0]) == 4 &&
++	    hweight64(cluster_cpus[1]) == 4)
++		ret = 0;
++ out:
++	for (cluster = 0; cluster < found; cluster++)
++		of_node_put(nodes[cluster]);
++	return ret;
++}
++
++static int __init cq_init(void)
++{
++	struct dentry *entry;
++	int p, cpu, ret;
++
++	ret = cq_topology();
++	if (ret)
++		return ret;
++	for (p = 0; p < ARRAY_SIZE(phases); p++) {
++		init_completion(&phases[p].done);
++		phases[p].reference_cpu = -1;
++		for (cpu = 0; cpu < CQ_CPUS; cpu++)
++			phases[p].cpus[cpu].actual = -1;
++	}
++	cq_dir = debugfs_create_dir("apple_counter_qualification", NULL);
++	if (IS_ERR(cq_dir))
++		return PTR_ERR(cq_dir);
++	entry = debugfs_create_file("control", 0200, cq_dir, NULL, &cq_control_fops);
++	if (IS_ERR(entry))
++		goto fail;
++	entry = debugfs_create_file("status", 0400, cq_dir, NULL, &cq_status_fops);
++	if (IS_ERR(entry))
++		goto fail;
++	entry = debugfs_create_file("events.csv", 0400, cq_dir, NULL, &cq_events_fops);
++	if (IS_ERR(entry))
++		goto fail;
++	return 0;
++ fail:
++	ret = PTR_ERR(entry);
++	debugfs_remove_recursive(cq_dir);
++	return ret;
++}
++late_initcall(cq_init);
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Default-off T8103 physical-counter exchange diagnostic");

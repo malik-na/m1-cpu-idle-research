@@ -1,0 +1,1839 @@
+{
+  "schema": "native-linux-readonly-qualification-v1",
+  "research_revision": "97163f91f8a6f99e79bb657b5f934af158e8d0a5",
+  "ticket": 5,
+  "ticket_state_at_intake": "open",
+  "open_blocker_count_at_intake": 0,
+  "assignment": "existing assignment continued with operator authorization",
+  "evidence_tier": [
+    "public_source",
+    "live_software_configuration",
+    "software_accounting"
+  ],
+  "commands": [
+    {
+      "argv": [
+        "uname",
+        "-srm"
+      ],
+      "start_utc": "2026-10-02T04:39:18.697622+00:00",
+      "end_utc": "2026-10-02T04:39:18.699089+00:00",
+      "returncode": 0,
+      "stdout": "Linux 7.1.12-2-11.17-sep-ARCH aarch64\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "uname",
+        "-v"
+      ],
+      "start_utc": "2026-10-02T04:39:18.699097+00:00",
+      "end_utc": "2026-10-02T04:39:18.701428+00:00",
+      "returncode": 0,
+      "stdout": "#1 SMP PREEMPT_DYNAMIC Thu, 01 Oct 2026 14:47:49 +0000\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "systemd-detect-virt"
+      ],
+      "start_utc": "2026-10-02T04:39:18.701433+00:00",
+      "end_utc": "2026-10-02T04:39:18.702669+00:00",
+      "returncode": 0,
+      "stdout": "container-other\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "pacman",
+        "-Qi",
+        "linux-aurora"
+      ],
+      "start_utc": "2026-10-02T04:39:18.726337+00:00",
+      "end_utc": "2026-10-02T04:39:18.776173+00:00",
+      "returncode": 0,
+      "stdout": "Name            : linux-aurora\nVersion         : 7.1.12.aurora2-11.17\nDescription     : The kernel and modules\nArchitecture    : aarch64\nURL             : https://github.com/iconidentify/aurora-linux\nLicenses        : GPL2\nGroups          : None\nProvides        : WIREGUARD-MODULE  linux-asahi=7.1.12.aurora2\nDepends On      : coreutils  kmod  initramfs  m1n1>=1.6.1\nOptional Deps   : crda: to set the correct wireless channels of your country [installed]\n                  linux-firmware: firmware images needed for some devices\nRequired By     : None\nOptional For    : None\nConflicts With  : linux-asahi\nReplaces        : None\nInstalled Size  : 162.20 MiB\nPackager        : Unknown Packager\nBuild Date      : Thu Oct  1 20:17:49 2026\nInstall Date    : Fri Oct  2 09:46:07 2026\nInstall Reason  : Explicitly installed\nInstall Script  : No\nValidated By    : None\n\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "pacman",
+        "-Q",
+        "linux-aurora-headers",
+        "m1n1-aurora",
+        "aurora-touchid",
+        "libfprint",
+        "fprintd",
+        "avd-fw"
+      ],
+      "start_utc": "2026-10-02T04:39:18.776192+00:00",
+      "end_utc": "2026-10-02T04:39:18.794481+00:00",
+      "returncode": 0,
+      "stdout": "linux-aurora-headers 7.1.12.aurora2-11.17\nm1n1-aurora 1.6.1.aurora3-1\naurora-touchid 20261001-1\nlibfprint 1.94.100-1.1\nfprintd 1.94.5-2\navd-fw 0.1-1\n",
+      "stderr": ""
+    }
+  ],
+  "observations": [
+    {
+      "path": "/etc/os-release",
+      "start_utc": "2026-10-02T04:39:18.799632+00:00",
+      "end_utc": "2026-10-02T04:39:18.799813+00:00",
+      "start_monotonic_ns": 1248789521496,
+      "end_monotonic_ns": 1248789702614,
+      "raw_utf8": "NAME=\"Arch Linux ARM\"\nPRETTY_NAME=\"Arch Linux ARM\"\nID=archarm\nID_LIKE=arch\nBUILD_ID=rolling\nANSI_COLOR=\"38;2;23;147;209\"\nHOME_URL=\"https://archlinuxarm.org/\"\nDOCUMENTATION_URL=\"https://archlinuxarm.org/wiki\"\nSUPPORT_URL=\"https://archlinuxarm.org/forum\"\nBUG_REPORT_URL=\"https://github.com/archlinuxarm/PKGBUILDs/issues\"\nLOGO=archlinux-logo\n",
+      "raw_hex": "4e414d453d2241726368204c696e75782041524d220a5052455454595f4e414d453d2241726368204c696e75782041524d220a49443d6172636861726d0a49445f4c494b453d617263680a4255494c445f49443d726f6c6c696e670a414e53495f434f4c4f523d2233383b323b32333b3134373b323039220a484f4d455f55524c3d2268747470733a2f2f617263686c696e757861726d2e6f72672f220a444f43554d454e544154494f4e5f55524c3d2268747470733a2f2f617263686c696e757861726d2e6f72672f77696b69220a535550504f52545f55524c3d2268747470733a2f2f617263686c696e757861726d2e6f72672f666f72756d220a4255475f5245504f52545f55524c3d2268747470733a2f2f6769746875622e636f6d2f617263686c696e757861726d2f504b474255494c44732f697373756573220a4c4f474f3d617263686c696e75782d6c6f676f0a",
+      "sha256": "72eaedcb694aa5833e804660dfb4f61907d52aef009767173689d0bb9e845a23",
+      "bytes": 339
+    },
+    {
+      "path": "/sys/firmware/fdt",
+      "start_utc": "2026-10-02T04:39:18.801908+00:00",
+      "end_utc": "2026-10-02T04:39:18.801945+00:00",
+      "start_monotonic_ns": 1248791795661,
+      "end_monotonic_ns": 1248791832410,
+      "error": {
+        "type": "PermissionError",
+        "errno": 13
+      }
+    },
+    {
+      "path": "/sys/firmware/devicetree/base/compatible",
+      "start_utc": "2026-10-02T04:39:18.801965+00:00",
+      "end_utc": "2026-10-02T04:39:18.802103+00:00",
+      "start_monotonic_ns": 1248791852451,
+      "end_monotonic_ns": 1248791991571,
+      "raw_utf8": "apple,j313\u0000apple,t8103\u0000apple,arm-platform\u0000",
+      "raw_hex": "6170706c652c6a333133006170706c652c7438313033006170706c652c61726d2d706c6174666f726d00",
+      "sha256": "f0d1c818354e326255aa0eeff5f072122484065046043ae167df7b192923e3b3",
+      "bytes": 42
+    },
+    {
+      "path": "/sys/firmware/devicetree/base/model",
+      "start_utc": "2026-10-02T04:39:18.802125+00:00",
+      "end_utc": "2026-10-02T04:39:18.802253+00:00",
+      "start_monotonic_ns": 1248792013153,
+      "end_monotonic_ns": 1248792141815,
+      "raw_utf8": "Apple MacBook Air (M1, 2020)\u0000",
+      "raw_hex": "4170706c65204d6163426f6f6b2041697220284d312c20323032302900",
+      "sha256": "fa5dbda325129e71bfe857bcd82cda78de6e1b81b54fd20482a7a973c545ec70",
+      "bytes": 29
+    },
+    {
+      "path": "/sys/devices/system/cpu/possible",
+      "start_utc": "2026-10-02T04:39:18.802347+00:00",
+      "end_utc": "2026-10-02T04:39:18.802486+00:00",
+      "start_monotonic_ns": 1248792233937,
+      "end_monotonic_ns": 1248792374431,
+      "raw_utf8": "0-7\n",
+      "raw_hex": "302d370a",
+      "sha256": "68bd8f51bd4ae191549e051a0b542d13dc5fad2132a46ba5705e5db88837083c",
+      "bytes": 4
+    },
+    {
+      "path": "/sys/devices/system/cpu/present",
+      "start_utc": "2026-10-02T04:39:18.802502+00:00",
+      "end_utc": "2026-10-02T04:39:18.802639+00:00",
+      "start_monotonic_ns": 1248792389848,
+      "end_monotonic_ns": 1248792527592,
+      "raw_utf8": "0-7\n",
+      "raw_hex": "302d370a",
+      "sha256": "68bd8f51bd4ae191549e051a0b542d13dc5fad2132a46ba5705e5db88837083c",
+      "bytes": 4
+    },
+    {
+      "path": "/sys/devices/system/cpu/online",
+      "start_utc": "2026-10-02T04:39:18.802655+00:00",
+      "end_utc": "2026-10-02T04:39:18.802785+00:00",
+      "start_monotonic_ns": 1248792542800,
+      "end_monotonic_ns": 1248792673420,
+      "raw_utf8": "0-7\n",
+      "raw_hex": "302d370a",
+      "sha256": "68bd8f51bd4ae191549e051a0b542d13dc5fad2132a46ba5705e5db88837083c",
+      "bytes": 4
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpuidle/current_driver",
+      "start_utc": "2026-10-02T04:39:18.802801+00:00",
+      "end_utc": "2026-10-02T04:39:18.802928+00:00",
+      "start_monotonic_ns": 1248792688545,
+      "end_monotonic_ns": 1248792816040,
+      "raw_utf8": "apple_idle\n",
+      "raw_hex": "6170706c655f69646c650a",
+      "sha256": "de07938f05d85d13f78b5f469c414c90738600f050966f36c2933344e9b1febd",
+      "bytes": 11
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpuidle/current_governor_ro",
+      "start_utc": "2026-10-02T04:39:18.802943+00:00",
+      "end_utc": "2026-10-02T04:39:18.803072+00:00",
+      "start_monotonic_ns": 1248792830539,
+      "end_monotonic_ns": 1248792960160,
+      "raw_utf8": "menu\n",
+      "raw_hex": "6d656e750a",
+      "sha256": "7e8a051c48ddd8592694f7a489a1a406846a386cb67010ed090806ae301ab8df",
+      "bytes": 5
+    },
+    {
+      "path": "/sys/devices/system/clocksource/clocksource0/current_clocksource",
+      "start_utc": "2026-10-02T04:39:18.803088+00:00",
+      "end_utc": "2026-10-02T04:39:18.803233+00:00",
+      "start_monotonic_ns": 1248792975284,
+      "end_monotonic_ns": 1248793122154,
+      "raw_utf8": "arch_sys_counter\n",
+      "raw_hex": "617263685f7379735f636f756e7465720a",
+      "sha256": "f4b8f7c744fbbe0231ae65b218028f301a234938dcef8b23be3c70756cc8ba82",
+      "bytes": 17
+    },
+    {
+      "path": "/sys/kernel/debug/apple_apsc_observer/status",
+      "start_utc": "2026-10-02T04:39:18.803250+00:00",
+      "end_utc": "2026-10-02T04:39:18.803271+00:00",
+      "start_monotonic_ns": 1248793137153,
+      "end_monotonic_ns": 1248793158611,
+      "error": {
+        "type": "PermissionError",
+        "errno": 13
+      }
+    },
+    {
+      "path": "/sys/kernel/debug/apple_counter_qualification/status",
+      "start_utc": "2026-10-02T04:39:18.803287+00:00",
+      "end_utc": "2026-10-02T04:39:18.803303+00:00",
+      "start_monotonic_ns": 1248793173943,
+      "end_monotonic_ns": 1248793190276,
+      "error": {
+        "type": "PermissionError",
+        "errno": 13
+      }
+    },
+    {
+      "path": "/usr/lib/modules/7.1.12-2-11.17-sep-ARCH/pkgbase",
+      "start_utc": "2026-10-02T04:39:18.803318+00:00",
+      "end_utc": "2026-10-02T04:39:18.803445+00:00",
+      "start_monotonic_ns": 1248793205609,
+      "end_monotonic_ns": 1248793333187,
+      "raw_utf8": "linux-aurora\n",
+      "raw_hex": "6c696e75782d6175726f72610a",
+      "sha256": "4d9371ee32c1e8ed253a68a545799f11f61ddbd8be045f03b071413f01db5318",
+      "bytes": 13
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/disable",
+      "start_utc": "2026-10-02T04:39:18.894554+00:00",
+      "end_utc": "2026-10-02T04:39:18.894975+00:00",
+      "start_monotonic_ns": 1248884439508,
+      "end_monotonic_ns": 1248884861868,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/latency",
+      "start_utc": "2026-10-02T04:39:18.894980+00:00",
+      "end_utc": "2026-10-02T04:39:18.895054+00:00",
+      "start_monotonic_ns": 1248884865492,
+      "end_monotonic_ns": 1248884940240,
+      "raw_utf8": "1\n",
+      "raw_hex": "310a",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/name",
+      "start_utc": "2026-10-02T04:39:18.895057+00:00",
+      "end_utc": "2026-10-02T04:39:18.895123+00:00",
+      "start_monotonic_ns": 1248884943156,
+      "end_monotonic_ns": 1248885008862,
+      "raw_utf8": "WFI\n",
+      "raw_hex": "5746490a",
+      "sha256": "36e9c1dfa3fb675f465f58250612eea3a34f5dd55400fe04e3fc9baad2614b31",
+      "bytes": 4
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/residency",
+      "start_utc": "2026-10-02T04:39:18.895126+00:00",
+      "end_utc": "2026-10-02T04:39:18.895186+00:00",
+      "start_monotonic_ns": 1248885011237,
+      "end_monotonic_ns": 1248885072485,
+      "raw_utf8": "1\n",
+      "raw_hex": "310a",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/time",
+      "start_utc": "2026-10-02T04:39:18.895189+00:00",
+      "end_utc": "2026-10-02T04:39:18.895265+00:00",
+      "start_monotonic_ns": 1248885074818,
+      "end_monotonic_ns": 1248885150690,
+      "raw_utf8": "253391199\n",
+      "raw_hex": "3235333339313139390a",
+      "sha256": "4b8758a47f4b4a0223eb8d28ee6dc7120c60c4250e7c9a24016c9fa4b73f7d57",
+      "bytes": 10
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0/usage",
+      "start_utc": "2026-10-02T04:39:18.895268+00:00",
+      "end_utc": "2026-10-02T04:39:18.895323+00:00",
+      "start_monotonic_ns": 1248885153148,
+      "end_monotonic_ns": 1248885209396,
+      "raw_utf8": "543381\n",
+      "raw_hex": "3534333338310a",
+      "sha256": "97f190243c02286f1448cadbcb26c58d5ba888f4d01ce38e00584465295a55b5",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/disable",
+      "start_utc": "2026-10-02T04:39:18.895326+00:00",
+      "end_utc": "2026-10-02T04:39:18.895381+00:00",
+      "start_monotonic_ns": 1248885211438,
+      "end_monotonic_ns": 1248885266811,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/latency",
+      "start_utc": "2026-10-02T04:39:18.895384+00:00",
+      "end_utc": "2026-10-02T04:39:18.895437+00:00",
+      "start_monotonic_ns": 1248885269061,
+      "end_monotonic_ns": 1248885322475,
+      "raw_utf8": "10\n",
+      "raw_hex": "31300a",
+      "sha256": "917df3320d778ddbaa5c5c7742bc4046bf803c36ed2b050f30844ed206783469",
+      "bytes": 3
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/name",
+      "start_utc": "2026-10-02T04:39:18.895439+00:00",
+      "end_utc": "2026-10-02T04:39:18.895496+00:00",
+      "start_monotonic_ns": 1248885324475,
+      "end_monotonic_ns": 1248885381765,
+      "raw_utf8": "CPU PD\n",
+      "raw_hex": "4350552050440a",
+      "sha256": "2bd70c369c3df58ff815bf75936cf79a72136dc106b258187ed257c912466c4f",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/residency",
+      "start_utc": "2026-10-02T04:39:18.895499+00:00",
+      "end_utc": "2026-10-02T04:39:18.895552+00:00",
+      "start_monotonic_ns": 1248885383765,
+      "end_monotonic_ns": 1248885438013,
+      "raw_utf8": "10000\n",
+      "raw_hex": "31303030300a",
+      "sha256": "876e13f4e07bb39705302c01f445ffd2d2c3b180a207e4d959d6b671c67da09b",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/time",
+      "start_utc": "2026-10-02T04:39:18.895555+00:00",
+      "end_utc": "2026-10-02T04:39:18.895607+00:00",
+      "start_monotonic_ns": 1248885440096,
+      "end_monotonic_ns": 1248885493261,
+      "raw_utf8": "922489813\n",
+      "raw_hex": "3932323438393831330a",
+      "sha256": "d9d5c69ee44ef0de354ac2ac4b5f7113089a08da448fbcb2725d333c412bc1fe",
+      "bytes": 10
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1/usage",
+      "start_utc": "2026-10-02T04:39:18.895610+00:00",
+      "end_utc": "2026-10-02T04:39:18.895663+00:00",
+      "start_monotonic_ns": 1248885495594,
+      "end_monotonic_ns": 1248885549217,
+      "raw_utf8": "342433\n",
+      "raw_hex": "3334323433330a",
+      "sha256": "b32d6aad5ef94fdb092d7732c651c51896dcc1877e6b275d2c5095a1cf13f0bf",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/disable",
+      "start_utc": "2026-10-02T04:39:18.895666+00:00",
+      "end_utc": "2026-10-02T04:39:18.895720+00:00",
+      "start_monotonic_ns": 1248885551300,
+      "end_monotonic_ns": 1248885605923,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/latency",
+      "start_utc": "2026-10-02T04:39:18.895723+00:00",
+      "end_utc": "2026-10-02T04:39:18.895775+00:00",
+      "start_monotonic_ns": 1248885608340,
+      "end_monotonic_ns": 1248885661046,
+      "raw_utf8": "1\n",
+      "raw_hex": "310a",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/name",
+      "start_utc": "2026-10-02T04:39:18.895778+00:00",
+      "end_utc": "2026-10-02T04:39:18.895829+00:00",
+      "start_monotonic_ns": 1248885663129,
+      "end_monotonic_ns": 1248885714377,
+      "raw_utf8": "WFI\n",
+      "raw_hex": "5746490a",
+      "sha256": "36e9c1dfa3fb675f465f58250612eea3a34f5dd55400fe04e3fc9baad2614b31",
+      "bytes": 4
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/residency",
+      "start_utc": "2026-10-02T04:39:18.895831+00:00",
+      "end_utc": "2026-10-02T04:39:18.895882+00:00",
+      "start_monotonic_ns": 1248885716336,
+      "end_monotonic_ns": 1248885767626,
+      "raw_utf8": "1\n",
+      "raw_hex": "310a",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/time",
+      "start_utc": "2026-10-02T04:39:18.895884+00:00",
+      "end_utc": "2026-10-02T04:39:18.895933+00:00",
+      "start_monotonic_ns": 1248885769834,
+      "end_monotonic_ns": 1248885818957,
+      "raw_utf8": "266987130\n",
+      "raw_hex": "3236363938373133300a",
+      "sha256": "4c469d6afc32bbdf5476f3675fd24f4d482aa72eb798907f51ff0fd7f4642213",
+      "bytes": 10
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0/usage",
+      "start_utc": "2026-10-02T04:39:18.895936+00:00",
+      "end_utc": "2026-10-02T04:39:18.895985+00:00",
+      "start_monotonic_ns": 1248885820957,
+      "end_monotonic_ns": 1248885870788,
+      "raw_utf8": "371183\n",
+      "raw_hex": "3337313138330a",
+      "sha256": "7bc1da21a4ad2fb3ff32ebedef775daa390a75f441c7cf96d3d07308729a03cc",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/disable",
+      "start_utc": "2026-10-02T04:39:18.895987+00:00",
+      "end_utc": "2026-10-02T04:39:18.896037+00:00",
+      "start_monotonic_ns": 1248885872955,
+      "end_monotonic_ns": 1248885922370,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/latency",
+      "start_utc": "2026-10-02T04:39:18.896039+00:00",
+      "end_utc": "2026-10-02T04:39:18.896088+00:00",
+      "start_monotonic_ns": 1248885924495,
+      "end_monotonic_ns": 1248885974201,
+      "raw_utf8": "10\n",
+      "raw_hex": "31300a",
+      "sha256": "917df3320d778ddbaa5c5c7742bc4046bf803c36ed2b050f30844ed206783469",
+      "bytes": 3
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/name",
+      "start_utc": "2026-10-02T04:39:18.896091+00:00",
+      "end_utc": "2026-10-02T04:39:18.896145+00:00",
+      "start_monotonic_ns": 1248885976284,
+      "end_monotonic_ns": 1248886030782,
+      "raw_utf8": "CPU PD\n",
+      "raw_hex": "4350552050440a",
+      "sha256": "2bd70c369c3df58ff815bf75936cf79a72136dc106b258187ed257c912466c4f",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/residency",
+      "start_utc": "2026-10-02T04:39:18.896148+00:00",
+      "end_utc": "2026-10-02T04:39:18.896202+00:00",
+      "start_monotonic_ns": 1248886032866,
+      "end_monotonic_ns": 1248886087905,
+      "raw_utf8": "10000\n",
+      "raw_hex": "31303030300a",
+      "sha256": "876e13f4e07bb39705302c01f445ffd2d2c3b180a207e4d959d6b671c67da09b",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/time",
+      "start_utc": "2026-10-02T04:39:18.896205+00:00",
+      "end_utc": "2026-10-02T04:39:18.896253+00:00",
+      "start_monotonic_ns": 1248886089905,
+      "end_monotonic_ns": 1248886139237,
+      "raw_utf8": "907428631\n",
+      "raw_hex": "3930373432383633310a",
+      "sha256": "04fe2736aaccad0066f3c1b19442108b027aef18365c1458c36bf72acc52d0eb",
+      "bytes": 10
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1/usage",
+      "start_utc": "2026-10-02T04:39:18.896256+00:00",
+      "end_utc": "2026-10-02T04:39:18.896314+00:00",
+      "start_monotonic_ns": 1248886141028,
+      "end_monotonic_ns": 1248886200276,
+      "raw_utf8": "115486\n",
+      "raw_hex": "3131353438360a",
+      "sha256": "2b4d64a481bbc9ea53c932da2d63d760c7039b3c8c6fcfbb969ef402cb09ec37",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/disable",
+      "start_utc": "2026-10-02T04:39:18.896317+00:00",
+      "end_utc": "2026-10-02T04:39:18.896399+00:00",
+      "start_monotonic_ns": 1248886202359,
+      "end_monotonic_ns": 1248886285273,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/latency",
+      "start_utc": "2026-10-02T04:39:18.896402+00:00",
+      "end_utc": "2026-10-02T04:39:18.896455+00:00",
+      "start_monotonic_ns": 1248886287606,
+      "end_monotonic_ns": 1248886340438,
+      "raw_utf8": "1\n",
+      "raw_hex": "310a",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/name",
+      "start_utc": "2026-10-02T04:39:18.896457+00:00",
+      "end_utc": "2026-10-02T04:39:18.896531+00:00",
+      "start_monotonic_ns": 1248886342437,
+      "end_monotonic_ns": 1248886417143,
+      "raw_utf8": "WFI\n",
+      "raw_hex": "5746490a",
+      "sha256": "36e9c1dfa3fb675f465f58250612eea3a34f5dd55400fe04e3fc9baad2614b31",
+      "bytes": 4
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/residency",
+      "start_utc": "2026-10-02T04:39:18.896534+00:00",
+      "end_utc": "2026-10-02T04:39:18.896586+00:00",
+      "start_monotonic_ns": 1248886419226,
+      "end_monotonic_ns": 1248886471766,
+      "raw_utf8": "1\n",
+      "raw_hex": "310a",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/time",
+      "start_utc": "2026-10-02T04:39:18.896589+00:00",
+      "end_utc": "2026-10-02T04:39:18.896645+00:00",
+      "start_monotonic_ns": 1248886473808,
+      "end_monotonic_ns": 1248886531264,
+      "raw_utf8": "224699300\n",
+      "raw_hex": "3232343639393330300a",
+      "sha256": "d97f098ca48f82049229776a568532d8d5d40e27287a59d1d69657483a8fea55",
+      "bytes": 10
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0/usage",
+      "start_utc": "2026-10-02T04:39:18.896648+00:00",
+      "end_utc": "2026-10-02T04:39:18.896700+00:00",
+      "start_monotonic_ns": 1248886533222,
+      "end_monotonic_ns": 1248886586095,
+      "raw_utf8": "311478\n",
+      "raw_hex": "3331313437380a",
+      "sha256": "1fc892106023d653fbd074994844eeaa9a900e9fead46c792ea02becda010867",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/disable",
+      "start_utc": "2026-10-02T04:39:18.896703+00:00",
+      "end_utc": "2026-10-02T04:39:18.896757+00:00",
+      "start_monotonic_ns": 1248886588303,
+      "end_monotonic_ns": 1248886643051,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/latency",
+      "start_utc": "2026-10-02T04:39:18.896760+00:00",
+      "end_utc": "2026-10-02T04:39:18.896812+00:00",
+      "start_monotonic_ns": 1248886645218,
+      "end_monotonic_ns": 1248886698091,
+      "raw_utf8": "10\n",
+      "raw_hex": "31300a",
+      "sha256": "917df3320d778ddbaa5c5c7742bc4046bf803c36ed2b050f30844ed206783469",
+      "bytes": 3
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/name",
+      "start_utc": "2026-10-02T04:39:18.896815+00:00",
+      "end_utc": "2026-10-02T04:39:18.896871+00:00",
+      "start_monotonic_ns": 1248886700091,
+      "end_monotonic_ns": 1248886757172,
+      "raw_utf8": "CPU PD\n",
+      "raw_hex": "4350552050440a",
+      "sha256": "2bd70c369c3df58ff815bf75936cf79a72136dc106b258187ed257c912466c4f",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/residency",
+      "start_utc": "2026-10-02T04:39:18.896874+00:00",
+      "end_utc": "2026-10-02T04:39:18.896931+00:00",
+      "start_monotonic_ns": 1248886759172,
+      "end_monotonic_ns": 1248886816878,
+      "raw_utf8": "10000\n",
+      "raw_hex": "31303030300a",
+      "sha256": "876e13f4e07bb39705302c01f445ffd2d2c3b180a207e4d959d6b671c67da09b",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/time",
+      "start_utc": "2026-10-02T04:39:18.896934+00:00",
+      "end_utc": "2026-10-02T04:39:18.896987+00:00",
+      "start_monotonic_ns": 1248886818961,
+      "end_monotonic_ns": 1248886872751,
+      "raw_utf8": "949475703\n",
+      "raw_hex": "3934393437353730330a",
+      "sha256": "0b57559887c6e13c68586dd7c822c199ad44f717dfa31b7308e53b26f2702893",
+      "bytes": 10
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1/usage",
+      "start_utc": "2026-10-02T04:39:18.896989+00:00",
+      "end_utc": "2026-10-02T04:39:18.897041+00:00",
+      "start_monotonic_ns": 1248886874668,
+      "end_monotonic_ns": 1248886926374,
+      "raw_utf8": "112038\n",
+      "raw_hex": "3131323033380a",
+      "sha256": "08664c7979db1a17483cead4d379de7327587d960347a527c3249ee9bf2c7320",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/disable",
+      "start_utc": "2026-10-02T04:39:18.897043+00:00",
+      "end_utc": "2026-10-02T04:39:18.897095+00:00",
+      "start_monotonic_ns": 1248886928624,
+      "end_monotonic_ns": 1248886980580,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/latency",
+      "start_utc": "2026-10-02T04:39:18.897098+00:00",
+      "end_utc": "2026-10-02T04:39:18.897158+00:00",
+      "start_monotonic_ns": 1248886983247,
+      "end_monotonic_ns": 1248887043911,
+      "raw_utf8": "1\n",
+      "raw_hex": "310a",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/name",
+      "start_utc": "2026-10-02T04:39:18.897161+00:00",
+      "end_utc": "2026-10-02T04:39:18.897213+00:00",
+      "start_monotonic_ns": 1248887046120,
+      "end_monotonic_ns": 1248887098534,
+      "raw_utf8": "WFI\n",
+      "raw_hex": "5746490a",
+      "sha256": "36e9c1dfa3fb675f465f58250612eea3a34f5dd55400fe04e3fc9baad2614b31",
+      "bytes": 4
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/residency",
+      "start_utc": "2026-10-02T04:39:18.897215+00:00",
+      "end_utc": "2026-10-02T04:39:18.897269+00:00",
+      "start_monotonic_ns": 1248887100534,
+      "end_monotonic_ns": 1248887154449,
+      "raw_utf8": "1\n",
+      "raw_hex": "310a",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/time",
+      "start_utc": "2026-10-02T04:39:18.897271+00:00",
+      "end_utc": "2026-10-02T04:39:18.897323+00:00",
+      "start_monotonic_ns": 1248887156324,
+      "end_monotonic_ns": 1248887208530,
+      "raw_utf8": "236479362\n",
+      "raw_hex": "3233363437393336320a",
+      "sha256": "f28c7c9c7aaf47074dce7c8f71582071ed953e47a02ff5070a37bdff08da3358",
+      "bytes": 10
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0/usage",
+      "start_utc": "2026-10-02T04:39:18.897325+00:00",
+      "end_utc": "2026-10-02T04:39:18.897375+00:00",
+      "start_monotonic_ns": 1248887210364,
+      "end_monotonic_ns": 1248887260487,
+      "raw_utf8": "339553\n",
+      "raw_hex": "3333393535330a",
+      "sha256": "c3adee8a733008f5d09ea2cd31af5ebf19929697f4ff7054a44907be585fb4b1",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/disable",
+      "start_utc": "2026-10-02T04:39:18.897377+00:00",
+      "end_utc": "2026-10-02T04:39:18.897433+00:00",
+      "start_monotonic_ns": 1248887262403,
+      "end_monotonic_ns": 1248887318276,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/latency",
+      "start_utc": "2026-10-02T04:39:18.897435+00:00",
+      "end_utc": "2026-10-02T04:39:18.897489+00:00",
+      "start_monotonic_ns": 1248887320109,
+      "end_monotonic_ns": 1248887374774,
+      "raw_utf8": "10\n",
+      "raw_hex": "31300a",
+      "sha256": "917df3320d778ddbaa5c5c7742bc4046bf803c36ed2b050f30844ed206783469",
+      "bytes": 3
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/name",
+      "start_utc": "2026-10-02T04:39:18.897491+00:00",
+      "end_utc": "2026-10-02T04:39:18.897542+00:00",
+      "start_monotonic_ns": 1248887376649,
+      "end_monotonic_ns": 1248887427397,
+      "raw_utf8": "CPU PD\n",
+      "raw_hex": "4350552050440a",
+      "sha256": "2bd70c369c3df58ff815bf75936cf79a72136dc106b258187ed257c912466c4f",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/residency",
+      "start_utc": "2026-10-02T04:39:18.897544+00:00",
+      "end_utc": "2026-10-02T04:39:18.897596+00:00",
+      "start_monotonic_ns": 1248887429272,
+      "end_monotonic_ns": 1248887482187,
+      "raw_utf8": "10000\n",
+      "raw_hex": "31303030300a",
+      "sha256": "876e13f4e07bb39705302c01f445ffd2d2c3b180a207e4d959d6b671c67da09b",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/time",
+      "start_utc": "2026-10-02T04:39:18.897599+00:00",
+      "end_utc": "2026-10-02T04:39:18.897650+00:00",
+      "start_monotonic_ns": 1248887484062,
+      "end_monotonic_ns": 1248887536310,
+      "raw_utf8": "938410304\n",
+      "raw_hex": "3933383431303330340a",
+      "sha256": "22a5220cb77d4381d9707c0c34086f9f0f6ff10c85da7372f31bac0556ebf7d2",
+      "bytes": 10
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1/usage",
+      "start_utc": "2026-10-02T04:39:18.897653+00:00",
+      "end_utc": "2026-10-02T04:39:18.897703+00:00",
+      "start_monotonic_ns": 1248887538226,
+      "end_monotonic_ns": 1248887589224,
+      "raw_utf8": "93943\n",
+      "raw_hex": "39333934330a",
+      "sha256": "a6703f040af106747ca58056315ff495da9faa1722f5525ec7dfc230138de225",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/disable",
+      "start_utc": "2026-10-02T04:39:18.897706+00:00",
+      "end_utc": "2026-10-02T04:39:18.897757+00:00",
+      "start_monotonic_ns": 1248887591058,
+      "end_monotonic_ns": 1248887642931,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/latency",
+      "start_utc": "2026-10-02T04:39:18.897760+00:00",
+      "end_utc": "2026-10-02T04:39:18.897810+00:00",
+      "start_monotonic_ns": 1248887645014,
+      "end_monotonic_ns": 1248887695429,
+      "raw_utf8": "1\n",
+      "raw_hex": "310a",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/name",
+      "start_utc": "2026-10-02T04:39:18.897812+00:00",
+      "end_utc": "2026-10-02T04:39:18.897863+00:00",
+      "start_monotonic_ns": 1248887697387,
+      "end_monotonic_ns": 1248887748260,
+      "raw_utf8": "WFI\n",
+      "raw_hex": "5746490a",
+      "sha256": "36e9c1dfa3fb675f465f58250612eea3a34f5dd55400fe04e3fc9baad2614b31",
+      "bytes": 4
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/residency",
+      "start_utc": "2026-10-02T04:39:18.897865+00:00",
+      "end_utc": "2026-10-02T04:39:18.897916+00:00",
+      "start_monotonic_ns": 1248887750218,
+      "end_monotonic_ns": 1248887801508,
+      "raw_utf8": "1\n",
+      "raw_hex": "310a",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/time",
+      "start_utc": "2026-10-02T04:39:18.897918+00:00",
+      "end_utc": "2026-10-02T04:39:18.897966+00:00",
+      "start_monotonic_ns": 1248887803383,
+      "end_monotonic_ns": 1248887851506,
+      "raw_utf8": "40378915\n",
+      "raw_hex": "34303337383931350a",
+      "sha256": "65a6ac9ebafdddd2e00877b0cde403f8488c0dc1f33f73158db4cece25fb7378",
+      "bytes": 9
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0/usage",
+      "start_utc": "2026-10-02T04:39:18.897968+00:00",
+      "end_utc": "2026-10-02T04:39:18.898014+00:00",
+      "start_monotonic_ns": 1248887853340,
+      "end_monotonic_ns": 1248887899713,
+      "raw_utf8": "85423\n",
+      "raw_hex": "38353432330a",
+      "sha256": "c1adbead0ee346df155889544f6d08245c4b8062ad1b78a753f498c6e3f6d349",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/disable",
+      "start_utc": "2026-10-02T04:39:18.898016+00:00",
+      "end_utc": "2026-10-02T04:39:18.898069+00:00",
+      "start_monotonic_ns": 1248887901463,
+      "end_monotonic_ns": 1248887954669,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/latency",
+      "start_utc": "2026-10-02T04:39:18.898071+00:00",
+      "end_utc": "2026-10-02T04:39:18.898121+00:00",
+      "start_monotonic_ns": 1248887956377,
+      "end_monotonic_ns": 1248888006584,
+      "raw_utf8": "10\n",
+      "raw_hex": "31300a",
+      "sha256": "917df3320d778ddbaa5c5c7742bc4046bf803c36ed2b050f30844ed206783469",
+      "bytes": 3
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/name",
+      "start_utc": "2026-10-02T04:39:18.898123+00:00",
+      "end_utc": "2026-10-02T04:39:18.898174+00:00",
+      "start_monotonic_ns": 1248888008376,
+      "end_monotonic_ns": 1248888059374,
+      "raw_utf8": "CPU PD\n",
+      "raw_hex": "4350552050440a",
+      "sha256": "2bd70c369c3df58ff815bf75936cf79a72136dc106b258187ed257c912466c4f",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/residency",
+      "start_utc": "2026-10-02T04:39:18.898176+00:00",
+      "end_utc": "2026-10-02T04:39:18.898225+00:00",
+      "start_monotonic_ns": 1248888061165,
+      "end_monotonic_ns": 1248888111205,
+      "raw_utf8": "10000\n",
+      "raw_hex": "31303030300a",
+      "sha256": "876e13f4e07bb39705302c01f445ffd2d2c3b180a207e4d959d6b671c67da09b",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/time",
+      "start_utc": "2026-10-02T04:39:18.898228+00:00",
+      "end_utc": "2026-10-02T04:39:18.898281+00:00",
+      "start_monotonic_ns": 1248888113038,
+      "end_monotonic_ns": 1248888166495,
+      "raw_utf8": "1177761910\n",
+      "raw_hex": "313137373736313931300a",
+      "sha256": "d0fd6228f92e17c6931e571a8ce932f66e51020f67dca786327e37b579ea74c8",
+      "bytes": 11
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1/usage",
+      "start_utc": "2026-10-02T04:39:18.898283+00:00",
+      "end_utc": "2026-10-02T04:39:18.898334+00:00",
+      "start_monotonic_ns": 1248888168286,
+      "end_monotonic_ns": 1248888219701,
+      "raw_utf8": "24373\n",
+      "raw_hex": "32343337330a",
+      "sha256": "49014e801ce70a2d838f886eccd98e8d83f35c5c996f0d4e03b0ad3899f36036",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/disable",
+      "start_utc": "2026-10-02T04:39:18.898336+00:00",
+      "end_utc": "2026-10-02T04:39:18.898389+00:00",
+      "start_monotonic_ns": 1248888221576,
+      "end_monotonic_ns": 1248888274949,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/latency",
+      "start_utc": "2026-10-02T04:39:18.898392+00:00",
+      "end_utc": "2026-10-02T04:39:18.898439+00:00",
+      "start_monotonic_ns": 1248888276657,
+      "end_monotonic_ns": 1248888324864,
+      "raw_utf8": "1\n",
+      "raw_hex": "310a",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/name",
+      "start_utc": "2026-10-02T04:39:18.898441+00:00",
+      "end_utc": "2026-10-02T04:39:18.898492+00:00",
+      "start_monotonic_ns": 1248888326697,
+      "end_monotonic_ns": 1248888377945,
+      "raw_utf8": "WFI\n",
+      "raw_hex": "5746490a",
+      "sha256": "36e9c1dfa3fb675f465f58250612eea3a34f5dd55400fe04e3fc9baad2614b31",
+      "bytes": 4
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/residency",
+      "start_utc": "2026-10-02T04:39:18.898495+00:00",
+      "end_utc": "2026-10-02T04:39:18.898543+00:00",
+      "start_monotonic_ns": 1248888379695,
+      "end_monotonic_ns": 1248888428860,
+      "raw_utf8": "1\n",
+      "raw_hex": "310a",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/time",
+      "start_utc": "2026-10-02T04:39:18.898545+00:00",
+      "end_utc": "2026-10-02T04:39:18.898597+00:00",
+      "start_monotonic_ns": 1248888430651,
+      "end_monotonic_ns": 1248888483150,
+      "raw_utf8": "34802428\n",
+      "raw_hex": "33343830323432380a",
+      "sha256": "06e1ba55a9c491d5f52f01de12cacfd5045878706c8413b0731f61de02e57fbc",
+      "bytes": 9
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0/usage",
+      "start_utc": "2026-10-02T04:39:18.898600+00:00",
+      "end_utc": "2026-10-02T04:39:18.898649+00:00",
+      "start_monotonic_ns": 1248888485233,
+      "end_monotonic_ns": 1248888534814,
+      "raw_utf8": "76531\n",
+      "raw_hex": "37363533310a",
+      "sha256": "29e0fe913bb1dfc0a864646828fa66f27d6a498a117c11744582e1edd4f5ad69",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/disable",
+      "start_utc": "2026-10-02T04:39:18.898651+00:00",
+      "end_utc": "2026-10-02T04:39:18.898704+00:00",
+      "start_monotonic_ns": 1248888536606,
+      "end_monotonic_ns": 1248888589687,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/latency",
+      "start_utc": "2026-10-02T04:39:18.898706+00:00",
+      "end_utc": "2026-10-02T04:39:18.898757+00:00",
+      "start_monotonic_ns": 1248888591479,
+      "end_monotonic_ns": 1248888643185,
+      "raw_utf8": "10\n",
+      "raw_hex": "31300a",
+      "sha256": "917df3320d778ddbaa5c5c7742bc4046bf803c36ed2b050f30844ed206783469",
+      "bytes": 3
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/name",
+      "start_utc": "2026-10-02T04:39:18.898760+00:00",
+      "end_utc": "2026-10-02T04:39:18.898807+00:00",
+      "start_monotonic_ns": 1248888644935,
+      "end_monotonic_ns": 1248888693392,
+      "raw_utf8": "CPU PD\n",
+      "raw_hex": "4350552050440a",
+      "sha256": "2bd70c369c3df58ff815bf75936cf79a72136dc106b258187ed257c912466c4f",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/residency",
+      "start_utc": "2026-10-02T04:39:18.898810+00:00",
+      "end_utc": "2026-10-02T04:39:18.898859+00:00",
+      "start_monotonic_ns": 1248888695183,
+      "end_monotonic_ns": 1248888745098,
+      "raw_utf8": "10000\n",
+      "raw_hex": "31303030300a",
+      "sha256": "876e13f4e07bb39705302c01f445ffd2d2c3b180a207e4d959d6b671c67da09b",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/time",
+      "start_utc": "2026-10-02T04:39:18.898862+00:00",
+      "end_utc": "2026-10-02T04:39:18.898914+00:00",
+      "start_monotonic_ns": 1248888746848,
+      "end_monotonic_ns": 1248888800096,
+      "raw_utf8": "1196721345\n",
+      "raw_hex": "313139363732313334350a",
+      "sha256": "fea3ca21c4f22e4a9d6dedbcf0598514c41a09148c860a8e5309cdb6e27fd308",
+      "bytes": 11
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1/usage",
+      "start_utc": "2026-10-02T04:39:18.898917+00:00",
+      "end_utc": "2026-10-02T04:39:18.898965+00:00",
+      "start_monotonic_ns": 1248888801888,
+      "end_monotonic_ns": 1248888850886,
+      "raw_utf8": "15197\n",
+      "raw_hex": "31353139370a",
+      "sha256": "f687c26c6a6bfb34c3d446f834f74810449500b7c1edf003c5f6a55f56311078",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/disable",
+      "start_utc": "2026-10-02T04:39:18.898968+00:00",
+      "end_utc": "2026-10-02T04:39:18.899013+00:00",
+      "start_monotonic_ns": 1248888852677,
+      "end_monotonic_ns": 1248888899176,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/latency",
+      "start_utc": "2026-10-02T04:39:18.899016+00:00",
+      "end_utc": "2026-10-02T04:39:18.899064+00:00",
+      "start_monotonic_ns": 1248888900967,
+      "end_monotonic_ns": 1248888949841,
+      "raw_utf8": "1\n",
+      "raw_hex": "310a",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/name",
+      "start_utc": "2026-10-02T04:39:18.899067+00:00",
+      "end_utc": "2026-10-02T04:39:18.899123+00:00",
+      "start_monotonic_ns": 1248888951632,
+      "end_monotonic_ns": 1248889009255,
+      "raw_utf8": "WFI\n",
+      "raw_hex": "5746490a",
+      "sha256": "36e9c1dfa3fb675f465f58250612eea3a34f5dd55400fe04e3fc9baad2614b31",
+      "bytes": 4
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/residency",
+      "start_utc": "2026-10-02T04:39:18.899126+00:00",
+      "end_utc": "2026-10-02T04:39:18.899179+00:00",
+      "start_monotonic_ns": 1248889011047,
+      "end_monotonic_ns": 1248889065128,
+      "raw_utf8": "1\n",
+      "raw_hex": "310a",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/time",
+      "start_utc": "2026-10-02T04:39:18.899182+00:00",
+      "end_utc": "2026-10-02T04:39:18.899231+00:00",
+      "start_monotonic_ns": 1248889066919,
+      "end_monotonic_ns": 1248889116626,
+      "raw_utf8": "84043120\n",
+      "raw_hex": "38343034333132300a",
+      "sha256": "e23637b96357209bd06d5a929673f935690ee67771b7418046a43a181c845428",
+      "bytes": 9
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu6/cpuidle/state0/usage",
+      "start_utc": "2026-10-02T04:39:18.899233+00:00",
+      "end_utc": "2026-10-02T04:39:18.899284+00:00",
+      "start_monotonic_ns": 1248889118543,
+      "end_monotonic_ns": 1248889169541,
+      "raw_utf8": "400949\n",
+      "raw_hex": "3430303934390a",
+      "sha256": "d83b3114ef20118086d875f95b888a783e4e6c7a3a57d82392c4f89b6453775f",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/disable",
+      "start_utc": "2026-10-02T04:39:18.899286+00:00",
+      "end_utc": "2026-10-02T04:39:18.899334+00:00",
+      "start_monotonic_ns": 1248889171332,
+      "end_monotonic_ns": 1248889219664,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/latency",
+      "start_utc": "2026-10-02T04:39:18.899336+00:00",
+      "end_utc": "2026-10-02T04:39:18.899387+00:00",
+      "start_monotonic_ns": 1248889221497,
+      "end_monotonic_ns": 1248889273203,
+      "raw_utf8": "10\n",
+      "raw_hex": "31300a",
+      "sha256": "917df3320d778ddbaa5c5c7742bc4046bf803c36ed2b050f30844ed206783469",
+      "bytes": 3
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/name",
+      "start_utc": "2026-10-02T04:39:18.899390+00:00",
+      "end_utc": "2026-10-02T04:39:18.899437+00:00",
+      "start_monotonic_ns": 1248889275078,
+      "end_monotonic_ns": 1248889323077,
+      "raw_utf8": "CPU PD\n",
+      "raw_hex": "4350552050440a",
+      "sha256": "2bd70c369c3df58ff815bf75936cf79a72136dc106b258187ed257c912466c4f",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/residency",
+      "start_utc": "2026-10-02T04:39:18.899440+00:00",
+      "end_utc": "2026-10-02T04:39:18.899491+00:00",
+      "start_monotonic_ns": 1248889324993,
+      "end_monotonic_ns": 1248889376408,
+      "raw_utf8": "10000\n",
+      "raw_hex": "31303030300a",
+      "sha256": "876e13f4e07bb39705302c01f445ffd2d2c3b180a207e4d959d6b671c67da09b",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/time",
+      "start_utc": "2026-10-02T04:39:18.899493+00:00",
+      "end_utc": "2026-10-02T04:39:18.899545+00:00",
+      "start_monotonic_ns": 1248889378325,
+      "end_monotonic_ns": 1248889430698,
+      "raw_utf8": "1145226258\n",
+      "raw_hex": "313134353232363235380a",
+      "sha256": "b0189abf4c6f5f6ca8fe167645452b1e8d9720543846114479baa82f40949863",
+      "bytes": 11
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu6/cpuidle/state1/usage",
+      "start_utc": "2026-10-02T04:39:18.899547+00:00",
+      "end_utc": "2026-10-02T04:39:18.899599+00:00",
+      "start_monotonic_ns": 1248889432573,
+      "end_monotonic_ns": 1248889484946,
+      "raw_utf8": "37070\n",
+      "raw_hex": "33373037300a",
+      "sha256": "ed815292a477694a7e92f8a1a13e0e4c37c5912014bb0acd9449c1ae37761f6c",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/disable",
+      "start_utc": "2026-10-02T04:39:18.899602+00:00",
+      "end_utc": "2026-10-02T04:39:18.899703+00:00",
+      "start_monotonic_ns": 1248889486779,
+      "end_monotonic_ns": 1248889589025,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/latency",
+      "start_utc": "2026-10-02T04:39:18.899706+00:00",
+      "end_utc": "2026-10-02T04:39:18.899753+00:00",
+      "start_monotonic_ns": 1248889590858,
+      "end_monotonic_ns": 1248889638315,
+      "raw_utf8": "1\n",
+      "raw_hex": "310a",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/name",
+      "start_utc": "2026-10-02T04:39:18.899755+00:00",
+      "end_utc": "2026-10-02T04:39:18.899802+00:00",
+      "start_monotonic_ns": 1248889640232,
+      "end_monotonic_ns": 1248889687480,
+      "raw_utf8": "WFI\n",
+      "raw_hex": "5746490a",
+      "sha256": "36e9c1dfa3fb675f465f58250612eea3a34f5dd55400fe04e3fc9baad2614b31",
+      "bytes": 4
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/residency",
+      "start_utc": "2026-10-02T04:39:18.899804+00:00",
+      "end_utc": "2026-10-02T04:39:18.899851+00:00",
+      "start_monotonic_ns": 1248889689313,
+      "end_monotonic_ns": 1248889737020,
+      "raw_utf8": "1\n",
+      "raw_hex": "310a",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/time",
+      "start_utc": "2026-10-02T04:39:18.899854+00:00",
+      "end_utc": "2026-10-02T04:39:18.899911+00:00",
+      "start_monotonic_ns": 1248889739061,
+      "end_monotonic_ns": 1248889797101,
+      "raw_utf8": "31332814\n",
+      "raw_hex": "33313333323831340a",
+      "sha256": "db67ca4984330f4516a78b33ad36c0d5d12c63c1e567f6fb2d2f0c63d7829bba",
+      "bytes": 9
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu7/cpuidle/state0/usage",
+      "start_utc": "2026-10-02T04:39:18.899914+00:00",
+      "end_utc": "2026-10-02T04:39:18.899964+00:00",
+      "start_monotonic_ns": 1248889798892,
+      "end_monotonic_ns": 1248889849515,
+      "raw_utf8": "94866\n",
+      "raw_hex": "39343836360a",
+      "sha256": "51bb9fa3e4162c612fd62918c62c6dbb89a783db74fbaf07cf1f4f7afcecd4b5",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/disable",
+      "start_utc": "2026-10-02T04:39:18.899966+00:00",
+      "end_utc": "2026-10-02T04:39:18.900016+00:00",
+      "start_monotonic_ns": 1248889851265,
+      "end_monotonic_ns": 1248889901305,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/latency",
+      "start_utc": "2026-10-02T04:39:18.900018+00:00",
+      "end_utc": "2026-10-02T04:39:18.900066+00:00",
+      "start_monotonic_ns": 1248889903097,
+      "end_monotonic_ns": 1248889951512,
+      "raw_utf8": "10\n",
+      "raw_hex": "31300a",
+      "sha256": "917df3320d778ddbaa5c5c7742bc4046bf803c36ed2b050f30844ed206783469",
+      "bytes": 3
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/name",
+      "start_utc": "2026-10-02T04:39:18.900068+00:00",
+      "end_utc": "2026-10-02T04:39:18.900115+00:00",
+      "start_monotonic_ns": 1248889953303,
+      "end_monotonic_ns": 1248890004343,
+      "raw_utf8": "CPU PD\n",
+      "raw_hex": "4350552050440a",
+      "sha256": "2bd70c369c3df58ff815bf75936cf79a72136dc106b258187ed257c912466c4f",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/residency",
+      "start_utc": "2026-10-02T04:39:18.900121+00:00",
+      "end_utc": "2026-10-02T04:39:18.900169+00:00",
+      "start_monotonic_ns": 1248890006260,
+      "end_monotonic_ns": 1248890054258,
+      "raw_utf8": "10000\n",
+      "raw_hex": "31303030300a",
+      "sha256": "876e13f4e07bb39705302c01f445ffd2d2c3b180a207e4d959d6b671c67da09b",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/time",
+      "start_utc": "2026-10-02T04:39:18.900171+00:00",
+      "end_utc": "2026-10-02T04:39:18.900217+00:00",
+      "start_monotonic_ns": 1248890055883,
+      "end_monotonic_ns": 1248890102506,
+      "raw_utf8": "1202823193\n",
+      "raw_hex": "313230323832333139330a",
+      "sha256": "618d39cb624f4fe4a3486d96e91a63a9d89db35bd510348b6f404e8821ea1bf4",
+      "bytes": 11
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu7/cpuidle/state1/usage",
+      "start_utc": "2026-10-02T04:39:18.900219+00:00",
+      "end_utc": "2026-10-02T04:39:18.900264+00:00",
+      "start_monotonic_ns": 1248890104173,
+      "end_monotonic_ns": 1248890149713,
+      "raw_utf8": "10471\n",
+      "raw_hex": "31303437310a",
+      "sha256": "f4e118e2d27bd763cfad54707e3ccd28ef977fc3d711fdcff48a6837ee64f3ba",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpufreq/policy0/affected_cpus",
+      "start_utc": "2026-10-02T04:39:18.900517+00:00",
+      "end_utc": "2026-10-02T04:39:18.900570+00:00",
+      "start_monotonic_ns": 1248890402620,
+      "end_monotonic_ns": 1248890455701,
+      "raw_utf8": "0 1 2 3\n",
+      "raw_hex": "302031203220330a",
+      "sha256": "3f31bc2191b8b55d447838e14cbce78ca44feba5b46c902ade4cc2eb7b68a041",
+      "bytes": 8
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpufreq/policy0/related_cpus",
+      "start_utc": "2026-10-02T04:39:18.900573+00:00",
+      "end_utc": "2026-10-02T04:39:18.900626+00:00",
+      "start_monotonic_ns": 1248890457659,
+      "end_monotonic_ns": 1248890512157,
+      "raw_utf8": "0 1 2 3\n",
+      "raw_hex": "302031203220330a",
+      "sha256": "3f31bc2191b8b55d447838e14cbce78ca44feba5b46c902ade4cc2eb7b68a041",
+      "bytes": 8
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq",
+      "start_utc": "2026-10-02T04:39:18.900629+00:00",
+      "end_utc": "2026-10-02T04:39:18.900676+00:00",
+      "start_monotonic_ns": 1248890514116,
+      "end_monotonic_ns": 1248890561781,
+      "raw_utf8": "1704000\n",
+      "raw_hex": "313730343030300a",
+      "sha256": "5c4a6e17121b820ce604bcfea115e7f798e84dc4dd241b2ddda9f1314fbebb0a",
+      "bytes": 8
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpufreq/policy0/scaling_driver",
+      "start_utc": "2026-10-02T04:39:18.900678+00:00",
+      "end_utc": "2026-10-02T04:39:18.900724+00:00",
+      "start_monotonic_ns": 1248890563531,
+      "end_monotonic_ns": 1248890610320,
+      "raw_utf8": "apple-cpufreq\n",
+      "raw_hex": "6170706c652d637075667265710a",
+      "sha256": "eedd1c2f1d03daa7324cb2745eb1238b6c9a2add0d42293ad220dd3f06c853a6",
+      "bytes": 14
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpufreq/policy0/scaling_governor",
+      "start_utc": "2026-10-02T04:39:18.900727+00:00",
+      "end_utc": "2026-10-02T04:39:18.900774+00:00",
+      "start_monotonic_ns": 1248890612362,
+      "end_monotonic_ns": 1248890660069,
+      "raw_utf8": "schedutil\n",
+      "raw_hex": "73636865647574696c0a",
+      "sha256": "370afcec441b514ced2d8c7a6dce776d58ec2fd19d52cc3efe8e80eea1875140",
+      "bytes": 10
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq",
+      "start_utc": "2026-10-02T04:39:18.900777+00:00",
+      "end_utc": "2026-10-02T04:39:18.900822+00:00",
+      "start_monotonic_ns": 1248890661735,
+      "end_monotonic_ns": 1248890707317,
+      "raw_utf8": "2064000\n",
+      "raw_hex": "323036343030300a",
+      "sha256": "a9fdf64072eafa469e467f593455033bcb7976cd8796ddd32a1e979f73777a3a",
+      "bytes": 8
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq",
+      "start_utc": "2026-10-02T04:39:18.900824+00:00",
+      "end_utc": "2026-10-02T04:39:18.900869+00:00",
+      "start_monotonic_ns": 1248890708942,
+      "end_monotonic_ns": 1248890754232,
+      "raw_utf8": "600000\n",
+      "raw_hex": "3630303030300a",
+      "sha256": "1e6ffd8a95fab538ddd645a767e8cc505722d5c8aaf008969f2ed8ab753ff61e",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpufreq/policy4/affected_cpus",
+      "start_utc": "2026-10-02T04:39:18.900871+00:00",
+      "end_utc": "2026-10-02T04:39:18.900915+00:00",
+      "start_monotonic_ns": 1248890755940,
+      "end_monotonic_ns": 1248890800855,
+      "raw_utf8": "4 5 6 7\n",
+      "raw_hex": "342035203620370a",
+      "sha256": "190bf4968fa9c451ffe4130f515e40cc81a310574e3f4678a3ef0affce1a5347",
+      "bytes": 8
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpufreq/policy4/related_cpus",
+      "start_utc": "2026-10-02T04:39:18.900917+00:00",
+      "end_utc": "2026-10-02T04:39:18.900962+00:00",
+      "start_monotonic_ns": 1248890802522,
+      "end_monotonic_ns": 1248890847895,
+      "raw_utf8": "4 5 6 7\n",
+      "raw_hex": "342035203620370a",
+      "sha256": "190bf4968fa9c451ffe4130f515e40cc81a310574e3f4678a3ef0affce1a5347",
+      "bytes": 8
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpufreq/policy4/scaling_cur_freq",
+      "start_utc": "2026-10-02T04:39:18.900964+00:00",
+      "end_utc": "2026-10-02T04:39:18.901010+00:00",
+      "start_monotonic_ns": 1248890849562,
+      "end_monotonic_ns": 1248890895310,
+      "raw_utf8": "2592000\n",
+      "raw_hex": "323539323030300a",
+      "sha256": "0902b1f0af1082efa83f6cc8d46f2689a81591f5db2e4950726a1810b6b234f0",
+      "bytes": 8
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpufreq/policy4/scaling_driver",
+      "start_utc": "2026-10-02T04:39:18.901012+00:00",
+      "end_utc": "2026-10-02T04:39:18.901059+00:00",
+      "start_monotonic_ns": 1248890896976,
+      "end_monotonic_ns": 1248890944475,
+      "raw_utf8": "apple-cpufreq\n",
+      "raw_hex": "6170706c652d637075667265710a",
+      "sha256": "eedd1c2f1d03daa7324cb2745eb1238b6c9a2add0d42293ad220dd3f06c853a6",
+      "bytes": 14
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpufreq/policy4/scaling_governor",
+      "start_utc": "2026-10-02T04:39:18.901061+00:00",
+      "end_utc": "2026-10-02T04:39:18.901107+00:00",
+      "start_monotonic_ns": 1248890946141,
+      "end_monotonic_ns": 1248890992598,
+      "raw_utf8": "schedutil\n",
+      "raw_hex": "73636865647574696c0a",
+      "sha256": "370afcec441b514ced2d8c7a6dce776d58ec2fd19d52cc3efe8e80eea1875140",
+      "bytes": 10
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpufreq/policy4/scaling_max_freq",
+      "start_utc": "2026-10-02T04:39:18.901109+00:00",
+      "end_utc": "2026-10-02T04:39:18.901158+00:00",
+      "start_monotonic_ns": 1248890994264,
+      "end_monotonic_ns": 1248891043888,
+      "raw_utf8": "2988000\n",
+      "raw_hex": "323938383030300a",
+      "sha256": "e4cf787e8631fe1d5728ecf1d3a3054d183b0009fc35005ee02c52342868878a",
+      "bytes": 8
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpufreq/policy4/scaling_min_freq",
+      "start_utc": "2026-10-02T04:39:18.901160+00:00",
+      "end_utc": "2026-10-02T04:39:18.901205+00:00",
+      "start_monotonic_ns": 1248891045513,
+      "end_monotonic_ns": 1248891090928,
+      "raw_utf8": "600000\n",
+      "raw_hex": "3630303030300a",
+      "sha256": "1e6ffd8a95fab538ddd645a767e8cc505722d5c8aaf008969f2ed8ab753ff61e",
+      "bytes": 7
+    },
+    {
+      "path": "/sys/class/power_supply/macsmc-ac/online",
+      "start_utc": "2026-10-02T04:39:18.903066+00:00",
+      "end_utc": "2026-10-02T04:39:18.903322+00:00",
+      "start_monotonic_ns": 1248892951150,
+      "end_monotonic_ns": 1248893207349,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/class/power_supply/macsmc-ac/type",
+      "start_utc": "2026-10-02T04:39:18.903324+00:00",
+      "end_utc": "2026-10-02T04:39:18.903371+00:00",
+      "start_monotonic_ns": 1248893209265,
+      "end_monotonic_ns": 1248893257222,
+      "raw_utf8": "Mains\n",
+      "raw_hex": "4d61696e730a",
+      "sha256": "d49ee06945a80563c3192f20b86f655aba185ec403a7b5c3d51379490281e1b3",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/class/power_supply/macsmc-battery/capacity",
+      "start_utc": "2026-10-02T04:39:18.903374+00:00",
+      "end_utc": "2026-10-02T04:39:18.903619+00:00",
+      "start_monotonic_ns": 1248893258972,
+      "end_monotonic_ns": 1248893504588,
+      "raw_utf8": "41\n",
+      "raw_hex": "34310a",
+      "sha256": "040316eca5e77dbb2212c1efe8b81cb23bc67ce0ac8cb5c9d902d98bd45ddfa1",
+      "bytes": 3
+    },
+    {
+      "path": "/sys/class/power_supply/macsmc-battery/status",
+      "start_utc": "2026-10-02T04:39:18.903621+00:00",
+      "end_utc": "2026-10-02T04:39:18.903951+00:00",
+      "start_monotonic_ns": 1248893506338,
+      "end_monotonic_ns": 1248893836284,
+      "raw_utf8": "Discharging\n",
+      "raw_hex": "4469736368617267696e670a",
+      "sha256": "bf57bcfb937811a78f18a1dce847792748f4c36888c917e1dd76507a53173505",
+      "bytes": 12
+    },
+    {
+      "path": "/sys/class/power_supply/macsmc-battery/type",
+      "start_utc": "2026-10-02T04:39:18.903953+00:00",
+      "end_utc": "2026-10-02T04:39:18.903998+00:00",
+      "start_monotonic_ns": 1248893837909,
+      "end_monotonic_ns": 1248893883657,
+      "raw_utf8": "Battery\n",
+      "raw_hex": "426174746572790a",
+      "sha256": "314fc5420fec3cce784b91a867585974df652499277ad366bf739055141d0e60",
+      "bytes": 8
+    },
+    {
+      "path": "/sys/class/power_supply/tps6598x-source-psy-0-0038/online",
+      "start_utc": "2026-10-02T04:39:18.904000+00:00",
+      "end_utc": "2026-10-02T04:39:18.904046+00:00",
+      "start_monotonic_ns": 1248893885240,
+      "end_monotonic_ns": 1248893931947,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/class/power_supply/tps6598x-source-psy-0-0038/type",
+      "start_utc": "2026-10-02T04:39:18.904049+00:00",
+      "end_utc": "2026-10-02T04:39:18.904097+00:00",
+      "start_monotonic_ns": 1248893933655,
+      "end_monotonic_ns": 1248893982612,
+      "raw_utf8": "USB\n",
+      "raw_hex": "5553420a",
+      "sha256": "27572b1bab28fb82ef587265e182cf1e385cc19bb39a9f1fd27045117086b6f8",
+      "bytes": 4
+    },
+    {
+      "path": "/sys/class/power_supply/tps6598x-source-psy-0-003f/online",
+      "start_utc": "2026-10-02T04:39:18.904099+00:00",
+      "end_utc": "2026-10-02T04:39:18.904148+00:00",
+      "start_monotonic_ns": 1248893984320,
+      "end_monotonic_ns": 1248894033568,
+      "raw_utf8": "0\n",
+      "raw_hex": "300a",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "/sys/class/power_supply/tps6598x-source-psy-0-003f/type",
+      "start_utc": "2026-10-02T04:39:18.904150+00:00",
+      "end_utc": "2026-10-02T04:39:18.904196+00:00",
+      "start_monotonic_ns": 1248894035485,
+      "end_monotonic_ns": 1248894081441,
+      "raw_utf8": "USB\n",
+      "raw_hex": "5553420a",
+      "sha256": "27572b1bab28fb82ef587265e182cf1e385cc19bb39a9f1fd27045117086b6f8",
+      "bytes": 4
+    },
+    {
+      "path": "/sys/class/thermal/thermal_zone0/temp",
+      "start_utc": "2026-10-02T04:39:18.904329+00:00",
+      "end_utc": "2026-10-02T04:39:18.904578+00:00",
+      "start_monotonic_ns": 1248894214145,
+      "end_monotonic_ns": 1248894463594,
+      "raw_utf8": "33900\n",
+      "raw_hex": "33333930300a",
+      "sha256": "c4d3bf20051d6195043640814144ec2f51c1ad793a81a734b951f714306548c4",
+      "bytes": 6
+    },
+    {
+      "path": "/sys/class/thermal/thermal_zone0/type",
+      "start_utc": "2026-10-02T04:39:18.904580+00:00",
+      "end_utc": "2026-10-02T04:39:18.904631+00:00",
+      "start_monotonic_ns": 1248894465469,
+      "end_monotonic_ns": 1248894516384,
+      "raw_utf8": "macsmc-battery\n",
+      "raw_hex": "6d6163736d632d626174746572790a",
+      "sha256": "6587a6312858fd7cfeb5924e13ac3c7c875732fac32661e2bfa9d40051648b0b",
+      "bytes": 15
+    }
+  ],
+  "firmware_reported": [
+    {
+      "path": "/sys/firmware/devicetree/base/chosen/asahi,m1n1-stage1-version",
+      "utc": "2026-10-02T04:40:48.175475+00:00",
+      "monotonic_ns": 1338165366585,
+      "raw_utf8": "v1.6.1-dirty\u0000",
+      "raw_hex": "76312e362e312d646972747900",
+      "sha256": "4da686a65dc5759410861ba71201917c05b5d4615dbe01ed3ebec738282be24a"
+    },
+    {
+      "path": "/sys/firmware/devicetree/base/chosen/asahi,m1n1-stage2-version",
+      "utc": "2026-10-02T04:40:48.175584+00:00",
+      "monotonic_ns": 1338165471624,
+      "raw_utf8": "v1.6.1-omarchy.aurora3\u0000",
+      "raw_hex": "76312e362e312d6f6d61726368792e6175726f72613300",
+      "sha256": "df3e2292090fa3fa99a79d440bc919900bd7c28c785a819689924b38f3943569"
+    },
+    {
+      "path": "/sys/firmware/devicetree/base/chosen/asahi,iboot1-version",
+      "utc": "2026-10-02T04:40:48.175643+00:00",
+      "monotonic_ns": 1338165529455,
+      "raw_utf8": "mBoot-20457.1.29\u0000",
+      "raw_hex": "6d426f6f742d32303435372e312e323900",
+      "sha256": "4db5695068e479f1a57acc902a0ccb49a298ad0f2b239fc7df09a8b8484cb041"
+    },
+    {
+      "path": "/sys/firmware/devicetree/base/chosen/asahi,iboot2-version",
+      "utc": "2026-10-02T04:40:48.175711+00:00",
+      "monotonic_ns": 1338165597078,
+      "raw_utf8": "iBoot-8422.141.2\u0000",
+      "raw_hex": "69426f6f742d383432322e3134312e3200",
+      "sha256": "98544ab765e55d0a9c262fc186ad70760edc6d9394e270b3986e46221eb53c69"
+    },
+    {
+      "path": "/sys/firmware/devicetree/base/chosen/asahi,os-fw-version",
+      "utc": "2026-10-02T04:40:48.175754+00:00",
+      "monotonic_ns": 1338165640035,
+      "raw_utf8": "13.5\u0000",
+      "raw_hex": "31332e3500",
+      "sha256": "4b21df9d70f036237f4b5019d17a64c4e1977c5016f08efa4ebd00133bd0d4e4"
+    },
+    {
+      "path": "/sys/firmware/devicetree/base/chosen/asahi,system-fw-version",
+      "utc": "2026-10-02T04:40:48.175796+00:00",
+      "monotonic_ns": 1338165681617,
+      "raw_utf8": "27.0\u0000",
+      "raw_hex": "32372e3000",
+      "sha256": "d498c5698a5880e97c0866826e031a35ef79880a6297acb5f51504f1e7ab323b"
+    },
+    {
+      "path": "/sys/firmware/devicetree/base/chosen/u-boot,version",
+      "utc": "2026-10-02T04:40:48.175835+00:00",
+      "monotonic_ns": 1338165720991,
+      "raw_utf8": "2026.07\u0000",
+      "raw_hex": "323032362e303700",
+      "sha256": "e9c9c29a9fb44ccf44b42c59bbc838de8451a679ae117833f81ac22d6773e6e2"
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpufreq/policy0/fast_switch_enabled",
+      "utc": "2026-10-02T04:40:48.175881+00:00",
+      "monotonic_ns": 1338165766989,
+      "error": {
+        "type": "FileNotFoundError",
+        "errno": 2
+      }
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpufreq/policy4/fast_switch_enabled",
+      "utc": "2026-10-02T04:40:48.175902+00:00",
+      "monotonic_ns": 1338165787905,
+      "error": {
+        "type": "FileNotFoundError",
+        "errno": 2
+      }
+    }
+  ],
+  "config": {
+    "source": "/proc/config.gz",
+    "start_utc": "2026-10-02T04:39:18.800146+00:00",
+    "compressed_sha256": "9278832a5d69800568e5fda05b0d5a47402f6a8ed82f4f3469106ecd6bddf7b2",
+    "decompressed_sha256": "84bb71434e905f3b1360142e075a89b0bccb5e5bd7ca82eb892a362512df260e",
+    "decompressed_bytes": 240183,
+    "fields": {
+      "CONFIG_ARCH_APPLE": "CONFIG_ARCH_APPLE=y",
+      "CONFIG_SMP": "CONFIG_SMP=y",
+      "CONFIG_CPU_IDLE": "CONFIG_CPU_IDLE=y",
+      "CONFIG_CPU_FREQ": "CONFIG_CPU_FREQ=y",
+      "CONFIG_ARM_APPLE_CPUIDLE": "CONFIG_ARM_APPLE_CPUIDLE=y",
+      "CONFIG_ARM_APPLE_SOC_CPUFREQ": "CONFIG_ARM_APPLE_SOC_CPUFREQ=y",
+      "CONFIG_DEBUG_FS": "CONFIG_DEBUG_FS=y",
+      "CONFIG_IKCONFIG": "CONFIG_IKCONFIG=y",
+      "CONFIG_IKCONFIG_PROC": "CONFIG_IKCONFIG_PROC=y",
+      "CONFIG_MFD_SYSCON": "CONFIG_MFD_SYSCON=y",
+      "CONFIG_REGMAP": "CONFIG_REGMAP=y",
+      "CONFIG_APPLE_PMGR_PWRSTATE": "CONFIG_APPLE_PMGR_PWRSTATE=y",
+      "CONFIG_FTRACE": "CONFIG_FTRACE=y",
+      "CONFIG_FUNCTION_TRACER": "# CONFIG_FUNCTION_TRACER is not set",
+      "CONFIG_ARM_APPLE_APSC_OBSERVER": "absent",
+      "CONFIG_APPLE_COUNTER_QUALIFICATION": "absent",
+      "CONFIG_APPLE_PCPM_SAMPLER": "absent"
+    },
+    "matches_prior_release_config": true
+  },
+  "installed_image": {
+    "source": "/usr/lib/modules/7.1.12-2-11.17-sep-ARCH/vmlinuz",
+    "start_utc": "2026-10-02T04:39:18.803460+00:00",
+    "sha256": "1d08d4153742e26d7012031452db79fe500cf376a84b07261fba59f97bf945e2",
+    "bytes": 34048512,
+    "matches_prior_release_image": true
+  },
+  "running_kernel_notes": {
+    "raw_hex": "040000001400000003000000474e5500bc3799e844d9c536bf01aef87c76c205b0e1a5d20600000004000000010100004c696e7578000000000000000600000001000000000100004c696e757800000000000000",
+    "sha256": "d6adb189a9382d5cca5d258264d3c1af01f5a92334ab36b09704933ee0359260",
+    "build_ids": [
+      "bc3799e844d9c536bf01aef87c76c205b0e1a5d2"
+    ],
+    "local_vmlinux_build_id_match": true,
+    "build_id_bytes_in_installed_image_count": 1
+  },
+  "sources": [
+    {
+      "repository": "AsahiLinux/linux",
+      "revision": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+      "path": "drivers/cpufreq/apple-soc-cpufreq.c",
+      "blob_sha1": "60935032919d2b5b7a74c4e9677676de67fc531e",
+      "sha256": "e4efe79b653dc07c18a2bacc607fe69f8144ead11bf10cd4ef9407396ca808d2",
+      "bytes": 10263,
+      "prior_manifest_match": true
+    },
+    {
+      "repository": "AsahiLinux/linux",
+      "revision": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+      "path": "drivers/cpuidle/cpuidle-apple.c",
+      "blob_sha1": "3d2b804df8a2de18b8d8f031857b00d7198dab4c",
+      "sha256": "117650f48d17e2db2f8246ce2cc73995b4881587572756b75d330df95da87ded",
+      "bytes": 3949,
+      "prior_manifest_match": true
+    },
+    {
+      "repository": "aurora-silicon/linux",
+      "revision": "1d2904fd3301c63620f07c81ae79f2486a81a9a6",
+      "path": "drivers/cpuidle/cpuidle-apple.c",
+      "blob_sha1": "3d2b804df8a2de18b8d8f031857b00d7198dab4c",
+      "sha256": "117650f48d17e2db2f8246ce2cc73995b4881587572756b75d330df95da87ded",
+      "bytes": 3949,
+      "prior_manifest_match": null
+    },
+    {
+      "repository": "iconidentify/aurora-linux",
+      "revision": "90a95335a49aec3a0045a76da140452ad6585eb3",
+      "path": "drivers/cpuidle/Kconfig.arm",
+      "blob_sha1": "c6870f0845763218cde67de827620ba2bd76f9c8",
+      "sha256": "97c55491a6fe0e0ae0de9c65f8154ca113656bcbd8519a2de4703c81d61e61dc",
+      "bytes": 4658,
+      "prior_manifest_match": true
+    },
+    {
+      "repository": "iconidentify/aurora-linux",
+      "revision": "90a95335a49aec3a0045a76da140452ad6585eb3",
+      "path": "drivers/cpuidle/Makefile",
+      "blob_sha1": "f9e7a71d52c13f1953af954410f2474ad7f05782",
+      "sha256": "022a8b3b3201009f923f38b7b2f48cfec7be85dc476cbe0281a2bd47e703c29c",
+      "bytes": 1933,
+      "prior_manifest_match": true
+    },
+    {
+      "repository": "iconidentify/aurora-linux",
+      "revision": "90a95335a49aec3a0045a76da140452ad6585eb3",
+      "path": "drivers/soc/apple/Kconfig",
+      "blob_sha1": "0aee0fb30a5388ae2c8b3b43db235e87138774a2",
+      "sha256": "678ecfee168608082adf8b26811ffe8adc37ef1560e63aac99d56c08703b8a92",
+      "bytes": 4748,
+      "prior_manifest_match": true
+    },
+    {
+      "repository": "iconidentify/aurora-linux",
+      "revision": "90a95335a49aec3a0045a76da140452ad6585eb3",
+      "path": "drivers/soc/apple/Makefile",
+      "blob_sha1": "064e65d0270b935340f1a4fab22365ca85e32f58",
+      "sha256": "822e10cd7baf1decb42fe0bcf1ee5540b930aa86761e34eaf0357fdd4def59e3",
+      "bytes": 894,
+      "prior_manifest_match": true
+    },
+    {
+      "repository": "iconidentify/aurora-linux",
+      "revision": "e11a8bc74cb8f9a690b9a6debe15962438dcc3c7",
+      "path": "drivers/cpufreq/apple-soc-cpufreq.c",
+      "blob_sha1": "f2a1e91371be4921b7abab002b645c7da0143a20",
+      "sha256": "58f9544ee8d3a86b4b37864bff4d9f635da749b5f85b0f30737a13ac5ce00806",
+      "bytes": 13262,
+      "prior_manifest_match": null
+    },
+    {
+      "repository": "iconidentify/aurora-linux",
+      "revision": "e11a8bc74cb8f9a690b9a6debe15962438dcc3c7",
+      "path": "drivers/cpuidle/cpuidle-apple.c",
+      "blob_sha1": "67c7846111cf32dcac84627ec7671a67a981d10f",
+      "sha256": "798148b905eda4496f0b6a5df716f4b019aa152694a85d188d1acbf54e4cef93",
+      "bytes": 4152,
+      "prior_manifest_match": null
+    },
+    {
+      "repository": "omacom/linux",
+      "revision": "4ec597a7427da2cf03c899406b7997c875d4a9fb",
+      "path": "drivers/cpuidle/cpuidle-apple.c",
+      "blob_sha1": "3d2b804df8a2de18b8d8f031857b00d7198dab4c",
+      "sha256": "117650f48d17e2db2f8246ce2cc73995b4881587572756b75d330df95da87ded",
+      "bytes": 3949,
+      "prior_manifest_match": null
+    },
+    {
+      "repository": "iconidentify/aurora-linux",
+      "revision": "90a95335a49aec3a0045a76da140452ad6585eb3",
+      "path": "drivers/cpufreq/apple-soc-cpufreq.c",
+      "blob_sha1": "f2a1e91371be4921b7abab002b645c7da0143a20",
+      "sha256": "58f9544ee8d3a86b4b37864bff4d9f635da749b5f85b0f30737a13ac5ce00806",
+      "bytes": 13262,
+      "prior_manifest_match": true
+    },
+    {
+      "repository": "iconidentify/aurora-linux",
+      "revision": "90a95335a49aec3a0045a76da140452ad6585eb3",
+      "path": "drivers/cpuidle/cpuidle-apple.c",
+      "blob_sha1": "67c7846111cf32dcac84627ec7671a67a981d10f",
+      "sha256": "798148b905eda4496f0b6a5df716f4b019aa152694a85d188d1acbf54e4cef93",
+      "bytes": 4152,
+      "prior_manifest_match": true
+    }
+  ],
+  "patch_checks": [
+    {
+      "patch": "experiments/linux-apsc-observer/0001-t8103-apsc-observer.patch",
+      "sha256": "205c28ba1830cd794c6c59efff0b3aaeb6102335f48a7f98515a05704fbf378a",
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "<exact patch>"
+      ],
+      "scope": "sparse exact release source files; read-only text compatibility only",
+      "exit_status": 1,
+      "stdout": "",
+      "stderr": "error: patch failed: drivers/cpufreq/apple-soc-cpufreq.c:174\nerror: drivers/cpufreq/apple-soc-cpufreq.c: patch does not apply\n"
+    },
+    {
+      "patch": "experiments/linux-counter-qualification/0001-t8103-counter-qualification.patch",
+      "sha256": "4d56b79a6de142726602085466f7ba8835d1d6f5737f02ffc3fd776f01b77b7b",
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "<exact patch>"
+      ],
+      "scope": "sparse exact release source files; read-only text compatibility only",
+      "exit_status": 1,
+      "stdout": "",
+      "stderr": "error: patch failed: drivers/soc/apple/Makefile:25\nerror: drivers/soc/apple/Makefile: patch does not apply\n"
+    }
+  ],
+  "collection": {
+    "non_atomic": true,
+    "clock_units": "monotonic nanoseconds and wall UTC",
+    "cpuidle_time_units": "microseconds",
+    "cpuidle_usage_units": "entry count",
+    "cpufreq_units": "kHz",
+    "thermal_temp_units": "millidegrees Celsius",
+    "raw_record_count": 177,
+    "raw_read_or_launch_errors": 5,
+    "raw_nonzero_command_statuses": 1,
+    "firmware_followup_missing_paths": 2,
+    "native_apsc_trace_events": 0,
+    "trace_drop_count": null,
+    "observer_effect": "Collector CPU/file/sysfs traffic. No interval, rate, energy, or BUSY inference."
+  },
+  "unresolved": [
+    "source-to-binary recipe",
+    "native versus guest boot independently of container detection",
+    "firmware source and artifact hashes",
+    "dirty m1n1 stage1 source identity",
+    "full booted DT hash",
+    "runtime fast_switch_enabled",
+    "matched display/USB/background conditions",
+    "APSC BUSY/WFI overlap",
+    "native counter qualification",
+    "observer perturbation",
+    "physical state semantics and energy/wake consequence"
+  ]
+}

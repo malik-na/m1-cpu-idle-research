@@ -1,0 +1,291 @@
+--- a/drivers/cpuidle/apple-apsc-observer.c
++++ b/drivers/cpuidle/apple-apsc-observer.c
+@@ -26,6 +26,7 @@
+ #include <linux/seq_file.h>
+ #include <linux/slab.h>
+ #include <linux/smp.h>
++#include <linux/timekeeping.h>
+ #include <linux/uaccess.h>
+ #include <linux/vmalloc.h>
+ #include <asm/arch_timer.h>
+@@ -47,7 +48,7 @@
+ enum apsc_state { APSC_READY, APSC_ACTIVE, APSC_COMPLETE, APSC_INVALID };
+ 
+ struct apsc_event {
+-	u64 token, t0, t1, policy_mask, pre_cmd, cmd;
++	u64 token, t0, t1, policy_mask, pre_cmd, cmd, ticket;
+ 	u32 seq, cpu, cluster, policy_cpu, flags;
+ 	u32 requested_index, requested_pstate;
+ 	s32 ret;
+@@ -65,6 +66,8 @@
+ 	void __iomem *cmd_addr;
+ 	u64 t0, t1, cmd, token;
+ 	u32 seq, cpu, cluster, mode, committed;
++	u64 ticket_pre, ticket_post;
++	atomic64_t *ticket_counter;
+ };
+ 
+ static_assert(offsetof(struct apsc_wfi_sample, cmd_addr) == 0);
+@@ -73,6 +76,9 @@
+ static_assert(offsetof(struct apsc_wfi_sample, cmd) == 24);
+ static_assert(offsetof(struct apsc_wfi_sample, mode) == 52);
+ static_assert(offsetof(struct apsc_wfi_sample, committed) == 56);
++static_assert(offsetof(struct apsc_wfi_sample, ticket_pre) == 64);
++static_assert(offsetof(struct apsc_wfi_sample, ticket_post) == 72);
++static_assert(offsetof(struct apsc_wfi_sample, ticket_counter) == 80);
+ 
+ struct apsc_wfi_stream {
+ 	atomic_t attempts;
+@@ -80,9 +86,18 @@
+ 	u32 capacity;
+ };
+ 
++/* Keep the two clusters' contended RMW words on separate cachelines. */
++struct apsc_ticket_counter {
++	atomic64_t value;
++} __aligned(128);
++
++static_assert(sizeof(struct apsc_ticket_counter) == 128);
++
+ static struct apsc_stream idle_stream[APSC_CPUS];
+ static struct apsc_stream dvfs_stream[APSC_CLUSTERS];
+ static struct apsc_wfi_stream wfi_stream[APSC_CPUS];
++static struct apsc_ticket_counter cluster_ticket[APSC_CLUSTERS];
++static u64 start_ticket[APSC_CLUSTERS], stop_ticket[APSC_CLUSTERS];
+ static void __iomem *cluster_base[APSC_CLUSTERS];
+ static u64 cluster_cpus[APSC_CLUSTERS];
+ static u64 cluster_cmd_phys[APSC_CLUSTERS];
+@@ -95,6 +110,7 @@
+ static int fast_start[APSC_CLUSTERS], fast_end[APSC_CLUSTERS];
+ static u64 start_online_mask, end_online_mask;
+ static u64 start_tick, stop_tick, end_tick, counter_frequency;
++static u64 inside_start_ns, inside_stop_ns;
+ static enum apsc_mode capture_mode;
+ static enum apsc_state capture_state;
+ static bool capture_used;
+@@ -109,6 +125,12 @@
+ static u64 apsc_now(void)
+ {
+ 	return arch_timer_read_cntpct_el0();
++}
++
++/* The unsuffixed atomic fetch-add is full-order on all arm64 atomic paths. */
++static __always_inline u64 apsc_ticket(int cluster)
++{
++	return atomic64_fetch_add(1, &cluster_ticket[cluster].value) + 1;
+ }
+ 
+ static u64 apsc_online_mask(void)
+@@ -245,6 +267,7 @@
+ 	if (!e)
+ 		goto done;
+ 	t0 = apsc_now();
++	e->ticket = apsc_ticket(cluster);
+ 	if (capture_mode == APSC_MMIO) {
+ 		if (likely(cluster_base[cluster])) {
+ 			/* readq orders the returned MMIO value before the second tick. */
+@@ -280,20 +303,24 @@
+ 	struct apsc_event *e;
+ 	u32 seq;
+ 	u64 tick;
+-	int cpu;
++	int cpu, cluster;
+ 
+ 	preempt_disable_notrace();
+ 	cpu = raw_smp_processor_id();
+ 	if (!token || unlikely(!smp_load_acquire(&capture_active)) || cpu >= APSC_CPUS)
++		goto done;
++	cluster = READ_ONCE(cpu_cluster[cpu]);
++	if (unlikely(cluster < 0 || cluster >= APSC_CLUSTERS))
+ 		goto done;
+ 	tick = apsc_now();
+ 	e = apsc_reserve(&idle_stream[cpu], &seq);
+ 	if (!e)
+ 		goto done;
++	e->ticket = apsc_ticket(cluster);
+ 	e->kind = APSC_IDLE_EXIT;
+ 	e->seq = seq;
+ 	e->cpu = cpu;
+-	e->cluster = cpu_cluster[cpu];
++	e->cluster = cluster;
+ 	e->token = token;
+ 	e->t0 = tick;
+ 	e->t1 = tick;
+@@ -366,6 +393,7 @@
+ 	sample->cpu = cpu;
+ 	sample->cluster = cluster;
+ 	sample->mode = capture_mode == APSC_WFI_MMIO ? 2 : 1;
++	sample->ticket_counter = &cluster_ticket[cluster].value;
+ out:
+ 	preempt_enable_no_resched_notrace();
+ 	return sample;
+@@ -410,6 +438,19 @@
+ 			pending += !smp_load_acquire(&wfi_stream[cpu].samples[i].committed);
+ 	}
+ 	return pending;
++}
++
++static bool apsc_stream_loss(struct apsc_stream *stream)
++{
++	u32 attempts = atomic_read(&stream->attempts);
++	u32 i;
++
++	if (attempts > stream->capacity)
++		return true;
++	for (i = 0; i < attempts; i++)
++		if (!smp_load_acquire(&stream->events[i].committed))
++			return true;
++	return false;
+ }
+ 
+ static ssize_t apsc_capture_write(struct file *file, const char __user *user,
+@@ -457,9 +498,15 @@
+ 		if (ret)
+ 			goto invalid;
+ 	}
++	for (i = 0; i < APSC_CLUSTERS; i++)
++		start_ticket[i] = apsc_ticket(i);
+ 	start_tick = apsc_now();
+ 	smp_store_release(&capture_active, true);
++	smp_mb(); /* Place the monotonic interior marker after activation. */
++	inside_start_ns = ktime_get_ns();
+ 	capture_interrupted = !!msleep_interruptible(duration);
++	inside_stop_ns = ktime_get_ns();
++	smp_mb(); /* Place deactivation after the interior stop marker. */
+ 	smp_store_release(&capture_active, false);
+ 	stop_tick = apsc_now();
+ 	synchronize_rcu();
+@@ -471,6 +518,8 @@
+ 		       time_before(jiffies, deadline))
+ 			usleep_range(100, 200);
+ 	}
++	for (i = 0; i < APSC_CLUSTERS; i++)
++		stop_ticket[i] = apsc_ticket(i);
+ 	end_tick = apsc_now();
+ 	end_online_mask = apsc_online_mask();
+ 	ret = 0;
+@@ -491,6 +540,12 @@
+ 	for (i = 0; i < APSC_CPUS; i++)
+ 		if (atomic_read(&wfi_stream[i].attempts) > wfi_stream[i].capacity)
+ 			ret = -EOVERFLOW;
++	for (i = 0; i < APSC_CPUS; i++)
++		if (apsc_stream_loss(&idle_stream[i]))
++			ret = -EOVERFLOW;
++	for (i = 0; i < APSC_CLUSTERS; i++)
++		if (apsc_stream_loss(&dvfs_stream[i]))
++			ret = -EOVERFLOW;
+ 	WRITE_ONCE(capture_state, ret ? APSC_INVALID : APSC_COMPLETE);
+ 	cpus_read_unlock();
+ 	mutex_unlock(&capture_lock);
+@@ -562,10 +617,12 @@
+ 
+ 	if (!mutex_trylock(&capture_lock))
+ 		return -EBUSY;
+-	seq_puts(s, "abi=2\n");
++	seq_puts(s, "abi=3\n");
+ 	seq_printf(s, "state=%s\nmode=%s\n", apsc_state_name(), apsc_mode_name());
+ 	seq_printf(s, "cntfrq=%llu\nstart_tick=%llu\nstop_tick=%llu\nend_tick=%llu\n",
+ 		   counter_frequency, start_tick, stop_tick, end_tick);
++	seq_printf(s, "inside_start_ns=%llu\ninside_stop_ns=%llu\n",
++		   inside_start_ns, inside_stop_ns);
+ 	seq_printf(s, "start_online_mask=0x%llx\nend_online_mask=0x%llx\n",
+ 		   start_online_mask, end_online_mask);
+ 	seq_printf(s, "interrupted=%u\n", capture_interrupted);
+@@ -575,6 +632,8 @@
+ 		   atomic_read(&wfi_prepare_bad_mapping));
+ 	for (i = 0; i < APSC_CLUSTERS; i++) {
+ 		seq_printf(s, "cluster%d_cpus=0x%llx\n", i, cluster_cpus[i]);
++		seq_printf(s, "cluster%d_ticket_start=%llu\ncluster%d_ticket_stop=%llu\n",
++			   i, start_ticket[i], i, stop_ticket[i]);
+ 		seq_printf(s, "cluster%d_cmd_phys=0x%llx\ncluster%d_resource_size=0x%llx\n",
+ 			   i, cluster_cmd_phys[i], i, cluster_resource_size[i]);
+ 		seq_printf(s, "cluster%d_policy_mask_start=0x%llx\ncluster%d_policy_mask_end=0x%llx\n",
+@@ -643,7 +702,11 @@
+ 		seq_printf(s, "0x%llx,", e->cmd);
+ 	else
+ 		seq_putc(s, ',');
+-	seq_printf(s, "%d,%u\n", e->ret, e->flags);
++	seq_printf(s, "%d,%u,", e->ret, e->flags);
++	if (e->kind == APSC_IDLE_ENTER || e->kind == APSC_IDLE_EXIT)
++		seq_printf(s, "%llu\n", e->ticket);
++	else
++		seq_putc(s, '\n');
+ }
+ 
+ static void apsc_stream_csv(struct seq_file *s, struct apsc_stream *stream)
+@@ -662,7 +725,7 @@
+ 
+ 	if (!mutex_trylock(&capture_lock))
+ 		return -EBUSY;
+-	seq_puts(s, "kind,seq,cpu,cluster,policy_cpu,policy_mask,fast_switch,requested_index,requested_pstate,token,t0,t1,pre_cmd,cmd,ret,flags\n");
++	seq_puts(s, "kind,seq,cpu,cluster,policy_cpu,policy_mask,fast_switch,requested_index,requested_pstate,token,t0,t1,pre_cmd,cmd,ret,flags,ticket\n");
+ 	for (i = 0; i < APSC_CPUS; i++)
+ 		apsc_stream_csv(s, &idle_stream[i]);
+ 	for (i = 0; i < APSC_CLUSTERS; i++)
+@@ -693,7 +756,7 @@
+ 
+ 	if (!mutex_trylock(&capture_lock))
+ 		return -EBUSY;
+-	seq_puts(s, "seq,cpu,cluster,token,t0,t1,cmd,mode\n");
++	seq_puts(s, "seq,cpu,cluster,token,t0,t1,cmd,mode,cmd_valid,ticket_pre,ticket_post\n");
+ 	for (cpu = 0; cpu < APSC_CPUS; cpu++) {
+ 		stream = &wfi_stream[cpu];
+ 		slots = min_t(u32, atomic_read(&stream->attempts), stream->capacity);
+@@ -707,7 +770,9 @@
+ 				seq_printf(s, "0x%llx,", e->cmd);
+ 			else
+ 				seq_putc(s, ',');
+-			seq_puts(s, e->mode == 2 ? "wfi_mmio\n" : "wfi_clock\n");
++			seq_printf(s, "%s,%u,%llu,%llu\n",
++				   e->mode == 2 ? "wfi_mmio" : "wfi_clock",
++				   e->mode == 2, e->ticket_pre, e->ticket_post);
+ 		}
+ 	}
+ 	mutex_unlock(&capture_lock);
+--- a/drivers/cpuidle/cpuidle-apple.c
++++ b/drivers/cpuidle/cpuidle-apple.c
+@@ -40,27 +40,38 @@
+ 		"msr s3_5_c15_c5_0, x0\n"
+ 
+ #ifdef CONFIG_ARM_APPLE_APSC_OBSERVER
+-		/* One bracketed read on the first attempt; retries skip this block. */
++		/* One ticket bracket on the first attempt; retries skip it. */
+ 		"cbz x1, 2f\n"
+ 		"isb\n"
+ 		"mrs x2, cntpct_el0\n"
+ 		"ldr w6, [x1, #52]\n"
++		"ldr x3, [x1]\n"
++		/* Full-order Normal-memory ticket before the one Device read. */
++		".arch_extension lse\n"
++		"ldr x9, [x1, #80]\n"
++		"mov x10, #1\n"
++		"ldaddal x10, x11, [x9]\n"
++		"add x11, x11, #1\n"
++		"str x11, [x1, #64]\n"
++		"dmb sy\n"
++		"mov x4, xzr\n"
+ 		"cmp w6, #2\n"
+ 		"b.ne 3f\n"
+-		"ldr x3, [x1]\n"
+ 		"ldr x4, [x3]\n"
++	"3:\n"
+ 		"dmb oshld\n"
+ 		/* Match arm64 readq's data-to-counter control dependency. */
+ 		"eor x7, x4, x4\n"
+ 		"cbnz x7, .\n"
+-	"3:\n"
++		/* Complete the read before the second full-order ticket. */
++		"dmb sy\n"
++		"ldaddal x10, x11, [x9]\n"
++		"add x11, x11, #1\n"
++		"str x11, [x1, #72]\n"
+ 		"isb\n"
+ 		"mrs x5, cntpct_el0\n"
+ 		"stp x2, x5, [x1, #8]\n"
+-		"cmp w6, #2\n"
+-		"b.ne 4f\n"
+ 		"str x4, [x1, #24]\n"
+-	"4:\n"
+ 		"add x7, x1, #56\n"
+ 		"mov w8, #1\n"
+ 		"stlr w8, [x7]\n"

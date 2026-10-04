@@ -1,0 +1,323 @@
+{
+  "scope": "full Image/modules/dtbs build, final ELF review, and private matching module/initramfs/EFI staging; installation and native execution reported separately",
+  "source_pin": "90a95335a49aec3a0045a76da140452ad6585eb3",
+  "source_tree": "a6f2a94ab1433507d1943b525854faaea04a88aa",
+  "candidate_release": "7.1.12-ARCH-apsc-20261002",
+  "build": {
+    "variant": "on",
+    "stage": "kernel-candidate-build",
+    "command": [
+      "${aurora_build_root}/tools/usr/bin/make",
+      "-j4",
+      "-C",
+      "${aurora_build_root}/source-patched",
+      "O=${aurora_build_root}/build-on",
+      "ARCH=arm64",
+      "CC=gcc",
+      "HOSTCC=gcc",
+      "LOCALVERSION=",
+      "Image",
+      "modules",
+      "dtbs"
+    ],
+    "started_utc": "2026-10-02T05:46:46.562705+00:00",
+    "ended_utc": "2026-10-02T06:23:12.305306+00:00",
+    "exit_status": 0,
+    "log": "kernel-candidate-build.log",
+    "log_sha256": "222314a8d6395c74babe33017bbc3b2651053f0d9f469f6a34b55ba50d3525ae",
+    "config_sha256": "f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d"
+  },
+  "build_log_warning_or_error_lines": 0,
+  "image_sha256": "6857a188b095d4a434ae9340f6ccfcd84b0f868026fe854132351a7d76a7d1e5",
+  "image_bytes": 34048512,
+  "vmlinux_sha256": "fed3ba1c90d3583ed4137158c35661121376d8364dadee42032aecded449d991",
+  "vmlinux_build_id": "a53a08aa0376b26e41aea54be3d1b470d5b7b061",
+  "embedded_image_config_matches_reviewed_config": true,
+  "config_sha256": "f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d",
+  "linked_comparison": {
+    "scope": "full-source Kbuild object bytes and linked-kernel checks; no native execution",
+    "objects": {
+      "build-pristine/drivers/cpuidle/cpuidle-apple.o": "09ad20bbcb78cb5c007d6714c15a64c527d0d7893a7ea2adcb6020085c92e51d",
+      "build-pristine/drivers/cpufreq/apple-soc-cpufreq.o": "6c84cc0113d061c6e5fd3ec4372fe8e5a2cdce43007c0106e5150bf5f6fb05e9",
+      "build-off/drivers/cpuidle/cpuidle-apple.o": "79340ba6d7b7e5c5fa8aabe06e50b06d727932aca479329a59dfdb82914068d0",
+      "build-off/drivers/cpufreq/apple-soc-cpufreq.o": "efcb0d05fa51857184fdbb7d65f125cd999c8cb9f21b562a0caf4daaf6a67bf8",
+      "build-on/drivers/cpuidle/cpuidle-apple.o": "e8c0173c53a7b3d36036f4d3dc46e47c71b022590788f234ceda6b8290f74a3c",
+      "build-on/drivers/cpufreq/apple-soc-cpufreq.o": "0b1ace5f53264a53d05de26ecb02c898ce33fab1a738e9fb2312fceddb5c486f",
+      "build-on/drivers/cpuidle/apple-apsc-observer.o": "612f1c100bba10f8068f69527f614f9336005622c9242686f2b4efab83a76e55",
+      "build-on/drivers/soc/apple/apple-counter-qualification.o": "1f6f1c680e7a60887cf31dd773e6041c4b00b6f56373287bbd07e3744fe72fdf"
+    },
+    "disabled_executable_changes": {
+      "cpuidle-apple": [],
+      "apple-soc-cpufreq": []
+    },
+    "deep_wfi": {
+      "pristine": {
+        "bytes": 100,
+        "sha256": "c8fd716fccb949e9f35aa2937a87787942b39f0b5df5e088d46f88253479b88c",
+        "hex": "fe0f1ff8fc77bfa9fa6fbfa9f867bfa9f65fbfa9f457bfa9f24fbfa900f53dd5000468b200f51dd59f3f03d57f2003d500c138d5a0ffffb400f53dd500f8679200f51dd5f24fc1a8f457c1a8f65fc1a8f867c1a8fa6fc1a8fc77c1a8fe0741f8c0035fd6"
+      },
+      "off": {
+        "bytes": 100,
+        "sha256": "c8fd716fccb949e9f35aa2937a87787942b39f0b5df5e088d46f88253479b88c",
+        "hex": "fe0f1ff8fc77bfa9fa6fbfa9f867bfa9f65fbfa9f457bfa9f24fbfa900f53dd5000468b200f51dd59f3f03d57f2003d500c138d5a0ffffb400f53dd500f8679200f51dd5f24fc1a8f457c1a8f65fc1a8f867c1a8fa6fc1a8fc77c1a8fe0741f8c0035fd6"
+      },
+      "on": {
+        "bytes": 100,
+        "sha256": "c8fd716fccb949e9f35aa2937a87787942b39f0b5df5e088d46f88253479b88c",
+        "hex": "fe0f1ff8fc77bfa9fa6fbfa9f867bfa9f65fbfa9f457bfa9f24fbfa900f53dd5000468b200f51dd59f3f03d57f2003d500c138d5a0ffffb400f53dd500f8679200f51dd5f24fc1a8f457c1a8f65fc1a8f867c1a8fa6fc1a8fc77c1a8fe0741f8c0035fd6"
+      },
+      "linked": {
+        "bytes": 100,
+        "sha256": "c8fd716fccb949e9f35aa2937a87787942b39f0b5df5e088d46f88253479b88c",
+        "hex": "fe0f1ff8fc77bfa9fa6fbfa9f867bfa9f65fbfa9f457bfa9f24fbfa900f53dd5000468b200f51dd59f3f03d57f2003d500c138d5a0ffffb400f53dd500f8679200f51dd5f24fc1a8f457c1a8f65fc1a8f867c1a8fa6fc1a8fc77c1a8fe0741f8c0035fd6"
+      }
+    },
+    "linked_vmlinux": {
+      "sha256": "fed3ba1c90d3583ed4137158c35661121376d8364dadee42032aecded449d991",
+      "required_symbols_present": [
+        "apple_apsc_observer_idle_enter",
+        "apple_apsc_observer_idle_exit",
+        "apple_apsc_observer_dvfs_write",
+        "apple_apsc_observer_cpu_pm_fail",
+        "apsc_observer_init",
+        "cq_target",
+        "cq_cpu_metadata",
+        "cq_init"
+      ]
+    },
+    "configuration_sha256": {
+      "pristine": "84bb71434e905f3b1360142e075a89b0bccb5e5bd7ca82eb892a362512df260e",
+      "off": "7a46a5cfbd4158b1792a5ef4f6a368900160ba9e77f768535f2084a3bec4de15",
+      "on": "f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d"
+    }
+  },
+  "late_initcalls": [
+    {
+      "function": "apsc_observer_init",
+      "slot_symbol": "__initcall__kmod_apple_apsc_observer__557_687_apsc_observer_init7",
+      "section": ".init.data",
+      "slot_value_hex": "0xffff800081cd98b4",
+      "signed_prel32": -945600,
+      "resolved_function_value_hex": "0xffff800081bf2af4",
+      "late_initcall_resolves": true
+    },
+    {
+      "function": "cq_init",
+      "slot_symbol": "__initcall__kmod_apple_counter_qualification__439_617_cq_init7",
+      "section": ".init.data",
+      "slot_value_hex": "0xffff800081cd98a0",
+      "signed_prel32": -979380,
+      "resolved_function_value_hex": "0xffff800081bea6ec",
+      "late_initcall_resolves": true
+    }
+  ],
+  "linked_function_disassembly_sha256": {
+    "apple_enter_idle": "d906f62eca9b1e19508fd108cff405f6ed5ef43683d9ea4055761056d7606207",
+    "apple_apsc_observer_idle_enter": "dc8780f24f25f00f432fc6df0e3913e6046cdd3c5965db0188243c30bb87691d",
+    "apple_apsc_observer_idle_exit": "80abc97343bbd9c25eda849be9acda02dfc70230de21ca35d24c5ce66b7ba5c7",
+    "apple_apsc_observer_cpu_pm_fail": "30dc53d691bfd1d29850ce7df13a3c57b387560429ec418ce8bfbd5149c2163f",
+    "apple_apsc_observer_dvfs_write": "b1a96a7e018357a77b4604cdebc6e7e569f3d68bcdf5e7653e09a5b901c70c3b",
+    "apple_apsc_observer_dvfs_poll_fail": "9f7e5b4fcc164d6c41d9124cb5793be5ef49d50bacba5caf8f3c47f804370b09",
+    "apple_soc_cpufreq_set_target": "da2864e72a6cba34cf5e2e8039da9f4337acc51961ecc8f36e2e4008ab88f419",
+    "apsc_reserve": "309363f88ed8f9e7b851549966cf8b140185bc13911466cd58f2edf1e6c45ddb",
+    "cq_tick": "937ffa7bb6dfcf18a5067980a5c5909d83f93d64a1a52c4be66f8eda629fb4cd",
+    "cq_target": "3316f2d8e292591ea62520cba27f554f2384758f27ba6b7452933155c7216682",
+    "cq_cpu_metadata": "5554fe8347ea32126b8fc1da693b277b090349fbc54087c8315f8bfaa9a8d381",
+    "apsc_observer_init": "5f4dcf201351b8d773b11caa9ee26cb537f33d59a50cbde9ab6dcaa783b839f2",
+    "cq_init": "f91951a44e0d53214bcac2f602478ad8e350ef1762fa5a6f75c2c6723974c34e"
+  },
+  "generated_code_review": {
+    "idle_enter_hook_before_context_tracking": true,
+    "idle_exit_hook_after_context_tracking": true,
+    "complete_deep_wfi_unchanged": true,
+    "dvfs_wrapper_one_original_store_on_each_exclusive_path": true,
+    "observer_adds_no_apsc_write_or_post_write_poll": true,
+    "idle_mmio_sample_one_ordered_read": true,
+    "reserve_helper_external_calls": 0,
+    "stack_check_failure_calls_retained": true,
+    "debug_preempt_cpu_checks_retained_outside_counter_stamp_pair": true,
+    "arm64_objtool_noinstr_validation_available": false,
+    "scope": "manual linked instruction review; runtime context and observer effects remain to verify"
+  },
+  "matching_private_stage": {
+    "scope": "private staged candidate and all module release checks; no installation or native execution",
+    "observed_utc": "2026-10-02T06:45:12.393763+00:00",
+    "release": "7.1.12-ARCH-apsc-20261002",
+    "module_count": 1867,
+    "module_bytes": 2107559648,
+    "module_manifest_sha256": "8bdaeb68886dcb04338f470ac1f532c9429ed3053ef86e4c7dded640b291bf79",
+    "module_vermagic_values": [
+      "7.1.12-ARCH-apsc-20261002 SMP preempt mod_unload aarch64"
+    ],
+    "module_order_matches_all_files": true,
+    "all_currently_loaded_stock_module_names_present": true,
+    "stock_loaded_module_count": 83,
+    "initramfs_required_components_present": [
+      "btrfs.ko",
+      "dm-crypt.ko",
+      "usr/lib/systemd/systemd"
+    ],
+    "boot_files": [
+      {
+        "basename": "System.map-7.1.12-ARCH-apsc-20261002",
+        "bytes": 6058237,
+        "sha256": "647838e5c31e3c930492fa891d2f5f8a6ebb63e0b9b47311e4820fb8cd7fabd4",
+        "blake2b512": "1b3d5c654974aac605a7af236b65eb5111f2b79f6a22c88651112d2fec5351f1a64a9ffe0158af5685f69dad10288be5bead8623c77315ea60ba72e201a17694"
+      },
+      {
+        "basename": "config-7.1.12-ARCH-apsc-20261002",
+        "bytes": 240267,
+        "sha256": "f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d",
+        "blake2b512": "f0f8c194df3b11c5fc71c2683e0d1f793831f0dc994f0547cc8009b4a2fb896f3c3f18fc7ee51b54a2f0ecac948ea52ba92d1e09491f90187140328e0a9971de"
+      },
+      {
+        "basename": "initramfs-linux-aurora-apsc.img",
+        "bytes": 60507521,
+        "sha256": "bd3416393e7fda511b77c91dad0cdeee123ceeb76480f17f80fc0e3aa02cf3d2",
+        "blake2b512": "b890f1e864916184616f9f1f91cd2463c8d16581a7f1acea51152458c6b98ed128b0d11ec2b85cf12e360c5c4c84fe2abeb29e8541cf84c58fe13dd502e50017"
+      },
+      {
+        "basename": "omarchy_linux-aurora-apsc.efi",
+        "bytes": 94702592,
+        "sha256": "d884fc9a1744061a024bf28a4c4f70c27b21752862992ac1c00a61136ec81cdd",
+        "blake2b512": "1f729e304cb4d821c66d2c6cd22aa97ffde1228ac850cacbc9c54724caf35ce1fc605e239e6dd207c7f23006cf07baa7192070fe8d07940f898eb69c0b95a0dc"
+      },
+      {
+        "basename": "vmlinuz-linux-aurora-apsc",
+        "bytes": 34048512,
+        "sha256": "6857a188b095d4a434ae9340f6ccfcd84b0f868026fe854132351a7d76a7d1e5",
+        "blake2b512": "8253290498f7ef810358ced3068ef30e732c44514dc88c2d6903ee4fae17671dbd83c4b658a9d26a175b8281c8cf1a70ff12657cc913a6b791e487e8e69957af"
+      }
+    ]
+  },
+  "boot_component_checks": {
+    "scope": "EFI component equality and current-stock encrypted-root/keyboard/firmware boot-content presence; no native boot",
+    "required_initramfs_files_present_in_stock_and_candidate": [
+      "usr/bin/cryptsetup",
+      "usr/lib/systemd/system/omarchy-mac-encrypt.service",
+      "usr/lib/systemd/system/omarchy-vendorfw-initrd.service",
+      "usr/lib/systemd/systemd",
+      "usr/lib/systemd/system-generators/systemd-cryptsetup-generator",
+      "usr/lib/systemd/systemd-cryptsetup"
+    ],
+    "required_initramfs_modules_present": [
+      "hid-apple.ko",
+      "hid-magicmouse.ko",
+      "dockchannel-hid.ko",
+      "usbhid.ko",
+      "thunderbolt_apple.ko",
+      "dm-crypt.ko",
+      "btrfs.ko"
+    ],
+    "uki_image_matches_reviewed_image": true,
+    "uki_initramfs_matches_checked_initramfs": true,
+    "uki_cmdline_matches_current_stock_bundle": true,
+    "uki_release_matches_candidate": true,
+    "bundle_sha256": "d884fc9a1744061a024bf28a4c4f70c27b21752862992ac1c00a61136ec81cdd",
+    "bundle_bytes": 94702592
+  },
+  "modules_stage": {
+    "scope": "private candidate file/module staging only; no system installation",
+    "command": [
+      "${aurora_build_root}/tools/usr/bin/make",
+      "-j4",
+      "-C",
+      "${aurora_build_root}/source-patched",
+      "O=${aurora_build_root}/build-on",
+      "ARCH=arm64",
+      "CC=gcc",
+      "HOSTCC=gcc",
+      "LOCALVERSION=",
+      "INSTALL_MOD_PATH=${aurora_build_root}/candidate-stage",
+      "DEPMOD=/usr/bin/depmod",
+      "modules_install"
+    ],
+    "started_utc": "2026-10-02T06:28:20.387814+00:00",
+    "ended_utc": "2026-10-02T06:28:31.887137+00:00",
+    "exit_status": 0,
+    "release": "7.1.12-ARCH-apsc-20261002",
+    "log_sha256": "1528f767e626c7975028729264042fb1d95fc636f5d58994ce73e5c6f73b9f28"
+  },
+  "complete_initramfs_build": {
+    "scope": "private generation from the complete retained boot configuration; no post hooks or system installation",
+    "attempt": 2,
+    "command": [
+      "/usr/bin/mkinitcpio",
+      "--nopost",
+      "--nocolor",
+      "--config",
+      "${aurora_build_root}/mkinitcpio-complete-private.conf",
+      "--kernel",
+      "${aurora_build_root}/candidate-stage/boot/vmlinuz-linux-aurora-apsc",
+      "--moduleroot",
+      "${aurora_build_root}/candidate-stage",
+      "--generate",
+      "${aurora_build_root}/candidate-stage/boot/initramfs-linux-aurora-apsc.img",
+      "--uki",
+      "${aurora_build_root}/candidate-stage/boot/omarchy_linux-aurora-apsc.efi",
+      "--cmdline",
+      "${aurora_build_root}/stock-uki-cmdline-clean.txt",
+      "--builddir",
+      "${aurora_build_root}/initramfs-complete-build"
+    ],
+    "started_utc": "2026-10-02T06:41:20.755993+00:00",
+    "ended_utc": "2026-10-02T06:41:36.424762+00:00",
+    "exit_status": 0,
+    "config_sha256": "81567f99591aa4721574e2da584d00b2fed08bebf4a66df4df8f159aab263a89",
+    "cmdline_sha256": "aa8eda960ec9675088e710a7ed9ef5a5bd2c49fd07e3694bbe510ce0cc85f192",
+    "log_sha256": "e99107e72c41d40ca3ebb0c03773303c7c7fe3a6762378e60d35d0d0e5a55ae4"
+  },
+  "stock_main_config_and_six_dropins_match_booted_initramfs_config": {
+    "main_and_dropins_match_booted_initramfs_config": true,
+    "files": [
+      {
+        "basename": "mkinitcpio.conf",
+        "bytes": 3345,
+        "sha256": "b12d6b1e26e42633b3053cbab472a75ac6dfdc47f01e9f8220fc6c5f848ddd11"
+      },
+      {
+        "basename": "90-omarchy-mac.conf",
+        "bytes": 664,
+        "sha256": "be6708cd16649f0853003ecf718cb09d1d720147291806b4ee56e36dd8850186"
+      },
+      {
+        "basename": "91-omarchy-mac-encrypt.conf",
+        "bytes": 3864,
+        "sha256": "fb1ba69f62f74667d1f67f1b5270fb6a50c0399dee70df508dbb5508a77cd1fb"
+      },
+      {
+        "basename": "92-omarchy-mac-hid.conf",
+        "bytes": 1829,
+        "sha256": "404c28f7fdfbc04a8e2d258e07d0c61f51995aecee5dc94c13553680928da9e6"
+      },
+      {
+        "basename": "93-omarchy-mac-plymouth.conf",
+        "bytes": 878,
+        "sha256": "a257385b58340aff6a0c6c5e8b1ebee49c54dd6e3b2e3ec8e704e1473446fa1f"
+      },
+      {
+        "basename": "94-omarchy-mac-vconsole.conf",
+        "bytes": 2359,
+        "sha256": "ca2492f0de03cd4ed2cbcf3dc7dea8430d3da997f25f3421f2c9aa2836922563"
+      },
+      {
+        "basename": "apple_hid_modules.conf",
+        "bytes": 236,
+        "sha256": "ecb65a3ac5dae1f33c7dcba107af8948318ef07cd0a922277b3234a19c61032f"
+      }
+    ]
+  },
+  "failed_first_initramfs_attempt": {
+    "result": "generation exited zero but boot-content check failed: disk-unlock hooks/modules absent",
+    "cause": "explicit private main-config path omitted system drop-ins",
+    "retained_private_attempt": true,
+    "superseded_by_attempt": 2
+  },
+  "retained_final_initramfs_warnings": [
+    "architecture aarch64 unsupported by microcode hook; hook skipped",
+    "no drivers/platform module exporting drm_privacy_screen_register",
+    "possibly missing firmware for dockchannel_hid; retained Omarchy vendor-firmware extraction units supply firmware from existing ESP at boot"
+  ],
+  "native_capture_events": 0,
+  "native_trace_loss": null
+}

@@ -7,6 +7,7 @@ import posixpath
 import re
 import shutil
 import subprocess
+from string import Template
 from pathlib import Path, PurePosixPath
 from urllib.parse import quote, unquote, urlsplit, urlunsplit
 
@@ -158,10 +159,10 @@ class Builder:
         attrs = ''.join(' ' + key.rstrip('_').replace('_', '-') + '="' + esc(value) + '"' for key, value in kwargs.items())
         return '<a href="' + esc(self.doc_url(path)) + '"' + attrs + '>' + esc(label) + '</a>'
 
-    def layout(self, title, body, active='', description='', canonical='index.html'):
+    def layout(self, title, body, active='', description='', canonical='index.html', evidence_map=False):
         nav = [('Overview', 'index.html', 'overview'), ('Findings', 'read/wiki/Findings-Index.html', 'findings'), ('Notebook', 'library.html', 'library'), ('For agents', 'read/wiki/Agent-Orientation.html', 'agents')]
         nav_html = ''.join('<a href="' + esc(self.url(path)) + '"' + (' aria-current="page"' if key == active else '') + '>' + label + '</a>' for label, path, key in nav)
-        return '''<!doctype html>
+        page = '''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>''' + esc(title) + ''' · M1 CPU Idle Research</title><meta name="description" content="''' + esc(description or 'A reproducible base-M1 CPU-idle research notebook: macOS control paths, Linux comparisons, evidence and open experiments.') + '''">
 <meta name="theme-color" content="#111419"><link rel="icon" type="image/svg+xml" href="''' + esc(self.url('assets/icon.svg')) + '''">
@@ -171,7 +172,94 @@ class Builder:
 <a class="brand" href="''' + esc(self.url()) + '''"><span class="brand-symbol" aria-hidden="true">[ m1 ]</span>cpu-idle / research</a><nav class="nav" aria-label="Main navigation">''' + nav_html + '''<a class="repo-link" href="''' + REPO + '''">GitHub ↗</a></nav></div></header>
 <main id="main">''' + body + '''</main><footer class="footer"><div><p>M1 CPU Idle Research · an open evidence notebook</p><p>Research snapshot ''' + self.snapshot_date + ''' · <a href="''' + REPO + '/tree/' + self.revision + '''">''' + self.revision[:7] + '''</a> · static publication, not live telemetry</p></div><div><p><a href="''' + esc(self.doc_url('PROVENANCE.md')) + '''">Provenance</a> / <a href="''' + esc(self.url('evidence/MANIFEST.sha256')) + '''">File hashes</a> / <a href="''' + esc(self.url('llms.txt')) + '''">llms.txt</a></p><p>Design inspired by <a href="https://omarchy-m-testing.org/">omarchy-m-testing</a>.</p></div></footer></body></html>'''
 
+        if evidence_map:
+            page = page.replace('</head>', '<link rel="stylesheet" href="' + esc(self.url('assets/evidence-map.css')) + '"></head>')
+            page = page.replace('</body>', '<script src="' + esc(self.url('assets/evidence-map.js')) + '" defer></script></body>')
+        return page
+
+    def evidence_map_data(self):
+        paths = (
+            'experiments/aurora-apsc-observer/native-evidence/abi3-E/validator-report.json',
+            'experiments/linux-pcpm-sampler/native-evidence/mmio-abi2/mmio-phase-screen.json',
+            'experiments/linux-pcpm-sampler/ps3-prototype/cap2-deployment-receipt.json',
+        )
+        if not all(path in self.files for path in paths):
+            return None
+        abi3, screen, deployment = (json.loads(self.files[path]) for path in paths)
+        reads, busy, witnesses = abi3['wfi_rows'], abi3['busy_rows'], abi3['candidate_count']
+        if not 0 < busy <= reads or witnesses != len(abi3['witnesses']) or not 0 < witnesses <= busy:
+            raise ValueError('Evidence map requires a consistent positive ABI 3 witness report.')
+        posthoc = sum(all(peer['exit_ticket'] > row['candidate_exit_ticket'] for peer in row['peers']) for row in abi3['witnesses'])
+        rows = [row for phase in screen['included'].values() for row in phase] + screen['excluded']
+        words = {row['raw_word'] for row in rows}
+        if (not rows or len({row['seq'] for row in rows}) != len(rows) or len(words) != 1
+                or screen['first_boot_numeric_pattern']['meets_one_boot_pattern'] is not False):
+            raise ValueError('Evidence map requires the retained constant-word negative PCPM screen.')
+        word = words.pop()
+        if type(word) is not int or not 0 <= word <= 0xffffffff:
+            raise ValueError('PCPM word must be a raw 32-bit integer.')
+        actual, desired = (word >> 4) & 15, word & 15
+        count = len(rows)
+        released = screen['valid_full_bracket_counts']['four_p_released']
+        if deployment['status'] != 'distinct_modules_and_uki_installed_unbooted':
+            raise ValueError('Update the evidence-map gates for the changed PS3 deployment checkpoint.')
+        cap, attempts = deployment['identity']['max_rows'], deployment['identity']['max_read_attempts']
+        if type(cap) is not int or cap <= 0 or attempts != cap * 5:
+            raise ValueError('PS3 five-slot access cap is inconsistent.')
+        abi3_url = self.doc_url('experiments/aurora-apsc-observer/ABI3-E-TICKET-RESULT.md')
+        pcpm_url = self.doc_url('experiments/linux-pcpm-sampler/native-evidence/mmio-abi2/README.md')
+        protocol_url = self.doc_url('experiments/linux-pcpm-sampler/PCPU-PS3-PROTOCOL.md')
+        claims = {
+            'native': {'title': 'Native Linux', 'status': 'Runtime evidence',
+                'description': 'Published packets target base-M1 T8103/J313, with boot and source identities recorded for each capture.',
+                'support': 'Native observation differs from guest tracing or source-permitted behavior. These separate packets have their own instruments and conditions.',
+                'next': 'Follow the pinned packet identities, raw records and replay path before extending a claim.',
+                'source': self.doc_url('wiki/Findings-Index.md')},
+            'command': {'title': 'Command ordering', 'status': 'Observed before DSB',
+                'description': f'ABI 3 retained {reads:,} first-attempt pre-DSB command reads. BUSY was set in {busy}; {witnesses} satisfy the strict software final-entrant ticket screen.',
+                'support': 'A bounded command-state observation before DSB, linked to software observer order. No BUSY observation at the later executed WFI instruction.',
+                'next': 'No further #5 reboots unless a genuinely independent timing signal becomes available. The issue stays open with this limit.', 'source': abi3_url},
+            'software': {'title': 'Software state', 'status': 'Ordered observer tickets',
+                'description': f'In a post-hoc screen, {posthoc} of the {witnesses} ABI 3 witnesses have every peer observer idle-exit ticket after the candidate’s post-WFI idle-exit ticket.',
+                'support': 'Order between software observation points. It does not locate a peer inside its exit path or prove that a peer was physically asleep.',
+                'next': 'An independently calibrated physical-state signal must be associated with the software intervals.', 'source': abi3_url},
+            'physical': {'title': 'Physical state', 'status': 'Contrast unresolved',
+                'description': f'Sparse PCPM sampling returned the same full word in all {count} reads, including {released} guarded all-P-released samples. The declared ACTUAL contrast failed.',
+                'support': f'A negative signal screen for this register and these conditions. Constant ACTUAL = {actual} does not rule out deeper states or establish rail power.',
+                'next': 'First qualify records-only acquisition on the unbooted PS3 image: zero MMIO. Review that packet before a second fresh boot may attempt bounded register reads.', 'source': pcpm_url},
+            'energy': {'title': 'Energy consequence', 'status': 'Not measured',
+                'description': 'The published command and PMGR packets do not measure energy savings, CPU-rail power or an idle-policy benefit.',
+                'support': 'No energy inference follows from BUSY, software tickets, register names or a constant state code alone.',
+                'next': 'A separately qualified energy and wake measurement, with matched workloads and observer controls, would assess consequences.', 'source': protocol_url},
+        }
+        return {'claims': claims, 'abi3': {'reads': reads, 'busy': busy, 'witnesses': witnesses, 'posthoc': posthoc},
+                'pcpm': {'word': f'0x{word:08x}', 'reads': count, 'guardedReleased': released, 'actual': actual, 'desired': desired},
+                'ps3': {'deployed': True, 'booted': False, 'cap': cap, 'attempts': attempts}}
+
+    def evidence_map_home(self, data):
+        pcpm, ps3 = data['pcpm'], data['ps3']
+        physical = data['claims']['physical']
+        values = {
+            'command_reads': f"{data['abi3']['reads']:,}", 'busy_reads': data['abi3']['busy'],
+            'witness_count': data['abi3']['witnesses'], 'abi3_result_url': data['claims']['command']['source'],
+            'initial_description': physical['description'], 'initial_support': physical['support'], 'initial_next': physical['next'],
+            'pcpm_result_url': physical['source'], 'ps3_protocol_url': data['claims']['energy']['source'],
+            'ps3_deployment_url': self.doc_url('experiments/linux-pcpm-sampler/ps3-prototype/CAP2-DEPLOYMENT-RESULT.md'),
+            'pcpm_word': pcpm['word'], 'pcpm_reads': pcpm['reads'], 'released_reads': pcpm['guardedReleased'],
+            'actual': pcpm['actual'], 'desired': pcpm['desired'], 'sample_cap': ps3['cap'], 'attempt_cap': ps3['attempts'],
+        }
+        values = {key: esc(value) for key, value in values.items()}
+        values['evidence_json'] = json.dumps(data).replace('<', r'\u003c')
+        body = Template((SITE / 'templates/evidence-map.html').read_text()).substitute(values)
+        return self.layout('Overview', body, active='overview', evidence_map=True)
+
     def home(self):
+        evidence_data = self.evidence_map_data()
+        if evidence_data is not None:
+            return self.evidence_map_home(evidence_data)
+        abi3_result = 'experiments/aurora-apsc-observer/ABI3-E-TICKET-RESULT.md'
+        pcpm_result = 'experiments/linux-pcpm-sampler/native-evidence/mmio-abi2/README.md'
+        ps3_deployment = 'experiments/linux-pcpm-sampler/ps3-prototype/CAP2-DEPLOYMENT-RESULT.md'
         findings = [
             ('macOS last-core wait', 'A conditional APSC / DVFS BUSY loop', 'binary', 'Binary', 'Mapped in the matching 26A428 image. Live branch frequency and effect remain open.', 'wiki/MacOS-Control-Path.md'),
             ('Linux returning deep WFI', 'Asahi · Omacom · Aurora Silicon', 'source', 'Source', 'Already implemented. Checked base-M1 idle drivers are byte-identical at pinned revisions.', 'wiki/Linux-and-Aurora-Baseline.md'),
@@ -180,6 +268,10 @@ class Builder:
             ('Linux observation tools', 'APSC observer + counter qualification', 'preparation', 'Preparation', 'Cross-built objects and synthetic decoder tests. Native target captures are still pending.', 'experiments/linux-apsc-observer/README.md'),
             ('Physical state & energy', 'PCPM calibration → controlled comparison', 'open', 'Open', 'No calibrated native state result or measured benefit from an added Linux wait.', 'notes/native-pcpm-signal-decision.md'),
         ]
+        if abi3_result in self.docs:
+            findings[4] = ('Native Linux BUSY observation', 'ABI 3 · 71 BUSY / 2,185 command reads', 'software', 'Software trace', '18 software final-entrant witnesses at a pre-DSB sample. Command state at WFI and physical sleep remain unobserved.', abi3_result)
+        if pcpm_result in self.docs:
+            findings[5] = ('Physical state & energy', 'PCPM: 90 constant words · failed contrast', 'open', 'Open', 'No calibrated native state result or measured policy benefit. The next candidate is a per-core PS3 screen.', 'experiments/linux-pcpm-sampler/README.md')
         rows = ''.join('<tr><td>' + self.link(path, title) + '<span class="subline">' + esc(sub) + '</span></td><td><span class="badge ' + tier + '">' + label + '</span></td><td>' + esc(boundary) + '</td></tr>' for title, sub, tier, label, boundary, path in findings)
         prompt = 'Read ' + REPO + '/blob/' + self.revision + '/AGENTS.md and wiki/Agent-Orientation.md. Follow the Evidence Standard, inspect decision-map issue #1, and choose one open, unblocked ticket. Verify the target and pinned sources. Preserve raw evidence; report a falsifiable result, evidence tier, and limitations.'
         tools = [
@@ -187,15 +279,35 @@ class Builder:
             ('experiments/linux-counter-qualification/README.md', 'Counter qualification', 'Bounded timestamp exchanges and a decoder for conditional cross-CPU ordering.'),
             ('notes/native-pcpm-signal-decision.md', 'PCPM calibration plan', 'Test whether sparse controller-state reads distinguish software idle conditions.'),
         ]
+        if abi3_result in self.docs:
+            tools[0] = ('experiments/aurora-apsc-observer/README.md', 'Native APSC evidence', 'Retained raw packets, software tickets and replay tools for the bounded pre-DSB BUSY result.')
         sampler_readme = 'experiments/linux-pcpm-sampler/README.md'
         if sampler_readme in self.docs:
             tools[-1] = (sampler_readme, 'PCPM sampler', 'Sparse read-only acquisition preparation; native state calibration remains open.')
+        conclusion = 'a static control-path difference; no established Linux policy fix.'
+        conclusion_detail = 'The checked macOS last-core path can wait for a pending DVFS command. The pinned Linux idle path has no explicit matching wait. Whether this difference affects native hardware state, wake behavior, or energy still needs measurement.'
+        conclusion_path = 'wiki/MacOS-Control-Path.md'
+        observation_title = 'Does Linux overlap DVFS and idle?'
+        observation_detail = 'Capture command ordering around candidate final-core deep-WFI entry, with qualified clocks and retained failures.'
+        calibration_title = 'What does PCPM actually report?'
+        calibration_detail = 'Compare sparse controller-state reads with matched workload and idle windows. Measure the sampler’s effect.'
+        next_note = 'Native reboot experiments are planned for a later authorized session. The linked GitHub issues carry current coordination status.'
+        if abi3_result in self.docs:
+            conclusion = 'a native pre-DSB BUSY result; no established Linux policy fix.'
+            conclusion_detail = 'Software tickets place 18 BUSY samples inside all three peers’ recorded idle-hook intervals. The command is read before dsb sy and WFI; command state at WFI, physical sleep and energy remain unobserved.'
+            conclusion_path = abi3_result
+            observation_title = 'Command state at WFI remains open'
+            observation_detail = 'Keep the supported pre-DSB finding. No further #5 reboots unless a genuinely independent timing signal becomes available.'
+        if ps3_deployment in self.docs:
+            calibration_title = 'Can per-core PS3 codes change?'
+            calibration_detail = 'PCPM returned 90 constant words. The new PS3 image is installed but unbooted; begin with records only, then a separately reviewed active-only access pilot.'
+            next_note = 'Effort is on issue #6. Its installed PS3 image has not booted or produced a PCPU register read. The linked issues carry current coordination status.'
         tool_html = ''.join('<a class="list-item" href="' + esc(self.doc_url(path)) + '"><span class="title">' + esc(label) + '<span aria-hidden="true">↗</span></span><p>' + esc(desc) + '</p></a>' for path, label, desc in tools)
         body = '''<section class="hero"><div><div class="eyebrow"><span class="dot"></span> Field notes / Apple Silicon / T8103</div><h1>What happens<br>when M1<br><span>goes idle?</span></h1><p class="intro">Tracing the path from macOS instructions to Linux behavior. A public notebook of what we can prove, what remains uncertain, and the experiments that come next.</p><div class="actions">''' + self.link('wiki/Findings-Index.md', 'Explore the findings →', class_='button primary') + '''<a class="button" href="''' + esc(self.url('library.html')) + '''">Read the notebook</a></div></div>
 <aside class="machine" aria-label="Investigated hardware"><span class="machine-label">investigation target</span><div class="small-label">Apple M1 · T8103 · J313</div><div class="cpu-diagram"><div class="cluster"><strong>Icestorm / E</strong><div class="cores"><span>0</span><span>1</span><span>2</span><span>3</span></div></div><div class="cluster p"><strong>Firestorm / P</strong><div class="cores"><span>0</span><span>1</span><span>2</span><span>3</span></div></div></div><dl><dt>Machine</dt><dd>MacBookAir10,1</dd><dt>macOS</dt><dd>27.0 / 26A428</dd><dt>Focus</dt><dd>last-core APSC wait</dd><dt>Linux decision</dt><dd>open</dd></dl><p class="machine-note">Topology diagram only. Cells are not live CPU activity or measured power states.</p></aside></section>
-<div class="decision"><p><strong>Current conclusion:</strong> a static control-path difference; no established Linux policy fix.</p><p class="detail">The checked macOS last-core path can wait for a pending DVFS command. The pinned Linux idle path has no explicit matching wait. Whether this difference affects native hardware state, wake behavior, or energy still needs measurement. <a href="''' + esc(self.doc_url('wiki/MacOS-Control-Path.md')) + '''">Follow the evidence →</a></p></div>
+<div class="decision"><p><strong>Current conclusion:</strong> ''' + esc(conclusion) + '''</p><p class="detail">''' + esc(conclusion_detail) + ''' <a href="''' + esc(self.doc_url(conclusion_path)) + '''">Follow the evidence →</a></p></div>
 <section class="section" aria-labelledby="matrix-title"><div class="section-head"><h2 id="matrix-title"><span class="section-number">01</span>Evidence matrix</h2><a class="meta" href="''' + esc(self.doc_url('wiki/Evidence-Standard.md')) + '''">How to read the evidence ↗</a></div><div class="table-scroll" role="region" aria-label="Evidence matrix, scroll horizontally on small screens" tabindex="0"><table class="evidence-table"><thead><tr><th scope="col">Research surface</th><th scope="col">Evidence</th><th scope="col">Result and boundary</th></tr></thead><tbody>''' + rows + '''</tbody></table></div><div class="legend"><span>Source / binary: inspected code</span><span>Software: observed events</span><span>Preparation: tools, not target results</span><span>Open: measurement still needed</span></div><p class="matrix-note">These labels describe different kinds of evidence. They are not a confidence score or a ladder to physical power proof.</p></section>
-<section class="section" aria-labelledby="next-title"><div class="section-head"><h2 id="next-title"><span class="section-number">02</span>The next discriminating experiments</h2><a class="meta" href="''' + REPO + '''/issues/1">Live decision map ↗</a></div><div class="path"><article class="path-card"><span class="index">A / observe</span><h3>Does Linux overlap DVFS and idle?</h3><p>Capture command ordering around candidate final-core deep-WFI entry, with qualified clocks and retained failures.</p><a href="''' + REPO + '''/issues/5">Native observation · issue #5 →</a></article><article class="path-card"><span class="index">B / calibrate</span><h3>What does PCPM actually report?</h3><p>Compare sparse controller-state reads with matched workload and idle windows. Measure the sampler’s effect.</p><a href="''' + REPO + '''/issues/6">State calibration · issue #6 →</a></article><article class="path-card"><span class="index">C / decide</span><h3>Would a Linux wait help?</h3><p>Connect runtime ordering, state meaning, and controlled energy / wake results. “No change” remains a valid outcome.</p><a href="''' + REPO + '''/issues/8">Policy evidence gate · issue #8 →</a></article></div><p class="matrix-note">Native reboot experiments are planned for a later authorized session. The linked GitHub issues carry current coordination status.</p></section>
+<section class="section" aria-labelledby="next-title"><div class="section-head"><h2 id="next-title"><span class="section-number">02</span>The next discriminating experiments</h2><a class="meta" href="''' + REPO + '''/issues/1">Live decision map ↗</a></div><div class="path"><article class="path-card"><span class="index">A / observe</span><h3>''' + esc(observation_title) + '''</h3><p>''' + esc(observation_detail) + '''</p><a href="''' + REPO + '''/issues/5">Native observation · issue #5 →</a></article><article class="path-card"><span class="index">B / calibrate</span><h3>''' + esc(calibration_title) + '''</h3><p>''' + esc(calibration_detail) + '''</p><a href="''' + REPO + '''/issues/6">State calibration · issue #6 →</a></article><article class="path-card"><span class="index">C / decide</span><h3>Would a Linux wait help?</h3><p>Connect runtime ordering, state meaning, and controlled energy / wake results. “No change” remains a valid outcome.</p><a href="''' + REPO + '''/issues/8">Policy evidence gate · issue #8 →</a></article></div><p class="matrix-note">''' + esc(next_note) + '''</p></section>
 <section class="section split"><div><div class="section-head"><h2><span class="section-number">03</span>Experiment bench</h2></div><div class="list-panel">''' + tool_html + '''</div></div><div><div class="section-head"><h2><span class="section-number">04</span>Prior work matters</h2></div><div class="callout"><p>Asahi Linux, Omacom, and Aurora Silicon form the checked baseline. Linux already requests returning deep WFI on base M1.</p><p>Every comparison names its source revision. An absent search result cannot establish that a mechanism was previously undiscovered.</p>''' + self.link('wiki/Linux-and-Aurora-Baseline.md', 'Read the pinned source comparison →') + '''</div></div></section>
 <section class="section callout" aria-labelledby="agent-title"><div class="section-head"><h2 id="agent-title"><span class="section-number">05</span>Bring an agent. Leave a reproducible result.</h2><a class="meta" href="''' + esc(self.url('llms.txt')) + '''">Machine-readable entry ↗</a></div><p>The notebook and raw records stay in Git. Start with the evidence rules, then claim one bounded question from the decision map.</p><div class="copy-row"><pre id="agent-prompt">''' + esc(prompt) + '''</pre><button class="copy-button" id="copy-handoff" type="button">Copy handoff</button></div><div id="copy-status" class="copy-status" role="status" aria-live="polite"></div>''' + self.link('wiki/Agent-Orientation.md', 'Agent orientation →') + '''</section>'''
         return self.layout('Overview', body, active='overview')

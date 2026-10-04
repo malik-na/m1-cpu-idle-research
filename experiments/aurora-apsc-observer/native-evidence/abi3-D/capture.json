@@ -1,0 +1,43 @@
+{
+  "first_a_visual_receipt_proof_checked": true,
+  "interpretation": "ticket-only WFI probe without an additional command load; ordinary DVFS command reads may occur; no WFI-instruction state proof",
+  "mode": "wfi_clock",
+  "no_additional_wfi_probe_command_load": true,
+  "observer_abi": 3,
+  "observer_armed": true,
+  "observer_control_write_completed": true,
+  "observer_event_rows": 3741,
+  "observer_state_before_after": [
+    "ready",
+    "complete"
+  ],
+  "observer_streams_loss_free": true,
+  "observer_wfi_event_rows": 1873,
+  "one_shot_consumption": "confirmed",
+  "pcpm_and_counter_helpers_unused": true,
+  "phase": "D",
+  "schema": "abi3-d-capture-projection-v1",
+  "user_current_boot_wifi_receipt_checked": true,
+  "validator_busy_rows": 0,
+  "validator_candidate_count": 0,
+  "window_duration_ns": 10446344953,
+  "window_source": "kernel-CLOCK_MONOTONIC",
+  "window_start_relative_to_schedule_ns": 155236430,
+  "window_stop_relative_to_schedule_ns": 10601581383,
+  "workers": {
+    "1": {
+      "checksum_sequence_sha256": "d6750e384dbb021e45c3e3c06a0bbbf609346f176aa677e847ad9f06d514b1b2",
+      "interior_pulses": 196,
+      "interior_work_ns": 2086953056,
+      "pulses": 200,
+      "work_ns": 2101789060
+    },
+    "5": {
+      "checksum_sequence_sha256": "d6750e384dbb021e45c3e3c06a0bbbf609346f176aa677e847ad9f06d514b1b2",
+      "interior_pulses": 196,
+      "interior_work_ns": 2042750530,
+      "pulses": 200,
+      "work_ns": 2061182276
+    }
+  }
+}

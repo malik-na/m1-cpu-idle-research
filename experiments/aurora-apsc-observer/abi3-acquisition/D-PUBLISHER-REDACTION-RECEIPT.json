@@ -1,0 +1,16 @@
+{
+  "schema": "abi3-d-publisher-public-copy-v1",
+  "private_publisher_sha256": "d97b20b36c62fe423b4289d113600343ae5b2eadcc27cc6d88aeb705646b2045",
+  "public_publisher_sha256": "c094958c28a7219d606015e513e4d2116f01169374b8799e217a96eec8fbd99e",
+  "a_publisher_redaction_receipt_sha256": "aa6db23b6edffd648f45c6b03894ceaef009a74aa026cae03f3f9f3d63d5e4f4",
+  "collector_redaction_receipt_sha256": "0a7fc3f940a43589a4c3e54e6c35bda14220d4b82847f996ca8dc2a81c92c2dc",
+  "private_collector_sha256": "2c97a3379630791792a8549cee681d70a069155e744cceb7e948d3685df877c4",
+  "public_collector_sha256": "b290e1e49577fff780e3f82dd4ad8ebc0d0511830da9bc92f55c7af8470e3806",
+  "validator_source_sha256": "918b85acec008e3ec6ebf131024090ffcebc32112b0a8859e1ade8728e9464ac",
+  "reviewed_public_changes": [
+    "Import the neighboring public collector and A publisher review copies and the pinned public ABI 3 validator source; verify all three source bindings before CLI replay or staging.",
+    "Add an exact self-hash receipt and accept a regular README.md beside a verified public D data packet as unmanifested repository documentation.",
+    "The sealed A/D manifest, provenance, status, stream, workload, and numerical projection gates retain the private exporter behavior."
+  ],
+  "staging_algorithm": "The private-manifest, provenance, sanitization, validator, worker replay, and staged data transformations are unchanged from the private exporter."
+}

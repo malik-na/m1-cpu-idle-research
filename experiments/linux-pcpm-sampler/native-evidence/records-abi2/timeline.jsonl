@@ -1,0 +1,14 @@
+{"action":"packet_opened","monotonic_ns":569956725751}
+{"action":"counter_pre_begin","command":"pre 0 256","monotonic_ns":591784991409}
+{"action":"counter_pre_end","error":null,"monotonic_ns":591799148367}
+{"action":"settling_begin","monotonic_ns":591811386193,"seconds":5}
+{"action":"settling_end","monotonic_ns":596812116557}
+{"action":"workload_process_started","monotonic_ns":596822245671}
+{"action":"controls_dispatch_planned","expected_start_ns":599567054762,"monotonic_ns":596823313694}
+{"action":"controls_returned","monotonic_ns":609261978562,"validation":[]}
+{"action":"counter_post_begin","command":"post","monotonic_ns":609331239643}
+{"action":"counter_post_end","error":null,"monotonic_ns":609345961677}
+{"action":"decoder_complete","monotonic_ns":609435813523,"name":"pcpm-analysis","returncode":0}
+{"action":"decoder_complete","monotonic_ns":609643208064,"name":"apsc-analysis","returncode":0}
+{"action":"decoder_complete","monotonic_ns":609789143346,"name":"counter-analysis","returncode":0}
+{"action":"complete","monotonic_ns":609798998132}

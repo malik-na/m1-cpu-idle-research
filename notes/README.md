@@ -19,9 +19,15 @@ The unit interpretation is a concrete build-specific reverse-engineering result.
 
 For the planned move to Omarchy with the [iconidentify Aurora release](iconidentify-aurora-kernel-target.md), use the [native Linux handoff](native-linux-handoff.md). Its first step is read-only qualification of the actual installation; the existing source-pinned experiments are not assumed compatible with an uninspected Aurora build.
 
+The later [Linux read-only qualification](linux-native-qualification-20261002.md) records running-config and visible installed-image matches to that release receipt, build-ID linkage, software `CPU PD` accounting and failed observer prerequisites. It adds target evidence for open ticket #5; it does not observe APSC BUSY or physical cluster state.
+
+The separate [Aurora observer/counter port](../experiments/aurora-apsc-observer/README.md) records clean checks on all touched source files, a complete Image/modules build, unchanged linked WFI bytes and a distinct research boot entry. Its subsequent [native A/B/C result](../experiments/aurora-apsc-observer/NATIVE-RESULT.md) includes a loss-free C command-register BUSY read after a same-CPU SET at the pre-WFI hook. The final-entrant interpretation assumes an unproven cross-CPU clock bound; no physical power or energy result follows. The [reviewed raw numerical packet](../experiments/aurora-apsc-observer/native-evidence/README.md) and decoder recipe are public.
+
 ## Wayfinder research decisions
 
 The [APSC/DVFS decision map](https://github.com/malik-na/m1-cpu-idle-research/issues/1) coordinates the next multi-session work. Three source-only method decisions now have reviewable notes: [how to observe the macOS last-core wait](mac-apsc-direct-observation-route.md), [how to capture native Linux DVFS-to-WFI ordering](linux-dvfs-wfi-trace-choice.md), and [how to calibrate PCPM as a native state signal](native-pcpm-signal-decision.md). These are experiment routes, not new BUSY, physical-state, or energy observations.
+
+The [reverse-engineering workflow](soc-reverse-engineering-workflow.md) records how to shorten the experiment cycle: reuse pinned native instrumentation, prepare analysis and publication in parallel, qualify an external m1n1 host where available, and require each run to resolve a named evidence gap. It preserves the current #6 records-first gates and the stop on further #5 reboots.
 
 ## The 50-microsecond result
 

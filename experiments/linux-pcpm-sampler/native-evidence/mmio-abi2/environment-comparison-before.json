@@ -1,0 +1,5 @@
+{
+  "battery_tolerance_percent": 5,
+  "errors": [],
+  "thermal_tolerance_millidegrees": 5000
+}

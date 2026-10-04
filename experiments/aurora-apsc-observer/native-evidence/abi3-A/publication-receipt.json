@@ -1,0 +1,122 @@
+{
+  "artifacts": {
+    "apsc-events.csv.gz": {
+      "private_inputs_sha256": {
+        "apsc-events.csv": "2c74209d3933af750f4433469d5a11b8476f5237767748b59f98b6f7e72f8525"
+      },
+      "public_sha256": "7d33dda1bd47ada99b65b6a19ad2dd5ca8150faf8a69d3bf505913932666ba23"
+    },
+    "apsc-status-after.txt": {
+      "private_inputs_sha256": {
+        "apsc-status-after.txt": "fecfc008f2d2489dcf06db1921eaaa9dd0947d59887dd4abb24ddd2172088f39"
+      },
+      "public_sha256": "bc61710b27a01cbe2e56c407cbcf3102bd854188c3ea1ae931068fed210355ba"
+    },
+    "apsc-status-before.txt": {
+      "private_inputs_sha256": {
+        "apsc-status-before.txt": "fecfc008f2d2489dcf06db1921eaaa9dd0947d59887dd4abb24ddd2172088f39"
+      },
+      "public_sha256": "bc61710b27a01cbe2e56c407cbcf3102bd854188c3ea1ae931068fed210355ba"
+    },
+    "apsc-wfi-events.csv.gz": {
+      "private_inputs_sha256": {
+        "apsc-wfi-events.csv": "c5652a8b1990419261fdbf7129e4e497048e76143fcd3223a21cf689172a7105"
+      },
+      "public_sha256": "1273cf4d7dc521582ff0b82540667daeea4983b11d60861d7338eb22982902e2"
+    },
+    "baseline.json": {
+      "private_inputs_sha256": {
+        "acquisition-summary.json": "0069e39662d46beea3aca4c31d05fd72578cc8f21c7c8fc6fe5396711ae4add7",
+        "apsc-events.csv": "2c74209d3933af750f4433469d5a11b8476f5237767748b59f98b6f7e72f8525",
+        "apsc-status-after.txt": "fecfc008f2d2489dcf06db1921eaaa9dd0947d59887dd4abb24ddd2172088f39",
+        "apsc-status-before.txt": "fecfc008f2d2489dcf06db1921eaaa9dd0947d59887dd4abb24ddd2172088f39",
+        "apsc-wfi-events.csv": "c5652a8b1990419261fdbf7129e4e497048e76143fcd3223a21cf689172a7105",
+        "counter-status-after.txt": "c829cd87299c3c70e26d2d570fe999817b049f5cadb6c1a01543c6965160ec05",
+        "counter-status-before.txt": "c829cd87299c3c70e26d2d570fe999817b049f5cadb6c1a01543c6965160ec05",
+        "pcpm-status-after.txt": "dfb20f7b183308b9830b419904b85edd769d5f44cd20a2d7b18d669bbe55762e",
+        "pcpm-status-before.txt": "dfb20f7b183308b9830b419904b85edd769d5f44cd20a2d7b18d669bbe55762e",
+        "schedule.json": "e98e460d4394b8f30f8c7de1616f916048333ad7e876693baaa59389a39b505d",
+        "stream-status-check.json": "dcff5b09797a31718d673db99c9f7c076d07e20a0b529c0239f60aac2819e217",
+        "user-boot-qualification-check.json": "150f693fcd7198b72be243fcd0d49209185f9f85e880ee1cbf9f59de9edcfece",
+        "window-markers.json": "dd9103f07b9dcf899073e6ae774d2ecad76b3a3a7e377520d7fa1e2b1d6d2515",
+        "workload-check.json": "cbcdcac881665a23c28dee7e29197f9d6f56dd61429135f111422f630b7f47fd",
+        "workload-checksum-match.json": "e895c23a0293986633e3d4e8ee2023b80db5194b0994ff377bbe529d4bc7df7a"
+      },
+      "public_sha256": "8ef6b0f64e9a68d9ec3ae528555b9f83e62967d2c54d2e3db9c246bf4feeda0c"
+    },
+    "counter-status-after.txt": {
+      "private_inputs_sha256": {
+        "counter-status-after.txt": "c829cd87299c3c70e26d2d570fe999817b049f5cadb6c1a01543c6965160ec05"
+      },
+      "public_sha256": "c58240356ef469839ad495e0bdd13aef9c22a7442d5cce7beb15b9509c656166"
+    },
+    "counter-status-before.txt": {
+      "private_inputs_sha256": {
+        "counter-status-before.txt": "c829cd87299c3c70e26d2d570fe999817b049f5cadb6c1a01543c6965160ec05"
+      },
+      "public_sha256": "c58240356ef469839ad495e0bdd13aef9c22a7442d5cce7beb15b9509c656166"
+    },
+    "environment.json": {
+      "private_inputs_sha256": {
+        "environment-after.json": "4ee9a7068c09d8170925a65394c86478e310ea29c01cc4d9f75968bd160fc600",
+        "environment-before.json": "7f8fa89e6e9eb13422a9600d0bc7a13305b5d4ea7f12ca7211a04287a14602f1",
+        "environment-drift.json": "ba752fb3a91244af46dc7732952744dc616ed5117cf0b55aa3e00c056cb2f12a",
+        "power-at-arm.json": "99adc1a63b3ad06b14b8f5237cd3fd2c95d3db971fb31a01cddfdc537d952d4c",
+        "power-at-window-end.json": "1d8194842a64a1b2dcb4cae611780f80b731073823a92aea50d8c84e28ee420b"
+      },
+      "public_sha256": "bbc9c163e02049f91dbfe7603369b4db4fe0ada31dc88ae92d5d1647312d2f91"
+    },
+    "pcpm-status-after.txt": {
+      "private_inputs_sha256": {
+        "pcpm-status-after.txt": "dfb20f7b183308b9830b419904b85edd769d5f44cd20a2d7b18d669bbe55762e"
+      },
+      "public_sha256": "aa8f578717e1e891b8f062c110f05d0425dee9e073de987995be4e978fc253ae"
+    },
+    "pcpm-status-before.txt": {
+      "private_inputs_sha256": {
+        "pcpm-status-before.txt": "dfb20f7b183308b9830b419904b85edd769d5f44cd20a2d7b18d669bbe55762e"
+      },
+      "public_sha256": "aa8f578717e1e891b8f062c110f05d0425dee9e073de987995be4e978fc253ae"
+    },
+    "timeline.json": {
+      "private_inputs_sha256": {
+        "timeline.jsonl": "e9ed308f799ab726e2e385c827ac47207727bb636a666e4cf2319f0a103f451a",
+        "window-markers.json": "dd9103f07b9dcf899073e6ae774d2ecad76b3a3a7e377520d7fa1e2b1d6d2515"
+      },
+      "public_sha256": "c88e843ae98b79550cb6197f6e6ef6141a2a71ec9b4eaceb121c4e631e7c2585"
+    },
+    "workload-cpu1.csv.gz": {
+      "private_inputs_sha256": {
+        "schedule.json": "e98e460d4394b8f30f8c7de1616f916048333ad7e876693baaa59389a39b505d",
+        "window-markers.json": "dd9103f07b9dcf899073e6ae774d2ecad76b3a3a7e377520d7fa1e2b1d6d2515",
+        "workload-cpu1.csv": "534cff55d8295be8b775ee645a7984625a1a11467760963f608230a44fe5bf02"
+      },
+      "public_sha256": "8a7346af0a5666688db895543d7f34e0ce7a5f9b7b4454be124e34e1ee998da8"
+    },
+    "workload-cpu5.csv.gz": {
+      "private_inputs_sha256": {
+        "schedule.json": "e98e460d4394b8f30f8c7de1616f916048333ad7e876693baaa59389a39b505d",
+        "window-markers.json": "dd9103f07b9dcf899073e6ae774d2ecad76b3a3a7e377520d7fa1e2b1d6d2515",
+        "workload-cpu5.csv": "77471ae518041437df3dfe44bf76eb32842eeeee6b1fc078f6ae4c0a4e613a04"
+      },
+      "public_sha256": "e59a549dcd57506175507f666be9bb070154adf54c00117da217f32fb5a7ad95"
+    }
+  },
+  "private_manifest_sha256": "dedb1f46361256aecb5a1e45ad69a8830fc149d6d64be37396ab48a2e5ec08eb",
+  "private_packet_phase": "A",
+  "projection": "fixed A numerical fields; relative worker times; no raw boot, account, network, USB, command line or kernel log content",
+  "qualified_build": {
+    "config_sha256": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+    "gnu_build_id": "6fbc0dc67bb746466a7244ba2fc096ecae7e6476",
+    "image_sha256": "1368f40aed236c770485eb8b1b2b0b0bc496915c21fc01fbf608f5f60243a537",
+    "patch_sha256": "2775fd894e7d62432b806e45f0db7a94e9d6c789dcaa0a57e7d72d0f9d7d3486",
+    "release": "7.1.12-ARCH-apsc-20261002-wfi-pcpm-abi3",
+    "source_tree_sha256": "e703916291104ece7de51f24ecdd042fa8ac01463448ebeb1c337b85f647f462",
+    "uki_sha256": "3c00f38bce07ad99d18c762acd4aa1f318e99d06bde8e7142e86d4ef02568530"
+  },
+  "schema": "abi3-a-publication-receipt-v2",
+  "source_collector_sha256": "2c97a3379630791792a8549cee681d70a069155e744cceb7e948d3685df877c4",
+  "source_identity_sha256": "8e4e46beeb382141c4d6fefa3a24558717720019facefae184edc98ba66d281d",
+  "source_user_visual_receipt_sha256": "ca052adb6fa5562e64d0d2a2d76579def84062c6482ea6ca630fdbd26e3c0322",
+  "source_workload_sha256": "2b4ed83c6f81be68eeb4e9aa448eb81493852f1bf114edb249f75a1e55234a89"
+}

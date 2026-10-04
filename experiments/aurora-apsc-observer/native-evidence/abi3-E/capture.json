@@ -1,0 +1,46 @@
+{
+  "first_a_visual_receipt_proof_checked": true,
+  "first_attempt_pre_dsb_command_reads": 2185,
+  "interpretation": "read-only APSC command samples at first-attempt pre-DSB seam; ticket-qualified software-hook candidates only; no WFI-instruction state, physical power state, energy, or wake proof",
+  "mode": "wfi_mmio",
+  "observer_abi": 3,
+  "observer_armed": true,
+  "observer_control_write_completed": true,
+  "observer_event_rows": 4366,
+  "observer_state_before_after": [
+    "ready",
+    "complete"
+  ],
+  "observer_streams_loss_free": true,
+  "observer_wfi_event_rows": 2185,
+  "one_shot_consumption": "confirmed",
+  "pcpm_and_counter_helpers_unused": true,
+  "phase": "E",
+  "raw_wfi_busy_rows": 71,
+  "raw_wfi_clear_rows": 2114,
+  "rejected_busy_rows": 53,
+  "schema": "abi3-e-capture-projection-v1",
+  "user_current_boot_wifi_receipt_checked": true,
+  "validator_busy_rows": 71,
+  "validator_candidate_count": 18,
+  "window_duration_ns": 10411807702,
+  "window_source": "kernel-CLOCK_MONOTONIC",
+  "window_start_relative_to_schedule_ns": 158869565,
+  "window_stop_relative_to_schedule_ns": 10570677267,
+  "workers": {
+    "1": {
+      "checksum_sequence_sha256": "d6750e384dbb021e45c3e3c06a0bbbf609346f176aa677e847ad9f06d514b1b2",
+      "interior_pulses": 196,
+      "interior_work_ns": 1991904583,
+      "pulses": 200,
+      "work_ns": 2005630117
+    },
+    "5": {
+      "checksum_sequence_sha256": "d6750e384dbb021e45c3e3c06a0bbbf609346f176aa677e847ad9f06d514b1b2",
+      "interior_pulses": 196,
+      "interior_work_ns": 1979450187,
+      "pulses": 200,
+      "work_ns": 1997864032
+    }
+  }
+}

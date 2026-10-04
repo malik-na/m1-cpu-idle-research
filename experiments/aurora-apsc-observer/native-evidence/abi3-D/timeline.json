@@ -1,0 +1,54 @@
+{
+  "events": [
+    {
+      "action": "begin",
+      "relative_monotonic_ns": -8364633545
+    },
+    {
+      "action": "window_begin",
+      "relative_monotonic_ns": -1414481
+    },
+    {
+      "action": "capture_write_begin",
+      "relative_monotonic_ns": -937821
+    },
+    {
+      "action": "capture_write_attempted",
+      "relative_monotonic_ns": -481910
+    },
+    {
+      "action": "capture_write_end",
+      "relative_monotonic_ns": 10451634631
+    },
+    {
+      "action": "window_end",
+      "relative_monotonic_ns": 10460801840
+    },
+    {
+      "action": "observer_raw_drained",
+      "relative_monotonic_ns": 10525715455
+    },
+    {
+      "action": "workload_release_begin",
+      "relative_monotonic_ns": 10526059158
+    },
+    {
+      "action": "workload_release_end",
+      "cpu": 1,
+      "exit_status": 0,
+      "relative_monotonic_ns": 10531208213
+    },
+    {
+      "action": "workload_release_end",
+      "cpu": 5,
+      "exit_status": 0,
+      "relative_monotonic_ns": 10536253228
+    },
+    {
+      "action": "complete",
+      "relative_monotonic_ns": 10720953546
+    }
+  ],
+  "relative_to": "window_start",
+  "schema": "abi3-d-timeline-projection-v1"
+}

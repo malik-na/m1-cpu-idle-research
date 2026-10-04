@@ -1,0 +1,31 @@
+{
+  "scope": "separate kernel/module/EFI entry installation; no reboot, capture or power-policy change",
+  "completed_utc": "2026-10-02T06:54:07.232372+00:00",
+  "release": "7.1.12-ARCH-apsc-20261002",
+  "entry_title": "Aurora-APSC-research",
+  "entry_id": "Aurora-APSC-research",
+  "stock_files_unchanged": true,
+  "stock_default_entry_unchanged": 2,
+  "limine_before_sha256": "168556c26e13da71c8cb2db95f608d0cedd4c27342066d43ffcd52c1dcfe2aa1",
+  "limine_after_sha256": "8b91fc814112757258945c9db70122fb4153d2509b0da756d2a97d0bad863553",
+  "installed_module_count": 1867,
+  "installed_files": [
+    {
+      "sha256": "6857a188b095d4a434ae9340f6ccfcd84b0f868026fe854132351a7d76a7d1e5",
+      "bytes": 34048512,
+      "basename": "vmlinuz-linux-aurora-apsc"
+    },
+    {
+      "sha256": "bd3416393e7fda511b77c91dad0cdeee123ceeb76480f17f80fc0e3aa02cf3d2",
+      "bytes": 60507521,
+      "basename": "initramfs-linux-aurora-apsc.img"
+    },
+    {
+      "sha256": "d884fc9a1744061a024bf28a4c4f70c27b21752862992ac1c00a61136ec81cdd",
+      "bytes": 94702592,
+      "basename": "omarchy_linux-aurora-apsc.efi"
+    }
+  ],
+  "entry_blake2b512": "1f729e304cb4d821c66d2c6cd22aa97ffde1228ac850cacbc9c54724caf35ce1fc605e239e6dd207c7f23006cf07baa7192070fe8d07940f898eb69c0b95a0dc",
+  "bootctl_exit_status": 0
+}

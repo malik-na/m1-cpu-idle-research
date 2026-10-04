@@ -1,0 +1,75 @@
+{
+  "boot_state_at_publication": {
+    "new_kernel_booted": false,
+    "pcpm_command_run": false,
+    "running_release": "7.1.12-ARCH-apsc-20261002-wfi"
+  },
+  "build_receipt_sha256": "aa44ccd2f3f8d8f9d8af1493cc8a48867a87583f84e390322f6e8a21a07ef640",
+  "date_local": "2026-10-03",
+  "efi": {
+    "free_after_bytes": 137379840,
+    "free_before_bytes": 232214528,
+    "notification_limit_percent": 85,
+    "preflight_reserve_bytes": 16777216,
+    "total_bytes": 523132928,
+    "used_after_percent": 73.74
+  },
+  "fallbacks": {
+    "stock_and_wfi_package_integrity": "0 altered files each in installation and independent post-install checks",
+    "stock_default_entry_index": 2,
+    "stock_files_unchanged_by_install": true,
+    "stock_initramfs_sha256": "6c31553cf9936a2f662a7ea72ac94007b889c4af2eb9d2a1be4e988b9721ec07",
+    "stock_kernel_sha256": "1d08d4153742e26d7012031452db79fe500cf376a84b07261fba59f97bf945e2",
+    "stock_uki_sha256": "97e6229b65946aa24a5c863290abef8a3b1b48067655b29df819c7a9c62c4618",
+    "working_wfi_uki_sha256": "4868e3547c1eafe884520238da801684069d547ffe2dc5915666b42d3ad66ce7"
+  },
+  "identity": {
+    "config_sha256": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+    "entry_title": "Aurora-APSC-research-wfi-pcpm",
+    "gnu_build_id": "83a213307311f91eefb44d70718db21fea3e067c",
+    "module_package": "linux-aurora-apsc-wfi-pcpm-modules",
+    "patched_source_tree_sha256": "9733d6cb7f1fb8bed30bbaffc6a7b22a42b68dac2acc636fe2125c3faed1d19f",
+    "pcpm_patch_sha256": "4a7fc879a3ed377d813e01f8986306fc62679679d39718fe83183ae466ab3b56",
+    "release": "7.1.12-ARCH-apsc-20261002-wfi-pcpm"
+  },
+  "independent_post_install_readback": {
+    "checker_sha256": "c2edaaf7c1cd6afdc9d9dcb94237515b073ddfdeb8d887ef279b7d62898b6bd5",
+    "efi_used_percent": 73.74,
+    "limine_sha256": "9b771472e2257fa05c52118c68270be21c8685a02a7c9c865f53a31bcf7963b0",
+    "new_uki_sha256": "fc0c1af55696ab8508874f44ce0c5ab5d19c666fb26eda53553c940aac01c55a",
+    "result": "pass",
+    "stock_files_match": true,
+    "stock_wfi_pcpm_packages_integrity": "0 altered files each",
+    "working_wfi_uki_match": true
+  },
+  "installed_artifacts": {
+    "image_sha256": "40943bd2d4324569f87565b0ef3350de1d778a9ccec2db5604a2ba7ffe425d43",
+    "initrd_normalized_path_count": 1333,
+    "initrd_sha256": "37e462a5499292d6abea89691c0847b7628c04dac8feff6933dfe9363cad7072",
+    "module_count": 1867,
+    "module_package_bytes": 2113925120,
+    "module_package_sha256": "45f3af4599a15ca1d82584f524f5de7fc90e7ba4eda47f2ad92a1b0ee10b9df9",
+    "uki_bytes": 94833152,
+    "uki_sha256": "fc0c1af55696ab8508874f44ce0c5ab5d19c666fb26eda53553c940aac01c55a"
+  },
+  "issue": "https://github.com/malik-na/m1-cpu-idle-research/issues/6",
+  "limine": {
+    "after_sha256": "9b771472e2257fa05c52118c68270be21c8685a02a7c9c865f53a31bcf7963b0",
+    "before_sha256": "04d735121664f10f106c88ef44cb502ffc142ab30e6c8fd2aa6503175aa60bf0",
+    "pcpm_entry_added": true,
+    "stock_default_retained": true,
+    "working_wfi_entry_retained": true
+  },
+  "limits": [
+    "Installation and readback do not establish a successful new-kernel boot, Wi-Fi/brightness behavior, a native PCPM read, calibrated ACTUAL state, cross-CPU clock bound, physical power state or energy benefit.",
+    "The first records-only capture requires manual selection of the new Limine entry and manual encrypted-disk unlock, then live identity and environment gates."
+  ],
+  "private_receipts_sha256": {
+    "installed_identity": "c5152062c558a9e831a6d2f939e9b5fec1dd3f20ad2304f66caf633801ddf715",
+    "module_install": "1f50f2a3fa1a49981c96afc91ec92c2390e652265394745a35b8e9e7cb6ac5f0",
+    "uki_install": "09c9989dd00c173e5d6d360ec44c5a5420785b6a290dd9ebff4d9f526f5f8102"
+  },
+  "reviewed_pins_sha256": "8ef132b8028272885b9aa4077f8a654e2383e0c935aec84202561b21b23bae2b",
+  "schema": "pcpm-aurora-native-deployment-public-v1",
+  "status": "distinct_modules_and_uki_installed_unbooted"
+}

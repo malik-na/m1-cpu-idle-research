@@ -30,7 +30,7 @@ The detailed [research report](../notes/README.md) and [supporting notes](../not
 | Is that wait enabled on this Mac? | Static configuration predicts yes; live branch frequency still needs tracing. | Local binary plus captured properties |
 | Do nearby performance requests coincide with longer last-E-core callbacks? | In one retrospective five-second trace, yes for one request marker; cause remains unknown. | Live software markers and callback timing |
 | Does Linux reach the same physical core/cluster-off residency as macOS? | Unknown. | No independent native state/residency qualification |
-| Is adding a BUSY wait to Linux correct or energy-saving? | Unknown. | No native overlap/consequence experiment |
+| Is adding a BUSY wait to Linux correct or energy-saving? | Unknown. ABI 3 observed BUSY before WFI, but not at the instruction or in a characterized physical state. | [Native A/D/E packet](../experiments/aurora-apsc-observer/ABI3-E-TICKET-RESULT.md); no energy measurement |
 | Can a normal macOS app use Hypervisor.framework to inspect its running host at EL2? | The documented API creates isolated guests and maps guest memory from the app; host PMGR access does not follow from it. | Inference from Apple API design |
 
 The table is a finding map, not a maturity score. Follow the linked pages for proof, caveats, and the next discriminating measurement.

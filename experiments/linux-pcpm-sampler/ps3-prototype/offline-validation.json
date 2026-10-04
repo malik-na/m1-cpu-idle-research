@@ -1,0 +1,18 @@
+{
+  "disabled_object_no_mmio_read_or_new_map_symbols": true,
+  "enabled_object_existing_map_and_read_symbols_present": true,
+  "limitations": [
+    "no linked kernel",
+    "no new UKI",
+    "no boot or live PS3 reads",
+    "future #6 image requires distinct build and live identity qualification"
+  ],
+  "live_base_identity_preflight_passed": true,
+  "offline_base_preflight_passed": true,
+  "parser_result": "Actual C parser: 21 boundary cases passed",
+  "patch_applies_to_retained_abi3_source": true,
+  "patch_new_file_matches_private_source": true,
+  "patch_sha256": "fa1441ab91832c19d19963d7d25f81ffe35afbc9e8da62ec8ce76f2a7c99976d",
+  "scope": "private offline object validation; live phase reads only ABI3 identity/DT/CPU files",
+  "source_sha256": "855ef122b1ddebf10b6b54176ccbdf7e8d56f3557ab6b520864f33e6e610aa3d"
+}

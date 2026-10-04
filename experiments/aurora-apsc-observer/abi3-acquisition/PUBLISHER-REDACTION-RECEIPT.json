@@ -1,0 +1,15 @@
+{
+  "schema": "abi3-a-publisher-public-copy-v1",
+  "private_publisher_sha256": "03aa830947d1f3943072f900300ac21768b15942b2bbbc0a49dcd6e792ce75af",
+  "public_publisher_sha256": "5df9797ff5336e1b9b31b45bd031a34a1286a12b1ccb4ff1891fc2317452fe4f",
+  "collector_redaction_receipt_sha256": "0a7fc3f940a43589a4c3e54e6c35bda14220d4b82847f996ca8dc2a81c92c2dc",
+  "private_collector_sha256": "2c97a3379630791792a8549cee681d70a069155e744cceb7e948d3685df877c4",
+  "public_collector_sha256": "b290e1e49577fff780e3f82dd4ad8ebc0d0511830da9bc92f55c7af8470e3806",
+  "reviewed_public_changes": [
+    "Import the neighboring redacted collector review copy and require its published redaction receipt to bind the captured private collector hash. The public exporter also verifies its own source hash against this receipt.",
+    "Add --verify-public-stage to replay an existing public A data packet without private inputs.",
+    "Allow a regular README.md beside the verified data files; this repository document is outside the data manifest and is not replayed."
+  ],
+  "staging_algorithm": "The private-manifest, provenance, sanitization, worker replay and staged data transformations are unchanged from the private exporter.",
+  "isolated_dry_run": "The public copy staged the sealed private A packet into a temporary directory; all 15 resulting files, including its manifest, matched the reviewed public data packet byte for byte. The temporary directory was removed and the private manifest was unchanged."
+}

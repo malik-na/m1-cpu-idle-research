@@ -1,0 +1,62 @@
+{
+  "scope": "post-overflow capacity rebuild and separate boot-entry deployment; no new-capacity kernel boot or capture yet",
+  "source_pin": "90a95335a49aec3a0045a76da140452ad6585eb3",
+  "base_port": "0001-aurora-t8103-apsc-observer.patch plus 0002-aurora-t8103-counter-qualification.patch",
+  "incremental_patch": {
+    "path": "0003-aurora-apsc-ring-capacity.patch",
+    "sha256": "6f80074868f02fec42cebf279d1f7cc86ff65014f0bda122f442029f270a4045",
+    "only_source_changes": [
+      "APSC_IDLE_CAP 2048 to 16384",
+      "APSC_DVFS_CAP 4096 to 8192"
+    ],
+    "prior_observer_source_sha256": "bfe017c930efcc9f0d4147734255a7b08ae1c1b39893dbc770dc6f41d93d201a",
+    "new_observer_source_sha256": "36d28835f0f1dfcf9d8e4c6e4efd214edbbec0477d542a76d02684eef0ea4263",
+    "event_size_bytes": 88,
+    "old_total_ring_bytes": 2162688,
+    "new_total_ring_bytes": 12976128,
+    "allocation_site": "late observer initialization; reserve and recording logic unchanged"
+  },
+  "build": {
+    "release": "7.1.12-ARCH-apsc-20261002",
+    "prior_build_id": "a53a08aa0376b26e41aea54be3d1b470d5b7b061",
+    "new_build_id": "eb8fe1838f2c34f24f83ec53da25d2f9ae150b12",
+    "config_sha256": "f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d",
+    "image_sha256": "e191db32335e471ab372aa486d91373bb7d87d2234db557ed3413fed677563a0",
+    "vmlinux_sha256": "eecab47ed53338cd6338aa21d7445f65371d49a4e54d8f42d75ddae0ed29c0a2",
+    "incremental_build_log_sha256": "dd594a7fb884574fd8495517c0c22b5cac8dfd02b62a4c344a74844c5614d400",
+    "incremental_build_exit_status": 0,
+    "first_attempt": "stopped during preparation because RUST_LIB_SRC was omitted from the invocation; the retained retry used the original pinned build environment",
+    "compiler_warning_or_error_lines": 0,
+    "linked_deep_wfi_bytes": 100,
+    "linked_deep_wfi_sha256": "c8fd716fccb949e9f35aa2937a87787942b39f0b5df5e088d46f88253479b88c",
+    "linked_capacity_immediates": "idle 0x4000 events, DVFS 0x2000 events",
+    "module_count": 1867,
+    "module_bytes_equal_original_stage_and_installed_package": 1867,
+    "module_symvers_equal_original": true,
+    "installed_package_paths_checked": 2244,
+    "installed_package_paths_altered": 0
+  },
+  "boot_bundle": {
+    "new_uki_sha256": "48cadf0d1bc4ecb071db34cfaf439688cbe639abef3deddba142e7b86b05ada9",
+    "new_uki_bytes": 94702592,
+    "new_uki_linux_section_equals_new_image": true,
+    "initrd_equals_working_old_bundle": true,
+    "initrd_sha256": "bd3416393e7fda511b77c91dad0cdeee123ceeb76480f17f80fc0e3aa02cf3d2",
+    "cmdline_uname_and_osrel_sections_equal_working_old_bundle": true,
+    "private_staging_note": "a section-inspection command changed only private staged EFI copies; deterministic regeneration restored both original recorded UKI hashes before installation"
+  },
+  "deployment": {
+    "completed_utc": "2026-10-02T13:44:47.159437Z",
+    "new_entry": "Aurora-APSC-research-capacity",
+    "entry_blake2b512": "fae3b02f06b995b4028bb57c955164d7a245c15e55476ca4fed687f96de9c32d42279d10ccb6860993fa03a2c0dedde950815f1f79c16137ba2bc8d8cd36bd87",
+    "limine_before_sha256": "a7d4b8514124a205879c2881e12b4097ccece21c545f5fc93d4e97a2ba94b5e9",
+    "limine_after_sha256": "9a226e2fcf89931bdefa847fddf251903cd3a6abae458fa96bf0dbbde088666e",
+    "stock_default_entry": 2,
+    "stock_files_unchanged": true,
+    "earlier_research_bundle_preserved": true,
+    "efi_free_after_bytes": 18092032,
+    "new_efi_file_and_limine_config_readback_passed": true
+  },
+  "next_protocol": "three fresh independent A/B/C boots of this new build ID, with the original two-second workload and zero-loss criteria; the prior A/B remain pilot evidence",
+  "collector_sha256": "582b218671e215bf6fb858cfcb12131e355061d01841f537a6edd62d688356fa"
+}

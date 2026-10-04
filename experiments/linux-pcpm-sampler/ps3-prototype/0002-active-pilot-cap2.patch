@@ -1,0 +1,21 @@
+--- a/drivers/soc/apple/apple-pcpu-ps3-probe.c
++++ b/drivers/soc/apple/apple-pcpu-ps3-probe.c
+@@ -26,15 +26,11 @@
+ #include <asm/smp_plat.h>
+ #include <asm/sysreg.h>
+ 
+-#define PCPM_MAX_SAMPLES 12
++#define PCPM_MAX_SAMPLES 2
+ #define PS3_WORDS 5
+ #define PS3_MAX_BRACKET_NS 1000000ULL
+-#ifndef PS3_HW_GATE
+-#define PS3_HW_GATE 0
+-#endif
+-#ifndef PS3_REVIEWED_READS
+-#define PS3_REVIEWED_READS 0
+-#endif
++#define PS3_HW_GATE 1
++#define PS3_REVIEWED_READS 1
+ #if (PS3_HW_GATE != 0 && PS3_HW_GATE != 1) || \
+     (PS3_REVIEWED_READS != 0 && PS3_REVIEWED_READS != 1)
+ #error "PS3 gates must be exactly 0 or 1"

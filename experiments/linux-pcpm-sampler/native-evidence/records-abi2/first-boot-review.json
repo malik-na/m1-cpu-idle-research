@@ -1,0 +1,13 @@
+{
+  "boundary": "records-only qualification; no PCPM MMIO read or physical-state calibration",
+  "cross_cpu_bound": "not established; prior 240 ticks remains an assumption",
+  "eligible_to_consider_later_mmio": false,
+  "errors": [],
+  "manual_review_requirements": [
+    "Confirm complete zero-loss APSC software CPU-PD intervals for all four P CPUs; stream integrity alone does not establish an overlap witness.",
+    "Confirm a PCPM raw-counter bracket lies strictly within the four overlapping P intervals using the predeclared E=240 and G=24000 tick model, compatible reader metadata, and capture-interior checks.",
+    "Review the counter pre/post decoder results and environment drift; record an explicit independent disposition before any MMIO boot."
+  ],
+  "next_mode_gate": "human_review_required",
+  "records_machine_screen_passed": true
+}

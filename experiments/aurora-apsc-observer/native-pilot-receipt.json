@@ -1,0 +1,58 @@
+{
+  "scope": "first native A baseline and B records pilot on distinct boots of the same research image; retained raw private packets; no MMIO capture or physical energy result",
+  "running_release": "7.1.12-ARCH-apsc-20261002",
+  "running_build_id": "a53a08aa0376b26e41aea54be3d1b470d5b7b061",
+  "running_config_sha256": "f86b80f4dcef277be874f476293d8b8055053072f7209625586b60e2227f905d",
+  "boot_qualification": {
+    "both_current_entry": "Aurora-APSC-research",
+    "different_boot_ids": true,
+    "same_config_and_build_notes": true,
+    "native_virtualization_result": "none",
+    "eight_cpus_online": true,
+    "idle_driver_and_governor": "apple_idle/menu",
+    "wifi_and_brightness_controls": "operator reported working after repaired module package; wlan0 and apple-panel-bl present in read-only check"
+  },
+  "baseline": {
+    "private_packet_basename": "native-baseline-20261002T131138Z",
+    "packet_SHA256SUMS_sha256": "5a930eae488d0febebf12446c5bce9fcabbe5e1d928e39d66f70eb10f12f2aae",
+    "collector_result": "complete",
+    "observer_state": "ready; not armed",
+    "observer_csv_rows": 0,
+    "nominal_window_ms": 2000,
+    "external_window_ms": 2000.146837,
+    "counter_pre_and_post": "1792/1792 complete per phase; eight metadata records per phase; no decoder errors",
+    "workload": "44 ordered pulses of 1048576 iterations on each of CPUs 1 and 5; both exit 0",
+    "workload_pulses_entirely_within_external_window_per_cpu": 39,
+    "power": "battery discharging at 76%; external power offline before and after",
+    "panel_brightness": "requested 155/420, actual 164 before and after",
+    "thermal_zone0_millicelsius": "34300 before and after"
+  },
+  "records": {
+    "private_packet_basename": "native-records-20261002T131739Z",
+    "packet_SHA256SUMS_sha256": "f5e54631577f2b1fc517c4b37a8a0d2ffbff6d380f1ea76ee5b8bd3da723f603",
+    "collector_result": "failed after observer decoder integrity check; raw packet retained",
+    "observer_state": "complete",
+    "nominal_window_ms": 2000,
+    "kernel_active_window_ticks": 49077932,
+    "kernel_counter_frequency_hz": 24000000,
+    "external_window_ms": 2049.015248,
+    "cpu0_idle_stream": {
+      "attempts": 4809,
+      "capacity_and_committed": 2048,
+      "overflow": 2761,
+      "missing_commit": 0
+    },
+    "other_idle_and_dvfs_streams": "zero overflow and zero missing commits",
+    "decoder_integrity_clean": false,
+    "decoder_candidate_screen": "suppressed_integrity_failure",
+    "mmio_samples": 0,
+    "counter_pre_and_post": "1792/1792 complete per phase; eight metadata records per phase; no decoder errors",
+    "workload": "44 ordered pulses of 1048576 iterations on each of CPUs 1 and 5; both exit 0",
+    "power": "battery discharging at 74%; external power offline before",
+    "panel_brightness": "requested 155/420, actual 164 before",
+    "thermal_zone0_millicelsius": "34800 before",
+    "after_snapshot": "not recorded because the collector stopped at the integrity failure"
+  },
+  "clock_limit": "pre/post finite exchange models are internally consistent under stated assumptions, but no guaranteed pairwise error bound is established through either unsampled window; no bound is automatically passed to the observer decoder",
+  "conclusion": "the first records attempt is invalid for a complete-stream or no-overlap claim; it contains no BUSY sample. The original A/B are pilot evidence, not a completed matched comparison. Increase fixed recorder capacity, qualify a newly linked image and repeat A/B/C on three fresh boots."
+}

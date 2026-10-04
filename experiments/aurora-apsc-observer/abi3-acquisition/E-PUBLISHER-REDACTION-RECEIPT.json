@@ -1,0 +1,18 @@
+{
+  "schema": "abi3-e-publisher-public-copy-v1",
+  "private_publisher_sha256": "9b143b87eeef96c7254de5d926712711742d0638045a036c0a3d8242a9f9548f",
+  "public_publisher_sha256": "64ddb1bd896d367d0965a75987d35d197b4cdd3857bc73ae5cd4fd8899da91d1",
+  "d_publisher_redaction_receipt_sha256": "e0277f2d49f95131150b0571c0758768dc4aec3fc83a304dc1fc695cd614c0a4",
+  "public_d_publisher_sha256": "c094958c28a7219d606015e513e4d2116f01169374b8799e217a96eec8fbd99e",
+  "a_publisher_redaction_receipt_sha256": "aa6db23b6edffd648f45c6b03894ceaef009a74aa026cae03f3f9f3d63d5e4f4",
+  "collector_redaction_receipt_sha256": "0a7fc3f940a43589a4c3e54e6c35bda14220d4b82847f996ca8dc2a81c92c2dc",
+  "private_collector_sha256": "2c97a3379630791792a8549cee681d70a069155e744cceb7e948d3685df877c4",
+  "public_collector_sha256": "b290e1e49577fff780e3f82dd4ad8ebc0d0511830da9bc92f55c7af8470e3806",
+  "validator_source_sha256": "918b85acec008e3ec6ebf131024090ffcebc32112b0a8859e1ade8728e9464ac",
+  "reviewed_public_changes": [
+    "Import the neighboring public collector and A/D publisher review copies and the pinned public ABI 3 validator source; bind all four sources before staging or public replay.",
+    "Add an exact self-hash redaction receipt and accept a regular README.md beside a verified public E data packet as unmanifested repository documentation.",
+    "The sealed A/D/E manifest, provenance, status, ticket, workload, privacy, and numerical projection gates retain the private exporter behavior."
+  ],
+  "staging_algorithm": "The private-manifest ancestry, strict numerical stream whitelist, complete BUSY/clear command preservation, candidate/rejection replay, and staged data transformations are unchanged from the private E exporter."
+}

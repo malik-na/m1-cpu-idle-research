@@ -1,0 +1,61 @@
+{
+  "schema": "abi3-aurora-native-deployment-public-v1",
+  "scope": "Distinct ABI 3 module package, UKI and Limine entry installed and independently read back; no ABI 3 boot or native capture",
+  "installed_utc": "2026-10-02T21:55:42.357260Z",
+  "status": "distinct_modules_and_uki_installed_unbooted",
+  "identity": {
+    "release": "7.1.12-ARCH-apsc-20261002-wfi-pcpm-abi3",
+    "entry_title": "Aurora-APSC-research-wfi-pcpm-abi3",
+    "module_package": "linux-aurora-apsc-wfi-pcpm-abi3-modules",
+    "source_tree_sha256": "e703916291104ece7de51f24ecdd042fa8ac01463448ebeb1c337b85f647f462",
+    "patch_sha256": "2775fd894e7d62432b806e45f0db7a94e9d6c789dcaa0a57e7d72d0f9d7d3486",
+    "configuration_sha256": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+    "linked_build_receipt_sha256": "6ede95f3ac6b49ba6a156a77136183a271f9077e5fd35897012bd1abe95c0b06",
+    "linked_image_sha256": "1368f40aed236c770485eb8b1b2b0b0bc496915c21fc01fbf608f5f60243a537",
+    "vmlinux_gnu_build_id": "6fbc0dc67bb746466a7244ba2fc096ecae7e6476"
+  },
+  "installed_artifacts": {
+    "module_count": 1867,
+    "package_member_count": 2247,
+    "module_package_sha256": "0d84ae15c22ee13eb9f0c8232a8c48adcbcf9b68c7152ed6c9971e25ce3074f2",
+    "initrd_normalized_path_count": 1333,
+    "initrd_sha256": "d9235f11b52c33110b9e5ac2469f649f75f5808c0a9e188ab96f2bf13175c17e",
+    "uki_bytes": 94836736,
+    "uki_sha256": "3c00f38bce07ad99d18c762acd4aa1f318e99d06bde8e7142e86d4ef02568530"
+  },
+  "boot_fallbacks": {
+    "stock_default_retained": true,
+    "stock_files_unchanged": true,
+    "pcpm_entry_and_uki_retained": true,
+    "limine_sha256_before": "c7fd15927fa51c3d3fce349fd2bb207357db48fd6f1442e45e78f61c1601412b",
+    "limine_sha256_after": "99b667e78384ab98f9e4d6ea388908248ff48c6ae02905bf33b1350beac20b4d"
+  },
+  "efi_after": {
+    "total_bytes": 523132928,
+    "free_bytes": 137314304,
+    "used_percent": 73.75,
+    "usage_limit_percent": 85,
+    "required_free_reserve_bytes": 16777216
+  },
+  "independent_post_install_readback": {
+    "result": "post_install_readonly_pass",
+    "checker_sha256": "0066ca154c32283aaadfc6ef840998980226f94efa896b12975a0f7006c3aff0",
+    "abi3_uki_sha256": "3c00f38bce07ad99d18c762acd4aa1f318e99d06bde8e7142e86d4ef02568530",
+    "limine_sha256": "99b667e78384ab98f9e4d6ea388908248ff48c6ae02905bf33b1350beac20b4d",
+    "stock_default_retained": true,
+    "stock_and_pcpm_uki_match": true,
+    "package_integrity_qkk_passed": [
+      "linux-aurora-apsc-modules",
+      "linux-aurora-apsc-wfi-pcpm-modules",
+      "linux-aurora-apsc-wfi-pcpm-abi3-modules"
+    ]
+  },
+  "private_receipts_sha256": {
+    "reviewed_pins": "36b5ea9c28ef2be192a29bbe64415146f1e2599cb5c8dbfc948f5bb285bedc76",
+    "module_install": "bc2751f1d3c41b11bfedad1d46eedd87147415f7b25fae4d53bdb0fce1b15c0b",
+    "uki_install": "0fd2dffbcbbaf3d08b614fe04e1e8958f72c82ca36b29474c2fe73dad5e3079c",
+    "installed_identity": "8e4e46beeb382141c4d6fefa3a24558717720019facefae184edc98ba66d281d"
+  },
+  "next_gate": "A separately selected first ABI 3 boot must verify live release, Build-ID, selected entry, observer ABI, LSE support and device/environment checks before any A/D/E/conditional-C capture or interpretation",
+  "limits": "Installation and readback do not establish a successful ABI 3 boot, native APSC observation, peer sleep at WFI, physical power state, energy saving or idle-policy benefit"
+}

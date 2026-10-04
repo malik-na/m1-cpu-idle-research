@@ -1,0 +1,8 @@
+{
+  "boundary": "exploratory numeric PCPM MMIO phase screen; no physical-state, residency or energy claim",
+  "cross_cpu_bound": "E=240 ticks remains an unverified capture-wide assumption",
+  "errors": [],
+  "first_boot_machine_screen_passed": true,
+  "next_gate": "independent_APSC_overlap_and_observer_effect_review",
+  "second_mmio_boot_required_for_candidate": true
+}
