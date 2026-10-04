@@ -200,3 +200,12 @@ power remain unproved.
 The [EL2 WFI-trap feasibility note](WFI-EL2-TRAP-FEASIBILITY.md) checks a
 separate instruction-correlated guest diagnostic against pinned m1n1 and Arm
 semantics; the trap cannot by itself establish BUSY at a native executed WFI.
+The [T8103 timestamp calibration feasibility review](LAST-CHG-TIME-CALIBRATION-FEASIBILITY.md)
+checks the unused `LAST_CHG_TIME` definition against pinned primary sources.
+They do not specify a read-safe access width, completion edge, command
+identity or BUSY-continuity invariant. It predeclares the gates for a separate
+bounded native calibration; no new register read or WFI result is reported.
+The [ABI 3 writer-identity audit](WFI-WRITER-IDENTITY-AUDIT.md) replays
+the public E stream and finds a matching latest recorded SET word for all
+18 witnesses, while preserving the cross-CPU and capture-start gaps that
+prevent unique hardware-command attribution.

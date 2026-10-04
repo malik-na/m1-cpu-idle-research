@@ -182,3 +182,17 @@ The third fresh ABI 3 boot completed the [ticket-plus-command-read E result](exp
 The [EL2 WFI-trap feasibility note](experiments/aurora-apsc-observer/WFI-EL2-TRAP-FEASIBILITY.md)
 is a source-pinned static assessment of an unimplemented m1n1 guest route.
 It does not add a native trace or instruction-state observation.
+The [T8103 `LAST_CHG_TIME` calibration feasibility review](experiments/aurora-apsc-observer/LAST-CHG-TIME-CALIBRATION-FEASIBILITY.md)
+is likewise a source-pinned proposal, not a register read. The cited driver
+defines offset `0x38` and a 24 MHz timebase but supplies no width, read-safety,
+completion-edge, command-association or BUSY-continuity contract. A later
+native test must qualify those premises before using that register to infer
+command state at the WFI instruction.
+The [ABI 3 writer-identity audit](experiments/aurora-apsc-observer/WFI-WRITER-IDENTITY-AUDIT.md)
+replays the public E events: the nearest prior recorded cluster-1 SET word
+matches each of 18 BUSY witnesses after removing SET/BUSY bits. That
+consistency is not a proven command identity. The active-branch wrapper
+can omit a SET whose writer passed its inactive check just before capture
+activation; capture-start has no grace-period exclusion for that in-flight
+write. Zero reported DVFS stream loss covers the recording branch, while
+unobserved writers and cross-CPU order still need qualification.
