@@ -81,6 +81,21 @@ Across all 18 witnesses, the raw BUSY words are
 retains every WFI row, the three peer tokens and intervals for each
 witness, and all rejected BUSY rows for independent reconstruction.
 
+A stricter **post-hoc software-order screen** requires every peer's
+idle-exit ticket to follow the candidate's idle-exit ticket, in addition to
+the predeclared read-witness inequalities. Six of the 18 BUSY witnesses pass:
+CPU/token `4/241`, `5/82`, `5/97`, `5/113`, `6/92`, and `6/206`. Their
+candidate exit tickets are respectively `2770`, `1198`, `1462`, `1626`,
+`1070`, and `2342`; the earliest peer exits are `2786`, `1206`, `1463`,
+`1627`, `1074`, and `2350`. The [linked WFI routine](abi3-prototype/linked-code-evidence.txt)
+executes the original WFI before returning, and the [reviewed idle wrapper](0001-aurora-t8103-apsc-observer.patch#L795-L835)
+records its exit ticket after that call and `ct_cpuidle_exit`. Thus these
+peer callbacks had not returned when the candidate executed WFI. A peer may
+already have left its own WFI or context-tracking idle state before its
+later exit ticket. This stronger callback order does not move the earlier
+BUSY read to WFI or prove BUSY continuity, physical peer sleep, or power
+state; a one-ticket gap is order, not a time bound.
+
 Every witness has a preceding successful **same-CPU** SET targeting cluster
 1; the cpufreq policy representative is CPU 4 for all of them. The table
 shows each witness's candidate CPU/token, raw read, and the conservative

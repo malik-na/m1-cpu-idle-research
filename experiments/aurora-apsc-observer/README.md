@@ -194,8 +194,9 @@ capture](ABI3-E-TICKET-RESULT.md), whose [public packet](native-evidence/abi3-E/
 retains all 2,185 WFI command words, 71 BUSY reads, 18 strict cluster-1
 software ticket witnesses and the 53 rejected BUSY rows. E is positive at
 the instrumented pre-DSB read, so the plan's conditional C sensitivity
-control is unnecessary. Command state at the later executed WFI and physical
-power remain unproved.
+control is unnecessary. A post-hoc stricter screen finds six witnesses whose
+three peer callbacks had not returned when the candidate executed WFI;
+command state at that instruction and physical power remain unproved.
 
 The [EL2 WFI-trap feasibility note](WFI-EL2-TRAP-FEASIBILITY.md) checks a
 separate instruction-correlated guest diagnostic against pinned m1n1 and Arm
