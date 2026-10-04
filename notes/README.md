@@ -27,6 +27,8 @@ The separate [Aurora observer/counter port](../experiments/aurora-apsc-observer/
 
 The [APSC/DVFS decision map](https://github.com/malik-na/m1-cpu-idle-research/issues/1) coordinates the next multi-session work. Three source-only method decisions now have reviewable notes: [how to observe the macOS last-core wait](mac-apsc-direct-observation-route.md), [how to capture native Linux DVFS-to-WFI ordering](linux-dvfs-wfi-trace-choice.md), and [how to calibrate PCPM as a native state signal](native-pcpm-signal-decision.md). These are experiment routes, not new BUSY, physical-state, or energy observations.
 
+The [reverse-engineering workflow](soc-reverse-engineering-workflow.md) records how to shorten the experiment cycle: reuse pinned native instrumentation, prepare analysis and publication in parallel, qualify an external m1n1 host where available, and require each run to resolve a named evidence gap. It preserves the current #6 records-first gates and the stop on further #5 reboots.
+
 ## The 50-microsecond result
 
 The inspected kernelcache matches the **running kernel UUID** `1F15A5DA-11D6-39EE-88D2-153E2F90F066` and XNU `13432.1.9~1`, T8103. The chain is:
