@@ -7,6 +7,7 @@ import posixpath
 import re
 import shutil
 import subprocess
+from string import Template
 from pathlib import Path, PurePosixPath
 from urllib.parse import quote, unquote, urlsplit, urlunsplit
 
@@ -158,10 +159,10 @@ class Builder:
         attrs = ''.join(' ' + key.rstrip('_').replace('_', '-') + '="' + esc(value) + '"' for key, value in kwargs.items())
         return '<a href="' + esc(self.doc_url(path)) + '"' + attrs + '>' + esc(label) + '</a>'
 
-    def layout(self, title, body, active='', description='', canonical='index.html'):
+    def layout(self, title, body, active='', description='', canonical='index.html', evidence_map=False):
         nav = [('Overview', 'index.html', 'overview'), ('Findings', 'read/wiki/Findings-Index.html', 'findings'), ('Notebook', 'library.html', 'library'), ('For agents', 'read/wiki/Agent-Orientation.html', 'agents')]
         nav_html = ''.join('<a href="' + esc(self.url(path)) + '"' + (' aria-current="page"' if key == active else '') + '>' + label + '</a>' for label, path, key in nav)
-        return '''<!doctype html>
+        page = '''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>''' + esc(title) + ''' · M1 CPU Idle Research</title><meta name="description" content="''' + esc(description or 'A reproducible base-M1 CPU-idle research notebook: macOS control paths, Linux comparisons, evidence and open experiments.') + '''">
 <meta name="theme-color" content="#111419"><link rel="icon" type="image/svg+xml" href="''' + esc(self.url('assets/icon.svg')) + '''">
@@ -171,7 +172,91 @@ class Builder:
 <a class="brand" href="''' + esc(self.url()) + '''"><span class="brand-symbol" aria-hidden="true">[ m1 ]</span>cpu-idle / research</a><nav class="nav" aria-label="Main navigation">''' + nav_html + '''<a class="repo-link" href="''' + REPO + '''">GitHub ↗</a></nav></div></header>
 <main id="main">''' + body + '''</main><footer class="footer"><div><p>M1 CPU Idle Research · an open evidence notebook</p><p>Research snapshot ''' + self.snapshot_date + ''' · <a href="''' + REPO + '/tree/' + self.revision + '''">''' + self.revision[:7] + '''</a> · static publication, not live telemetry</p></div><div><p><a href="''' + esc(self.doc_url('PROVENANCE.md')) + '''">Provenance</a> / <a href="''' + esc(self.url('evidence/MANIFEST.sha256')) + '''">File hashes</a> / <a href="''' + esc(self.url('llms.txt')) + '''">llms.txt</a></p><p>Design inspired by <a href="https://omarchy-m-testing.org/">omarchy-m-testing</a>.</p></div></footer></body></html>'''
 
+        if evidence_map:
+            page = page.replace('</head>', '<link rel="stylesheet" href="' + esc(self.url('assets/evidence-map.css')) + '"></head>')
+            page = page.replace('</body>', '<script src="' + esc(self.url('assets/evidence-map.js')) + '" defer></script></body>')
+        return page
+
+    def evidence_map_data(self):
+        paths = (
+            'experiments/aurora-apsc-observer/native-evidence/abi3-E/validator-report.json',
+            'experiments/linux-pcpm-sampler/native-evidence/mmio-abi2/mmio-phase-screen.json',
+            'experiments/linux-pcpm-sampler/ps3-prototype/cap2-deployment-receipt.json',
+        )
+        if not all(path in self.files for path in paths):
+            return None
+        abi3, screen, deployment = (json.loads(self.files[path]) for path in paths)
+        reads, busy, witnesses = abi3['wfi_rows'], abi3['busy_rows'], abi3['candidate_count']
+        if not 0 < busy <= reads or witnesses != len(abi3['witnesses']) or not 0 < witnesses <= busy:
+            raise ValueError('Evidence map requires a consistent positive ABI 3 witness report.')
+        posthoc = sum(all(peer['exit_ticket'] > row['candidate_exit_ticket'] for peer in row['peers']) for row in abi3['witnesses'])
+        rows = [row for phase in screen['included'].values() for row in phase] + screen['excluded']
+        words = {row['raw_word'] for row in rows}
+        if (not rows or len({row['seq'] for row in rows}) != len(rows) or len(words) != 1
+                or screen['first_boot_numeric_pattern']['meets_one_boot_pattern'] is not False):
+            raise ValueError('Evidence map requires the retained constant-word negative PCPM screen.')
+        word = words.pop()
+        if type(word) is not int or not 0 <= word <= 0xffffffff:
+            raise ValueError('PCPM word must be a raw 32-bit integer.')
+        actual, desired = (word >> 4) & 15, word & 15
+        count = len(rows)
+        released = screen['valid_full_bracket_counts']['four_p_released']
+        if deployment['status'] != 'distinct_modules_and_uki_installed_unbooted':
+            raise ValueError('Update the evidence-map gates for the changed PS3 deployment checkpoint.')
+        cap, attempts = deployment['identity']['max_rows'], deployment['identity']['max_read_attempts']
+        if type(cap) is not int or cap <= 0 or attempts != cap * 5:
+            raise ValueError('PS3 five-slot access cap is inconsistent.')
+        abi3_url = self.doc_url('experiments/aurora-apsc-observer/ABI3-E-TICKET-RESULT.md')
+        pcpm_url = self.doc_url('experiments/linux-pcpm-sampler/native-evidence/mmio-abi2/README.md')
+        protocol_url = self.doc_url('experiments/linux-pcpm-sampler/PCPU-PS3-PROTOCOL.md')
+        claims = {
+            'native': {'title': 'Native Linux', 'status': 'Runtime evidence',
+                'description': 'Published packets target base-M1 T8103/J313, with boot and source identities recorded for each capture.',
+                'support': 'Native observation differs from guest tracing or source-permitted behavior. These separate packets have their own instruments and conditions.',
+                'next': 'Follow the pinned packet identities, raw records and replay path before extending a claim.',
+                'source': self.doc_url('wiki/Findings-Index.md')},
+            'command': {'title': 'Command ordering', 'status': 'Observed before DSB',
+                'description': f'ABI 3 retained {reads:,} first-attempt pre-DSB command reads. BUSY was set in {busy}; {witnesses} satisfy the strict software final-entrant ticket screen.',
+                'support': 'A bounded command-state observation before DSB, linked to software observer order. No BUSY observation at the later executed WFI instruction.',
+                'next': 'No further #5 reboots unless a genuinely independent timing signal becomes available. The issue stays open with this limit.', 'source': abi3_url},
+            'software': {'title': 'Software state', 'status': 'Ordered observer tickets',
+                'description': f'In a post-hoc screen, {posthoc} of the {witnesses} ABI 3 witnesses have every peer observer idle-exit ticket after the candidate’s post-WFI idle-exit ticket.',
+                'support': 'Order between software observation points. It does not locate a peer inside its exit path or prove that a peer was physically asleep.',
+                'next': 'An independently calibrated physical-state signal must be associated with the software intervals.', 'source': abi3_url},
+            'physical': {'title': 'Physical state', 'status': 'Contrast unresolved',
+                'description': f'Sparse PCPM sampling returned the same full word in all {count} reads, including {released} guarded all-P-released samples. The declared ACTUAL contrast failed.',
+                'support': f'A negative signal screen for this register and these conditions. Constant ACTUAL = {actual} does not rule out deeper states or establish rail power.',
+                'next': 'First qualify records-only acquisition on the unbooted PS3 image: zero MMIO. Review that packet before a second fresh boot may attempt bounded register reads.', 'source': pcpm_url},
+            'energy': {'title': 'Energy consequence', 'status': 'Not measured',
+                'description': 'The published command and PMGR packets do not measure energy savings, CPU-rail power or an idle-policy benefit.',
+                'support': 'No energy inference follows from BUSY, software tickets, register names or a constant state code alone.',
+                'next': 'A separately qualified energy and wake measurement, with matched workloads and observer controls, would assess consequences.', 'source': protocol_url},
+        }
+        return {'claims': claims, 'abi3': {'reads': reads, 'busy': busy, 'witnesses': witnesses, 'posthoc': posthoc},
+                'pcpm': {'word': f'0x{word:08x}', 'reads': count, 'guardedReleased': released, 'actual': actual, 'desired': desired},
+                'ps3': {'deployed': True, 'booted': False, 'cap': cap, 'attempts': attempts}}
+
+    def evidence_map_home(self, data):
+        pcpm, ps3 = data['pcpm'], data['ps3']
+        physical = data['claims']['physical']
+        values = {
+            'command_reads': f"{data['abi3']['reads']:,}", 'busy_reads': data['abi3']['busy'],
+            'witness_count': data['abi3']['witnesses'], 'abi3_result_url': data['claims']['command']['source'],
+            'initial_description': physical['description'], 'initial_support': physical['support'], 'initial_next': physical['next'],
+            'pcpm_result_url': physical['source'], 'ps3_protocol_url': data['claims']['energy']['source'],
+            'ps3_deployment_url': self.doc_url('experiments/linux-pcpm-sampler/ps3-prototype/CAP2-DEPLOYMENT-RESULT.md'),
+            'pcpm_word': pcpm['word'], 'pcpm_reads': pcpm['reads'], 'released_reads': pcpm['guardedReleased'],
+            'actual': pcpm['actual'], 'desired': pcpm['desired'], 'sample_cap': ps3['cap'], 'attempt_cap': ps3['attempts'],
+        }
+        values = {key: esc(value) for key, value in values.items()}
+        values['evidence_json'] = json.dumps(data).replace('<', r'\u003c')
+        body = Template((SITE / 'templates/evidence-map.html').read_text()).substitute(values)
+        return self.layout('Overview', body, active='overview', evidence_map=True)
+
     def home(self):
+        evidence_data = self.evidence_map_data()
+        if evidence_data is not None:
+            return self.evidence_map_home(evidence_data)
         abi3_result = 'experiments/aurora-apsc-observer/ABI3-E-TICKET-RESULT.md'
         pcpm_result = 'experiments/linux-pcpm-sampler/native-evidence/mmio-abi2/README.md'
         ps3_deployment = 'experiments/linux-pcpm-sampler/ps3-prototype/CAP2-DEPLOYMENT-RESULT.md'

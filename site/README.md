@@ -36,7 +36,11 @@ The builder:
 - Creates `llms.txt` as an entry point to the immutable agent handoff and the live decision map. It does not grant permission for experiments or change the repository's evidence rules.
 - Writes `snapshot.json` with commit and counts. Its `runtime_qualification: false` describes this site's inability to qualify hardware; it is not a machine telemetry value.
 
-The small curated homepage lives in `build.py`. When the research conclusion changes, update that summary alongside its canonical evidence and tests. Do not derive a positive hardware result from an issue being closed or a build passing.
+The curated homepage lives in `build.py`. The operator selected the evidence-map direction from a [separate three-variant prototype](https://github.com/malik-na/m1-cpu-idle-research/tree/d8b4582d7c6a657b4133ee42950c27cac1bed029/site); [design issue #11](https://github.com/malik-na/m1-cpu-idle-research/issues/11) records the decision. The implementation uses `templates/evidence-map.html` and the local `assets/evidence-map.css` / `assets/evidence-map.js`. Prototype variants and their switcher are retained only on the throwaway branch.
+
+For snapshots containing the ABI 3 E validator report, PCPM phase screen and unbooted PS3 deployment receipt, the homepage derives displayed counts, the raw 32-bit word, post-hoc count and access caps from those immutable publication bytes. The word decoder and selectable claim nodes are read-only; they make no network request or hardware access. A nonconstant PCPM packet cannot render the constant-word negative illustration. Historical snapshots without the complete evidence set keep the earlier summary. The diagram is a schematic across separate captures, not a measured timeline or live power display. Its source links, unmeasured physical/energy limits and #5 independent-timing gate remain explicit, and the initial result and next gates remain readable without JavaScript.
+
+When the research conclusion changes, update the summary alongside its canonical evidence and tests. Do not derive a positive hardware result from an issue being closed or a build passing.
 
 ## Verification
 

@@ -1,6 +1,10 @@
 """Test publication boundaries and actual rendered navigation, without a browser."""
 import html
+import csv
+import gzip
 import importlib.util
+import io
+import json
 import re
 import tempfile
 import unittest
@@ -20,6 +24,7 @@ class PageParser(HTMLParser):
         self.links = []
         self.ids = set()
         self.scripts = []
+        self.inline_scripts = []
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -29,7 +34,10 @@ class PageParser(HTMLParser):
             if key in attrs:
                 self.links.append(attrs[key])
         if tag == 'script':
-            self.scripts.append(attrs.get('src'))
+            if attrs.get('src'):
+                self.scripts.append(attrs['src'])
+            else:
+                self.inline_scripts.append(attrs.get('type'))
 
 
 class BoundaryTests(unittest.TestCase):
@@ -137,7 +145,13 @@ class RenderingTests(unittest.TestCase):
             for target in parsed.links:
                 if target.startswith(build.REPO + '/blob/') or target.startswith(build.REPO + '/tree/'):
                     self.assertRegex(target, re.escape(build.REPO) + r'/(?:blob|tree)/[0-9a-f]{40}(?:/|$)')
-            self.assertEqual(parsed.scripts, ['/m1-cpu-idle-research/assets/site.js'])
+            expected = ['/m1-cpu-idle-research/assets/site.js']
+            if page == 'index.html' and self.builder.evidence_map_data() is not None:
+                expected.append('/m1-cpu-idle-research/assets/evidence-map.js')
+                self.assertEqual(parsed.inline_scripts, ['application/json'])
+            else:
+                self.assertEqual(parsed.inline_scripts, [])
+            self.assertEqual(parsed.scripts, expected)
 
     def test_library_data_is_escaped_and_full_text_searchable(self):
         self.builder.docs['wiki/Test.md'] = '# Example <script>\n\nA unique deeper body token: arbitrarystatevalue <img src=x onerror=bad>. '
@@ -163,6 +177,8 @@ class RenderingTests(unittest.TestCase):
 
     def test_pcpm_bench_tracks_selected_published_snapshot(self):
         path = 'experiments/linux-pcpm-sampler/README.md'
+        report_path = 'experiments/aurora-apsc-observer/native-evidence/abi3-E/validator-report.json'
+        report = self.builder.files.pop(report_path, None)
         previous = self.builder.docs.pop(path, None)
         try:
             self.assertIn('PCPM calibration plan', self.builder.home())
@@ -172,6 +188,8 @@ class RenderingTests(unittest.TestCase):
             self.assertIn('native state calibration remains open', home)
             self.assertIn(self.builder.doc_url(path), home)
         finally:
+            if report is not None:
+                self.builder.files[report_path] = report
             if previous is None:
                 self.builder.docs.pop(path, None)
             else:
@@ -184,14 +202,67 @@ class RenderingTests(unittest.TestCase):
             self.assertNotIn('Native target captures are still pending', home)
             self.assertIn('pre-DSB', home)
             self.assertIn('No further #5 reboots unless a genuinely independent timing signal', home)
-            self.assertIn('physical sleep and energy remain unobserved', home)
+            if self.builder.evidence_map_data() is not None:
+                self.assertIn('Schematic · not a measured timeline', home)
+                self.assertIn('do not measure energy savings', home)
+                self.assertIn('does not rule out deeper states or establish rail power', home)
+                self.assertNotIn('prototype-switcher', home)
+            else:
+                self.assertIn('physical sleep and energy remain unobserved', home)
         else:
             self.assertIn('Native target captures are still pending', home)
-        self.assertIn('Cells are not live CPU activity', home)
+        if self.builder.evidence_map_data() is None:
+            self.assertIn('Cells are not live CPU activity', home)
         handoff = (self.output / 'llms.txt').read_text()
         self.assertIn(self.revision, handoff)
         self.assertIn('Do not claim novelty from search absence', handoff)
         self.assertIn('/issues/1', handoff)
+
+    def test_visual_counts_and_word_match_retained_raw_rows(self):
+        home = (self.output / 'index.html').read_text()
+        payload = re.search(r'<script type="application/json" id="evidence-map-data">(.*?)</script>', home, re.S)
+        if payload is None:
+            self.skipTest('selected snapshot predates the visual evidence packets')
+        data = json.loads(payload.group(1))
+        raw_path = 'experiments/linux-pcpm-sampler/native-evidence/mmio-abi2/pcpm-samples.csv.gz'
+        raw = list(csv.DictReader(io.StringIO(gzip.decompress(self.builder.files[raw_path]).decode())))
+        self.assertEqual(data['pcpm']['reads'], len(raw))
+        self.assertEqual({row['raw'] for row in raw}, {data['pcpm']['word']})
+        for claim in data['claims'].values():
+            self.assertIn(claim['source'], self.builder.home())
+            self.assertIn(claim['source'].removeprefix('/m1-cpu-idle-research/'), self.pages)
+        self.assertFalse(data['ps3']['booted'])
+        self.assertEqual(data['ps3']['attempts'], data['ps3']['cap'] * 5)
+
+    def test_nonconstant_packet_cannot_render_constant_state_claim(self):
+        path = 'experiments/linux-pcpm-sampler/native-evidence/mmio-abi2/mmio-phase-screen.json'
+        previous = self.builder.files.get(path)
+        if previous is None:
+            self.skipTest('selected snapshot predates PCPM capture')
+        screen = json.loads(previous)
+        screen['excluded'][0]['raw_word'] ^= 1
+        try:
+            self.builder.files[path] = json.dumps(screen).encode()
+            with self.assertRaisesRegex(ValueError, 'constant-word negative'):
+                self.builder.home()
+        finally:
+            self.builder.files[path] = previous
+
+    def test_snapshot_without_ps3_checkpoint_cannot_claim_installation(self):
+        receipt = 'experiments/linux-pcpm-sampler/ps3-prototype/cap2-deployment-receipt.json'
+        result = 'experiments/linux-pcpm-sampler/ps3-prototype/CAP2-DEPLOYMENT-RESULT.md'
+        saved_receipt = self.builder.files.pop(receipt, None)
+        saved_result = self.builder.docs.pop(result, None)
+        try:
+            home = self.builder.home()
+            self.assertNotIn('Installed image', home)
+            self.assertNotIn('Its installed PS3 image', home)
+            self.assertNotIn('id="EvidenceMap"', home)
+        finally:
+            if saved_receipt is not None:
+                self.builder.files[receipt] = saved_receipt
+            if saved_result is not None:
+                self.builder.docs[result] = saved_result
 
 
 if __name__ == '__main__':
