@@ -28,13 +28,15 @@ Each item has a falsifying outcome and a claim boundary. Work from observation t
 
 ## E3 — Find an independent native physical-state signal
 
-**Hypothesis.** PCPM's PMGR state register can distinguish at least one deeper cluster state while a core in another cluster reads it sparsely.
+**Hypothesis.** A PMGR PS3 status slot might distinguish controlled P-core activity from software idle while a core in the E cluster reads it sparsely. The first PCPM cluster-slot test did not show such a contrast.
 
-**First observation.** The audited candidate is `0x23b700048`, using the existing PMGR mapping; decode `ACTUAL=(raw >> 4) & 0xf`, preserving the raw value, error and timestamps. The low nibble is DESIRED and must not be substituted. Compare (a) active P-cluster work, (b) individual P cores in software CPU PD, and (c) overlapping P-core CPU PD intervals. Test whether sampling frequency changes the observed state. [Native observable audit](../notes/idle-observable-audit.md).
+**Original candidate.** The audited PCPM slot is `0x23b700048`, using the existing PMGR mapping; decode `ACTUAL=(raw >> 4) & 0xf`, preserving the raw value, error and timestamps. The low nibble is DESIRED and must not be substituted. Compare (a) active P-cluster work, (b) individual P cores in software CPU PD, and (c) overlapping P-core CPU PD intervals. Test whether sampling frequency changes the observed state. [Native observable audit](../notes/idle-observable-audit.md).
 
-**Would weaken it.** The register remains constant across independently different conditions, faults when the domain is idle, or the act of reading prevents the transition.
+**Native result and next screen, 4 October 2026.** One fresh-boot [PCPM packet](../experiments/linux-pcpm-sampler/native-evidence/mmio-abi2/README.md) retained 90 successful `+0x48` reads, all `0x000021f0` (`ACTUAL=15`) across guarded active, released and wake phases. Its declared contrast failed; the separate records-only comparison cannot attribute a lower software-idle witness count to MMIO. The [prospective PCPU PS3 protocol](../experiments/linux-pcpm-sampler/PCPU-PS3-PROTOCOL.md) screens the four per-core slots at `+0x20`–`+0x38`, with the failed PCPM slot as a reference, and requires a new qualified built-in collector before any read. A small first pilot can establish access and variability only. Per-core identity requires a later balanced, independently ordered control. This paragraph adds no read or boot observation.
 
-**Claim limit.** Even a changing ACTUAL code is PMGR's reported state; map that state machine before calling it full rail-off. Sparse samples estimate occupancy only under documented sampling assumptions.
+**Would weaken it.** The tested slots remain constant across independently different conditions, fault when the domain is idle, or the act of reading prevents a transition.
+
+**Claim limit.** Even a changing ACTUAL code is PMGR's reported state; map that state machine before calling it full rail-off. Sparse samples estimate occupancy only under documented sampling assumptions. A constant code in the tested conditions does not exclude unsampled deeper states or observer effects.
 
 ## E4 — Compare policy only after E1–E3
 
