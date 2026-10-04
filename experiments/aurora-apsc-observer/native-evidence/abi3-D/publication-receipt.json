@@ -1,0 +1,128 @@
+{
+  "artifacts": {
+    "apsc-events.csv.gz": {
+      "private_inputs_sha256": {
+        "apsc-events.csv": "4aa960447c099f13718ea7721af2c864bc6e96fcf29a7161bd0e01913584fbd1"
+      },
+      "public_sha256": "8e410b6a01a8d2a8084c69bce05bfe9b82273917891092157b9bcd3f4a8a9915"
+    },
+    "apsc-status-after.txt": {
+      "private_inputs_sha256": {
+        "apsc-status-after.txt": "4c56b82bf707f158322abadcb039e9106683a21948cb88ca257c0673ccb7075c"
+      },
+      "public_sha256": "05227256248a3c5c826101701f4f8bfa470f45e67493f588eac018f2dd656645"
+    },
+    "apsc-status-before.txt": {
+      "private_inputs_sha256": {
+        "apsc-status-before.txt": "fecfc008f2d2489dcf06db1921eaaa9dd0947d59887dd4abb24ddd2172088f39"
+      },
+      "public_sha256": "bc61710b27a01cbe2e56c407cbcf3102bd854188c3ea1ae931068fed210355ba"
+    },
+    "apsc-wfi-events.csv.gz": {
+      "private_inputs_sha256": {
+        "apsc-wfi-events.csv": "9798ca509f49d39cf5fe22ce1456e53558871a6b5de29ae7b35a29b359ba6a13"
+      },
+      "public_sha256": "8ff83472693e277f1aef0cd0590cfff4f20c277605638a06f5f7960db752b9bb"
+    },
+    "capture.json": {
+      "private_inputs_sha256": {
+        "abi3-validator-report.json": "3e560e7db27125e21bae3a13ee132d891e57c236769deec8d56fe146ea49dd05",
+        "acquisition-summary.json": "ad547fd8f4cc8319a47c353f1210e2d1465903cc312c9d33e092594ac2c4d8e4",
+        "prior-packet-gate.json": "800414527d9a23d14b397ae07a7fdb6936db4fa03eba162e5325ecf556db11ee",
+        "schedule.json": "1d73230dfd50ea6193f2216c77e17dfdc1a27a0c62833ba97302cf2582ab1049",
+        "stream-status-check.json": "196f6ac0c20fe780841116471c031eb19f78cfc181299a386176c6d510848dd0",
+        "user-boot-qualification-check.json": "c9f8f1add166cdca6371b6ee38044bdb8c2c102e65a1fd0df61820953ce8ba94",
+        "window-markers.json": "e8d9e1da51fee93864b2bbb7fcb8028d0f50864e0c63f00e05543f321166057a",
+        "workload-check.json": "cb56e2ea9cdf67c90feb18be04de30c2ce37bedf630d1d8a39227ce403a4d36f",
+        "workload-checksum-match.json": "c67b59a85ca6d6a9c6b68e6935150017288d2105abb5a02dc4eaae08e9ac6d67"
+      },
+      "public_sha256": "ea43e3f5bc3478522a69679c91a97352ff522d837f269dae9bc439c8e2fb08b6"
+    },
+    "counter-status-after.txt": {
+      "private_inputs_sha256": {
+        "counter-status-after.txt": "c829cd87299c3c70e26d2d570fe999817b049f5cadb6c1a01543c6965160ec05"
+      },
+      "public_sha256": "c58240356ef469839ad495e0bdd13aef9c22a7442d5cce7beb15b9509c656166"
+    },
+    "counter-status-before.txt": {
+      "private_inputs_sha256": {
+        "counter-status-before.txt": "c829cd87299c3c70e26d2d570fe999817b049f5cadb6c1a01543c6965160ec05"
+      },
+      "public_sha256": "c58240356ef469839ad495e0bdd13aef9c22a7442d5cce7beb15b9509c656166"
+    },
+    "environment.json": {
+      "private_inputs_sha256": {
+        "environment-after.json": "2e8732add1b065aacbb5f7320ec3790e9012368c4533a197717f1c5f1d6a701a",
+        "environment-before.json": "91269f9fbf56444270ef84799ebb998e39b1ad7685042f49bec3d815dcd1e31e",
+        "environment-drift.json": "e912f21709f1fee675295d594c1e71e8b808b121d66806f24bf80d46cc83e2d0",
+        "power-at-arm.json": "7c01ecc92272f1d9d6ac33090a147d2ce906f7e341fc064b358465b5b198fc5f",
+        "power-at-window-end.json": "da3aef837addea1a55d3f6e728f45a9dd060fac710f2818c321d52871432ff50"
+      },
+      "public_sha256": "0fed2edeb3d41f65b494e70a1d221534a97e600ce44cec695658dca37bf3ba91"
+    },
+    "pcpm-status-after.txt": {
+      "private_inputs_sha256": {
+        "pcpm-status-after.txt": "dfb20f7b183308b9830b419904b85edd769d5f44cd20a2d7b18d669bbe55762e"
+      },
+      "public_sha256": "aa8f578717e1e891b8f062c110f05d0425dee9e073de987995be4e978fc253ae"
+    },
+    "pcpm-status-before.txt": {
+      "private_inputs_sha256": {
+        "pcpm-status-before.txt": "dfb20f7b183308b9830b419904b85edd769d5f44cd20a2d7b18d669bbe55762e"
+      },
+      "public_sha256": "aa8f578717e1e891b8f062c110f05d0425dee9e073de987995be4e978fc253ae"
+    },
+    "timeline.json": {
+      "private_inputs_sha256": {
+        "timeline.jsonl": "39af328d5ab19522af3b20883dea644d17f1f897888bd75dd075b2893fd4c82c",
+        "window-markers.json": "e8d9e1da51fee93864b2bbb7fcb8028d0f50864e0c63f00e05543f321166057a"
+      },
+      "public_sha256": "a6e71a4c22ce759b6c78623d75254a6941df23335a3ebb93887caf29d09127cf"
+    },
+    "validator-report.json": {
+      "private_inputs_sha256": {
+        "abi3-validator-report.json": "3e560e7db27125e21bae3a13ee132d891e57c236769deec8d56fe146ea49dd05",
+        "apsc-events.csv": "4aa960447c099f13718ea7721af2c864bc6e96fcf29a7161bd0e01913584fbd1",
+        "apsc-status-after.txt": "4c56b82bf707f158322abadcb039e9106683a21948cb88ca257c0673ccb7075c",
+        "apsc-wfi-events.csv": "9798ca509f49d39cf5fe22ce1456e53558871a6b5de29ae7b35a29b359ba6a13"
+      },
+      "public_sha256": "ff3b8c3495dbb57122423866e5e82dade6062f0eec0acba9aef823e7e202ac47"
+    },
+    "workload-cpu1.csv.gz": {
+      "private_inputs_sha256": {
+        "schedule.json": "1d73230dfd50ea6193f2216c77e17dfdc1a27a0c62833ba97302cf2582ab1049",
+        "window-markers.json": "e8d9e1da51fee93864b2bbb7fcb8028d0f50864e0c63f00e05543f321166057a",
+        "workload-cpu1.csv": "ef466743a2ce01dc4870e00b8b2f36b31868e1d88a2ac1f4a82d0f188a067b93"
+      },
+      "public_sha256": "839952e40014bdeb5caed93737484772164db63acb0142cf3695ac26c95dbad2"
+    },
+    "workload-cpu5.csv.gz": {
+      "private_inputs_sha256": {
+        "schedule.json": "1d73230dfd50ea6193f2216c77e17dfdc1a27a0c62833ba97302cf2582ab1049",
+        "window-markers.json": "e8d9e1da51fee93864b2bbb7fcb8028d0f50864e0c63f00e05543f321166057a",
+        "workload-cpu5.csv": "8a57d8fc1dbb988f4f1a0195d06547295e4140c1c6eaab27060fb12dfee0f4d5"
+      },
+      "public_sha256": "2450ffea3c95bae19ba5340dd775c267476c18db260c18850d245a908b6e30aa"
+    }
+  },
+  "prior_a_manifest_sha256": "dedb1f46361256aecb5a1e45ad69a8830fc149d6d64be37396ab48a2e5ec08eb",
+  "private_manifest_sha256": "bf1bc8c08e58c02661183cef4a1b878c93bb09dd5c557b6c789915f6a78df159",
+  "private_packet_phase": "D",
+  "projection": "whitelisted status lines, byte-exact ticket CSVs, relative worker times; no raw boot, account, network, USB, command line or kernel log content",
+  "qualified_build": {
+    "config_sha256": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+    "gnu_build_id": "6fbc0dc67bb746466a7244ba2fc096ecae7e6476",
+    "image_sha256": "1368f40aed236c770485eb8b1b2b0b0bc496915c21fc01fbf608f5f60243a537",
+    "patch_sha256": "2775fd894e7d62432b806e45f0db7a94e9d6c789dcaa0a57e7d72d0f9d7d3486",
+    "release": "7.1.12-ARCH-apsc-20261002-wfi-pcpm-abi3",
+    "source_tree_sha256": "e703916291104ece7de51f24ecdd042fa8ac01463448ebeb1c337b85f647f462",
+    "uki_sha256": "3c00f38bce07ad99d18c762acd4aa1f318e99d06bde8e7142e86d4ef02568530"
+  },
+  "schema": "abi3-d-publication-receipt-v1",
+  "source_collector_sha256": "2c97a3379630791792a8549cee681d70a069155e744cceb7e948d3685df877c4",
+  "source_first_a_visual_receipt_sha256": "ca052adb6fa5562e64d0d2a2d76579def84062c6482ea6ca630fdbd26e3c0322",
+  "source_identity_sha256": "8e4e46beeb382141c4d6fefa3a24558717720019facefae184edc98ba66d281d",
+  "source_user_current_boot_receipt_sha256": "e8cd88ecbb4514f2b74f09b4478871598614d7b56259b8adbe8f5748b06656c8",
+  "source_validator_sha256": "918b85acec008e3ec6ebf131024090ffcebc32112b0a8859e1ade8728e9464ac",
+  "source_workload_sha256": "2b4ed83c6f81be68eeb4e9aa448eb81493852f1bf114edb249f75a1e55234a89"
+}

@@ -1,0 +1,17 @@
+{
+  "abi": 3,
+  "busy_rows": 0,
+  "busy_screen": [],
+  "candidate_count": 0,
+  "idle_rows": 3741,
+  "input_sha256": {
+    "events": "4aa960447c099f13718ea7721af2c864bc6e96fcf29a7161bd0e01913584fbd1",
+    "status": "05227256248a3c5c826101701f4f8bfa470f45e67493f588eac018f2dd656645",
+    "wfi_events": "9798ca509f49d39cf5fe22ce1456e53558871a6b5de29ae7b35a29b359ba6a13"
+  },
+  "mode": "wfi_clock",
+  "scope": "ticket-ordered software-hook candidate at first-attempt pre-DSB read",
+  "wfi_prepare_after_stop": 0,
+  "wfi_rows": 1873,
+  "witnesses": []
+}

@@ -1,5 +1,13 @@
 # Public A/B/C native event packet
 
+The distinct ABI 3 [unarmed A baseline](../ABI3-A-BASELINE-RESULT.md) and
+[ticket-only D control](../ABI3-D-TICKET-CONTROL-RESULT.md) have their own
+reviewed packets in [`abi3-A/`](abi3-A/README.md) and
+[`abi3-D/`](abi3-D/README.md). D contains the full numerical ticket stream
+from a fresh boot of the shared-atomic instrument, with no additional
+command load at the first-attempt WFI probe. These ABI 3 packets are not
+matched controls for the historical ABI 2 block below.
+
 The separate [ABI 2 D clock-only pilot](../WFI-D-RESULT.md) is in [`D/`](D/status.txt).
 It uses the first-attempt WFI seam without a command-register read, so it is
 not a BUSY observation or a substitute for the earlier capacity-kernel

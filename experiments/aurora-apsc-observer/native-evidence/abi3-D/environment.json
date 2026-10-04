@@ -1,0 +1,40 @@
+{
+  "ac_online_at_preflight_arm_end_after": true,
+  "before_after": {
+    "after": {
+      "actual_brightness": 164,
+      "battery_percent": 62,
+      "network_interface_count": 2,
+      "thermal_max_millidegrees": 38800,
+      "thermal_min_millidegrees": 38800,
+      "usb_device_count": 3
+    },
+    "before": {
+      "actual_brightness": 164,
+      "battery_percent": 61,
+      "network_interface_count": 2,
+      "thermal_max_millidegrees": 38800,
+      "thermal_min_millidegrees": 38800,
+      "usb_device_count": 3
+    }
+  },
+  "brightness_155_at_preflight_arm_end_after": true,
+  "cpuidle_driver": "apple_idle",
+  "cpuidle_governor": "menu",
+  "deep_idle_enabled_all_cpus": true,
+  "network_counter_deltas": {
+    "rx_bytes": 30838,
+    "rx_packets": 164,
+    "tx_bytes": 267033,
+    "tx_packets": 239
+  },
+  "network_interface_set_equal": true,
+  "online_cpus": "0-7",
+  "policy_cpu_sets": {
+    "policy0": "0 1 2 3",
+    "policy4": "4 5 6 7"
+  },
+  "schema": "abi3-d-environment-projection-v1",
+  "scope": "endpoint context only; no network, USB or boot identifiers",
+  "usb_inventory_equal": true
+}

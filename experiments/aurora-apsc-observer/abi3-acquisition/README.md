@@ -40,3 +40,20 @@ its input hash mapping, and the interpretation boundary. That packet's
 manifest; `--verify-public-stage` checks the data files and manifest, not the
 README text. Publication of raw boot, account, device, or network data is
 outside this copy.
+
+`publish_abi3_d.py` is the corresponding public review copy for the fresh-boot
+ticket-only D control. `D-PUBLISHER-REDACTION-RECEIPT.json` binds its source
+to the private exporter and public collector, A publisher and validator.
+Replay the [public D packet](../native-evidence/abi3-D/README.md) without
+private inputs from this directory:
+
+```sh
+python3 -B publish_abi3_d.py --verify-public-stage ../native-evidence/abi3-D
+```
+
+The six public D tests run with `python3 -B -m unittest -v
+test_publish_abi3_d.py`. The private exporter passed ten synthetic tests and
+an isolated staging run; the public copy reproduced the reviewed D packet
+byte for byte. D's command-empty WFI rows represent a control without the
+additional WFI-path APSC load; ordinary DVFS command reads remain in the
+event stream.

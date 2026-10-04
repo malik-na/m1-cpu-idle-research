@@ -175,6 +175,8 @@ instrument-state and delivered-work baseline, with no command-BUSY,
 WFI-instruction-state, physical-power, energy or wake finding. D/E require
 their own fresh boots and validation.
 
+The second fresh ABI 3 boot completed the [ticket-only D control](experiments/aurora-apsc-observer/ABI3-D-TICKET-CONTROL-RESULT.md). Its [reviewed numerical packet](experiments/aurora-apsc-observer/native-evidence/abi3-D/README.md) retains byte-exact idle/DVFS and WFI event streams after deterministic gzip, filtered loss/status lines, relative worker and timeline records, a validator report, and projected endpoint context. A public manifest and input-hash receipt bind those values to the sealed 64-file private packet; full boot logs, identifiers, FDT, boot arguments and source binaries remain private. The independently replayed ticket stream had 1,873 first-attempt WFI-path slots with no missing records. D deliberately omitted the extra APSC command read at that seam, so its empty WFI command fields and zero BUSY candidates are structural, not a negative command-state observation. The 10.446-second D interval and warmer, differently charged fresh boot limit causal comparison with A. The next E command-read phase still requires its own qualified boot.
+
 The [EL2 WFI-trap feasibility note](experiments/aurora-apsc-observer/WFI-EL2-TRAP-FEASIBILITY.md)
 is a source-pinned static assessment of an unimplemented m1n1 guest route.
 It does not add a native trace or instruction-state observation.

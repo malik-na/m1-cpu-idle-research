@@ -183,8 +183,14 @@ completed the [unarmed A baseline](ABI3-A-BASELINE-RESULT.md). Its
 reviewed status, empty observer streams, and 200 worker pulses per CPU,
 with 196 pulses per CPU fully inside the A window. A had no observer
 capture command or control write; it provides no command-BUSY or
-WFI-instruction-state result. The D/E controls remain separate fresh-boot
-experiments under the fixed run plan.
+WFI-instruction-state result. A second qualified ABI 3 boot completed the
+[ticket-only D control](ABI3-D-TICKET-CONTROL-RESULT.md). Its
+[public numerical packet](native-evidence/abi3-D/README.md) preserves the
+ticketed idle, DVFS and WFI records for offline replay: 1,873 first-attempt
+WFI-path slots, zero stream loss and no additional command load at that
+probe. D therefore validates the record path but makes no WFI-path BUSY
+observation. E remains a separate fresh-boot experiment under the fixed
+run plan.
 
 The [EL2 WFI-trap feasibility note](WFI-EL2-TRAP-FEASIBILITY.md) checks a
 separate instruction-correlated guest diagnostic against pinned m1n1 and Arm
