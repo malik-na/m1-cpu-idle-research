@@ -1,0 +1,2324 @@
+{
+  "abi": 3,
+  "busy_rows": 71,
+  "busy_screen": [
+    {
+      "candidate_enter_ticket": 62,
+      "candidate_exit_ticket": 65,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 1,
+      "peers": [],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer2_interval_missing",
+        "peer3_interval_missing"
+      ],
+      "ticket_post": 64,
+      "ticket_pre": 63,
+      "token": 10
+    },
+    {
+      "candidate_enter_ticket": 369,
+      "candidate_exit_ticket": 372,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 1,
+      "peers": [
+        {
+          "cpu": 3,
+          "enter_ticket": 361,
+          "exit_ticket": 373,
+          "token": 58
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 371,
+      "ticket_pre": 370,
+      "token": 34
+    },
+    {
+      "candidate_enter_ticket": 793,
+      "candidate_exit_ticket": 796,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 1,
+      "peers": [
+        {
+          "cpu": 3,
+          "enter_ticket": 785,
+          "exit_ticket": 797,
+          "token": 111
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 795,
+      "ticket_pre": 794,
+      "token": 83
+    },
+    {
+      "candidate_enter_ticket": 1410,
+      "candidate_exit_ticket": 1413,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 1,
+      "peers": [],
+      "raw_cmd": "0x0000040080103103",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer2_interval_missing",
+        "peer3_interval_missing"
+      ],
+      "ticket_post": 1412,
+      "ticket_pre": 1411,
+      "token": 125
+    },
+    {
+      "candidate_enter_ticket": 1746,
+      "candidate_exit_ticket": 1752,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 1,
+      "peers": [],
+      "raw_cmd": "0x0000040080102102",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer2_interval_missing",
+        "peer3_interval_missing"
+      ],
+      "ticket_post": 1748,
+      "ticket_pre": 1747,
+      "token": 146
+    },
+    {
+      "candidate_enter_ticket": 1798,
+      "candidate_exit_ticket": 1801,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 1,
+      "peers": [],
+      "raw_cmd": "0x0000040080102102",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer2_interval_missing",
+        "peer3_interval_missing"
+      ],
+      "ticket_post": 1800,
+      "ticket_pre": 1799,
+      "token": 153
+    },
+    {
+      "candidate_enter_ticket": 1850,
+      "candidate_exit_ticket": 1853,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 1,
+      "peers": [],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer2_interval_missing",
+        "peer3_interval_missing"
+      ],
+      "ticket_post": 1852,
+      "ticket_pre": 1851,
+      "token": 161
+    },
+    {
+      "candidate_enter_ticket": 4053,
+      "candidate_exit_ticket": 4063,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 1,
+      "peers": [
+        {
+          "cpu": 3,
+          "enter_ticket": 4050,
+          "exit_ticket": 4056,
+          "token": 386
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 4055,
+      "ticket_pre": 4054,
+      "token": 307
+    },
+    {
+      "candidate_enter_ticket": 2334,
+      "candidate_exit_ticket": 2337,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 2,
+      "peers": [],
+      "raw_cmd": "0x0000040080102102",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer3_interval_missing"
+      ],
+      "ticket_post": 2336,
+      "ticket_pre": 2335,
+      "token": 129
+    },
+    {
+      "candidate_enter_ticket": 2405,
+      "candidate_exit_ticket": 2408,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 2,
+      "peers": [
+        {
+          "cpu": 3,
+          "enter_ticket": 2401,
+          "exit_ticket": 2412,
+          "token": 261
+        }
+      ],
+      "raw_cmd": "0x0000040080105105",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing"
+      ],
+      "ticket_post": 2407,
+      "ticket_pre": 2406,
+      "token": 141
+    },
+    {
+      "candidate_enter_ticket": 3137,
+      "candidate_exit_ticket": 3140,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 2,
+      "peers": [
+        {
+          "cpu": 3,
+          "enter_ticket": 3134,
+          "exit_ticket": 3148,
+          "token": 303
+        }
+      ],
+      "raw_cmd": "0x0000040080105105",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing"
+      ],
+      "ticket_post": 3139,
+      "ticket_pre": 3138,
+      "token": 257
+    },
+    {
+      "candidate_enter_ticket": 3141,
+      "candidate_exit_ticket": 3144,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 2,
+      "peers": [
+        {
+          "cpu": 3,
+          "enter_ticket": 3134,
+          "exit_ticket": 3148,
+          "token": 303
+        }
+      ],
+      "raw_cmd": "0x0000040080105105",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing"
+      ],
+      "ticket_post": 3143,
+      "ticket_pre": 3142,
+      "token": 258
+    },
+    {
+      "candidate_enter_ticket": 4246,
+      "candidate_exit_ticket": 4249,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 2,
+      "peers": [],
+      "raw_cmd": "0x0000040080102102",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer3_interval_missing"
+      ],
+      "ticket_post": 4248,
+      "ticket_pre": 4247,
+      "token": 343
+    },
+    {
+      "candidate_enter_ticket": 4262,
+      "candidate_exit_ticket": 4265,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 2,
+      "peers": [],
+      "raw_cmd": "0x0000040080105105",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer3_interval_missing"
+      ],
+      "ticket_post": 4264,
+      "ticket_pre": 4263,
+      "token": 346
+    },
+    {
+      "candidate_enter_ticket": 4270,
+      "candidate_exit_ticket": 4273,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 2,
+      "peers": [],
+      "raw_cmd": "0x0000040080102102",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer3_interval_missing"
+      ],
+      "ticket_post": 4272,
+      "ticket_pre": 4271,
+      "token": 348
+    },
+    {
+      "candidate_enter_ticket": 4402,
+      "candidate_exit_ticket": 4409,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 2,
+      "peers": [],
+      "raw_cmd": "0x0000040080105105",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer3_interval_missing"
+      ],
+      "ticket_post": 4404,
+      "ticket_pre": 4403,
+      "token": 357
+    },
+    {
+      "candidate_enter_ticket": 4545,
+      "candidate_exit_ticket": 4548,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 2,
+      "peers": [
+        {
+          "cpu": 3,
+          "enter_ticket": 4542,
+          "exit_ticket": 4549,
+          "token": 456
+        }
+      ],
+      "raw_cmd": "0x0000040080102102",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing"
+      ],
+      "ticket_post": 4547,
+      "ticket_pre": 4546,
+      "token": 365
+    },
+    {
+      "candidate_enter_ticket": 481,
+      "candidate_exit_ticket": 492,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [
+        {
+          "cpu": 1,
+          "enter_ticket": 478,
+          "exit_ticket": 484,
+          "token": 54
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 483,
+      "ticket_pre": 482,
+      "token": 65
+    },
+    {
+      "candidate_enter_ticket": 750,
+      "candidate_exit_ticket": 753,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 752,
+      "ticket_pre": 751,
+      "token": 103
+    },
+    {
+      "candidate_enter_ticket": 754,
+      "candidate_exit_ticket": 757,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 756,
+      "ticket_pre": 755,
+      "token": 104
+    },
+    {
+      "candidate_enter_ticket": 926,
+      "candidate_exit_ticket": 929,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080105105",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 928,
+      "ticket_pre": 927,
+      "token": 127
+    },
+    {
+      "candidate_enter_ticket": 1442,
+      "candidate_exit_ticket": 1445,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 1444,
+      "ticket_pre": 1443,
+      "token": 173
+    },
+    {
+      "candidate_enter_ticket": 1486,
+      "candidate_exit_ticket": 1489,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080105105",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 1488,
+      "ticket_pre": 1487,
+      "token": 182
+    },
+    {
+      "candidate_enter_ticket": 1534,
+      "candidate_exit_ticket": 1537,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080105105",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 1536,
+      "ticket_pre": 1535,
+      "token": 190
+    },
+    {
+      "candidate_enter_ticket": 1546,
+      "candidate_exit_ticket": 1549,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 1548,
+      "ticket_pre": 1547,
+      "token": 192
+    },
+    {
+      "candidate_enter_ticket": 1749,
+      "candidate_exit_ticket": 1761,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [
+        {
+          "cpu": 1,
+          "enter_ticket": 1746,
+          "exit_ticket": 1752,
+          "token": 146
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 1751,
+      "ticket_pre": 1750,
+      "token": 211
+    },
+    {
+      "candidate_enter_ticket": 2002,
+      "candidate_exit_ticket": 2005,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 2004,
+      "ticket_pre": 2003,
+      "token": 226
+    },
+    {
+      "candidate_enter_ticket": 2046,
+      "candidate_exit_ticket": 2049,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080103103",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 2048,
+      "ticket_pre": 2047,
+      "token": 232
+    },
+    {
+      "candidate_enter_ticket": 2190,
+      "candidate_exit_ticket": 2193,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 2192,
+      "ticket_pre": 2191,
+      "token": 245
+    },
+    {
+      "candidate_enter_ticket": 2458,
+      "candidate_exit_ticket": 2461,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 2460,
+      "ticket_pre": 2459,
+      "token": 265
+    },
+    {
+      "candidate_enter_ticket": 3021,
+      "candidate_exit_ticket": 3024,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [
+        {
+          "cpu": 2,
+          "enter_ticket": 3001,
+          "exit_ticket": 3040,
+          "token": 245
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing"
+      ],
+      "ticket_post": 3023,
+      "ticket_pre": 3022,
+      "token": 287
+    },
+    {
+      "candidate_enter_ticket": 3157,
+      "candidate_exit_ticket": 3165,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [
+        {
+          "cpu": 2,
+          "enter_ticket": 3145,
+          "exit_ticket": 3160,
+          "token": 259
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing"
+      ],
+      "ticket_post": 3159,
+      "ticket_pre": 3158,
+      "token": 306
+    },
+    {
+      "candidate_enter_ticket": 3182,
+      "candidate_exit_ticket": 3185,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080102102",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 3184,
+      "ticket_pre": 3183,
+      "token": 311
+    },
+    {
+      "candidate_enter_ticket": 3462,
+      "candidate_exit_ticket": 3465,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 3464,
+      "ticket_pre": 3463,
+      "token": 348
+    },
+    {
+      "candidate_enter_ticket": 3646,
+      "candidate_exit_ticket": 3649,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 3648,
+      "ticket_pre": 3647,
+      "token": 352
+    },
+    {
+      "candidate_enter_ticket": 3950,
+      "candidate_exit_ticket": 3953,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 3952,
+      "ticket_pre": 3951,
+      "token": 376
+    },
+    {
+      "candidate_enter_ticket": 3958,
+      "candidate_exit_ticket": 3961,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 3960,
+      "ticket_pre": 3959,
+      "token": 378
+    },
+    {
+      "candidate_enter_ticket": 4042,
+      "candidate_exit_ticket": 4045,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 4044,
+      "ticket_pre": 4043,
+      "token": 384
+    },
+    {
+      "candidate_enter_ticket": 4306,
+      "candidate_exit_ticket": 4309,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080102102",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 4308,
+      "ticket_pre": 4307,
+      "token": 411
+    },
+    {
+      "candidate_enter_ticket": 4405,
+      "candidate_exit_ticket": 4408,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [
+        {
+          "cpu": 2,
+          "enter_ticket": 4402,
+          "exit_ticket": 4409,
+          "token": 357
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing"
+      ],
+      "ticket_post": 4407,
+      "ticket_pre": 4406,
+      "token": 429
+    },
+    {
+      "candidate_enter_ticket": 4734,
+      "candidate_exit_ticket": 4737,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 4736,
+      "ticket_pre": 4735,
+      "token": 478
+    },
+    {
+      "candidate_enter_ticket": 5258,
+      "candidate_exit_ticket": 5261,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 5266,
+      "cluster": 0,
+      "cpu": 3,
+      "peers": [],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer0_interval_missing",
+        "peer1_interval_missing",
+        "peer2_interval_missing"
+      ],
+      "ticket_post": 5260,
+      "ticket_pre": 5259,
+      "token": 554
+    },
+    {
+      "candidate_enter_ticket": 56,
+      "candidate_exit_ticket": 102,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 4,
+      "peers": [
+        {
+          "cpu": 5,
+          "enter_ticket": 52,
+          "exit_ticket": 63,
+          "token": 4
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 49,
+          "exit_ticket": 59,
+          "token": 7
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [
+        "peer7_interval_missing"
+      ],
+      "ticket_post": 58,
+      "ticket_pre": 57,
+      "token": 4
+    },
+    {
+      "candidate_enter_ticket": 809,
+      "candidate_exit_ticket": 812,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 4,
+      "peers": [
+        {
+          "cpu": 7,
+          "enter_ticket": 776,
+          "exit_ticket": 895,
+          "token": 8
+        }
+      ],
+      "raw_cmd": "0x0000040080107107",
+      "reasons": [
+        "peer5_interval_missing",
+        "peer6_interval_missing"
+      ],
+      "ticket_post": 811,
+      "ticket_pre": 810,
+      "token": 78
+    },
+    {
+      "candidate_enter_ticket": 1881,
+      "candidate_exit_ticket": 1887,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 4,
+      "peers": [
+        {
+          "cpu": 7,
+          "enter_ticket": 1735,
+          "exit_ticket": 2038,
+          "token": 11
+        }
+      ],
+      "raw_cmd": "0x0000040080105105",
+      "reasons": [
+        "peer5_interval_missing",
+        "peer6_interval_missing"
+      ],
+      "ticket_post": 1883,
+      "ticket_pre": 1882,
+      "token": 173
+    },
+    {
+      "candidate_enter_ticket": 1903,
+      "candidate_exit_ticket": 1919,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 4,
+      "peers": [
+        {
+          "cpu": 5,
+          "enter_ticket": 1884,
+          "exit_ticket": 1918,
+          "token": 129
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 1899,
+          "exit_ticket": 1906,
+          "token": 160
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 1735,
+          "exit_ticket": 2038,
+          "token": 11
+        }
+      ],
+      "raw_cmd": "0x0000040080104104",
+      "reasons": [],
+      "ticket_post": 1905,
+      "ticket_pre": 1904,
+      "token": 177
+    },
+    {
+      "candidate_enter_ticket": 2767,
+      "candidate_exit_ticket": 2770,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 4,
+      "peers": [
+        {
+          "cpu": 5,
+          "enter_ticket": 2763,
+          "exit_ticket": 2794,
+          "token": 198
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 2751,
+          "exit_ticket": 2786,
+          "token": 238
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2680,
+          "exit_ticket": 2815,
+          "token": 16
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [],
+      "ticket_post": 2769,
+      "ticket_pre": 2768,
+      "token": 241
+    },
+    {
+      "candidate_enter_ticket": 2962,
+      "candidate_exit_ticket": 2965,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 4,
+      "peers": [],
+      "raw_cmd": "0x0000040080106106",
+      "reasons": [
+        "peer5_interval_missing",
+        "peer6_interval_missing",
+        "peer7_interval_missing"
+      ],
+      "ticket_post": 2964,
+      "ticket_pre": 2963,
+      "token": 269
+    },
+    {
+      "candidate_enter_ticket": 3023,
+      "candidate_exit_ticket": 3030,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 4,
+      "peers": [
+        {
+          "cpu": 5,
+          "enter_ticket": 3019,
+          "exit_ticket": 3042,
+          "token": 210
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 2974,
+          "exit_ticket": 3026,
+          "token": 247
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2992,
+          "exit_ticket": 3087,
+          "token": 19
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [],
+      "ticket_post": 3025,
+      "ticket_pre": 3024,
+      "token": 281
+    },
+    {
+      "candidate_enter_ticket": 3209,
+      "candidate_exit_ticket": 3215,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 4,
+      "peers": [
+        {
+          "cpu": 5,
+          "enter_ticket": 3204,
+          "exit_ticket": 3238,
+          "token": 224
+        }
+      ],
+      "raw_cmd": "0x0000040080104104",
+      "reasons": [
+        "peer6_interval_missing",
+        "peer7_interval_missing"
+      ],
+      "ticket_post": 3211,
+      "ticket_pre": 3210,
+      "token": 291
+    },
+    {
+      "candidate_enter_ticket": 3216,
+      "candidate_exit_ticket": 3219,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 4,
+      "peers": [
+        {
+          "cpu": 5,
+          "enter_ticket": 3204,
+          "exit_ticket": 3238,
+          "token": 224
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 3212,
+          "exit_ticket": 3262,
+          "token": 23
+        }
+      ],
+      "raw_cmd": "0x0000040080103103",
+      "reasons": [
+        "peer6_interval_missing"
+      ],
+      "ticket_post": 3218,
+      "ticket_pre": 3217,
+      "token": 292
+    },
+    {
+      "candidate_enter_ticket": 3224,
+      "candidate_exit_ticket": 3230,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 4,
+      "peers": [
+        {
+          "cpu": 5,
+          "enter_ticket": 3204,
+          "exit_ticket": 3238,
+          "token": 224
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 3212,
+          "exit_ticket": 3262,
+          "token": 23
+        }
+      ],
+      "raw_cmd": "0x0000040080103103",
+      "reasons": [
+        "peer6_interval_missing"
+      ],
+      "ticket_post": 3226,
+      "ticket_pre": 3225,
+      "token": 294
+    },
+    {
+      "candidate_enter_ticket": 1064,
+      "candidate_exit_ticket": 1082,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 1048,
+          "exit_ticket": 1074,
+          "token": 95
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 896,
+          "exit_ticket": 1479,
+          "token": 9
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [
+        "peer6_interval_missing"
+      ],
+      "ticket_post": 1066,
+      "ticket_pre": 1065,
+      "token": 72
+    },
+    {
+      "candidate_enter_ticket": 1139,
+      "candidate_exit_ticket": 1146,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 1132,
+          "exit_ticket": 1154,
+          "token": 101
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 1135,
+          "exit_ticket": 1142,
+          "token": 99
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 896,
+          "exit_ticket": 1479,
+          "token": 9
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 1141,
+      "ticket_pre": 1140,
+      "token": 77
+    },
+    {
+      "candidate_enter_ticket": 1195,
+      "candidate_exit_ticket": 1198,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 1163,
+          "exit_ticket": 1218,
+          "token": 102
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 1191,
+          "exit_ticket": 1206,
+          "token": 107
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 896,
+          "exit_ticket": 1479,
+          "token": 9
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 1197,
+      "ticket_pre": 1196,
+      "token": 82
+    },
+    {
+      "candidate_enter_ticket": 1459,
+      "candidate_exit_ticket": 1462,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 1447,
+          "exit_ticket": 1470,
+          "token": 134
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 1455,
+          "exit_ticket": 1463,
+          "token": 126
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 896,
+          "exit_ticket": 1479,
+          "token": 9
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [],
+      "ticket_post": 1461,
+      "ticket_pre": 1460,
+      "token": 97
+    },
+    {
+      "candidate_enter_ticket": 1507,
+      "candidate_exit_ticket": 1514,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 1487,
+          "exit_ticket": 1558,
+          "token": 136
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 1499,
+          "exit_ticket": 1510,
+          "token": 129
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 1480,
+          "exit_ticket": 1734,
+          "token": 10
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 1509,
+      "ticket_pre": 1508,
+      "token": 103
+    },
+    {
+      "candidate_enter_ticket": 1623,
+      "candidate_exit_ticket": 1626,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 1612,
+          "exit_ticket": 1627,
+          "token": 143
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 1616,
+          "exit_ticket": 1638,
+          "token": 141
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 1480,
+          "exit_ticket": 1734,
+          "token": 10
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 1625,
+      "ticket_pre": 1624,
+      "token": 113
+    },
+    {
+      "candidate_enter_ticket": 2335,
+      "candidate_exit_ticket": 2350,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 2295,
+          "exit_ticket": 2354,
+          "token": 200
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 2323,
+          "exit_ticket": 2338,
+          "token": 205
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2039,
+          "exit_ticket": 2531,
+          "token": 12
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 2337,
+      "ticket_pre": 2336,
+      "token": 168
+    },
+    {
+      "candidate_enter_ticket": 2395,
+      "candidate_exit_ticket": 2402,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 2368,
+          "exit_ticket": 2403,
+          "token": 203
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 2392,
+          "exit_ticket": 2398,
+          "token": 212
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2039,
+          "exit_ticket": 2531,
+          "token": 12
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 2397,
+      "ticket_pre": 2396,
+      "token": 173
+    },
+    {
+      "candidate_enter_ticket": 2443,
+      "candidate_exit_ticket": 2454,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 2423,
+          "exit_ticket": 2446,
+          "token": 206
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 2436,
+          "exit_ticket": 2450,
+          "token": 216
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2039,
+          "exit_ticket": 2531,
+          "token": 12
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 2445,
+      "ticket_pre": 2444,
+      "token": 178
+    },
+    {
+      "candidate_enter_ticket": 2492,
+      "candidate_exit_ticket": 2498,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 2484,
+          "exit_ticket": 2522,
+          "token": 209
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2039,
+          "exit_ticket": 2531,
+          "token": 12
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [
+        "peer6_interval_missing"
+      ],
+      "ticket_post": 2494,
+      "ticket_pre": 2493,
+      "token": 183
+    },
+    {
+      "candidate_enter_ticket": 2763,
+      "candidate_exit_ticket": 2794,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 2760,
+          "exit_ticket": 2766,
+          "token": 240
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 2751,
+          "exit_ticket": 2786,
+          "token": 238
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2680,
+          "exit_ticket": 2815,
+          "token": 16
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 2765,
+      "ticket_pre": 2764,
+      "token": 198
+    },
+    {
+      "candidate_enter_ticket": 2899,
+      "candidate_exit_ticket": 2908,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 2895,
+          "exit_ticket": 2903,
+          "token": 263
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 2879,
+          "exit_ticket": 2902,
+          "token": 243
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2816,
+          "exit_ticket": 2935,
+          "token": 17
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 2901,
+      "ticket_pre": 2900,
+      "token": 203
+    },
+    {
+      "candidate_enter_ticket": 3019,
+      "candidate_exit_ticket": 3042,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 3015,
+          "exit_ticket": 3022,
+          "token": 280
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 2974,
+          "exit_ticket": 3026,
+          "token": 247
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2992,
+          "exit_ticket": 3087,
+          "token": 19
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 3021,
+      "ticket_pre": 3020,
+      "token": 210
+    },
+    {
+      "candidate_enter_ticket": 3448,
+      "candidate_exit_ticket": null,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 6,
+          "enter_ticket": 3427,
+          "exit_ticket": 3462,
+          "token": 281
+        }
+      ],
+      "raw_cmd": "0x0000040080107107",
+      "reasons": [
+        "candidate_exit_missing",
+        "peer4_interval_missing",
+        "peer7_interval_missing"
+      ],
+      "ticket_post": 3450,
+      "ticket_pre": 3449,
+      "token": 235
+    },
+    {
+      "candidate_enter_ticket": 1067,
+      "candidate_exit_ticket": 1070,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 6,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 1048,
+          "exit_ticket": 1074,
+          "token": 95
+        },
+        {
+          "cpu": 5,
+          "enter_ticket": 1064,
+          "exit_ticket": 1082,
+          "token": 72
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 896,
+          "exit_ticket": 1479,
+          "token": 9
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [],
+      "ticket_post": 1069,
+      "ticket_pre": 1068,
+      "token": 92
+    },
+    {
+      "candidate_enter_ticket": 1111,
+      "candidate_exit_ticket": 1123,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 6,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 1087,
+          "exit_ticket": 1114,
+          "token": 98
+        },
+        {
+          "cpu": 5,
+          "enter_ticket": 1107,
+          "exit_ticket": 1118,
+          "token": 75
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 896,
+          "exit_ticket": 1479,
+          "token": 9
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 1113,
+      "ticket_pre": 1112,
+      "token": 97
+    },
+    {
+      "candidate_enter_ticket": 2339,
+      "candidate_exit_ticket": 2342,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 6,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 2295,
+          "exit_ticket": 2354,
+          "token": 200
+        },
+        {
+          "cpu": 5,
+          "enter_ticket": 2335,
+          "exit_ticket": 2350,
+          "token": 168
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2039,
+          "exit_ticket": 2531,
+          "token": 12
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [],
+      "ticket_post": 2341,
+      "ticket_pre": 2340,
+      "token": 206
+    },
+    {
+      "candidate_enter_ticket": 3191,
+      "candidate_exit_ticket": 3195,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 6,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 3176,
+          "exit_ticket": 3194,
+          "token": 289
+        },
+        {
+          "cpu": 5,
+          "enter_ticket": 3187,
+          "exit_ticket": 3202,
+          "token": 223
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 3179,
+          "exit_ticket": 3203,
+          "token": 22
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 3193,
+      "ticket_pre": 3192,
+      "token": 265
+    },
+    {
+      "candidate_enter_ticket": 3212,
+      "candidate_exit_ticket": 3262,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 7,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 3209,
+          "exit_ticket": 3215,
+          "token": 291
+        },
+        {
+          "cpu": 5,
+          "enter_ticket": 3204,
+          "exit_ticket": 3238,
+          "token": 224
+        }
+      ],
+      "raw_cmd": "0x0000040080108108",
+      "reasons": [
+        "peer6_interval_missing"
+      ],
+      "ticket_post": 3214,
+      "ticket_pre": 3213,
+      "token": 23
+    }
+  ],
+  "candidate_count": 18,
+  "idle_rows": 4366,
+  "input_sha256": {
+    "events": "a8205389b30ab4c51c4fc1a69a643a9d668ec7366292a173933663bf8709c3a7",
+    "status": "6735cd216bb7de7963d0e7af34fdd76ede7ad81465cfc63d824a03cf5da98dd1",
+    "wfi_events": "7eb53cf4ef8af47f98b5fa9c57a61734c42cdcd73e15c5a41e06cf7ee0eb9568"
+  },
+  "mode": "wfi_mmio",
+  "scope": "ticket-ordered software-hook candidate at first-attempt pre-DSB read",
+  "wfi_prepare_after_stop": 0,
+  "wfi_rows": 2185,
+  "witnesses": [
+    {
+      "candidate_enter_ticket": 1903,
+      "candidate_exit_ticket": 1919,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 4,
+      "peers": [
+        {
+          "cpu": 5,
+          "enter_ticket": 1884,
+          "exit_ticket": 1918,
+          "token": 129
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 1899,
+          "exit_ticket": 1906,
+          "token": 160
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 1735,
+          "exit_ticket": 2038,
+          "token": 11
+        }
+      ],
+      "raw_cmd": "0x0000040080104104",
+      "reasons": [],
+      "ticket_post": 1905,
+      "ticket_pre": 1904,
+      "token": 177
+    },
+    {
+      "candidate_enter_ticket": 2767,
+      "candidate_exit_ticket": 2770,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 4,
+      "peers": [
+        {
+          "cpu": 5,
+          "enter_ticket": 2763,
+          "exit_ticket": 2794,
+          "token": 198
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 2751,
+          "exit_ticket": 2786,
+          "token": 238
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2680,
+          "exit_ticket": 2815,
+          "token": 16
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [],
+      "ticket_post": 2769,
+      "ticket_pre": 2768,
+      "token": 241
+    },
+    {
+      "candidate_enter_ticket": 3023,
+      "candidate_exit_ticket": 3030,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 4,
+      "peers": [
+        {
+          "cpu": 5,
+          "enter_ticket": 3019,
+          "exit_ticket": 3042,
+          "token": 210
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 2974,
+          "exit_ticket": 3026,
+          "token": 247
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2992,
+          "exit_ticket": 3087,
+          "token": 19
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [],
+      "ticket_post": 3025,
+      "ticket_pre": 3024,
+      "token": 281
+    },
+    {
+      "candidate_enter_ticket": 1139,
+      "candidate_exit_ticket": 1146,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 1132,
+          "exit_ticket": 1154,
+          "token": 101
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 1135,
+          "exit_ticket": 1142,
+          "token": 99
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 896,
+          "exit_ticket": 1479,
+          "token": 9
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 1141,
+      "ticket_pre": 1140,
+      "token": 77
+    },
+    {
+      "candidate_enter_ticket": 1195,
+      "candidate_exit_ticket": 1198,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 1163,
+          "exit_ticket": 1218,
+          "token": 102
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 1191,
+          "exit_ticket": 1206,
+          "token": 107
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 896,
+          "exit_ticket": 1479,
+          "token": 9
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 1197,
+      "ticket_pre": 1196,
+      "token": 82
+    },
+    {
+      "candidate_enter_ticket": 1459,
+      "candidate_exit_ticket": 1462,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 1447,
+          "exit_ticket": 1470,
+          "token": 134
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 1455,
+          "exit_ticket": 1463,
+          "token": 126
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 896,
+          "exit_ticket": 1479,
+          "token": 9
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [],
+      "ticket_post": 1461,
+      "ticket_pre": 1460,
+      "token": 97
+    },
+    {
+      "candidate_enter_ticket": 1507,
+      "candidate_exit_ticket": 1514,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 1487,
+          "exit_ticket": 1558,
+          "token": 136
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 1499,
+          "exit_ticket": 1510,
+          "token": 129
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 1480,
+          "exit_ticket": 1734,
+          "token": 10
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 1509,
+      "ticket_pre": 1508,
+      "token": 103
+    },
+    {
+      "candidate_enter_ticket": 1623,
+      "candidate_exit_ticket": 1626,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 1612,
+          "exit_ticket": 1627,
+          "token": 143
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 1616,
+          "exit_ticket": 1638,
+          "token": 141
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 1480,
+          "exit_ticket": 1734,
+          "token": 10
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 1625,
+      "ticket_pre": 1624,
+      "token": 113
+    },
+    {
+      "candidate_enter_ticket": 2335,
+      "candidate_exit_ticket": 2350,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 2295,
+          "exit_ticket": 2354,
+          "token": 200
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 2323,
+          "exit_ticket": 2338,
+          "token": 205
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2039,
+          "exit_ticket": 2531,
+          "token": 12
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 2337,
+      "ticket_pre": 2336,
+      "token": 168
+    },
+    {
+      "candidate_enter_ticket": 2395,
+      "candidate_exit_ticket": 2402,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 2368,
+          "exit_ticket": 2403,
+          "token": 203
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 2392,
+          "exit_ticket": 2398,
+          "token": 212
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2039,
+          "exit_ticket": 2531,
+          "token": 12
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 2397,
+      "ticket_pre": 2396,
+      "token": 173
+    },
+    {
+      "candidate_enter_ticket": 2443,
+      "candidate_exit_ticket": 2454,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 2423,
+          "exit_ticket": 2446,
+          "token": 206
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 2436,
+          "exit_ticket": 2450,
+          "token": 216
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2039,
+          "exit_ticket": 2531,
+          "token": 12
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 2445,
+      "ticket_pre": 2444,
+      "token": 178
+    },
+    {
+      "candidate_enter_ticket": 2763,
+      "candidate_exit_ticket": 2794,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 2760,
+          "exit_ticket": 2766,
+          "token": 240
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 2751,
+          "exit_ticket": 2786,
+          "token": 238
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2680,
+          "exit_ticket": 2815,
+          "token": 16
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 2765,
+      "ticket_pre": 2764,
+      "token": 198
+    },
+    {
+      "candidate_enter_ticket": 2899,
+      "candidate_exit_ticket": 2908,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 2895,
+          "exit_ticket": 2903,
+          "token": 263
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 2879,
+          "exit_ticket": 2902,
+          "token": 243
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2816,
+          "exit_ticket": 2935,
+          "token": 17
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 2901,
+      "ticket_pre": 2900,
+      "token": 203
+    },
+    {
+      "candidate_enter_ticket": 3019,
+      "candidate_exit_ticket": 3042,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 5,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 3015,
+          "exit_ticket": 3022,
+          "token": 280
+        },
+        {
+          "cpu": 6,
+          "enter_ticket": 2974,
+          "exit_ticket": 3026,
+          "token": 247
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2992,
+          "exit_ticket": 3087,
+          "token": 19
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 3021,
+      "ticket_pre": 3020,
+      "token": 210
+    },
+    {
+      "candidate_enter_ticket": 1067,
+      "candidate_exit_ticket": 1070,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 6,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 1048,
+          "exit_ticket": 1074,
+          "token": 95
+        },
+        {
+          "cpu": 5,
+          "enter_ticket": 1064,
+          "exit_ticket": 1082,
+          "token": 72
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 896,
+          "exit_ticket": 1479,
+          "token": 9
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [],
+      "ticket_post": 1069,
+      "ticket_pre": 1068,
+      "token": 92
+    },
+    {
+      "candidate_enter_ticket": 1111,
+      "candidate_exit_ticket": 1123,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 6,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 1087,
+          "exit_ticket": 1114,
+          "token": 98
+        },
+        {
+          "cpu": 5,
+          "enter_ticket": 1107,
+          "exit_ticket": 1118,
+          "token": 75
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 896,
+          "exit_ticket": 1479,
+          "token": 9
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 1113,
+      "ticket_pre": 1112,
+      "token": 97
+    },
+    {
+      "candidate_enter_ticket": 2339,
+      "candidate_exit_ticket": 2342,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 6,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 2295,
+          "exit_ticket": 2354,
+          "token": 200
+        },
+        {
+          "cpu": 5,
+          "enter_ticket": 2335,
+          "exit_ticket": 2350,
+          "token": 168
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 2039,
+          "exit_ticket": 2531,
+          "token": 12
+        }
+      ],
+      "raw_cmd": "0x0000040080101101",
+      "reasons": [],
+      "ticket_post": 2341,
+      "ticket_pre": 2340,
+      "token": 206
+    },
+    {
+      "candidate_enter_ticket": 3191,
+      "candidate_exit_ticket": 3195,
+      "capture_start_ticket": 1,
+      "capture_stop_ticket": 3474,
+      "cluster": 1,
+      "cpu": 6,
+      "peers": [
+        {
+          "cpu": 4,
+          "enter_ticket": 3176,
+          "exit_ticket": 3194,
+          "token": 289
+        },
+        {
+          "cpu": 5,
+          "enter_ticket": 3187,
+          "exit_ticket": 3202,
+          "token": 223
+        },
+        {
+          "cpu": 7,
+          "enter_ticket": 3179,
+          "exit_ticket": 3203,
+          "token": 22
+        }
+      ],
+      "raw_cmd": "0x000004008010c10c",
+      "reasons": [],
+      "ticket_post": 3193,
+      "ticket_pre": 3192,
+      "token": 265
+    }
+  ]
+}

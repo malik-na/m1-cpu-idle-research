@@ -57,3 +57,22 @@ an isolated staging run; the public copy reproduced the reviewed D packet
 byte for byte. D's command-empty WFI rows represent a control without the
 additional WFI-path APSC load; ordinary DVFS command reads remain in the
 event stream.
+
+`publish_abi3_e.py` is the reviewed public copy for the fresh-boot
+ticket-plus-command-read E capture. `E-PUBLISHER-REDACTION-RECEIPT.json`
+binds it to the private exporter and the public A/D publishers, collector
+and validator. It retains every raw BUSY and clear WFI command word plus
+all accepted and rejected ticket screens. Replay the
+[public E packet](../native-evidence/abi3-E/README.md) without private inputs
+from this directory:
+
+```sh
+python3 -B publish_abi3_e.py --verify-public-stage ../native-evidence/abi3-E
+```
+
+The E public tests run with `python3 -B -m unittest -v
+test_publish_abi3_e.py`; the private E exporter passed twelve synthetic
+tests. An isolated public-tool staging run on the sealed A/D/E ancestry
+reproduced all sixteen reviewed E data files and manifest byte for byte.
+The E packet demonstrates pre-DSB software ticket order only, not command
+state at the later WFI instruction.
