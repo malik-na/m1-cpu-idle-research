@@ -20,9 +20,11 @@ Each item has a falsifying outcome and a claim boundary. Work from observation t
 
 **Native result, 3 October 2026.** The [qualified ABI 2 D/E/C/B/A block](../experiments/aurora-apsc-observer/WFI-ABI2-BLOCK-RESULT.md) found four raw BUSY reads at the first-attempt **pre-DSB** WFI-seam probe, including one conditional software final-entrant candidate under an unmeasured cross-CPU timing bound. The candidate's same-CPU SET-to-read upper bound is 607 ticks, exploratory rather than primary. The experiment did not observe the BUSY bit at the later WFI instruction or a physical peer/cluster state. The five-boot comparator accepted the positive block and rejected a second reverse block under the declared rules; a stronger hardware or instruction-boundary question needs a new protocol.
 
+**Native result, 4 October 2026.** The separate [ABI 3 A/D/E block](../experiments/aurora-apsc-observer/ABI3-E-TICKET-RESULT.md) replaces that assumed peer-order bound with a shared software ticket stream. E retained 2,185 first-attempt pre-DSB command words, 71 with BUSY set; 18 pass its strict software final-entrant screen. For six of those, all three peers' observer idle-exit tickets follow the candidate's idle-exit ticket, which is issued after its WFI. This does not show where each peer was within its own idle-exit path. The command was **not** read at WFI. The [writer audit](../experiments/aurora-apsc-observer/WFI-WRITER-IDENTITY-AUDIT.md) also leaves a capture-start gap and possible non-Linux writers. [Timestamp feasibility](../experiments/aurora-apsc-observer/LAST-CHG-TIME-CALIBRATION-FEASIBILITY.md) found no qualified `+0x38` access or completion invariant. Issue #5 remains open for an independently validated instruction-correlated command-state route or BUSY timing invariant; another identical pre-WFI run cannot provide it.
+
 **Would weaken it.** Across repeated, controlled last-core and remote-writer opportunities, no pending command is observed near entry, with enough sensitivity and loss accounting to bound the negative result.
 
-**Claim limit.** A positive BUSY sample proves pending command at a sample point, not harmful hardware collapse or a need to busy-wait. A remote writer can race after any check.
+**Claim limit.** A positive BUSY sample proves pending command at a sample point, not BUSY at the subsequent WFI instruction, harmful hardware collapse or a need to busy-wait. A remote writer can race after any check.
 
 ## E3 — Find an independent native physical-state signal
 

@@ -1,0 +1,126 @@
+{
+  "checks": [
+    {
+      "actual": "7.1.12-ARCH-apsc-20261002-wfi-pcpm-abi3",
+      "check": "receipt_release",
+      "expected": "7.1.12-ARCH-apsc-20261002-wfi-pcpm-abi3",
+      "passed": true
+    },
+    {
+      "actual": "0c0e5606d3274110d2833f60d51e1486e82b333247890e3cee3655ed20d24653",
+      "check": "source/drivers/cpufreq/apple-soc-cpufreq.c",
+      "expected": "0c0e5606d3274110d2833f60d51e1486e82b333247890e3cee3655ed20d24653",
+      "passed": true
+    },
+    {
+      "actual": "6939e428f19f1f8af0f4124d68d091995d6af507f6eb293f1e1c78bea3c2d505",
+      "check": "source/drivers/cpuidle/apple-apsc-observer.c",
+      "expected": "6939e428f19f1f8af0f4124d68d091995d6af507f6eb293f1e1c78bea3c2d505",
+      "passed": true
+    },
+    {
+      "actual": "94f186c572f3e1df7a62a7530981b39ee10359af7f5ec23457cf720a754ef1a5",
+      "check": "source/include/linux/soc/apple/apsc-observer.h",
+      "expected": "94f186c572f3e1df7a62a7530981b39ee10359af7f5ec23457cf720a754ef1a5",
+      "passed": true
+    },
+    {
+      "actual": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+      "check": "build/.config",
+      "expected": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+      "passed": true
+    },
+    {
+      "actual": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+      "check": "config_vs_receipt",
+      "expected": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+      "passed": true
+    },
+    {
+      "actual": "1368f40aed236c770485eb8b1b2b0b0bc496915c21fc01fbf608f5f60243a537",
+      "check": "built_image_sha256",
+      "expected": "1368f40aed236c770485eb8b1b2b0b0bc496915c21fc01fbf608f5f60243a537",
+      "passed": true
+    },
+    {
+      "actual": "6fbc0dc67bb746466a7244ba2fc096ecae7e6476",
+      "check": "built_vmlinux_build_id",
+      "expected": "6fbc0dc67bb746466a7244ba2fc096ecae7e6476",
+      "passed": true
+    },
+    {
+      "actual": "c5b9b8edc8cb2a9969d655a71bf891ece2e5cd447c605983cbc8f9833fd9d587",
+      "check": "reviewed_helper_source_sha256",
+      "expected": "c5b9b8edc8cb2a9969d655a71bf891ece2e5cd447c605983cbc8f9833fd9d587",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "check": "module_exists",
+      "expected": true,
+      "passed": true
+    },
+    {
+      "actual": "47a63f0d0f6506fadef03233538963dd46cccabf4d33aa59ea49ee52867b1470",
+      "check": "reviewed_helper_module_sha256",
+      "expected": "47a63f0d0f6506fadef03233538963dd46cccabf4d33aa59ea49ee52867b1470",
+      "passed": true
+    },
+    {
+      "actual": "7.1.12-ARCH-apsc-20261002-wfi-pcpm-abi3",
+      "check": "module_vermagic_release",
+      "expected": "7.1.12-ARCH-apsc-20261002-wfi-pcpm-abi3",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "check": "disabled_object_hardware_symbols",
+      "expected": [],
+      "passed": true
+    },
+    {
+      "actual": true,
+      "check": "source_width_gate",
+      "expected": true,
+      "passed": true
+    },
+    {
+      "actual": true,
+      "check": "source_safety_gate",
+      "expected": true,
+      "passed": true
+    },
+    {
+      "actual": true,
+      "check": "source_command_only_gate",
+      "expected": true,
+      "passed": true
+    },
+    {
+      "actual": "7.1.12-ARCH-apsc-20261002-wfi-pcpm-abi3",
+      "check": "running_release",
+      "expected": "7.1.12-ARCH-apsc-20261002-wfi-pcpm-abi3",
+      "passed": true
+    },
+    {
+      "actual": "6fbc0dc67bb746466a7244ba2fc096ecae7e6476",
+      "check": "running_build_id",
+      "expected": "6fbc0dc67bb746466a7244ba2fc096ecae7e6476",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "check": "running_config_available",
+      "expected": true,
+      "passed": true
+    },
+    {
+      "actual": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+      "check": "running_config",
+      "expected": "f4df15bf0c94e82210a503c91a9dd408b848d98aed45b0a2a09d691efbcf70a5",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "scope": "read-only preflight; no register access"
+}

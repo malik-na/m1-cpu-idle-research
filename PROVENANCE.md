@@ -196,3 +196,14 @@ can omit a SET whose writer passed its inactive check just before capture
 activation; capture-start has no grace-period exclusion for that in-flight
 write. Zero reported DVFS stream loss covers the recording branch, while
 unobserved writers and cross-CPU order still need qualification.
+
+The [prospective command-BUSY calibration protocol](experiments/aurora-apsc-observer/WFI-APSC-CMD-BUSY-CALIBRATION-PROTOCOL.md)
+is a static design, not a new capture. The separately reviewed
+[disabled helper source](experiments/aurora-apsc-observer/lct-prototype/README.md)
+is published with its exact SHA-256 and a whitelist-only offline validation
+result and the archived read-only preflight source. The private module binary
+and build tree remain outside the repository. The helper has never been loaded; its default build
+does not map an APSC resource or register a writer probe. It cannot meet
+the protocol's complete writer-coverage, remote-sampling or block-journal
+gates, and `+0x38` read safety/width remain unqualified. Neither static
+artifact adds an exact-WFI command-state or physical-power observation.

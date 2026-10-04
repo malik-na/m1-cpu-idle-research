@@ -210,3 +210,8 @@ The [ABI 3 writer-identity audit](WFI-WRITER-IDENTITY-AUDIT.md) replays
 the public E stream and finds a matching latest recorded SET word for all
 18 witnesses, while preserving the cross-CPU and capture-start gaps that
 prevent unique hardware-command attribution.
+The [command-BUSY transition protocol](WFI-APSC-CMD-BUSY-CALIBRATION-PROTOCOL.md)
+is a prospective, separately gated diagnostic. An independently reviewed
+[default-disabled timestamp helper prototype](lct-prototype/README.md) was
+built offline but never loaded. It cannot implement the protocol's complete
+writer/sampling schedule, justify a `+0x38` read, or prove BUSY at WFI.
