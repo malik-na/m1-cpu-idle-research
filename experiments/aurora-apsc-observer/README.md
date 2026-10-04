@@ -215,3 +215,6 @@ is a prospective, separately gated diagnostic. An independently reviewed
 [default-disabled timestamp helper prototype](lct-prototype/README.md) was
 built offline but never loaded. It cannot implement the protocol's complete
 writer/sampling schedule, justify a `+0x38` read, or prove BUSY at WFI.
+The [issue #5 instruction-state decision](ISSUE5-INSTRUCTION-STATE-DECISION.md)
+reconciles these routes with the ABI 3 result and records why the current
+boot has no qualified exact-WFI command-state experiment.

@@ -207,3 +207,7 @@ does not map an APSC resource or register a writer probe. It cannot meet
 the protocol's complete writer-coverage, remote-sampling or block-journal
 gates, and `+0x38` read safety/width remain unqualified. Neither static
 artifact adds an exact-WFI command-state or physical-power observation.
+The [issue #5 route decision](experiments/aurora-apsc-observer/ISSUE5-INSTRUCTION-STATE-DECISION.md)
+is a static synthesis of the saved E packet, source audits and retained
+macOS disassembly excerpts. It records an excerpt-scoped negative search and
+the remaining measurement gates, not a new native register or power result.
